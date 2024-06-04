@@ -3,10 +3,12 @@ import React from 'react'
 
 const DashBoardSideBar = ({
   setSelectedItemInSideBar,
-  SelectedItemInSideBar
+  SelectedItemInSideBar,
+  setOpened
 } : {
   setSelectedItemInSideBar : Function,
-  SelectedItemInSideBar : string
+  SelectedItemInSideBar : string,
+  setOpened : Function
 }) => {
 
     const dataForSideBar  = [ 'projects' ,'meetings' , 'notifications' , 'messages' ]
@@ -23,7 +25,10 @@ const DashBoardSideBar = ({
                       key = {index}
                       className={` mb-2 ${SelectedItemInSideBar === item ?
                       ' bg-gradient-to-br from-slate-500 to-slate-400 rounded-md p-2 shadow-md  text-white transition-all ease-in duration-200 translate-x-2 translate-y-1' : null}`}
-                      onClick={()=>setSelectedItemInSideBar(item)}
+                      onClick={()=>{
+                        setSelectedItemInSideBar(item)
+                        setOpened(false)
+                      }}
                       >
                          {item}
                       </li>

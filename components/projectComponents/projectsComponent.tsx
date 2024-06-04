@@ -1,8 +1,9 @@
 'use client'
 import { Button, Transition } from '@mantine/core'
 import React, { useEffect } from 'react'
+import ProjectCardComponent from './projectCardComponent'
 
-const Meetings = ({opened , setOpened} : {opened : boolean , setOpened : Function}) => {
+const ProjectsComponent = ({opened , setOpened} : {opened : boolean , setOpened : Function}) => {
   useEffect(()=>{
     setOpened(true)
     return ()=>setOpened(false)
@@ -16,9 +17,13 @@ const Meetings = ({opened , setOpened} : {opened : boolean , setOpened : Functio
       >
     {
     (styles) =>(
-       <section className='m-5 w-full' style={styles}>
+       <section className='m-5 w-full flex flex-col gap-5 p-4' style={styles}>
           <div className=' flex justify-between items-center w-full'>
-            <h1>Meetings</h1>
+            <h1 className='text-3xl font-bold shadow-sm'>My Projects</h1>
+            <Button>Create New Project</Button>
+          </div>
+          <div className=' grid'>
+            <ProjectCardComponent/>
           </div>
      </section>
      )
@@ -27,4 +32,4 @@ const Meetings = ({opened , setOpened} : {opened : boolean , setOpened : Functio
   )
 }
 
-export default Meetings
+export default ProjectsComponent
