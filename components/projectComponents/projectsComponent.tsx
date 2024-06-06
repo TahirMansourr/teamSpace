@@ -3,11 +3,18 @@ import { Button, Transition } from '@mantine/core'
 import React, { useEffect } from 'react'
 import ProjectCardComponent from './projectCardComponent'
 
-const ProjectsComponent = ({opened , setOpened} : {opened : boolean , setOpened : Function}) => {
+const ProjectsComponent = (
+  { 
+    opened , setOpened
+  } : {
+    opened : boolean , setOpened : Function
+  }) => {
+
   useEffect(()=>{
     setOpened(true)
-    return ()=>setOpened(false)
+    return () => setOpened(false)
   })
+
   return (
     <Transition
         mounted={opened}

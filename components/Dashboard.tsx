@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react'
 import DashBoardSideBar from './dashBoardSideBar'
-import Projects from '@/app/dashboard/@projects/page'
 import ProjectsComponent from './projectComponents/projectsComponent'
 import Messages from './messagesComponent'
 import Meetings from './meetings'
@@ -14,7 +13,7 @@ const Dashboard = () => {
   const [selectedItemInSideBar , setSelectedItemInSideBar] = useState<string>('projects')
   const [opened , setOpened] = useState<boolean>(false)
  
-  const selectedItemInSideBarToRenderOnScreen = () : React.ReactNode=>{
+  const selectedItemInSideBarToRenderOnScreen = () : React.ReactNode => {
     switch (selectedItemInSideBar) {
       case 'projects':
          return <ProjectsComponent  opened = {opened} setOpened = {setOpened}/>
@@ -36,7 +35,7 @@ const Dashboard = () => {
           SelectedItemInSideBar={selectedItemInSideBar}
           setOpened = {setOpened}
           />
-        { selectedItemInSideBarToRenderOnScreen()}
+        {selectedItemInSideBarToRenderOnScreen()}
     </div>
   )
 }
