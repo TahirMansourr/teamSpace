@@ -23,8 +23,8 @@ const DashBoardSideBar = ({
                   dataForSideBar.map((item : string , index : number) =>(
                       <li 
                       key = {index}
-                      className={` mb-2 ${SelectedItemInSideBar === item ?
-                      ' bg-gradient-to-br from-slate-500 to-slate-400 rounded-md p-2 shadow-md  text-white transition-all ease-in duration-200 translate-x-2 translate-y-1' : null}`}
+                      className={` mb-2 capitalize ${SelectedItemInSideBar === item ?
+                      ' bg-gradient-to-br from-blue-600 to-blue-400 rounded-md p-2 shadow-md  text-white transition-all ease-in duration-200 translate-x-2 translate-y-1 ' : null}`}
                       onClick={()=>{
                         setSelectedItemInSideBar(item)
                         setOpened(false)

@@ -27,7 +27,7 @@ const ProjectsComponent = (
        <section className='m-5 w-full flex flex-col gap-5 p-4' style={styles}>
           <div className=' flex justify-between items-center w-full'>
             <h1 className='text-3xl font-bold shadow-sm'>My Projects</h1>
-            <Button>Create New Project</Button>
+            <Button size='lg'>Create New Project</Button>
           </div>
           <div className=' grid'>
             <ProjectCardComponent/>
