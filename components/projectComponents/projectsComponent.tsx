@@ -29,7 +29,7 @@ const ProjectsComponent = (
             <h1 className='text-3xl font-bold shadow-sm'>My Projects</h1>
             <Button size='lg'>Create New Project</Button>
           </div>
-          <div className=' grid'>
+          <div className=' flex flex-col mt-5 p-1 rounded-lg'>
             <ProjectCardComponent/>
           </div>
      </section>
