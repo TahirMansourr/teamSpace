@@ -7,7 +7,7 @@ const NotesComponent = () => {
 
     const {notesComponentExpandState ,setNotesComponentExpandState} = useWorkSpaceContext()
   return (
-    <article  className={`transition-all ease-in-out duration-200 flex flex-col bg-white rounded-md shadow-sm p-2 ${notesComponentExpandState ? 'opacity-0 overflow-hidden' : 'opacity-100 w-[20rem] h-full'}`}
+    <article  className={`transition-all ease-in-out duration-200 flex flex-col bg-white rounded-md shadow-sm p-2 ${notesComponentExpandState ? 'opacity-0 overflow-hidden' : 'opacity-100 w-[20rem] h-full flex-grow'}`}
     style={{
         width: notesComponentExpandState ? '0' : '20rem',
         height: notesComponentExpandState ? '0' : '100%',
