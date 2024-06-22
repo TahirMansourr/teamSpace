@@ -5,7 +5,6 @@ import TasksComponent from './TasksComponent';
 import IssuesComponent from './IssuesComponent';
 import ChatSpaceComponent from './ChatSpaceComponent';
 import NotificationsBar from './NotificationsBar';
-import { useWorkSpaceContext } from '../Contexts/WorkSpaceContext';
 
 const MainPage = () => {
  
