@@ -9,7 +9,7 @@ import NotificationsBar from './NotificationsBar';
 const MainPage = () => {
  
   return (
-    <section className=' flex flex-col w-full m-5 gap-2 rounded-xl shadow-2xl bg-gradient-to-br from-[#dedee2] to-[#e1e2e8]  items-center justify-center p-3'>
+    <section className=' flex flex-col w-full  gap-2 rounded-xl   items-center justify-center p-3'>
         <NotificationsBar/>
         <section className=" flex w-full h-full  gap-2  items-center   ">
         <NotesComponent/> 

@@ -6,7 +6,7 @@ function SideBar() {
   const [opened, { toggle }] = useDisclosure();
   return (
     <div className='relative '>
-        <Burger size="sm" c={'green'} opened={opened} onClick={toggle} aria-label="Toggle navigation" className={`  ${opened ? 'mt-2' : 'absolute m-5' } top-3 left-3`} />
+        <Burger size="sm" c={'green'} opened={opened} onClick={toggle} aria-label="Toggle navigation" className={`  ${opened ? 'mt-2' : 'absolute m-2' } top-3 left-3`} />
         <section
             className={`transform transition-all duration-150 ${
                 opened
@@ -14,6 +14,7 @@ function SideBar() {
                     : 'max-h-0 opacity-0 w-0 flex-grow-0 min-h-0'
                 }`}
             >
+                Docs
         
       </section>
     </div>

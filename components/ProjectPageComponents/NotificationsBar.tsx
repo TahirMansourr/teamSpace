@@ -36,6 +36,7 @@ const NotificationsBar = () => {
        >
             ChatSpace
        </div>
+       <div> {!notesComponentExpandState && !chatComponentExpandState && !tasksComponentExpandState && !issuesComponentExpandState ?  'You have nothing minimized' : null}</div>
     </section>
   )
 }

@@ -6,7 +6,7 @@ import { useWorkSpaceContext } from '../Contexts/WorkSpaceContext'
 const TasksComponent = () => {
     const {tasksComponentExpandState ,setTasksComponentExpandState} = useWorkSpaceContext()
     return (
-    <article  className={`transition-all ease-in-out duration-200 flex flex-col bg-white rounded-md shadow-sm p-2 ${tasksComponentExpandState ? 'opacity-0 overflow-hidden' : 'opacity-100 w-[20rem] h-full flex-grow'}`}
+    <article  className={`transition-all ease-in-out duration-200 flex flex-col bg-white rounded-md shadow-xl p-2 ${tasksComponentExpandState ? 'opacity-0 overflow-hidden' : 'opacity-100 w-[20rem] h-full flex-grow'}`}
     style={{
         width: tasksComponentExpandState ? '0' : '20rem',
         height: tasksComponentExpandState ? '0' : '100%',

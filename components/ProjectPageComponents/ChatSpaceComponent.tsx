@@ -6,7 +6,7 @@ import { useWorkSpaceContext } from '../Contexts/WorkSpaceContext'
 const ChatSpaceComponent = () => {
     const {chatComponentExpandState ,setChatComponentExpandState} = useWorkSpaceContext()
     return (
-    <article  className={`transition-all ease-in-out duration-200 flex flex-col  bg-white rounded-md shadow-sm p-2 ${chatComponentExpandState ? 'opacity-0 overflow-hidden' : 'opacity-100 min-w-[30rem] flex-grow h-full'}`}
+    <article  className={`transition-all ease-in-out duration-200 flex flex-col  bg-white rounded-md shadow-xl p-2 ${chatComponentExpandState ? 'opacity-0 overflow-hidden' : 'opacity-100 min-w-[28rem] flex-grow h-full'}`}
     style={{
         width: chatComponentExpandState ? '0' : '20rem',
         height: chatComponentExpandState ? '0' : '100%',

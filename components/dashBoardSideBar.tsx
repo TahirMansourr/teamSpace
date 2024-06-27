@@ -1,14 +1,14 @@
 'use client'
-import React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 
 const DashBoardSideBar = ({
   setSelectedItemInSideBar,
   SelectedItemInSideBar,
   setOpened
 } : {
-  setSelectedItemInSideBar : Function,
+  setSelectedItemInSideBar : Dispatch<SetStateAction<string>>,
   SelectedItemInSideBar : string,
-  setOpened : Function
+  setOpened : Dispatch<SetStateAction<boolean>>
 }) => {
 
     const dataForSideBar  = [ 'projects' ,'meetings' , 'notifications' , 'messages' ]
