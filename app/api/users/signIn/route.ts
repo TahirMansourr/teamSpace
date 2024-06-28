@@ -11,6 +11,7 @@ export async function POST(request : NextRequest ){
         const {email , password} = req
 
         const user = await User.findOne({email})
+        console.log("🚀 ~ POST ~ user:", user)
         if(!user){
             return NextResponse.json({error : 'This user does not exist' , status : 400})
         }
@@ -25,13 +26,15 @@ export async function POST(request : NextRequest ){
             username : user.username,
             email : user.email
         }
-
+        console.log("🚀 ~ POST ~ tokenData:", tokenData)
+        console.log("🚀 ~ POST ~ TokenSecret:", process.env.TokenSecret)
+        console.log(require('crypto').randomBytes(32).toString('hex'))
         const token = await jwt.sign(tokenData , process.env.TokenSecret! , {expiresIn : '10d'})
 
         const response = NextResponse.json({ message : 'Login Successfull' , success : 'true'})
         response.cookies.set('token' , token , { httpOnly : true})
         return response
     } catch (error : any) {
-        return NextResponse.json({error: error.message}, {status: 500})
+        return NextResponse.json({error: error}, {status: 500})
     }
 }
