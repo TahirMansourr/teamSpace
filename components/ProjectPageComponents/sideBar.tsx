@@ -1,6 +1,7 @@
 'use client'
 import { useDisclosure } from '@mantine/hooks';
 import { Burger } from '@mantine/core';
+import { socket } from '@/socket';
 
 function SideBar() {
   const [opened, { toggle }] = useDisclosure();
@@ -14,7 +15,10 @@ function SideBar() {
                     : 'max-h-0 opacity-0 w-0 flex-grow-0 min-h-0'
                 }`}
             >
-                Docs
+                <div
+                className=' cursor-pointer'
+                    onClick={()=>socket.emit('hello' , 'world')}
+                >docs</div>
         
       </section>
     </div>
