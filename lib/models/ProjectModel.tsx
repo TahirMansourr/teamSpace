@@ -6,36 +6,36 @@ const ProjectSchema = new mongoose.Schema({
     name : String,
     creator : {
         type : mongoose.Schema.Types.ObjectId,
-        ref : ''
+        ref : 'User'
     },
-    admins : {
+    admins : [{
         type : mongoose.Schema.Types.ObjectId,
-        ref : ''
-    },
-    team : {
+        ref : 'User'
+    }],
+    team : [{
         type : mongoose.Schema.Types.ObjectId,
-        ref : ''
-    },
+        ref : 'User'
+    }],
     image : String,
     notes : {
         type : mongoose.Schema.Types.ObjectId,
-        ref : ''
+        ref : 'Note'
     },
     Tasks : {
         type : mongoose.Schema.Types.ObjectId,
-        ref : ''
+        ref : 'Task'
     },
     issues : {
         type : mongoose.Schema.Types.ObjectId,
-        ref : ''
+        ref : 'Issues'
     },
     chatSpace : {
         type : mongoose.Schema.Types.ObjectId,
-        ref : ''
+        ref : 'Message'
     },
     likes: Number,
     content : String,
-    meetings: String,
+    // meetings: String,
     messages : String,
     activity : Number
 

@@ -11,7 +11,7 @@ export async function GET(request : NextRequest){
         const toObj = JSON.parse(tostr)
         const id = toObj.id
         const user = await User.findOne({_id : id}).select('-password')
-        console.log("🚀 ~ GET ~ user:", user)
+        // console.log("🚀 ~ GET ~ user:", user)
         return  NextResponse.json({data : user})
     } catch (error : any) {
         throw new Error("here" , error);

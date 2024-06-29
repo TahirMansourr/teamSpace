@@ -4,18 +4,20 @@ import React, { Dispatch, SetStateAction } from 'react'
 const DashBoardSideBar = ({
   setSelectedItemInSideBar,
   SelectedItemInSideBar,
-  setOpened
+  setOpened,
+  user
 } : {
   setSelectedItemInSideBar : Dispatch<SetStateAction<string>>,
   SelectedItemInSideBar : string,
   setOpened : Dispatch<SetStateAction<boolean>>
+  user : any
 }) => {
 
     const dataForSideBar  = [ 'projects' ,'meetings' , 'notifications' , 'messages' ]
   
   return (
     <div>
-      <h1 className=' text-xl text-center mt-3 shadow-xl mb-5'>User's WorkSpace</h1>
+      <h1 className=' text-xl text-center mt-3 shadow-xl mb-5'>{user.data.username ? user.data.username : 'User'}</h1>
         <section
          className=' flex h-full w-[15rem] pl-3 border-r text-xl mt-3 hover:cursor-pointer '>
           <ul>
