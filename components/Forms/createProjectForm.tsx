@@ -4,6 +4,7 @@ import { Button, LoadingOverlay, TagsInput, Textarea, TextInput } from '@mantine
 import { useForm } from '@mantine/form'
 import { NextResponse } from 'next/server'
 import React, { useState } from 'react'
+import { useProjectContext } from '../Contexts/ProjectContext'
 
 interface ProjectFormDto{
     name : string,
@@ -13,6 +14,7 @@ interface ProjectFormDto{
 
 }
 const CreateProjectForm = () => {
+    const {userInfo} = useProjectContext()
 
     const form = useForm<ProjectFormDto>({
         initialValues:{
@@ -33,7 +35,7 @@ const CreateProjectForm = () => {
             name : values.name ,
             image : values.image,
             content : values.content, 
-            admin : ['']
+            admin : [userInfo.data._id]
         }).then((res : any) =>{
              setResponse(res)} )
         console.log(form.getValues());

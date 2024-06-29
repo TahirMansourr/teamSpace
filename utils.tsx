@@ -8,18 +8,20 @@ import ProjectProvider from "./components/Contexts/ProjectContext"
 export const SelectedItemInSideBarToRenderOnScreen = ({
   selectedItemInSideBar,
   opened,
-  setOpened
+  setOpened,
+  user 
 } : {
   selectedItemInSideBar  : string,
   opened : boolean,
-  setOpened : Dispatch<SetStateAction<boolean>>
+  setOpened : Dispatch<SetStateAction<boolean>>,
+  user : any
 
 
 }) : React.ReactNode => {
     switch (selectedItemInSideBar) {
       case 'projects':
          return (
-         <ProjectProvider>
+         <ProjectProvider user = {user}>
             <ProjectsComponent  opened = {opened} setOpened = {setOpened}/>
          </ProjectProvider>)
       case 'messages':

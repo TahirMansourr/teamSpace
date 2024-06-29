@@ -11,6 +11,7 @@ interface ProjectInitialProps{
 }
 
 export async function CreateProject({name , content , image , admin} : ProjectInitialProps) {
+    console.log("🚀 ~ CreateProject ~ admin:", admin)
     try {
         connectToDB()
         const project = await Project.findOne({name})

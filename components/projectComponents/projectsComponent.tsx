@@ -39,7 +39,7 @@ const ProjectsComponent = (
             blur: 4,
           }}
           >
-            <CreateProjectForm/>
+            <CreateProjectForm />
         </Modal>
 
           <div className=' flex justify-between items-center w-full'>
