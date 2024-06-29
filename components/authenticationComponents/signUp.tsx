@@ -11,15 +11,14 @@ export default function SignUpPage(){
     const router = useRouter()
     const [loading , setLoading] = useState<boolean>(false)
     const onSignUp = async (values : any) => {
-        setLoading(true)
         try {
+             setLoading(true)
              await axios.post('api/users/signUp' , values)
-             router.push('signIn')
+             router.push('/')
         } catch (error : any) {
             console.log('failed to signUp' , error.message);
-            
         }finally{
-          setLoading(false)
+            setLoading(false)
         }
     }
 
@@ -38,21 +37,14 @@ export default function SignUpPage(){
     return(
         <div className=" flex justify-center items-center w-full h-screen">
     <form onSubmit={form.onSubmit((values) => onSignUp(values))}>
-      {loading ? <LoadingOverlay visible/> : null}
-        <div className=" flex flex-col min-w-96  border p-5 shadow-2xl rounded-lg">
+        <div className=" flex flex-col min-w-96  border p-5 shadow-2xl rounded-lg bg-opacity-0 ">
+            {loading? <div>Processing<LoadingOverlay visible/></div> : null}
       <TextInput
         withAsterisk
         label="Email"
         placeholder="your@email.com"
         key={form.key('email')}
         {...form.getInputProps('email')}
-      />
-      <TextInput
-        withAsterisk
-        label="username"
-        placeholder="Some cool username"
-        key={form.key('username')}
-        {...form.getInputProps('username')}
       />
       <TextInput
         withAsterisk
@@ -65,7 +57,7 @@ export default function SignUpPage(){
 
 
       <Group justify="flex-end" mt="md">
-        <Button type="submit">Submit</Button>
+        <Button type="submit" disabled = {loading}>Login</Button>
       </Group>
       </div>
     </form>

@@ -27,8 +27,6 @@ export async function POST(request : NextRequest ){
             email : user.email
         }
         console.log("🚀 ~ POST ~ tokenData:", tokenData)
-        console.log("🚀 ~ POST ~ TokenSecret:", process.env.TokenSecret)
-        console.log(require('crypto').randomBytes(32).toString('hex'))
         const token = await jwt.sign(tokenData , process.env.TokenSecret! , {expiresIn : '10d'})
 
         const response = NextResponse.json({ message : 'Login Successfull' , success : 'true'})

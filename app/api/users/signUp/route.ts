@@ -4,13 +4,15 @@ import User from "@/lib/models/UserModel";
 import { connectToDB } from "@/lib/mongoose";
 import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
+import { SendEmail } from "@/Utils/mailing";
 
 connectToDB();
 
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
-    console.log('thisistherequestbody' , reqBody);
+    console.log("🚀 ~ POST ~ reqBody:", reqBody)
+    
     
     const { username, email, password } = reqBody;
 
@@ -19,14 +21,20 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'User already exists' }, { status: 400 });
     }
 
+    
     const salt = await bcryptjs.genSalt(10);
     const hashedPassword = await bcryptjs.hash(password, salt);
 
-    await User.create({
+    const newUser = await User.create({
       username,
       email,
       password: hashedPassword,
     });
+    await newUser.save
+    // const savedUser = await newUser.save()
+
+    // await SendEmail({email, emailType: "VERIFY",
+    //     userId: savedUser._id})
 
     return NextResponse.json({
       message: "User created successfully",
