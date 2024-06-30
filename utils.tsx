@@ -3,7 +3,8 @@ import Messages from "./components/messagesComponent"
 import ProjectsComponent from "./components/projectComponents/projectsComponent"
 import Notification from "./components/notifications"
 import { Dispatch, SetStateAction } from "react"
-import ProjectProvider from "./components/Contexts/ProjectContext"
+import Docs from "./components/ProjectPageComponents/Docs"
+import MultiTabsComponent from "./components/ProjectPageComponents/MultiTabsComponent"
 
 export const SelectedItemInSideBarToRenderOnScreen = ({
   selectedItemInSideBar,
@@ -27,6 +28,25 @@ export const SelectedItemInSideBarToRenderOnScreen = ({
        return <Meetings opened = {opened} setOpened = {setOpened}/>
       case 'notifications':
         return <Notification opened = {opened} setOpened = {setOpened}/>
+      default:
+        break;
+    }
+}
+export const SelectedItemToRenderOnScreen = ({
+  selectedItemInSideBar,
+  opened,
+  setOpened,
+} : {
+  selectedItemInSideBar  : string,
+  opened : boolean,
+  setOpened : Dispatch<SetStateAction<boolean>>,
+
+}) : React.ReactNode => {
+    switch (selectedItemInSideBar) {
+      case 'Docs':
+         return <Docs  opened = {opened} setOpened = {setOpened}/>
+      case 'TeamSpace':
+        return <MultiTabsComponent opened = {opened} setOpened = {setOpened}/>
       default:
         break;
     }

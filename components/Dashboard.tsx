@@ -28,14 +28,16 @@ const Dashboard = () => {
     
     <main className=' flex h-screen w-screen '>
      
-       { user && <DashBoardSideBar 
+       { user && 
+       <DashBoardSideBar 
           setSelectedItemInSideBar={ setSelectedItemInSideBar }
           SelectedItemInSideBar={selectedItemInSideBar}
           setOpened = {setOpened}
           user = {user}
           />
           }
-        {user && <SelectedItemInSideBarToRenderOnScreen
+        {user && 
+        <SelectedItemInSideBarToRenderOnScreen
           selectedItemInSideBar={selectedItemInSideBar}
           setOpened = {setOpened}
           opened = {opened}

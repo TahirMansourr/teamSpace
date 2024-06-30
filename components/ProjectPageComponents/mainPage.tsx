@@ -1,25 +1,15 @@
-
-import React from 'react'
-import NotesComponent from './NotesComponent';
-import TasksComponent from './TasksComponent';
-import IssuesComponent from './IssuesComponent';
-import ChatSpaceComponent from './ChatSpaceComponent';
+'use client'
+import React, { useState } from 'react'
 import NotificationsBar from './NotificationsBar';
+import MultiTabsComponent from './MultiTabsComponent';
+import { SelectedItemToRenderOnScreen } from '@/utils';
 
 const MainPage = () => {
  
+  const [selectedItemInSideBar , setSelectedItemInSideBar] = useState<string>('projects')
+  const [opened , setOpened] = useState<boolean>(false)
   return (
-    <section className=' flex flex-col w-full  gap-2 rounded-xl   items-center justify-center p-3'>
-        <NotificationsBar/>
-        <section className=" flex w-full h-full  gap-2  items-center   ">
-        <NotesComponent/> 
-        <TasksComponent/> 
-        <IssuesComponent/>
-        <ChatSpaceComponent/>
-      </section>
-    </section>
-    
-      
+   <div>hi</div>
   )
 }
 
