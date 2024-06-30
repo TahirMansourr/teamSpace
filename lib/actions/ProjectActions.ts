@@ -1,17 +1,18 @@
 'use server'
-import { NextResponse } from "next/server"
+
 import Project from "../models/ProjectModel"
 import { connectToDB } from "../mongoose"
+import User from "../models/UserModel"
 
 interface ProjectInitialProps{
     name : string,
     content : string,
     image? : string,
-    admin : string[]
+    admins : string[]
 }
 
-export async function CreateProject({name , content , image , admin} : ProjectInitialProps) {
-    console.log("🚀 ~ CreateProject ~ admin:", admin)
+export async function CreateProject({name , content , image , admins} : ProjectInitialProps) {
+    console.log("🚀 ~ CreateProject ~ admin:", admins)
     try {
         connectToDB()
         const project = await Project.findOne({name})
@@ -20,11 +21,17 @@ export async function CreateProject({name , content , image , admin} : ProjectIn
             name, 
             content,
             image,
-            admin
+            admins
         })
         newProject.save()
-        return ({status : 'success' , message : `Project ${name} created successfully`})
+        const requiredAdmin = await User.findOne({_id : admins[0]})
+        if(!requiredAdmin) return({status : "Fail" , message : "Unexpected problem , please logOut and signIn again"})
+        await requiredAdmin.updateOne({ $push: { projects: newProject._id } })
+        await requiredAdmin.save()
+        console.log("🚀 ~ CreateProject ~ requiredAdmin:", requiredAdmin)
+        return ({status : 'success' , message : `Project ${name} created successfully` , project : newProject})
     } catch (error : any) {
        return({status : 'Fail' , message : error})
     }
+        
 }

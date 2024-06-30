@@ -1,9 +1,10 @@
 'use client'
 
-import { createContext, useContext, useState } from "react"
+import { createContext, Dispatch, SetStateAction, useContext, useState } from "react"
 
 interface ProjectContextDto{
-    userInfo : any
+    userProjects : any[],
+    setUserProjects : Dispatch<SetStateAction<any>>
 }
 
 const ProjectContext = createContext<ProjectContextDto>({} as ProjectContextDto)
@@ -17,19 +18,20 @@ const ProjectProvider = (
         user
     }
     :
-    {
+    { 
      children : React.ReactNode,
      user : any
 
     }
 )=>{
 
-    //Here i want to have a state in where the projects page takes the projects that are here and when you create a new project the project page takes
-    // it from here directly
-    const [userInfo , setUserInfo] = useState<any>(user)
-    console.log("🚀 ~ userInfo:", userInfo)
+    
+    const [userProjects , setUserProjects] = useState<any[]>(user.data.projects)
+    console.log("🚀 ~ userProjects:", userProjects)
+    
     const value = {
-        userInfo
+        userProjects,
+        setUserProjects
     }
     return(
 

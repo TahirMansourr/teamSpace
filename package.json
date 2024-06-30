@@ -13,7 +13,7 @@
     "@mantine/core": "^7.10.0",
     "@mantine/form": "^7.11.0",
     "@mantine/hooks": "^7.10.0",
-    "@mantine/notifications": "^7.10.0",
+    "@mantine/notifications": "^7.11.0",
     "@testing-library/jest-dom": "^6.4.5",
     "axios": "^1.7.2",
     "bcrypt": "^5.1.1",

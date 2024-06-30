@@ -1,3 +1,4 @@
+import Project from "@/lib/models/ProjectModel";
 import User from "@/lib/models/UserModel";
 import { connectToDB } from "@/lib/mongoose";
 import { GetDataFromToken } from "@/Utils/authenticationUtils";
@@ -10,8 +11,12 @@ export async function GET(request : NextRequest){
         const tostr = JSON.stringify(userInfo)
         const toObj = JSON.parse(tostr)
         const id = toObj.id
-        const user = await User.findOne({_id : id}).select('-password')
-        // console.log("🚀 ~ GET ~ user:", user)
+        const user = await User.findOne({_id : id}).
+        select('-password')
+        .populate({
+            path : 'projects',
+            model : Project
+        })
         return  NextResponse.json({data : user})
     } catch (error : any) {
         throw new Error("here" , error);

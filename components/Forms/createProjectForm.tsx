@@ -2,19 +2,18 @@
 import { CreateProject } from '@/lib/actions/ProjectActions'
 import { Button, LoadingOverlay, TagsInput, Textarea, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
-import { NextResponse } from 'next/server'
 import React, { useState } from 'react'
 import { useProjectContext } from '../Contexts/ProjectContext'
+import { notifications } from '@mantine/notifications'
 
 interface ProjectFormDto{
     name : string,
     team : string[],
     image : string,
-    content : string
-
+    content : string,
 }
-const CreateProjectForm = () => {
-    const {userInfo} = useProjectContext()
+const CreateProjectForm = ({close , userId} : {close : ()=> void , userId : string}) => {
+    const {setUserProjects} = useProjectContext()
 
     const form = useForm<ProjectFormDto>({
         initialValues:{
@@ -25,7 +24,8 @@ const CreateProjectForm = () => {
         }
     })
     const [loading , setLoading] = useState<boolean>(false)
-    const [response , setResponse] = useState<{status : string , message : string}>()
+    const [response , setResponse] = useState<{status : string , message : string , project : any}>()
+    
     async function handleSubmit(){
         const values = form.getValues()
         setLoading(true)
@@ -35,21 +35,28 @@ const CreateProjectForm = () => {
             name : values.name ,
             image : values.image,
             content : values.content, 
-            admin : [userInfo.data._id]
+            admins : [userId]
         }).then((res : any) =>{
-             setResponse(res)} )
+             setResponse(res)
+             notifications.show({
+              message : res.message,
+              color : "green"
+            })
+            })
         console.log(form.getValues());
+        {response && setUserProjects((prev : any)=>[...prev , response.project])}
+        close()
       } catch (error: any) {
         console.log(`error at createProjectForm : ${error}`);
       }finally{
         setLoading(false)
       }
-        
     }
+
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
         <div className=' w-full flex flex-col justify-center gap-1 '>
-            {loading ? <LoadingOverlay visible/> : null}
+            {loading ? <LoadingOverlay visible = {loading}/> : null}
             <TextInput
                 label="Project Name"
                 placeholder="Project Name"
@@ -67,7 +74,11 @@ const CreateProjectForm = () => {
                 {...form.getInputProps('team')}
                 />
             
-           {response ? <div className={`p-3 rounded-md${response.status === "Fail" ?' bg-red-600 ' : 'bg-green-500'} text-white w-fit mx-auto mt-4 text-center`}>{response.message}</div> : null}
+           {response && response.status === 'Fail' ?
+              <div className={`p-3 rounded-md text-white w-fit mx-auto mt-4 text-center  bg-red-600`}>
+                {response.message}
+              </div> : null
+            }
                 <Button type='submit' className=' mt-3'>Create Project</Button>
         </div>
     </form>
