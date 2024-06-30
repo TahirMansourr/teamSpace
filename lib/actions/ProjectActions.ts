@@ -23,13 +23,15 @@ export async function CreateProject({name , content , image , admins} : ProjectI
             image,
             admins
         })
+        const response = newProject.toObject()
+        console.log("🚀 ~ CreateProject ~ response:", response)
         newProject.save()
         const requiredAdmin = await User.findOne({_id : admins[0]})
         if(!requiredAdmin) return({status : "Fail" , message : "Unexpected problem , please logOut and signIn again"})
         await requiredAdmin.updateOne({ $push: { projects: newProject._id } })
         await requiredAdmin.save()
         console.log("🚀 ~ CreateProject ~ requiredAdmin:", requiredAdmin)
-        return ({status : 'success' , message : `Project ${name} created successfully` , project : newProject})
+        return ({status : 'success' , message : `Project ${name} created successfully` , project : response})
     } catch (error : any) {
        return({status : 'Fail' , message : error})
     }

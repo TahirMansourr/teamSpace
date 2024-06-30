@@ -16,6 +16,7 @@ const CreateProjectForm = ({close , userId} : {close : ()=> void , userId : stri
     const {setUserProjects} = useProjectContext()
 
     const form = useForm<ProjectFormDto>({
+        mode : 'uncontrolled' ,
         initialValues:{
             name : '',
             team : [],
@@ -42,10 +43,16 @@ const CreateProjectForm = ({close , userId} : {close : ()=> void , userId : stri
               message : res.message,
               color : "green"
             })
+            setUserProjects((prev : any) => [...prev , {
+              name : values.name,
+              image : values.image,
+              content : values.content,
+              admins : [userId]
+            }])
             })
         console.log(form.getValues());
-        {response && setUserProjects((prev : any)=>[...prev , response.project])}
         close()
+         
       } catch (error: any) {
         console.log(`error at createProjectForm : ${error}`);
       }finally{
@@ -56,7 +63,7 @@ const CreateProjectForm = ({close , userId} : {close : ()=> void , userId : stri
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
         <div className=' w-full flex flex-col justify-center gap-1 '>
-            {loading ? <LoadingOverlay visible = {loading}/> : null}
+            {loading ? <div>Creating...<LoadingOverlay visible/></div> : null}
             <TextInput
                 label="Project Name"
                 placeholder="Project Name"

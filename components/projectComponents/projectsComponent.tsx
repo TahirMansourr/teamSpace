@@ -1,20 +1,21 @@
 'use client'
-import { Button, Modal, Transition } from '@mantine/core'
+import { Button, Modal, ScrollArea, Transition } from '@mantine/core'
 import React, { useEffect } from 'react'
 import ProjectCardComponent from './projectCardComponent'
 import { useDisclosure } from '@mantine/hooks'
 import CreateProjectForm from '../Forms/createProjectForm'
-import { useProjectContext } from '../Contexts/ProjectContext'
+import ProjectProvider, { useProjectContext } from '../Contexts/ProjectContext'
+import AllProjectsSection from './AllProjectsSection'
 
 const ProjectsComponent = (
   { 
-    opened , setOpened , userId
+    opened , setOpened , user
   } : {
-    opened : boolean , setOpened : Function , userId : string
+    opened : boolean , setOpened : Function , user : any
   }) => {
 
     const [modalOpened , {open , close : closeModal}] = useDisclosure(false)
-    const {userProjects} = useProjectContext()
+
   useEffect(()=>{
     setOpened(true)
     return () => setOpened(false)
@@ -29,7 +30,8 @@ const ProjectsComponent = (
       >
     {
     (styles) =>(
-       <section className='m-5 w-full flex flex-col gap-5 p-4' style={styles}>
+      <ProjectProvider user = {user}>
+       <section className='m-5 w-full flex flex-col gap-5' style={styles}>
         <Modal 
           opened={modalOpened} 
           onClose={closeModal} 
@@ -40,21 +42,19 @@ const ProjectsComponent = (
             blur: 4,
           }}
           >
-            <CreateProjectForm close = {closeModal} userId  = {userId} />
+            <CreateProjectForm close = {closeModal} userId  = {user.data._id} />
         </Modal>
 
           <div className=' flex justify-between items-center w-full'>
             <h1 className='text-3xl font-bold shadow-sm'>My Projects</h1>
             <Button size='md' onClick={open}>Create New Project</Button>
           </div>
-          <div className=' flex flex-col mt-5 p-1 rounded-lg'>
-            {userProjects && userProjects.length < 1 ? 
-            <h1>Create Your first Project</h1> : 
-            userProjects.map((project: any , index : number) => {
-             return <ProjectCardComponent project = {project}/>
-            })}
-          </div>
+          <ScrollArea w={'100%'}>
+              <AllProjectsSection/>
+          </ScrollArea>
+          
      </section>
+     </ProjectProvider>
      )
      }
     </Transition>

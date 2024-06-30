@@ -29,10 +29,13 @@ const ProjectProvider = (
     const [userProjects , setUserProjects] = useState<any[]>(user.data.projects)
     console.log("🚀 ~ userProjects:", userProjects)
     
+
+    //you can use useMemo here on the value to optimize the rerendering
     const value = {
         userProjects,
-        setUserProjects
+        setUserProjects,
     }
+
     return(
 
         <ProjectContext.Provider value={value}>

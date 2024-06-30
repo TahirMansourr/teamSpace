@@ -3,11 +3,9 @@ import { Text, Paper } from '@mantine/core';
 
 const ProjectCardComponent = ({project} : any) => {
   return (
-    <main className='flex items-start gap-5 '>
-      <section className=' scale-105 bg-white opacity-100 shadow-md rounded-md p-3 w-fit border transition-all hover:scale-110 duration-200 flex flex-col min-h-[20rem] min-w-[20rem]'>
-         <header>
-         <Text size='xl' fw={700} ta={'center'} className='font-bold mb-4'>{project.name}</Text>
-         </header>
+    <main className='flex items-start gap-5 transition-all ease-in-out duration-200 '>
+      <section className=' scale-105 bg-white opacity-100 shadow-md rounded-md p-3 w-fit border transition-all hover:scale-110
+       duration-200 flex flex-col min-h-[15rem] min-w-[15rem] '>
          <figure>
           Project image
          </figure>

@@ -20,10 +20,7 @@ export const SelectedItemInSideBarToRenderOnScreen = ({
 }) : React.ReactNode => {
     switch (selectedItemInSideBar) {
       case 'projects':
-         return (
-         <ProjectProvider user = {user}>
-            <ProjectsComponent  opened = {opened} setOpened = {setOpened}/>
-         </ProjectProvider>)
+         return <ProjectsComponent  opened = {opened} setOpened = {setOpened} user = {user}/>
       case 'messages':
         return <Messages opened = {opened} setOpened = {setOpened}/>
       case 'meetings':
