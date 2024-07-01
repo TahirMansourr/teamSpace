@@ -17,7 +17,9 @@ export async function GET(request : NextRequest){
             path : 'projects',
             model : Project
         })
-        return  NextResponse.json({data : user})
+        const returnedUser = user.toObject()
+        console.log("🚀 ~ GET ~ returnedUser:", returnedUser)
+        return  NextResponse.json({data : returnedUser})
     } catch (error : any) {
         throw new Error("here" , error);
         

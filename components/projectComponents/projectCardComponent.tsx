@@ -1,5 +1,6 @@
 import React from 'react'
 import { Text, Paper } from '@mantine/core';
+import Link from 'next/link';
 
 const ProjectCardComponent = ({project} : any) => {
   return (
@@ -15,6 +16,11 @@ const ProjectCardComponent = ({project} : any) => {
       </section>
       <section className='flex flex-col p-5  bg-slate-50 rounded-md w-full h-full'>
         <header><Text size='xl' fw={700}  className='font-bold mb-4'>{project.name}</Text></header>
+        <header>
+          <Link href={`project/${project._id}/another`}>
+          <Text size='xl' fw={700}  className='font-bold mb-4'>Visit {project.name}</Text>
+          </Link>
+          </header>
         <header><Text size='xl' fw={700}  className='font-bold mb-4'>Description:</Text></header>
         <p><Text>{project.content}</Text></p>
         <header><Text size='xl' fw={700}  className='font-bold mb-4'>Activity</Text></header>

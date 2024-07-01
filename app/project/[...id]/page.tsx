@@ -4,7 +4,8 @@ import SideBar from "@/components/ProjectPageComponents/sideBar";
 import { SelectedItemToRenderOnScreen } from "@/utils";
 import { useState } from "react";
 
-export default function WorkSpace() {
+export default function WorkSpace({params}:{params : string}) {
+    console.log("🚀 ~ WorkSpace ~ params:", params)
     const [selectedItemInSideBar , setSelectedItemInSideBar] = useState<string>('projects')
     const [opened , setOpened] = useState<boolean>(false)
   return (

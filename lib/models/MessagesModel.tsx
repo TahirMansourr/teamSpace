@@ -7,6 +7,10 @@ const messageSchema = new mongoose.Schema({
         ref : 'User'
     },
     createdAt : Date,
+    project :{
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'Project'
+    }
 })
 
 const Message = mongoose.models.Message || mongoose.model("Message", messageSchema)

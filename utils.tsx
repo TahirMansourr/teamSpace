@@ -47,7 +47,7 @@ export const SelectedItemToRenderOnScreen = ({
          return <Docs  opened = {opened} setOpened = {setOpened}/>
       case 'TeamSpace':
         return <MultiTabsComponent opened = {opened} setOpened = {setOpened}/>
-      default:
-        break;
+      default: 
+        return <MultiTabsComponent opened = {opened} setOpened = {setOpened}/>
     }
 }

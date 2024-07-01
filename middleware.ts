@@ -19,6 +19,7 @@ export default function middleware( request : NextRequest){
 export const config = {
     matcher: [
       '/',
+      '/myDashboard',
       '/dashboard',
       '/project/(.*)',
       '/signUp',

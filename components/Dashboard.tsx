@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import DashBoardSideBar from './dashBoardSideBar'
 import { SelectedItemInSideBarToRenderOnScreen } from '@/utils'
 import axios from 'axios'
+import { GetUserInfo } from '@/app/Utils'
 
 const Dashboard = () => {
 
@@ -12,16 +13,11 @@ const Dashboard = () => {
   const [user , setUser] = useState<any>()
   
   useEffect(()=>{
-    const getUserInfo = async() => {
-     try {
-      const user = await axios.get('api/users/userInfo')
-      console.log("🚀 ~ getUserInfo ~ user:", user)
-      setUser(user.data)
-     } catch (error : any) {
-      console.log(error);
-     }
+    const getUserInfoAndSetState = async() => {
+    const user = await GetUserInfo()
+    setUser(user)
     }
-   getUserInfo()
+   getUserInfoAndSetState()
   },[])
   
   return (
