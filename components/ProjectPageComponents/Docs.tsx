@@ -14,6 +14,7 @@ const Docs = ({
         setOpened(true)
         return ()=>setOpened(false)
       })
+      
       return (
         <Transition
             mounted={opened}

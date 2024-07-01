@@ -16,11 +16,17 @@ app.prepare().then(() => {
   const io = new Server(httpServer);
 
   io.on("connection", (socket) => {
+    socket.on('hello' , (value) => {
+      console.log( ' iwasclicked' , value);
+      io.emit('message' , 'hey')
+    })
+  
     console.log('Your server is now connected')
   });
-  io.on("hello" , (value) => {
-    console.log(value , ' iwasclicked');
-  })
+  io.on("disconnect", (socket) => {
+    console.log('User disconnected')
+  });
+  
 
   httpServer
     .once("error", (err) => {

@@ -1,6 +1,5 @@
 'use client'
 import WorkSpaceProvider from "@/components/Contexts/WorkSpaceContext";
-import MainPage from "@/components/ProjectPageComponents/mainPage";
 import SideBar from "@/components/ProjectPageComponents/sideBar";
 import { SelectedItemToRenderOnScreen } from "@/utils";
 import { useState } from "react";
