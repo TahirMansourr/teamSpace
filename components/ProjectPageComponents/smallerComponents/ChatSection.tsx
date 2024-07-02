@@ -15,7 +15,7 @@ const ChatSection = () => {
         messages.map((message, index) => (
           <div
             key={index}
-            className={`chat-bubble shadow-md ${message.author === user ? 'bg-blue-500 text-white self-end sent' : 'bg-gray-200 text-gray-800 self-start received'}`}
+            className={`chat-bubble shadow-md whitespace-pre-line ${message.author === user ? 'bg-blue-500 text-white self-end sent' : 'bg-gray-200 text-gray-800 self-start received'}`}
           >
             {message.body}
           </div>

@@ -15,7 +15,7 @@ interface ProjectInitialProps{
 export async function CreateProject({name , content , image , admins} : ProjectInitialProps) {
     console.log("🚀 ~ CreateProject ~ admin:", admins)
     try {
-        connectToDB()
+        await connectToDB()
         const project = await Project.findOne({name})
         if(project) return ({status : 'Fail' , message : 'Project Name Already Exists'})
         const newProject = await Project.create({
@@ -25,6 +25,7 @@ export async function CreateProject({name , content , image , admins} : ProjectI
             admins
         })
         const response = newProject.toObject()
+        const newResponse = {...response , _id : response._id.toString()}
         console.log("🚀 ~ CreateProject ~ response:", response)
         newProject.save()
         const requiredAdmin = await User.findOne({_id : admins[0]})
@@ -32,7 +33,7 @@ export async function CreateProject({name , content , image , admins} : ProjectI
         await requiredAdmin.updateOne({ $push: { projects: newProject._id } })
         await requiredAdmin.save()
         console.log("🚀 ~ CreateProject ~ requiredAdmin:", requiredAdmin)
-        return ({status : 'success' , message : `Project ${name} created successfully` , project : response})
+        return ({status : 'success' , message : `Project ${name} created successfully` , project : JSON.parse(JSON.stringify(response))})
     } catch (error : any) {
        return({status : 'Fail' , message : error})
     }
@@ -41,7 +42,7 @@ export async function CreateProject({name , content , image , admins} : ProjectI
 
 export async function GetProjectByIdAndPopulate({id} : {id : string}){
     try {
-        connectToDB()
+        await connectToDB()
         const project = await Project.findOne({_id : id }).populate([
             {
             path : 'creator',
@@ -75,7 +76,7 @@ export async function GetProjectByIdAndPopulate({id} : {id : string}){
     ])
         if(!project) return ({status : 'Fail' , message : 'Sorry this Project does not exist anymore' , project : {}})
         const requiredProject = project.toObject()
-        return ({status : 'success' , message : 'Here is your Project' , project : requiredProject})
+        return ({status : 'success' , message : 'Here is your Project' , project :JSON.parse(JSON.stringify(requiredProject)) })
         
     } catch (error : any) {
         throw new Error(`error at getProjectByIdAndPopulate : ${error}`);
