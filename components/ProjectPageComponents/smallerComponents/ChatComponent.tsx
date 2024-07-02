@@ -8,9 +8,9 @@ import MessageForm from '@/components/Forms/messageForm'
 const ChatComponent = () => {
     const {trial } = useChatContext()
   return (
-    <div className='flex h-full relative w-full bg-slate-300'>
+    <div className='flex h-full relative w-ful'>
         
-        <ScrollArea h={600}>
+        <ScrollArea h={530} w={'100%'} >
            <ChatSection />
         </ScrollArea>
         

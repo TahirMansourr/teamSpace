@@ -1,0 +1,29 @@
+/* ChatSection.css */
+.chat-bubble {
+    position: relative;
+    max-width: 70%;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 5px;
+  }
+  
+  .sent::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: -10px;
+    border-width: 10px 10px 10px 0;
+    border-style: solid;
+    border-color: transparent transparent transparent #3B82F6; /* Match bubble background */
+  }
+  
+  .received::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: -10px;
+    border-width: 10px 0 10px 10px;
+    border-style: solid;
+    border-color: transparent #69799a transparent transparent; /* Match bubble background */
+  }
+  
