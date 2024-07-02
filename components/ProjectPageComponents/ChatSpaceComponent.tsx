@@ -5,7 +5,7 @@ import { useWorkSpaceContext } from '../Contexts/WorkSpaceContext'
 import ChatComponent from './smallerComponents/ChatComponent'
 import ChatProvider from '../Contexts/ChatContext'
 
-const ChatSpaceComponent = ({user} :{ user : any}) => {
+const ChatSpaceComponent = () => {
     const {chatComponentExpandState ,setChatComponentExpandState} = useWorkSpaceContext()
     return (
     <article  className={`transition-all ease-in-out duration-200 border flex flex-col  bg-white rounded-md shadow-xl p-2 ${chatComponentExpandState ? 'opacity-0 overflow-hidden' : 'opacity-100 min-w-[28rem] flex-grow h-full'}`}
@@ -22,7 +22,7 @@ const ChatSpaceComponent = ({user} :{ user : any}) => {
           >x</div>
          </header>
            <section className='flex-grow'>
-            <ChatProvider user = {user} >
+            <ChatProvider >
                  <ChatComponent />
             </ChatProvider>
              

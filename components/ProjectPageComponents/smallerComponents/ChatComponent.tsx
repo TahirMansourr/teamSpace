@@ -6,12 +6,12 @@ import { useChatContext } from '@/components/Contexts/ChatContext'
 import MessageForm from '@/components/Forms/messageForm'
 
 const ChatComponent = () => {
-    const {trial} = useChatContext()
+    const {trial } = useChatContext()
   return (
     <div className='flex h-full relative w-full bg-slate-300'>
         
         <ScrollArea h={600}>
-           <ChatSection/>
+           <ChatSection />
         </ScrollArea>
         
           <footer className=' absolute bottom-0  w-full bg-white mt-2' onClick={() => trial()}>

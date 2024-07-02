@@ -20,6 +20,10 @@ app.prepare().then(() => {
       console.log( ' iwasclicked' , value);
       io.emit('message' , 'hey')
     })
+    socket.on('Groupmessage' , (value) => {
+      console.log('recieved' , value);
+      io.emit('Groupmessage' , value)
+    })
   
     console.log('Your server is now connected')
   });

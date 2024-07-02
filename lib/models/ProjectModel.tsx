@@ -29,10 +29,10 @@ const ProjectSchema = new mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Issues'
     },
-    chatSpace : {
+    chatSpace : [{
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Message'
-    },
+    }],
     likes: Number,
     content : String,
     // meetings: String,

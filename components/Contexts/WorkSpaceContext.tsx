@@ -11,6 +11,8 @@ interface WorkSpaceContextDto{
     setTasksComponentExpandState : Dispatch<SetStateAction<boolean>>
     setIssuesComponentExpandState: Dispatch<SetStateAction<boolean>>
     setChatComponentExpandState: Dispatch<SetStateAction<boolean>>
+    projectInfo : any
+    userInfo : any
 }
 
 const WorkSpaceContext = createContext<WorkSpaceContextDto>({} as WorkSpaceContextDto)
@@ -20,16 +22,25 @@ export const useWorkSpaceContext = () => {
 };
 
 const WorkSpaceProvider = (
-    {children}
+    {
+        children,
+        projectInfo,
+        userInfo
+    }
     :
     {
         children : React.ReactNode
+        projectInfo : any
+        userInfo : any
     }
 )=>{
     const [ notesComponentExpandState , setNotesComponentExpandState] = useState<boolean>(false)
     const [ tasksComponentExpandState , setTasksComponentExpandState] = useState<boolean>(false)
     const [ issuesComponentExpandState , setIssuesComponentExpandState] = useState<boolean>(false)
     const [ chatComponentExpandState , setChatComponentExpandState] = useState<boolean>(false)
+    const [project  ,setProject] = useState<any>(projectInfo)
+    const [user , setUser] = useState<any>(userInfo)
+    console.log("🚀 ~ user:", user)
    
 
    
@@ -45,7 +56,9 @@ const WorkSpaceProvider = (
                 issuesComponentExpandState ,
                 setIssuesComponentExpandState,
                 chatComponentExpandState ,
-                setChatComponentExpandState
+                setChatComponentExpandState,
+                projectInfo : project,
+                userInfo : user
             }}
             >
             {children}

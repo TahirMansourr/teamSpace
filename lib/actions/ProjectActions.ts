@@ -3,6 +3,7 @@
 import Project from "../models/ProjectModel"
 import { connectToDB } from "../mongoose"
 import User from "../models/UserModel"
+import Message from "../models/MessagesModel"
 
 interface ProjectInitialProps{
     name : string,
@@ -36,4 +37,48 @@ export async function CreateProject({name , content , image , admins} : ProjectI
        return({status : 'Fail' , message : error})
     }
         
+}
+
+export async function GetProjectByIdAndPopulate({id} : {id : string}){
+    try {
+        connectToDB()
+        const project = await Project.findOne({_id : id }).populate([
+            {
+            path : 'creator',
+            model : User
+            },
+            {
+                path :'admins',
+                model : User
+            },
+            {
+                path :'team',
+                model : User
+            }, 
+            {
+                path :'chatSpace',
+                model : Message
+            }
+            // {
+            //     path :'notes',
+            //     model : Note
+            // },
+            // {
+            //     path :'issues',
+            //     model : Issues
+            // },
+            // {
+            //     path :'Tasks',
+            //     model : Tasks
+            // },
+           
+    ])
+        if(!project) return ({status : 'Fail' , message : 'Sorry this Project does not exist anymore' , project : {}})
+        const requiredProject = project.toObject()
+        return ({status : 'success' , message : 'Here is your Project' , project : requiredProject})
+        
+    } catch (error : any) {
+        throw new Error(`error at getProjectByIdAndPopulate : ${error}`);
+        
+    }
 }
