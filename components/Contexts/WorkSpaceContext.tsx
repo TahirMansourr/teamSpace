@@ -41,7 +41,8 @@ const WorkSpaceProvider = (
     const [project  ,setProject] = useState<any>(projectInfo)
     const [user , setUser] = useState<any>(userInfo)
     console.log("🚀 ~ user:", user)
-   
+    console.log('workSpace Context Rerendered');
+    
 
    
 

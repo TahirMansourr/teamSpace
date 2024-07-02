@@ -27,10 +27,13 @@ const ChatProvider = ({children } : {children : React.ReactNode })=>{
    
 
     useEffect(() => {
+      console.log('Chat Context Rerendered');
+      
       if (didMountRef.current) {
         return;
     }
     didMountRef.current = true;
+    console.log('Chat Context Rerendered');
         if (socket.connected) {
           onConnect();
         }

@@ -5,6 +5,9 @@ import Notification from "./components/notifications"
 import { Dispatch, SetStateAction } from "react"
 import Docs from "./components/ProjectPageComponents/Docs"
 import MultiTabsComponent from "./components/ProjectPageComponents/MultiTabsComponent"
+import NotesPageComponent from "./components/ProjectPageComponents/NotesPageComponent"
+import IssuesPageComponent from "./components/ProjectPageComponents/IssuesPageComponent"
+import TasksPageComponent from "./components/ProjectPageComponents/TasksPageComponent"
 
 export const SelectedItemInSideBarToRenderOnScreen = ({
   selectedItemInSideBar,
@@ -47,7 +50,14 @@ export const SelectedItemToRenderOnScreen = ({
          return <Docs  opened = {opened} setOpened = {setOpened}/>
       case 'TeamSpace':
         return <MultiTabsComponent opened = {opened} setOpened = {setOpened}/>
+      case 'NotesPage':
+        return <NotesPageComponent opened = {opened} setOpened = {setOpened}/>
+      case 'IssuesPage':
+        return <IssuesPageComponent opened = {opened} setOpened = {setOpened}/>
+      case 'TasksPage':
+        return <TasksPageComponent opened = {opened} setOpened = {setOpened}/>
       default: 
         return <MultiTabsComponent opened = {opened} setOpened = {setOpened}/>
     }
 }
+//'NotesPage' , 'IssuesPage' , 'TasksPage'

@@ -14,7 +14,7 @@ function SideBar({
     }) {
 
   const [opened, { toggle }] = useDisclosure();
-  const dataForSideBar = ['Docs' , 'TeamSpace']
+  const dataForSideBar = ['Docs' , 'TeamSpace' , 'NotesPage' , 'IssuesPage' , 'TasksPage']
   
   return (
     <div className='relative '>
