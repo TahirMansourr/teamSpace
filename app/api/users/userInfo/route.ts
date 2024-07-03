@@ -15,7 +15,14 @@ export async function GET(request : NextRequest){
         select('-password')
         .populate({
             path : 'projects',
-            model : Project
+            model : Project,
+            populate : [
+                {
+                    path : "team",
+                    model : User,
+                    select : '-password'
+                }
+            ]
         })
         const returnedUser = user.toObject()
         console.log("🚀 ~ GET ~ returnedUser:", returnedUser)

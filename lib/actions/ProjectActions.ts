@@ -9,10 +9,11 @@ interface ProjectInitialProps{
     name : string,
     content : string,
     image? : string,
-    admins : string[]
+    admins : string[],
+    team : string[]
 }
 
-export async function CreateProject({name , content , image , admins} : ProjectInitialProps) {
+export async function CreateProject({name , content , image , admins , team} : ProjectInitialProps) {
     console.log("🚀 ~ CreateProject ~ admin:", admins)
     try {
         await connectToDB()
@@ -22,7 +23,8 @@ export async function CreateProject({name , content , image , admins} : ProjectI
             name, 
             content,
             image,
-            admins
+            admins,
+            team 
         })
         const response = newProject.toObject()
         const newResponse = {...response , _id : response._id.toString()}
@@ -59,7 +61,7 @@ export async function GetProjectByIdAndPopulate({id} : {id : string}){
             {
                 path :'chatSpace',
                 model : Message
-            }
+            },
             // {
             //     path :'notes',
             //     model : Note
