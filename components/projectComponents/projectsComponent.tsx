@@ -1,10 +1,9 @@
 'use client'
 import { Button, Modal, ScrollArea, Transition } from '@mantine/core'
 import React, { useEffect } from 'react'
-import ProjectCardComponent from './projectCardComponent'
 import { useDisclosure } from '@mantine/hooks'
 import CreateProjectForm from '../Forms/createProjectForm'
-import ProjectProvider, { useProjectContext } from '../Contexts/ProjectContext'
+import ProjectProvider from '../Contexts/ProjectContext'
 import AllProjectsSection from './AllProjectsSection'
 
 const ProjectsComponent = (

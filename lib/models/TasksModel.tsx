@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const Task = new mongoose.Schema({
+const taskSchema = new mongoose.Schema({
     name : String,
     description : String,
     status : String,
@@ -32,6 +32,9 @@ const Task = new mongoose.Schema({
         ref : 'Task'
     }]
 })
+
+const Task = mongoose.models.Task || mongoose.model('Task' , taskSchema)
+export default Task;
 
 // Task ID: Unique identifier for each task.
 // Title: Short, descriptive name of the task.

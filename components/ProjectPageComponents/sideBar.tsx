@@ -18,7 +18,7 @@ function SideBar({
   
   return (
     <div className='relative '>
-        <Burger size="sm" c={'green'} opened={opened} onClick={toggle} aria-label="Toggle navigation" className={`  ${opened ? 'mt-2' : 'absolute m-2' } top-3 left-3`} />
+        <Burger size="sm" c={'green'} opened={opened} onClick={()=>toggle()} aria-label="Toggle navigation" className={`  ${opened ? 'mt-2' : 'absolute m-2' } top-3 left-3 hover:cursor-pointer z-50`} />
         <section
             className={`transform transition-all duration-150 ${
                 opened

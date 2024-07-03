@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request : NextRequest){
     try {
-        connectToDB()
+        await connectToDB()
         const userInfo = await GetDataFromToken(request)
         const tostr = JSON.stringify(userInfo)
         const toObj = JSON.parse(tostr)
