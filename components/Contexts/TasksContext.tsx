@@ -11,6 +11,7 @@ type formValuesType = {
 }
 type TaskContextDto = {
     useHandleCreateTask : () => [boolean , (values : formValuesType)=>Promise<void>]
+    projectInfo : any
 }
 const TaskContext = createContext<TaskContextDto>({} as TaskContextDto)
 export const useTaskContext = () => {
@@ -19,17 +20,22 @@ export const useTaskContext = () => {
 
 const TaskProvider = ({children , user , project} : {children : React.ReactNode , user : any , project : any}) => {
     const [userInfo , setUserInfo] = useState(user)
-    const [projectInfo , setProjectInfo] = useState(project)
-    const [allTasks , setAllTasks] = useState<any[]>()
+    const [projectInfo , setProjectInfo] = useState(project.project)
+    console.log("🚀 ~ TaskProvider ~ projectInfo:", projectInfo)
+    const [allTasks , setAllTasks] = useState<any[]>([])
 
-    const useHandleCreateTask = (): [boolean, (values: any) => Promise<void>] => {
+    const useHandleCreateTask = (): [boolean, (values: formValuesType) => Promise<void>] => {
         const [formLoading , setFormLoading] = useState<boolean>(false)
         async function handleCreateTask( values : formValuesType){
             setFormLoading(true)
+            const assignedToMembersIds = values.assignedTo.map((name) =>{
+                const assignedToMember = projectInfo.team.find( (member : any) => name === member.username)
+                return assignedToMember._id
+            })
             try {
                 CreateTask({
                     name : values.name,
-                    assignedTo : values.assignedTo,
+                    assignedTo : assignedToMembersIds,
                     description : values.description,
                     dueDate : values.dueDate,
                     priority : values.priority,
@@ -48,7 +54,8 @@ const TaskProvider = ({children , user , project} : {children : React.ReactNode 
         return [formLoading , handleCreateTask]
     }
     const value = {
-        useHandleCreateTask
+        useHandleCreateTask,
+        projectInfo
         }
     return(
         <TaskContext.Provider value={value}>

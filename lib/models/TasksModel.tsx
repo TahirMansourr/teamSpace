@@ -8,7 +8,10 @@ const taskSchema = new mongoose.Schema({
     dueDate : Date,
     creationDate : Date,
     lastModified : Date,
-    project : String,
+    project :{
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'Project'
+    },
     assignedTo : [{
         type : mongoose.Schema.Types.ObjectId,
         ref : 'User'

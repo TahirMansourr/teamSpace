@@ -16,9 +16,13 @@ export async function POST(request: NextRequest) {
     
     const { username, email, password } = reqBody;
 
-    const user = await User.findOne({ email });
-    if (user) {
-      return NextResponse.json({ error: 'User already exists' }, { status: 400 });
+    const userEmail = await User.findOne({ email });
+    const userUsername = await User.findOne({ username });
+    if (userEmail) {
+      return NextResponse.json({ error: 'Email already exists' }, { status: 400 });
+    }
+    if (userUsername) {
+      return NextResponse.json({ error: 'Username already exists' }, { status: 400 });
     }
 
     

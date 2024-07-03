@@ -26,7 +26,7 @@ const CreateTaskForm = () => {
         }
     })
 
-    const {useHandleCreateTask } = useTaskContext()
+    const {useHandleCreateTask , projectInfo } = useTaskContext()
     const [formLoading , handleCreateTask] = useHandleCreateTask()
   return (
     <form onSubmit={form.onSubmit((values) => handleCreateTask(values))}>
@@ -52,7 +52,7 @@ const CreateTaskForm = () => {
                 />
             <MultiSelect
                 label="Assign Task To"
-                data={['Eltahir', 'Mahmoud', 'Hamdi', 'Wais']}
+                data={projectInfo.team.map((member : any) =>{return member.username})}
                 key={form.key('assignedTo')}
                 {...form.getInputProps('assignedTo')}
                 />

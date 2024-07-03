@@ -27,7 +27,6 @@ export async function CreateProject({name , content , image , admins , team} : P
             team 
         })
         const response = newProject.toObject()
-        const newResponse = {...response , _id : response._id.toString()}
         console.log("🚀 ~ CreateProject ~ response:", response)
         newProject.save()
         const requiredAdmin = await User.findOne({_id : admins[0]})
