@@ -14,7 +14,7 @@ const AllTasksPage = () => {
          <Modal 
           opened={modalOpened} 
           onClose={closeModal} 
-          title="Create New Project"
+          title="Create New Task"
           withCloseButton = {false}
           overlayProps={{
             backgroundOpacity: 0.2,
