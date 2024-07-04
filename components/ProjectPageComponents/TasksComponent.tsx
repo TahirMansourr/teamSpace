@@ -22,11 +22,11 @@ const TasksComponent = () => {
         
          <header className=' flex justify-between items-center'> 
           <Text size="xl" fw={600}>Tasks:</Text>
+          <section className=' flex items-center gap-3'>
           <div>
           <HoverCard width={280} shadow="md" withArrow>
             <HoverCard.Target>
-               
-                 <MdPlaylistAdd size={16} onClick={open}/>
+                 <MdPlaylistAdd size={25} color='blue' className=' hover:cursor-pointer' onClick={open}/>
             </HoverCard.Target>
             <HoverCard.Dropdown>
             <Text size="sm">
@@ -39,6 +39,8 @@ const TasksComponent = () => {
           className='hover:cursor-pointer'
           onClick={()=>setTasksComponentExpandState(true)}
           >x</div>
+          </section>
+          
          </header>
          <section className=' flex w-full'>
             <TaskProvider project={projectInfo} user={userInfo}>
@@ -46,7 +48,6 @@ const TasksComponent = () => {
                 <ScrollArea h={600} w={'100%'}>
                      <TeamSpaceTask/>
                 </ScrollArea>
-               
             </TaskProvider>
          </section>
         </article>

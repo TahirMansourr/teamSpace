@@ -1,10 +1,11 @@
 'use client'
 
+import { ProjectDto, UserDto } from "@/Utils/types"
 import { createContext, Dispatch, SetStateAction, useContext, useState } from "react"
 
 interface ProjectContextDto{
-    userProjects : any[],
-    setUserProjects : Dispatch<SetStateAction<any>>
+    userProjects : ProjectDto[],
+    setUserProjects : Dispatch<SetStateAction<ProjectDto[]>>
 }
 
 const ProjectContext = createContext<ProjectContextDto>({} as ProjectContextDto)
@@ -20,13 +21,13 @@ const ProjectProvider = (
     :
     { 
      children : React.ReactNode,
-     user : any
+     user : { data : UserDto}
 
     }
 )=>{
 
     
-    const [userProjects , setUserProjects] = useState<any[]>(user.data.projects)
+    const [userProjects , setUserProjects] = useState<ProjectDto[]>(user.data.projects)
     console.log("🚀 ~ userProjects:", userProjects)
     
 

@@ -2,6 +2,7 @@
 import { CreateTask } from "@/lib/actions/TaskActions";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { socket } from "@/socket";
+import { ProjectDto, TaskDto, UserDto } from "@/Utils/types";
 
 type formValuesType = {
     name : string,
@@ -22,9 +23,13 @@ export const useTaskContext = () => {
     return useContext(TaskContext)
 }
 
-const TaskProvider = ({children , user , project} : {children : React.ReactNode , user : any , project : any}) => {
-    const [userInfo , setUserInfo] = useState(user)
-    const [projectInfo , setProjectInfo] = useState(project.project)
+const TaskProvider = ({
+    children , user , project
+} : {
+    children : React.ReactNode , user : UserDto , project : {status : string , message : string , project :ProjectDto}
+}) => {
+    const [userInfo , setUserInfo] = useState<UserDto>(user)
+    const [projectInfo , setProjectInfo] = useState<ProjectDto>(project.project)
     console.log("🚀 ~ TaskProvider ~ projectInfo:", projectInfo)
     const [allTasks , setAllTasks] = useState<any[]>(project.project.Tasks ? project.project.Tasks : [] )
     console.log("🚀 ~ TaskProvider ~ allTasks:", allTasks)
@@ -35,8 +40,8 @@ const TaskProvider = ({children , user , project} : {children : React.ReactNode 
             console.log("🚀 ~ handleCreateTask ~ values:", values)
             setFormLoading(true)
             const assignedToMembersIds = values.assignedTo.map((name) =>{
-                const assignedToMember = projectInfo.team.find( (member : any) => name === member.username)
-                return assignedToMember._id
+                const assignedToMember = projectInfo.team.find( (member : UserDto) => name === member.username)
+                return assignedToMember?._id as string
             })
             try {
                 CreateTask({
@@ -71,8 +76,8 @@ const TaskProvider = ({children , user , project} : {children : React.ReactNode 
     }
 
     useEffect(()=>{
-        socket.on('createTask' , (task : any) => {
-            setAllTasks((prev : any) => [task , ...prev  ])
+        socket.on('createTask' , (task : TaskDto) => {
+            setAllTasks((prev : TaskDto[]) => [task , ...prev  ])
         })
     } ,[])
     const value = {

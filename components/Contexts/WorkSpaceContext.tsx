@@ -1,6 +1,14 @@
 'use client'
 import { socket } from "@/socket";
+import { ProjectDto, UserDto } from "@/Utils/types";
 import React, { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
+
+type projectInfoResponse = {
+    status : string,
+    project : ProjectDto,
+    message : string
+}
+
 
 interface WorkSpaceContextDto{
     notesComponentExpandState : boolean
@@ -11,8 +19,8 @@ interface WorkSpaceContextDto{
     setTasksComponentExpandState : Dispatch<SetStateAction<boolean>>
     setIssuesComponentExpandState: Dispatch<SetStateAction<boolean>>
     setChatComponentExpandState: Dispatch<SetStateAction<boolean>>
-    projectInfo : any
-    userInfo : any
+    projectInfo : projectInfoResponse
+    userInfo : UserDto
 }
 
 const WorkSpaceContext = createContext<WorkSpaceContextDto>({} as WorkSpaceContextDto)
@@ -30,16 +38,16 @@ const WorkSpaceProvider = (
     :
     {
         children : React.ReactNode
-        projectInfo : any
-        userInfo : any
+        projectInfo : projectInfoResponse
+        userInfo : UserDto
     }
 )=>{
     const [ notesComponentExpandState , setNotesComponentExpandState] = useState<boolean>(false)
     const [ tasksComponentExpandState , setTasksComponentExpandState] = useState<boolean>(false)
     const [ issuesComponentExpandState , setIssuesComponentExpandState] = useState<boolean>(false)
     const [ chatComponentExpandState , setChatComponentExpandState] = useState<boolean>(false)
-    const [project  ,setProject] = useState<any>(projectInfo)
-    const [user , setUser] = useState<any>(userInfo)
+    const [project  ,setProject] = useState<projectInfoResponse>(projectInfo)
+    const [user , setUser] = useState<UserDto>(userInfo)
     console.log("🚀 ~ user:", user)
     console.log('workSpace Context Rerendered');
     

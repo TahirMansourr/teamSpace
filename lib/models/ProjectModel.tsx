@@ -36,7 +36,7 @@ const ProjectSchema = new mongoose.Schema({
     likes: Number,
     content : String,
     // meetings: String,
-    messages : String,
+    // messages : String,
     activity : Number
 
 })
