@@ -33,9 +33,9 @@ const TasksPageComponent = ({
               <div className='  flex flex-col h-full w-full  gap-2 rounded-xl   items-center p-3' style={styles}>
                 <section className='w-full h-full'>
                   <TaskProvider 
-                      user = {userInfo}
-                      project = {projectInfo}
-                      >
+                    user = {userInfo}
+                    project = {projectInfo}
+                    >
                       <AllTasksPage/>
                   </TaskProvider>
                 </section>

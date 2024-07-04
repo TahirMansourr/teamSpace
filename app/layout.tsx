@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
+import '@mantine/notifications/styles.css';
 import { Notifications } from '@mantine/notifications';
 
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
@@ -26,7 +27,7 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <MantineProvider>
-          <Notifications  position="top-right" />
+          <Notifications position="top-right" zIndex={1} />
            {children}
         </MantineProvider>
       </body>

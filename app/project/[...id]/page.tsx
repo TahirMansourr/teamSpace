@@ -7,13 +7,12 @@ import { SelectedItemToRenderOnScreen } from "@/utils";
 import { useEffect, useState } from "react";
 
 export default function WorkSpace({params}:{params : {id : string[]}}) {
-    console.log("🚀 ~ WorkSpace ~ params:", params)
+    // console.log("🚀 ~ WorkSpace ~ params:", params)
     const [selectedItemInSideBar , setSelectedItemInSideBar] = useState<string>('projects')
     const [opened , setOpened] = useState<boolean>(false)
     const [projectInfo , setProjectInfo] = useState<any>()
     const [user , setUser] = useState<any>()
 
-    //consider getting the userInfo here in this page so as to getIt only one time
     useEffect(()=>{
      async function getProjectInfo(){
         const project = await GetProjectByIdAndPopulate({id : params.id[0]})
@@ -43,7 +42,7 @@ export default function WorkSpace({params}:{params : {id : string[]}}) {
               setOpened = {setOpened}
               opened = {opened}
               />
-           </WorkSpaceProvider>
+        </WorkSpaceProvider>
       }
    </main>
   );

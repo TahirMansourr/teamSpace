@@ -41,3 +41,27 @@ export async function CreateTask(params : createTaskFormDto) {
         
     }
 }
+
+export async function UpdateTask(params : createTaskFormDto & {_id : string}){
+    try {
+        await connectToDB()
+        const requiredTask = await Task.findOneAndUpdate({_id : params._id} , {$set :{
+            name : params.name,
+            description : params.description,
+            priority : params.priority,
+            dueDate : params.dueDate,
+            assignedTo : params.assignedTo,
+            createdAt : new Date(),
+            project : params.projectId,
+            createdBy : params.userId,
+            tags : params.tags,
+            status : params.status
+        }})
+
+        await requiredTask.save()
+        const requiredTasktoObj = requiredTask.toObject()
+        return ({status : 'success' , task :  JSON.parse(JSON.stringify(requiredTasktoObj))})
+    } catch (error : any) {
+        throw new Error(`Error at updateTask : ${error}`);
+    }
+}

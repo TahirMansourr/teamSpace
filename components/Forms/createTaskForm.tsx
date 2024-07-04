@@ -16,23 +16,26 @@ type createTaskFormDto = {
     status : 'To Do' | 'In Progress' | "Done" | 'Review'
 }
 
-const CreateTaskForm = ({close} : {close : Function}) => {
+const CreateTaskForm = ({close , updateFormInput} : {close : Function , updateFormInput? : createTaskFormDto}) => {
+   
     const form = useForm<createTaskFormDto>({
         mode : 'uncontrolled',
         initialValues : {
-            name : '',
-            description : '',
-            priority : 'HIGH',
-            dueDate : new Date,
-            assignedTo : [],
-            tags : [],
-            status : 'To Do' 
+            name : updateFormInput? updateFormInput.name :'',
+            description : updateFormInput ? updateFormInput.description : '',
+            priority : updateFormInput ? updateFormInput.priority :'HIGH',
+            dueDate : updateFormInput? updateFormInput.dueDate : new Date,
+            assignedTo :updateFormInput? updateFormInput.assignedTo : [],
+            tags : updateFormInput? updateFormInput.tags :[],
+            status : updateFormInput ? updateFormInput.status :'To Do' 
+
         }
     })
 
     const {useHandleCreateTask , projectInfo } = useTaskContext()
     const [formLoading , handleCreateTask] = useHandleCreateTask()
     const [open , setOpen] = useState<boolean>(false)
+
   return (
     <form onSubmit={form.onSubmit((values) => handleCreateTask(values , close))}>
         <div>
@@ -69,17 +72,15 @@ const CreateTaskForm = ({close} : {close : Function}) => {
                 {...form.getInputProps('dueDate')}
                 className={`${open?  'mt-10' : null }`}
                 />
-                <MultiSelect
-                    label="Assign Task To"
-                    data={projectInfo.team.map((member : any) =>{return member.username})}
-                    key={form.key('assignedTo')}
-                    {...form.getInputProps('assignedTo')}
-                    onFocus={() => setOpen(!open)}
-                    />
+            <MultiSelect
+                label="Assign Task To"
+                data={projectInfo.team.map((member : any) =>{return member.username})}
+                key={form.key('assignedTo')}
+                {...form.getInputProps('assignedTo')}
+                />
                 <div className="  w-full mt-5  ">
-                <Button type='submit' className=' w-full' w={'100%'}>Create Task</Button>
-                </div>
-            
+                   <Button type='submit' className=' w-full' w={'100%'}>Create Task</Button>
+                </div>          
         </div>
     </form>
   )

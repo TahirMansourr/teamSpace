@@ -1,4 +1,3 @@
-'use client'
 import CreateTaskForm from '@/components/Forms/createTaskForm'
 import { Modal } from '@mantine/core'
 import React from 'react'

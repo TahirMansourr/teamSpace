@@ -1,5 +1,5 @@
 'use client'
-import { HoverCard, ScrollArea, Text } from '@mantine/core'
+import { HoverCard, ScrollArea, Text, Tooltip } from '@mantine/core'
 import React from 'react'
 import { useWorkSpaceContext } from '../Contexts/WorkSpaceContext'
 import TaskProvider from '../Contexts/TasksContext'
@@ -24,16 +24,9 @@ const TasksComponent = () => {
           <Text size="xl" fw={600}>Tasks:</Text>
           <section className=' flex items-center gap-3'>
           <div>
-          <HoverCard width={280} shadow="md" withArrow>
-            <HoverCard.Target>
-                 <MdPlaylistAdd size={25} color='blue' className=' hover:cursor-pointer' onClick={open}/>
-            </HoverCard.Target>
-            <HoverCard.Dropdown>
-            <Text size="sm">
-                Create a new Task
-            </Text>
-            </HoverCard.Dropdown>
-          </HoverCard>
+              <Tooltip label = 'Create a new Task' color='blue'>
+                  <MdPlaylistAdd size={25} color='blue' className=' hover:cursor-pointer' onClick={open}/>
+              </Tooltip>
           </div>
           <div 
           className='hover:cursor-pointer'

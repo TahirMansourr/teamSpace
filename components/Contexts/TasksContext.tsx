@@ -26,16 +26,21 @@ export const useTaskContext = () => {
 const TaskProvider = ({
     children , user , project
 } : {
-    children : React.ReactNode , user : UserDto , project : {status : string , message : string , project :ProjectDto}
+    children : React.ReactNode ,
+    user : UserDto ,
+    project : {
+        status : string ,
+        message : string , 
+        project :ProjectDto
+    }
 }) => {
     const [userInfo , setUserInfo] = useState<UserDto>(user)
     const [projectInfo , setProjectInfo] = useState<ProjectDto>(project.project)
-    console.log("🚀 ~ TaskProvider ~ projectInfo:", projectInfo)
     const [allTasks , setAllTasks] = useState<any[]>(project.project.Tasks ? project.project.Tasks : [] )
-    console.log("🚀 ~ TaskProvider ~ allTasks:", allTasks)
 
     const useHandleCreateTask = (): [boolean, (values: formValuesType , close : Function) => Promise<void>] => {
-        const [formLoading , setFormLoading] = useState<boolean>(false)
+        
+        const [formLoading , setFormLoading] = useState<boolean>(false) 
         async function handleCreateTask( values : formValuesType ,close : Function){
             console.log("🚀 ~ handleCreateTask ~ values:", values)
             setFormLoading(true)
@@ -54,17 +59,14 @@ const TaskProvider = ({
                     projectId : projectInfo._id,
                     tags : values.tags,
                     status : values.status
-
                 }).then((res) => {
                     const newTask = {
                       ...values , 
                       _id : res.task._id
                     }
                     socket.emit('createTask' , newTask)
-                    console.log('sent task' , newTask);
-                    
+                    console.log('sent task' , newTask); 
                 })
-              
             } catch (error) {
                 throw new Error(`error at handleCreateTask : ${error}`);
             }finally{
@@ -80,6 +82,7 @@ const TaskProvider = ({
             setAllTasks((prev : TaskDto[]) => [task , ...prev  ])
         })
     } ,[])
+
     const value = {
         useHandleCreateTask,
         projectInfo,
