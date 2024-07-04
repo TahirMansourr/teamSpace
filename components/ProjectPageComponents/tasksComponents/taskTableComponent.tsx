@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import { RiExpandUpDownLine } from "react-icons/ri";
-import { Badge, Table, Text } from '@mantine/core';
+import { Badge, ScrollArea, Table, Text } from '@mantine/core';
 import { useTaskContext } from '@/components/Contexts/TasksContext';
 
 const TaskTableComponent = () => {
@@ -9,7 +9,8 @@ const TaskTableComponent = () => {
   return (
     <section className=' p-3 border rounded-md shadow-md m-3'>
            { allTasks? 
-            <Table highlightOnHover withRowBorders ={true}>
+            // <ScrollArea >
+                <Table highlightOnHover stickyHeader stickyHeaderOffset={0}>
                 <Table.Thead>
                     <Table.Tr>
                         <Table.Th>
@@ -102,6 +103,8 @@ const TaskTableComponent = () => {
                 }
                 
             </Table> 
+            // </ScrollArea>
+            
             : null
             }
         </section>

@@ -7,24 +7,14 @@ import { Table } from '@mantine/core';
 import CreateTaskForm from '@/components/Forms/createTaskForm';
 import { useTaskContext } from '@/components/Contexts/TasksContext';
 import TaskTableComponent from './taskTableComponent';
+import CreateTaskModal from './CreateTaskModal';
 
 
 const AllTasksPage = () => {
     const [modalOpened , {open , close : closeModal}] = useDisclosure(false)
   return (
     <main className=' flex flex-col w-full h-full border shadow-xl rounded-md'>
-         <Modal 
-          opened={modalOpened} 
-          onClose={closeModal} 
-          title="Create New Task"
-          withCloseButton = {false}
-          overlayProps={{
-            backgroundOpacity: 0.2,
-            blur: 4,
-          }}
-          >
-          <CreateTaskForm close = {closeModal}/>
-        </Modal>
+       <CreateTaskModal modalOpened = {modalOpened}  closeModal={closeModal}/>
         <section className='flex justify-between items-center m-2 '>
             <div></div>
           <div>
