@@ -21,10 +21,10 @@ const ProjectSchema = new mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Note'
     },
-    Tasks : {
+    Tasks : [{
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Task'
-    },
+    }],
     issues : {
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Issues'

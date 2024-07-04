@@ -7,11 +7,14 @@ type formValuesType = {
     description : string,
     priority : 'HIGH' | 'MEDIUM' | 'LOW',
     dueDate : Date,
-    assignedTo : string[]
+    assignedTo : string[],
+    tags : string[],
+    status : 'To Do' | 'In Progress' | "Done" | 'Review'
 }
 type TaskContextDto = {
     useHandleCreateTask : () => [boolean , (values : formValuesType)=>Promise<void>]
-    projectInfo : any
+    projectInfo : any,
+    allTasks : any[]
 }
 const TaskContext = createContext<TaskContextDto>({} as TaskContextDto)
 export const useTaskContext = () => {
@@ -22,7 +25,8 @@ const TaskProvider = ({children , user , project} : {children : React.ReactNode 
     const [userInfo , setUserInfo] = useState(user)
     const [projectInfo , setProjectInfo] = useState(project.project)
     console.log("🚀 ~ TaskProvider ~ projectInfo:", projectInfo)
-    const [allTasks , setAllTasks] = useState<any[]>([])
+    const [allTasks , setAllTasks] = useState<any[]>(project.project.Tasks ? project.project.Tasks : [] )
+    console.log("🚀 ~ TaskProvider ~ allTasks:", allTasks)
 
     const useHandleCreateTask = (): [boolean, (values: formValuesType) => Promise<void>] => {
         const [formLoading , setFormLoading] = useState<boolean>(false)
@@ -40,7 +44,10 @@ const TaskProvider = ({children , user , project} : {children : React.ReactNode 
                     dueDate : values.dueDate,
                     priority : values.priority,
                     userId : userInfo._id,
-                    projectId : projectInfo._id
+                    projectId : projectInfo._id,
+                    tags : values.tags,
+                    status : values.status
+
                 }).then((res) => {
                     setAllTasks((prev : any) => [...prev , res.task ])
                 })
@@ -55,7 +62,8 @@ const TaskProvider = ({children , user , project} : {children : React.ReactNode 
     }
     const value = {
         useHandleCreateTask,
-        projectInfo
+        projectInfo,
+        allTasks
         }
     return(
         <TaskContext.Provider value={value}>

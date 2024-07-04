@@ -1,5 +1,6 @@
 'use server'
 
+import Project from "../models/ProjectModel"
 import Task from "../models/TasksModel"
 import { connectToDB } from "../mongoose"
 type createTaskFormDto = {
@@ -9,7 +10,9 @@ type createTaskFormDto = {
     dueDate : Date,
     assignedTo : string[],
     userId : string,
-    projectId : string
+    projectId : string,
+    tags : string[],
+    status : 'To Do' | 'In Progress' | "Done" | 'Review'
 }
 export async function CreateTask(params : createTaskFormDto) {
     try {
@@ -23,9 +26,12 @@ export async function CreateTask(params : createTaskFormDto) {
             assignedTo : params.assignedTo,
             createdAt : new Date(),
             project : params.projectId,
-            createdBy : params.userId
+            createdBy : params.userId,
+            tags : params.tags,
+            status : params.status
         })
         await newTask.save()
+        await Project.findOneAndUpdate({_id : params.projectId} , {$push : { Tasks : newTask._id}})
         const objResponse = newTask.toObject()
         const response = JSON.parse(JSON.stringify(objResponse))
         return ({status : 'success' , task : response})

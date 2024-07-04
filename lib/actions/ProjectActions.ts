@@ -4,6 +4,7 @@ import Project from "../models/ProjectModel"
 import { connectToDB } from "../mongoose"
 import User from "../models/UserModel"
 import Message from "../models/MessagesModel"
+import Task from "../models/TasksModel"
 
 interface ProjectInitialProps{
     name : string,
@@ -61,6 +62,20 @@ export async function GetProjectByIdAndPopulate({id} : {id : string}){
                 path :'chatSpace',
                 model : Message
             },
+            {
+                path :'Tasks',
+                model : Task,
+                populate : [
+                    {
+                        path : 'assignedTo',
+                        model : User
+                    },
+                    {
+                        path : 'createdBy',
+                        model : User
+                    }
+                ]
+            },
             // {
             //     path :'notes',
             //     model : Note
@@ -69,10 +84,7 @@ export async function GetProjectByIdAndPopulate({id} : {id : string}){
             //     path :'issues',
             //     model : Issues
             // },
-            // {
-            //     path :'Tasks',
-            //     model : Tasks
-            // },
+            
            
     ])
         if(!project) return ({status : 'Fail' , message : 'Sorry this Project does not exist anymore' , project : {}})

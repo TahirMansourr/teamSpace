@@ -1,8 +1,8 @@
 'use client'
 
-import { Button, LoadingOverlay, MultiSelect, Select, Textarea, TextInput } from '@mantine/core'
+import { Button, LoadingOverlay, MultiSelect, Select, TagsInput, Textarea, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
-import React from 'react'
+import React, { useState } from 'react'
 import { DateInput } from '@mantine/dates';
 import { useTaskContext } from '../Contexts/TasksContext';
 
@@ -11,7 +11,9 @@ type createTaskFormDto = {
     description : string,
     priority : 'HIGH' | 'MEDIUM' | 'LOW',
     dueDate : Date,
-    assignedTo : string[]
+    assignedTo : string[],
+    tags : string[],
+    status : 'To Do' | 'In Progress' | "Done" | 'Review'
 }
 
 const CreateTaskForm = () => {
@@ -22,12 +24,15 @@ const CreateTaskForm = () => {
             description : '',
             priority : 'HIGH',
             dueDate : new Date,
-            assignedTo : []
+            assignedTo : [],
+            tags : [],
+            status : 'To Do' 
         }
     })
 
     const {useHandleCreateTask , projectInfo } = useTaskContext()
     const [formLoading , handleCreateTask] = useHandleCreateTask()
+    const [open , setOpen] = useState<boolean>(false)
   return (
     <form onSubmit={form.onSubmit((values) => handleCreateTask(values))}>
         <div>
@@ -50,11 +55,11 @@ const CreateTaskForm = () => {
                 key={form.key('priority')}
                 {...form.getInputProps('priority')}
                 />
-            <MultiSelect
-                label="Assign Task To"
-                data={projectInfo.team.map((member : any) =>{return member.username})}
-                key={form.key('assignedTo')}
-                {...form.getInputProps('assignedTo')}
+            <TagsInput
+                label="Tags"
+                data={[]}
+                key={form.key('tags')}
+                {...form.getInputProps('tags')}
                 />
             <DateInput
                 valueFormat="DD/MM/YYYY HH:mm:ss"
@@ -62,8 +67,19 @@ const CreateTaskForm = () => {
                 placeholder="Date input"
                 key={form.key('dueDate')}
                 {...form.getInputProps('dueDate')}
+                className={`${open?  'mt-10' : null }`}
                 />
-            <Button type='submit'>Create Task</Button>
+                <MultiSelect
+                    label="Assign Task To"
+                    data={projectInfo.team.map((member : any) =>{return member.username})}
+                    key={form.key('assignedTo')}
+                    {...form.getInputProps('assignedTo')}
+                    onFocus={() => setOpen(!open)}
+                    />
+                <div className="  w-full mt-5  ">
+                <Button type='submit' className=' w-full' w={'100%'}>Create Task</Button>
+                </div>
+            
         </div>
     </form>
   )

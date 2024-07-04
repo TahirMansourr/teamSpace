@@ -5,6 +5,8 @@ import React from 'react'
 import { RiExpandUpDownLine } from "react-icons/ri";
 import { Table } from '@mantine/core';
 import CreateTaskForm from '@/components/Forms/createTaskForm';
+import { useTaskContext } from '@/components/Contexts/TasksContext';
+import TaskTableComponent from './taskTableComponent';
 
 
 const AllTasksPage = () => {
@@ -30,46 +32,7 @@ const AllTasksPage = () => {
           </div>
           <Button onClick={open}>Create a new Task</Button>
         </section>
-        <section className=' p-3 border rounded-md shadow-md m-3'>
-            <Table >
-                <Table.Thead>
-                    <Table.Tr>
-                        <Table.Th>
-                            <div className='flex '>
-                                <Text>Name</Text>
-                                <RiExpandUpDownLine size={20} />
-                            </div>
-                        </Table.Th>
-                        <Table.Th>
-                            <div className='flex '>
-                                <Text>Status</Text>
-                                <RiExpandUpDownLine size={20} />
-                            </div>
-                        </Table.Th>
-                        <Table.Th>
-                            <div className='flex '>
-                                <Text>Priority</Text>
-                                <RiExpandUpDownLine size={20} />
-                            </div>
-                        </Table.Th>
-                        <Table.Th>
-                            <div className='flex '>
-                                <Text>Category</Text>
-                                <RiExpandUpDownLine size={20} />
-                            </div>
-                        </Table.Th>
-                    </Table.Tr>
-                </Table.Thead>
-                <Table.Tbody>
-                        <Table.Tr key={''}>
-                        <Table.Td>hi</Table.Td>
-                        <Table.Td>im</Table.Td>
-                        <Table.Td>tahir</Table.Td>
-                        <Table.Td>mansour</Table.Td>
-                        </Table.Tr>
-                </Table.Tbody>
-            </Table>
-        </section>
+        <TaskTableComponent/>
     </main>
   )
 }
