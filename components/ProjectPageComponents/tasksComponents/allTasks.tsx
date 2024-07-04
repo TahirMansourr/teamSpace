@@ -23,7 +23,7 @@ const AllTasksPage = () => {
             blur: 4,
           }}
           >
-          <CreateTaskForm/>
+          <CreateTaskForm close = {closeModal}/>
         </Modal>
         <section className='flex justify-between items-center m-2 '>
             <div></div>

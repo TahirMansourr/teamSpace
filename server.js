@@ -24,6 +24,10 @@ app.prepare().then(() => {
       console.log('recieved' , value);
       io.emit('Groupmessage' , value)
     })
+    socket.on('createTask' , (value) => {
+      console.log('recieved' , value);
+      io.emit('createTask' , value)
+    })
   
     console.log('Your server is now connected')
   });

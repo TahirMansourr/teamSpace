@@ -1,10 +1,12 @@
 'use client'
-import { Text } from '@mantine/core'
+import { ScrollArea, Text } from '@mantine/core'
 import React from 'react'
 import { useWorkSpaceContext } from '../Contexts/WorkSpaceContext'
+import TaskProvider from '../Contexts/TasksContext'
+import TeamSpaceTask from './tasksComponents/teamSpaceTask'
 
 const TasksComponent = () => {
-    const {tasksComponentExpandState ,setTasksComponentExpandState} = useWorkSpaceContext()
+    const {tasksComponentExpandState ,setTasksComponentExpandState , projectInfo , userInfo} = useWorkSpaceContext()
     return (
     <article  className={`transition-all ease-in-out duration-200 border flex flex-col bg-white rounded-md shadow-xl p-2 ${tasksComponentExpandState ? 'opacity-0 overflow-hidden' : 'opacity-100 w-[20rem] h-full flex-grow'}`}
     style={{
@@ -19,8 +21,13 @@ const TasksComponent = () => {
           onClick={()=>setTasksComponentExpandState(true)}
           >x</div>
          </header>
-         <section>
-  
+         <section className=' flex w-full'>
+            <TaskProvider project={projectInfo} user={userInfo}>
+                <ScrollArea h={600} w={'100%'}>
+                     <TeamSpaceTask/>
+                </ScrollArea>
+               
+            </TaskProvider>
          </section>
         </article>
     )

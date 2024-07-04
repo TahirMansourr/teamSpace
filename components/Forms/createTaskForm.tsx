@@ -16,7 +16,7 @@ type createTaskFormDto = {
     status : 'To Do' | 'In Progress' | "Done" | 'Review'
 }
 
-const CreateTaskForm = () => {
+const CreateTaskForm = ({close} : {close : Function}) => {
     const form = useForm<createTaskFormDto>({
         mode : 'uncontrolled',
         initialValues : {
@@ -34,7 +34,7 @@ const CreateTaskForm = () => {
     const [formLoading , handleCreateTask] = useHandleCreateTask()
     const [open , setOpen] = useState<boolean>(false)
   return (
-    <form onSubmit={form.onSubmit((values) => handleCreateTask(values))}>
+    <form onSubmit={form.onSubmit((values) => handleCreateTask(values , close))}>
         <div>
            <LoadingOverlay visible = {formLoading}/>
             <TextInput 
