@@ -5,7 +5,7 @@ import { useWorkSpaceContext } from '../Contexts/WorkSpaceContext'
 import TaskProvider from '../Contexts/TasksContext'
 import TeamSpaceTask from './tasksComponents/teamSpaceTask'
 import { MdPlaylistAdd } from "react-icons/md"; 
-import CreateTaskModal from './tasksComponents/CreateTaskModal'
+import CreateOrUpdateTaskModal from './tasksComponents/CreateTaskModal'
 import { useDisclosure } from '@mantine/hooks'
 
 const TasksComponent = () => {
@@ -20,7 +20,7 @@ const TasksComponent = () => {
         padding: tasksComponentExpandState ? '0' : '1rem',
     }}>
         
-         <header className=' flex justify-between items-center'> 
+        <header className=' flex justify-between items-center'> 
           <Text size="xl" fw={600}>Tasks:</Text>
           <section className=' flex items-center gap-3'>
           <div>
@@ -34,10 +34,10 @@ const TasksComponent = () => {
           >x</div>
           </section>
           
-         </header>
+        </header>
          <section className=' flex w-full'>
             <TaskProvider project={projectInfo} user={userInfo}>
-             <CreateTaskModal modalOpened = {modalOpened} closeModal={closeModal}/>
+             <CreateOrUpdateTaskModal modalOpened = {modalOpened} closeModal={closeModal}/>
                 <ScrollArea h={600} w={'100%'}>
                      <TeamSpaceTask />
                 </ScrollArea>

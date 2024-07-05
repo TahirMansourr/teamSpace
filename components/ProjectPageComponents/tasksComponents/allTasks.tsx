@@ -1,16 +1,16 @@
 'use client'
-import { Button , Modal, Text } from '@mantine/core'
+import { Button , Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import React from 'react'
 import TaskTableComponent from './taskTableComponent';
-import CreateTaskModal from './CreateTaskModal';
+import CreateOrUpdateTaskModal from './CreateTaskModal';
 
 
 const AllTasksPage = () => {
     const [modalOpened , {open , close : closeModal}] = useDisclosure(false)
   return (
     <main className=' flex flex-col w-full h-full border shadow-xl rounded-md'>
-       <CreateTaskModal modalOpened = {modalOpened}  closeModal={closeModal}/>
+       <CreateOrUpdateTaskModal modalOpened = {modalOpened}  closeModal={closeModal}/>
         <section className='flex justify-between items-center m-2 '>
             <div></div>
           <div>

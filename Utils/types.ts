@@ -33,7 +33,7 @@ export type TaskDto = {
     description : string,
     priority : 'HIGH' | 'MEDIUM' | 'LOW',
     dueDate : Date,
-    assignedTo : string[],
+    assignedTo : UserDto[],
     tags : string[],
     status : 'To Do' | 'In Progress' | "Done" | 'Review'
     _id : string

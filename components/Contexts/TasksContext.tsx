@@ -16,9 +16,13 @@ type formValuesType = {
     _id? : string
 }
 type TaskContextDto = {
-    useHandleCreateTask : () => [boolean , (values : formValuesType , close : ()=>void)=>Promise<void> , (values: formValuesType , close : ()=> void) => Promise<void>]
-    projectInfo : any,
-    allTasks : any[]
+    useHandleCreateTask : () => [ 
+        boolean , 
+        (values : formValuesType , close : ()=>void)=>Promise<void> , 
+        (values: formValuesType , close : ()=> void) => Promise<void>
+    ]
+    projectInfo : ProjectDto,
+    allTasks : TaskDto[]
 }
 const TaskContext = createContext<TaskContextDto>({} as TaskContextDto)
 export const useTaskContext = () => {
@@ -38,7 +42,7 @@ const TaskProvider = ({
 }) => {
     const [userInfo , setUserInfo] = useState<UserDto>(user)
     const [projectInfo , setProjectInfo] = useState<ProjectDto>(project.project)
-    const [allTasks , setAllTasks] = useState<any[]>(project.project.Tasks ? project.project.Tasks : [] )
+    const [allTasks , setAllTasks] = useState<TaskDto[]>(project.project.Tasks ? project.project.Tasks : [] )
 
     const useHandleCreateTask = (): 
     [boolean, (values: formValuesType , close : ()=> void) => Promise<void> ,(values: formValuesType , close : ()=> void) => Promise<void>] => {
@@ -47,14 +51,14 @@ const TaskProvider = ({
         async function handleCreateTask( values : formValuesType ,close : ()=> void){
             console.log("🚀 ~ handleCreateTask ~ values:", values)
             setFormLoading(true)
-            const assignedToMembersIds = values.assignedTo.map((name) =>{
+            const assignedToMembers  = values.assignedTo.map((name) =>{
                 const assignedToMember = projectInfo.team.find( (member : UserDto) => name === member.username)
-                return assignedToMember?._id as string
-            })
+                return assignedToMember
+            }).filter((id) => id !== undefined)
             try {
                 CreateTask({
                     name : values.name,
-                    assignedTo : assignedToMembersIds,
+                    assignedTo : assignedToMembers ? assignedToMembers.map((member : UserDto) =>  member._id) : [],
                     description : values.description,
                     dueDate : values.dueDate,
                     priority : values.priority,
@@ -65,7 +69,7 @@ const TaskProvider = ({
                 }).then((res) => {
                     const newTask = {
                       ...values , 
-                      assignedTo : values.assignedTo,
+                      assignedTo : assignedToMembers,
                       _id : res.task._id
                     }
                     socket.emit('createTask' , newTask)
@@ -80,15 +84,15 @@ const TaskProvider = ({
         }
         async function handleUpdateTask(values : formValuesType , close : ()=> void){
             setFormLoading(true)
-            const assignedToMembersIds = values.assignedTo.map((name) =>{
+            const assignedToMembers = values.assignedTo.map((name) =>{
                 const assignedToMember = projectInfo.team.find( (member : UserDto) => name === member.username)
-                return assignedToMember?._id as string
-            })
+                return assignedToMember
+            }).filter((id) => id !== undefined)
                 try {
                      await UpdateTask({
                         _id : values._id as string,
                         name : values.name,
-                        assignedTo : assignedToMembersIds,
+                        assignedTo : assignedToMembers.map((member : UserDto) => member._id),
                         description : values.description,
                         dueDate : values.dueDate,
                         priority : values.priority,
@@ -99,8 +103,7 @@ const TaskProvider = ({
                      }).then((res) => {
                         const newTask = {
                           ...values , 
-                          assignedTo : values.assignedTo,
-                          _id : res.task._id
+                          assignedTo : assignedToMembers,
                         }
                         socket.emit('updateTask' , newTask)
                         console.log('sent task' , newTask); 

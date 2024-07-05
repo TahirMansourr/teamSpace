@@ -6,18 +6,18 @@ import React, { useState } from 'react'
 import { DateInput } from '@mantine/dates';
 import { useTaskContext } from '../Contexts/TasksContext';
 
-type createTaskFormDto = {
+export type createTaskFormDto = {
     name : string,
     description : string,
     priority : 'HIGH' | 'MEDIUM' | 'LOW',
     dueDate : Date,
-    assignedTo : string[],
+    assignedTo : string[] ,
     tags : string[],
     status : 'To Do' | 'In Progress' | "Done" | 'Review'
     _id? : string
 }
 
-const CreateTaskForm = ({close , updateFormInput } : {close : Function , updateFormInput? : createTaskFormDto }) => {
+const CreateOrUpdateTaskForm = ({close , updateFormInput } : {close : Function , updateFormInput? : createTaskFormDto }) => {
    
     const form = useForm<createTaskFormDto>({
         mode : 'uncontrolled',
@@ -75,16 +75,16 @@ const CreateTaskForm = ({close , updateFormInput } : {close : Function , updateF
                 />
             <MultiSelect
                 label="Assign Task To"
-                data={!updateFormInput? projectInfo.team.map((member : any) =>{return member.username}) : updateFormInput.assignedTo }
+                data={projectInfo.team.map((member : any) =>{return member.username}) }
                 key={form.key('assignedTo')}
                 {...form.getInputProps('assignedTo')}
                 />
                 <div className="  w-full mt-5  ">
-                   <Button type='submit' className=' w-full' w={'100%'}>Create Task</Button>
+                   <Button type='submit' className=' w-full' w={'100%'}>{updateFormInput ? 'Update Task' : ' Create Task'}</Button>
                 </div>          
         </div>
     </form>
   )
 }
 
-export default CreateTaskForm
+export default CreateOrUpdateTaskForm
