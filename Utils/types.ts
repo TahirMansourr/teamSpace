@@ -29,7 +29,14 @@ export type UserDto = {
     verifyTokenExpiry?: Date,
 }
 export type TaskDto = {
-
+    name : string,
+    description : string,
+    priority : 'HIGH' | 'MEDIUM' | 'LOW',
+    dueDate : Date,
+    assignedTo : string[],
+    tags : string[],
+    status : 'To Do' | 'In Progress' | "Done" | 'Review'
+    _id : string
 }
 export type MesssageDto= {
 

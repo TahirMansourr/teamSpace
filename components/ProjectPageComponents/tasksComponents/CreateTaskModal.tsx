@@ -1,8 +1,9 @@
 import CreateTaskForm from '@/components/Forms/createTaskForm'
+import { TaskDto } from '@/Utils/types'
 import { Modal } from '@mantine/core'
 import React from 'react'
 
-const CreateTaskModal = ({modalOpened , closeModal} : {modalOpened : boolean , closeModal : () => void}) => {
+const CreateTaskModal = ({modalOpened , closeModal , initialValues} : {modalOpened : boolean , closeModal : () => void , initialValues? : TaskDto}) => {
   return (
     <Modal 
     opened={modalOpened} 
@@ -14,7 +15,7 @@ const CreateTaskModal = ({modalOpened , closeModal} : {modalOpened : boolean , c
       blur: 4,
     }}
     >
-    <CreateTaskForm close = {closeModal}/>
+    <CreateTaskForm close = {closeModal} updateFormInput = {initialValues} />
   </Modal>
   )
 }

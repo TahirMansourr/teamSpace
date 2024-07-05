@@ -14,9 +14,10 @@ type createTaskFormDto = {
     assignedTo : string[],
     tags : string[],
     status : 'To Do' | 'In Progress' | "Done" | 'Review'
+    _id? : string
 }
 
-const CreateTaskForm = ({close , updateFormInput} : {close : Function , updateFormInput? : createTaskFormDto}) => {
+const CreateTaskForm = ({close , updateFormInput } : {close : Function , updateFormInput? : createTaskFormDto }) => {
    
     const form = useForm<createTaskFormDto>({
         mode : 'uncontrolled',
@@ -27,17 +28,17 @@ const CreateTaskForm = ({close , updateFormInput} : {close : Function , updateFo
             dueDate : updateFormInput? updateFormInput.dueDate : new Date,
             assignedTo :updateFormInput? updateFormInput.assignedTo : [],
             tags : updateFormInput? updateFormInput.tags :[],
-            status : updateFormInput ? updateFormInput.status :'To Do' 
-
+            status : updateFormInput ? updateFormInput.status :'To Do',
+            _id : updateFormInput ? updateFormInput._id : ''
         }
     })
 
     const {useHandleCreateTask , projectInfo } = useTaskContext()
-    const [formLoading , handleCreateTask] = useHandleCreateTask()
+    const [formLoading , handleCreateTask , handleUpdateTask] = useHandleCreateTask()
     const [open , setOpen] = useState<boolean>(false)
 
   return (
-    <form onSubmit={form.onSubmit((values) => handleCreateTask(values , close))}>
+    <form onSubmit={form.onSubmit((values) => !updateFormInput ? handleCreateTask(values , close()) : handleUpdateTask(values , close()))}>
         <div>
            <LoadingOverlay visible = {formLoading}/>
             <TextInput 
@@ -74,7 +75,7 @@ const CreateTaskForm = ({close , updateFormInput} : {close : Function , updateFo
                 />
             <MultiSelect
                 label="Assign Task To"
-                data={projectInfo.team.map((member : any) =>{return member.username})}
+                data={!updateFormInput? projectInfo.team.map((member : any) =>{return member.username}) : updateFormInput.assignedTo }
                 key={form.key('assignedTo')}
                 {...form.getInputProps('assignedTo')}
                 />

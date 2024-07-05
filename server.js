@@ -28,6 +28,10 @@ app.prepare().then(() => {
       console.log('recieved' , value);
       io.emit('createTask' , value)
     })
+    socket.on('updateTask' , (value) => {
+      console.log('recieved' , value);
+      io.emit('updateTask' , value)
+    })
   
     console.log('Your server is now connected')
   });

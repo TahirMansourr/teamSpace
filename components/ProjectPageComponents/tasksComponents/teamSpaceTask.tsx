@@ -2,7 +2,6 @@
 import { useTaskContext } from '@/components/Contexts/TasksContext'
 import React from 'react'
 import TaskCard from './TaskCard'
-
 const TeamSpaceTask = () => {
     const {allTasks} = useTaskContext()
   return (
@@ -10,7 +9,7 @@ const TeamSpaceTask = () => {
     {
         allTasks ? 
         allTasks.map((task : any) => (
-            <TaskCard task = {task}/>
+            <TaskCard task = {task} />
         )) :
         <h1>No Tasks </h1>
     }

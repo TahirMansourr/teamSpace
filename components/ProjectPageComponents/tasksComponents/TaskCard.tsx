@@ -1,9 +1,14 @@
+'use client'
+import { TaskDto } from '@/Utils/types';
 import { Badge, Spoiler } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 import React from 'react'
 import { FiEdit } from "react-icons/fi";
+import CreateTaskModal from './CreateTaskModal';
+import { useDisclosure } from '@mantine/hooks';
 
-const TaskCard = ({task} : {task : any}) => {
+const TaskCard = ({task } : {task : TaskDto}) => {
+  const [modalOpened , {open , close : closeModal}] = useDisclosure(false)
     const date = new Date(task.dueDate)
   return (
     <section className='flex flex-col w-[95%] shadow-md m-2 rounded-md p-2 border' onClick={()=>{notifications.show({message : 'hey' , color : 'green'})}}>
@@ -22,7 +27,8 @@ const TaskCard = ({task} : {task : any}) => {
            {task.status ? task.status : 'no status yet'}
         </Badge>
        </p>
-       
+        <CreateTaskModal  modalOpened ={modalOpened} closeModal={closeModal} 
+        initialValues = {{...task , dueDate : date , assignedTo : task.assignedTo.map((user : any) => user.username )}}/>
        <h1 className=' text-sm font-bold my-2'>Due on: {date.toLocaleString()}</h1>
        <Spoiler maxHeight={40} showLabel="..." hideLabel="Hide">
            <div className=' text-xs font-light whitespace-pre-line'>
@@ -32,7 +38,7 @@ const TaskCard = ({task} : {task : any}) => {
         <div className="flex flex-col mt-2">
             <h1 className=' font-bold '>Assigned To</h1>
             <div className=' flex gap-2'>{task.assignedTo.map((user : any) => (<Badge color="blue">{user.username}</Badge>))}</div>
-            <FiEdit className=' ml-auto hover:cursor-pointer'/>
+            <FiEdit className=' ml-auto hover:cursor-pointer' onClick={open}/>
         </div>
     </section>
   )

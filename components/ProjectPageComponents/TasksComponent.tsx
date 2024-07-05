@@ -39,7 +39,7 @@ const TasksComponent = () => {
             <TaskProvider project={projectInfo} user={userInfo}>
              <CreateTaskModal modalOpened = {modalOpened} closeModal={closeModal}/>
                 <ScrollArea h={600} w={'100%'}>
-                     <TeamSpaceTask/>
+                     <TeamSpaceTask />
                 </ScrollArea>
             </TaskProvider>
          </section>
