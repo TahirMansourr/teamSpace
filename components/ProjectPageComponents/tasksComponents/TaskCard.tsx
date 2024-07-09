@@ -1,7 +1,6 @@
 'use client'
 import { TaskDto, UserDto } from '@/Utils/types';
 import { Badge, Spoiler } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 import React from 'react'
 import { FiEdit } from "react-icons/fi";
 import CreateOrUpdateTaskModal from './CreateTaskModal';
@@ -11,7 +10,7 @@ const TaskCard = ({task } : {task : TaskDto}) => {
   const [modalOpened , {open , close : closeModal}] = useDisclosure(false)
     const date = new Date(task.dueDate)
   return (
-    <section className='flex flex-col w-[95%] shadow-md m-2 rounded-md p-2 border' onClick={()=>{notifications.show({message : 'hey' , color : 'green'})}}>
+    <section className='flex flex-col w-[95%] shadow-md m-2 rounded-md p-2 border'>
        <h1 className=' font-bold underline-offset-2 underline'>{task.name}</h1>
        <p className='my-1'>
        <Badge

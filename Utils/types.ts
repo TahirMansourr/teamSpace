@@ -39,6 +39,17 @@ export type TaskDto = {
     _id : string,
     creationDate : string
 }
+export type IssueDto = {
+    name : string,
+    description : string,
+    priority : 'HIGH' | 'MEDIUM' | 'LOW',
+    dueDate : Date,
+    assignedTo : UserDto[],
+    tags : string[],
+    status : 'To Do' | 'In Progress' | "Done" | 'Review'
+    _id : string,
+    creationDate : string
+}
 export type MesssageDto= {
     body : string,
     author : UserDto,
