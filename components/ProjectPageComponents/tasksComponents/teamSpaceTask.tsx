@@ -8,10 +8,10 @@ const TeamSpaceTask = () => {
   <main>
     {
         allTasks ? 
-        allTasks.map((task : any) => (
-            <TaskCard task = {task} />
-        )) :
-        <h1>No Tasks </h1>
+          allTasks.map((task : any) => (
+              <TaskCard task = {task} />
+          )) :
+          <h1>No Tasks </h1>
     }
   </main>
   )

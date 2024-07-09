@@ -60,7 +60,11 @@ export async function GetProjectByIdAndPopulate({id} : {id : string}){
             }, 
             {
                 path :'chatSpace',
-                model : Message
+                model : Message,
+                populate : {
+                    path : 'author',
+                    model : User
+                }
             },
             {
                 path :'Tasks',

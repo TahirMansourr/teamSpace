@@ -36,8 +36,12 @@ export type TaskDto = {
     assignedTo : UserDto[],
     tags : string[],
     status : 'To Do' | 'In Progress' | "Done" | 'Review'
-    _id : string
+    _id : string,
+    creationDate : string
 }
 export type MesssageDto= {
-
+    body : string,
+    author : UserDto,
+    createdAt : Date,
+    project : string
 }

@@ -22,12 +22,11 @@ const ChatSpaceComponent = () => {
           >x</div>
          </header>
            <section className='flex-grow'>
-            <ChatProvider >
-                 <ChatComponent />
-            </ChatProvider>
-             
+                <ChatProvider >
+                    <ChatComponent />
+                </ChatProvider>
            </section>
-        </article>
+    </article>
     )
 }
 

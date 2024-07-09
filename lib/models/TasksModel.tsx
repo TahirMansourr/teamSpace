@@ -6,7 +6,7 @@ const taskSchema = new mongoose.Schema({
     status : String,
     priority : String,
     dueDate : Date,
-    creationDate : Date,
+    creationDate : {type :Date , default : new Date()},
     lastModified : Date,
     project :{
         type : mongoose.Schema.Types.ObjectId,
