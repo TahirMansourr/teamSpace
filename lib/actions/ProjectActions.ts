@@ -5,6 +5,7 @@ import { connectToDB } from "../mongoose"
 import User from "../models/UserModel"
 import Message from "../models/MessagesModel"
 import Task from "../models/TasksModel"
+import Issue from "../models/IssuesModel"
 
 interface ProjectInitialProps{
     name : string,
@@ -69,6 +70,20 @@ export async function GetProjectByIdAndPopulate({id} : {id : string}){
             {
                 path :'Tasks',
                 model : Task,
+                populate : [
+                    {
+                        path : 'assignedTo',
+                        model : User
+                    },
+                    {
+                        path : 'createdBy',
+                        model : User
+                    }
+                ]
+            },
+            {
+                path :'issues',
+                model : Issue,
                 populate : [
                     {
                         path : 'assignedTo',

@@ -1,5 +1,6 @@
 'use server'
 
+import { IssueDto } from "@/Utils/types"
 import Issue from "../models/IssuesModel"
 import Project from "../models/ProjectModel"
 import Task from "../models/TasksModel"
@@ -16,9 +17,12 @@ type createIssueFormDto = {
     tags : string[],
     status : 'To Do' | 'In Progress' | "Done" | 'Review'
 }
-export async function CreateTask(params : createIssueFormDto) {
+export async function CreateIssue(params : createIssueFormDto) {
     try {
         await connectToDB()
+
+        const newTask = await Issue.findOne({ name : params.name})
+        if(newTask) return ({status : 'Fail' , issue : 'Name already exists'})
 
         const newIssue = await Issue.create({
             name : params.name,
@@ -44,7 +48,7 @@ export async function CreateTask(params : createIssueFormDto) {
     }
 }
 
-export async function UpdateTask(params : createIssueFormDto & {_id : string}){
+export async function UpdateIssue(params : createIssueFormDto & {_id : string}){
     try {
         await connectToDB()
         const requiredIssue = await Issue.findOneAndUpdate({_id : params._id} , {$set :{
@@ -61,7 +65,7 @@ export async function UpdateTask(params : createIssueFormDto & {_id : string}){
         }})
 
         await requiredIssue.save()
-        const requiredIssuetoObj = requiredIssue.toObject()
+        const requiredIssuetoObj : IssueDto = requiredIssue.toObject()
         return ({status : 'success' , task :  JSON.parse(JSON.stringify(requiredIssuetoObj))})
     } catch (error : any) {
         throw new Error(`Error at updateTask : ${error}`);

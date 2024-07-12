@@ -25,10 +25,10 @@ const ProjectSchema = new mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Task'
     }],
-    issues : {
+    issues : [{
         type : mongoose.Schema.Types.ObjectId,
-        ref : 'Issues'
-    },
+        ref : 'Issue'
+    }],
     chatSpace : [{
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Message'

@@ -6,7 +6,7 @@ export type ProjectDto = {
     team : UserDto[],
     notes? : string[],
     Tasks : TaskDto[],
-    issues? : string[],
+    issues : IssueDto[],
     chatSpace : MesssageDto[],
     likes?: number,
     content : string,

@@ -23,7 +23,7 @@ const TasksComponent = () => {
         <header className=' flex justify-between items-center'> 
           <Text size="xl" fw={600}>Tasks:</Text>
           <section className=' flex items-center gap-3'>
-          <div>
+          <div> 
               <Tooltip label = 'Create a new Task' color='blue'>
                   <MdPlaylistAdd size={25} color='blue' className=' hover:cursor-pointer' onClick={open}/>
               </Tooltip>
