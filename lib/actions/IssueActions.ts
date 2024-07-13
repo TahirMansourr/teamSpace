@@ -17,6 +17,7 @@ type createIssueFormDto = {
     tags : string[],
     status : 'To Do' | 'In Progress' | "Done" | 'Review'
 }
+
 export async function CreateIssue(params : createIssueFormDto) {
     try {
         await connectToDB()
@@ -43,7 +44,7 @@ export async function CreateIssue(params : createIssueFormDto) {
         return ({status : 'success' , issue : response})
         
     } catch (error: any) {
-        throw new Error(`Error at CreateTask : ${error}`);
+        throw new Error(`Error at CreateIssue : ${error}`);
         
     }
 }
@@ -68,6 +69,6 @@ export async function UpdateIssue(params : createIssueFormDto & {_id : string}){
         const requiredIssuetoObj : IssueDto = requiredIssue.toObject()
         return ({status : 'success' , task :  JSON.parse(JSON.stringify(requiredIssuetoObj))})
     } catch (error : any) {
-        throw new Error(`Error at updateTask : ${error}`);
+        throw new Error(`Error at updateIssue : ${error}`);
     }
 }

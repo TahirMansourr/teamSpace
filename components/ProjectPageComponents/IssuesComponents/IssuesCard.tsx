@@ -44,7 +44,7 @@ const IssueCard = ({Issue } : {Issue : IssueDto}) => {
             <div className=' flex gap-2'>{Issue.assignedTo.map((user : UserDto) => (<Badge color="blue">{user.username}</Badge>))}</div>
             <FiEdit className=' ml-auto hover:cursor-pointer' onClick={open}/>
         </div>
-        <footer>
+        <footer className='text-xs'>
           {formattedCreationDate}
         </footer>
     </section>

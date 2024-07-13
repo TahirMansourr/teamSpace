@@ -9,6 +9,8 @@ import { useDisclosure } from '@mantine/hooks';
 const TaskCard = ({task } : {task : TaskDto}) => {
   const [modalOpened , {open , close : closeModal}] = useDisclosure(false)
     const date = new Date(task.dueDate)
+    const creationDate = new Date(task.creationDate)
+    const formattedCreationDate = creationDate.toLocaleDateString() + ' ' + creationDate.toLocaleTimeString()
   return (
     <section className='flex flex-col w-[95%] shadow-md m-2 rounded-md p-2 border'>
        <h1 className=' font-bold underline-offset-2 underline'>{task.name}</h1>
@@ -41,8 +43,8 @@ const TaskCard = ({task } : {task : TaskDto}) => {
             <div className=' flex gap-2'>{task.assignedTo.map((user : UserDto) => (<Badge color="blue">{user.username}</Badge>))}</div>
             <FiEdit className=' ml-auto hover:cursor-pointer' onClick={open}/>
         </div>
-        <footer>
-          {task.creationDate ? task.creationDate : null}
+        <footer className=' text-xs'>
+          {task.creationDate ? formattedCreationDate : null}
         </footer>
     </section>
   )

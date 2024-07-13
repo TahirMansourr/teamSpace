@@ -17,10 +17,10 @@ const ProjectSchema = new mongoose.Schema({
         ref : 'User'
     }],
     image : String,
-    notes : {
+    notes : [{
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Note'
-    },
+    }],
     Tasks : [{
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Task'

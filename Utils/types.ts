@@ -4,7 +4,7 @@ export type ProjectDto = {
     creator : string,
     admins : UserDto[],
     team : UserDto[],
-    notes? : string[],
+    notes : NotesDto[],
     Tasks : TaskDto[],
     issues : IssueDto[],
     chatSpace : MesssageDto[],
@@ -55,4 +55,13 @@ export type MesssageDto= {
     author : UserDto,
     createdAt : Date,
     project : string
+}
+
+export type NotesDto = {
+    body : string,
+    creator : UserDto,
+    project : ProjectDto,
+    createdAt : Date,
+    updatedAt : Date | null,
+    comments : string[]
 }
