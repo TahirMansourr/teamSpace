@@ -1,9 +1,12 @@
+import { CreateNote } from "@/lib/actions/NoteAction"
 import { NotesDto, ProjectDto, UserDto } from "@/Utils/types"
+import { notifications } from "@mantine/notifications"
 import { useContext, useState, createContext } from "react"
 
 type NotesContextDto = {
  allNotes : NotesDto[],
- formLoading : boolean
+ formLoading : boolean,
+ handleCreateNote : (body : string) => void
 }
 
 const NotesContext = createContext<NotesContextDto>({} as NotesContextDto)
@@ -23,9 +26,26 @@ const NotesContext = createContext<NotesContextDto>({} as NotesContextDto)
     const [notes , setNotes] = useState<NotesDto[]>(project.notes)
     const [formLoading , setFormLoading] = useState<boolean>(false)
 
+    async function handleCreateNote(body : string){
+        setFormLoading(true)
+        try {
+            await CreateNote({
+                projectId : projectInfo._id,
+                body,
+                creator : userInfo._id
+            })
+        } catch (error) {
+            throw new Error(`error at handleCreateNote : ${error}`)
+        }finally{
+            setFormLoading(false)
+            notifications.show({ message : 'created new Note successfully' , color : 'green'})
+        }
+    }
+
     const value = {
         allNotes : notes,
-        formLoading
+        formLoading,
+        handleCreateNote
     }
 
     return(

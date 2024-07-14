@@ -6,6 +6,7 @@ import User from "../models/UserModel"
 import Message from "../models/MessagesModel"
 import Task from "../models/TasksModel"
 import Issue from "../models/IssuesModel"
+import Note from "../models/NotesModel"
 
 interface ProjectInitialProps{
     name : string,
@@ -95,14 +96,18 @@ export async function GetProjectByIdAndPopulate({id} : {id : string}){
                     }
                 ]
             },
-            // {
-            //     path :'notes',
-            //     model : Note
-            // },
-            // {
-            //     path :'issues',
-            //     model : Issues
-            // },
+            {
+                path :'notes',
+                model : Note,
+                populate : [
+                    {
+                        path : 'creator',
+                        model : User
+                    },
+                    
+                ]
+            },
+           
             
            
     ])

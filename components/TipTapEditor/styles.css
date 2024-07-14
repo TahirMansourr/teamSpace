@@ -1,0 +1,34 @@
+/* General styles for the editor content */
+.custom-editor {
+  padding: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  min-height: 200px;
+  outline: none;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: #fafafa;
+}
+
+/* Remove the default focus outline and set custom focus styles */
+.custom-editor:focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 2px rgba(128, 189, 255, 0.5);
+}
+
+/* Remove any inner default margin for paragraphs */
+.custom-editor p {
+  margin: 0;
+}
+
+/* Additional focus-visible styles to ensure no default border */
+.custom-editor:focus-visible {
+  outline: none;
+  border-color: #80bdff;
+}
+
+/* Specific styles for the inner divs within the editor content */
+
+
+/* Add additional styles as needed */
