@@ -8,8 +8,8 @@ import { useContext, useState, createContext, useEffect } from "react"
 type NotesContextDto = {
  allNotes : NotesDto[],
  formLoading : boolean,
- handleCreateNote : (body : string) => void
- handleUpdateNote : (existingNote : NotesDto) => void
+ handleCreateNote : (body : string , close : ()=>void) => void
+ handleUpdateNote : (existingNote : NotesDto , close : ()=>void) => void
  isConnected : boolean
 }
 
@@ -33,7 +33,7 @@ const NotesContext = createContext<NotesContextDto>({} as NotesContextDto)
     const [transport, setTransport] = useState("N/A");
     const [activeUsers , setActiveUsers] = useState<string[]>([])
 
-    async function handleCreateNote(body : string){
+    async function handleCreateNote(body : string, close : ()=>void){
         setFormLoading(true)
         try {
              CreateNote({
@@ -50,19 +50,33 @@ const NotesContext = createContext<NotesContextDto>({} as NotesContextDto)
             throw new Error(`error at handleCreateNote : ${error}`)
         }finally{
             setFormLoading(false)
-            notifications.show({ message : 'created new Note successfully' , color : 'green'})
+            close()
+            notifications.show({ message : 'created Note successfully' , color : 'green'})
         }
     }
-    async function handleUpdateNote(existingNote : NotesDto){
-        UpdateNote({
-            projectId : projectInfo._id,
-            body : existingNote.body,
-            creator : existingNote.creator._id,
-            _id : existingNote._id
-        }).then((res : {status : string , note : NotesDto}) => {
-            socket.emit('updateNote' , {...res.note , creator : existingNote.creator})
+    async function handleUpdateNote(existingNote: NotesDto, close: () => void) {
+      setFormLoading(true);
+      try {
+         UpdateNote({
+          projectId: projectInfo._id,
+          body: existingNote.body,
+          creator: existingNote.creator._id,
+          createdAt : existingNote.createdAt,
+          _id: existingNote._id
+        }).then((res : {status : string , note : NotesDto})=>{
+          socket.emit('updateNote', {...res.note , creator : existingNote.creator});
         })
+    
+         // Emit the updated note
+        notifications.show({ message: 'Updated Note successfully', color: 'blue' });
+      } catch (error) {
+        throw new Error(`error at handleUpdateNote : ${error}`);
+      } finally {
+        setFormLoading(false);
+        close();
+      }
     }
+
     useEffect(() => {
         console.log('Chat Context Rerendered');
         
@@ -97,7 +111,7 @@ const NotesContext = createContext<NotesContextDto>({} as NotesContextDto)
           })
           socket.on('updateNote' , (note : NotesDto) => {
             console.log('triggered');
-            setNotes((prev : NotesDto[])=> prev.map((prevNote : NotesDto) => prevNote._id === note._id ? note : prevNote))
+            setNotes(((prev : NotesDto[])=> prev.map((prevNote : NotesDto) => prevNote._id === note._id ? note : prevNote)))
           })
           function onDisconnect() {
             setIsConnected(false);

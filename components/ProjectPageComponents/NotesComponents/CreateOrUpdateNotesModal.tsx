@@ -1,6 +1,5 @@
 import CreateOrUpdateNote from '@/components/Forms/createOrUpdateNote'
-import CreateOrUpdateTaskForm, { createTaskFormDto } from '@/components/Forms/createTaskForm'
-import { NotesDto, TaskDto } from '@/Utils/types'
+import { NotesDto } from '@/Utils/types'
 import { Modal } from '@mantine/core'
 import React from 'react'
 
@@ -17,7 +16,7 @@ const CreateOrUpdateNotesModal = ({modalOpened , closeModal , initialValues} : {
       }}
       className='bg-transparent'
     >
-    <CreateOrUpdateNote existingNoteContent={initialValues}/>
+    <CreateOrUpdateNote existingNoteContent={initialValues} close = {closeModal}/>
   </Modal>
   )
 }

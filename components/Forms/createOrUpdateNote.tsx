@@ -5,7 +5,7 @@ import { Button, LoadingOverlay } from '@mantine/core'
 import { useNotesContext } from '../Contexts/NotesContext'
 import { NotesDto } from '@/Utils/types'
 
-const CreateOrUpdateNote = ({existingNoteContent} : {existingNoteContent? : NotesDto }) => {
+const CreateOrUpdateNote = ({existingNoteContent , close} : {existingNoteContent? : NotesDto , close : ()=>void}) => {
     const { formLoading, handleCreateNote , handleUpdateNote } = useNotesContext()
     const [content, setContent] = useState<string>(existingNoteContent ? existingNoteContent.body : '')
 
@@ -16,9 +16,9 @@ const CreateOrUpdateNote = ({existingNoteContent} : {existingNoteContent? : Note
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         if(!existingNoteContent){
-        await handleCreateNote(content)
+        await handleCreateNote(content , close)
         }else{
-        await handleUpdateNote({ ...existingNoteContent , body : content})
+        await handleUpdateNote({ ...existingNoteContent , body : content} , close)
         }
     }
 

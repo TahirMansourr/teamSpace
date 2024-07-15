@@ -26,7 +26,6 @@ const NotesCard = ({Note} : {Note : NotesDto}) => {
             <div className='flex flex-col'>
                 <div className='flex text-xs gap-2'>
                    <p className='font-bold'>createdAt :</p>  <p className=' text-gray-600'>{ date.toLocaleDateString()} {date.toLocaleTimeString()}</p>
-                    {/* last Updated : {FormattedDate} */}
                 </div>
                { Note.updatedAt? <div className='flex text-xs gap-2'>
                    <p className='font-bold'>last Updated :</p>  <p className=' text-gray-600'>{FormattedDate}</p>  

@@ -8,6 +8,7 @@ type CreateNoteDto = {
     projectId : string,
     body : string, 
     creator : string,
+    createdAt? : Date,
     _id? : string
 }
 
@@ -39,7 +40,10 @@ export async function UpdateNote(params : CreateNoteDto){
         const requiredNote = await Note.findOneAndUpdate({_id : params._id} , {
             $set : {
                 body : params.body,
-                updatedAt : new Date()
+                updatedAt : new Date(),
+                project : params.projectId,
+                createdAt : params.createdAt,
+                creator : params.creator,
             }
         })
         await requiredNote.save()
