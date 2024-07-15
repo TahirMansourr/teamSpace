@@ -11,7 +11,7 @@ import { useDisclosure } from '@mantine/hooks'
 const NotesCard = ({Note} : {Note : NotesDto}) => {
     const date = new Date(Note.createdAt)
     const updateDate = Note.updatedAt ? new Date(Note.updatedAt) : null
-    const FormattedDate = updateDate?.toDateString() + '' + updateDate?.toTimeString()
+    const FormattedDate = updateDate?.toLocaleDateString() + ' ' + updateDate?.toLocaleTimeString()
     const sanitizedContent = DOMPurify.sanitize(Note.body)
     const [modalOpened , {open , close : closeModal}] = useDisclosure(false)
   return (
@@ -23,7 +23,6 @@ const NotesCard = ({Note} : {Note : NotesDto}) => {
            </div> 
         </Spoiler>
         <footer className='flex flex-col'>
-           
             <div className='flex flex-col'>
                 <div className='flex text-xs gap-2'>
                    <p className='font-bold'>createdAt :</p>  <p className=' text-gray-600'>{ date.toLocaleDateString()} {date.toLocaleTimeString()}</p>

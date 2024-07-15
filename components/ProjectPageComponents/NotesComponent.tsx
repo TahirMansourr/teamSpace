@@ -1,17 +1,18 @@
 'use client'
-import { Indicator, ScrollArea, Text, Tooltip } from '@mantine/core'
+import { Code, Indicator, ScrollArea, Text, Tooltip } from '@mantine/core'
 import React from 'react'
 import { useWorkSpaceContext } from '../Contexts/WorkSpaceContext'
 import TeamSpaceNotes from './NotesComponents/TeamSpaceNotes'
 import NotesProvider from '../Contexts/NotesContext'
 import { MdPlaylistAdd } from 'react-icons/md'
-import { useDisclosure } from '@mantine/hooks'
+import { useDisclosure, useResizeObserver } from '@mantine/hooks'
 import CreateOrUpdateNotesModal from './NotesComponents/CreateOrUpdateNotesModal'
 
 const NotesComponent = () => {
 
     const {notesComponentExpandState ,setNotesComponentExpandState , projectInfo , userInfo} = useWorkSpaceContext()
     const [modalOpened , {open , close : closeModal}] = useDisclosure(false)
+  
   return (
     <NotesProvider project={projectInfo.project} user={userInfo}>
       <Indicator color='teal' withBorder size={15}>
@@ -20,7 +21,8 @@ const NotesComponent = () => {
         width: notesComponentExpandState ? '0' : '20rem',
         height: notesComponentExpandState ? '0' : '100%',
         padding: notesComponentExpandState ? '0' : '1rem',
-    }}>
+    }}
+    >
        <header className=' flex justify-between'> 
         <Text size="xl" fw={600}>Notes:</Text>
         <section className=' flex items-center gap-3'>

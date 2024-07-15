@@ -31,6 +31,7 @@ const NotesContext = createContext<NotesContextDto>({} as NotesContextDto)
     const [formLoading , setFormLoading] = useState<boolean>(false)
     const [isConnected, setIsConnected] = useState(false);
     const [transport, setTransport] = useState("N/A");
+    const [activeUsers , setActiveUsers] = useState<string[]>([])
 
     async function handleCreateNote(body : string){
         setFormLoading(true)
@@ -77,6 +78,8 @@ const NotesContext = createContext<NotesContextDto>({} as NotesContextDto)
           function onConnect() {
             setIsConnected(true);
             setTransport(socket.io.engine.transport.name);
+            setActiveUsers((prev : string[]) => [...prev , userInfo.username])
+              console.log(userInfo.username , 'is now connected');
               console.log('Notes Is Connected');
               
             socket.io.engine.on("upgrade", (transport : any) => {
@@ -102,7 +105,9 @@ const NotesContext = createContext<NotesContextDto>({} as NotesContextDto)
             console.log('i am connected disconnected');
           }
       
-          socket.on("connect", onConnect);
+          socket.on("connect", (userInfo : UserDto) =>{
+              onConnect
+            });
           socket.on("disconnect", onDisconnect);
          
       

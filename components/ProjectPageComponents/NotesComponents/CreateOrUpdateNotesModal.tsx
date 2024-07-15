@@ -10,7 +10,6 @@ const CreateOrUpdateNotesModal = ({modalOpened , closeModal , initialValues} : {
       opened={modalOpened} 
       bg={'cyan'}
       onClose={closeModal} 
-      title="Create New Note"
       withCloseButton = {false}
       overlayProps={{
         backgroundOpacity: 0.2,

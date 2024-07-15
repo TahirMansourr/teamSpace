@@ -30,8 +30,9 @@ const Tiptap = ({tipTapContent , onChange} : {tipTapContent : string , onChange 
     italic: false,
     strike: false,
     bulletList : false,
-    blockQuote : false,
-    orderedList : false
+    blockquote : false,
+    orderedList : false,
+    codeblock : false
   })
 
   useEffect(() => {
@@ -45,8 +46,9 @@ const Tiptap = ({tipTapContent , onChange} : {tipTapContent : string , onChange 
           italic: editor.isActive('italic'),
           strike: editor.isActive('strike'),
           bulletList : editor.isActive('bulletList'),
-          blockQuote : editor.isActive('blockQuote'),
-          orderedList : editor.isActive('orderedList')
+          blockquote : editor.isActive('blockquote'),
+          orderedList : editor.isActive('orderedList'),
+          codeblock : editor.isActive('codeblock')
         })
       }
 
@@ -64,85 +66,81 @@ const Tiptap = ({tipTapContent , onChange} : {tipTapContent : string , onChange 
     <>
     {editor && (
       <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
-        <div className="bg-white rounded-md shadow-md flex gap-2 p-2">
+        <div className='bubble-menu'>
           <button
-            onClick={() => editor.chain().focus().toggleBold().run()}
-            className={`p-2 rounded-md transition-colors duration-200 ${
-              activeFormats.bold
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-200 hover:bg-gray-300'
-            }`}
+            onClick={(e) => {
+                e.preventDefault()    
+                editor.chain().focus().toggleBold().run()
+            }}
           >
             <strong>B</strong>
           </button>
           <button
-            onClick={() => editor.chain().focus().toggleItalic().run()}
-            className={`p-2 rounded-md transition-colors duration-200 ${
-              activeFormats.italic
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-200 hover:bg-gray-300'
-            }`}
+            onClick={(e) => {
+                e.preventDefault()
+                editor.chain().focus().toggleItalic().run()}}
           >
             <em>I</em>
           </button>
           <button
-            onClick={() => editor.chain().focus().toggleStrike().run()}
-            className={`p-2 rounded-md transition-colors duration-200 ${
-              activeFormats.strike
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-200 hover:bg-gray-300'
-            }`}
+            onClick={(e) =>{
+                e.preventDefault()
+                editor.chain().focus().toggleStrike().run()}}
           >
             <s>S</s>
           </button>
           <button
-            onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-            className={`p-2 rounded-md transition-colors duration-200 ${
-              editor.isActive('heading', { level: 1 }) ? 'bg-blue-600 text-white' : 'bg-gray-200 hover:bg-gray-300'
-            }`}
+            onClick={(e) =>{
+                e.preventDefault()
+                editor.chain().focus().toggleHeading({ level: 1 }).run()}}
           >
             H1
           </button>
           <button
-            onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-            className={`p-2 rounded-md transition-colors duration-200 ${
-              editor.isActive('heading', { level: 2 }) ? 'bg-blue-600 text-white' : 'bg-gray-200 hover:bg-gray-300'
-            }`}
+            onClick={(e) =>{
+                e.preventDefault()
+                editor.chain().focus().toggleHeading({ level: 2 }).run()}}
           >
             H2
           </button>
           <button
-            onClick={() => editor.chain().focus().toggleBulletList().run()}
-            className={`p-2 rounded-md transition-colors duration-200 text-xs ${
-              editor.isActive('bulletList') ? 'bg-blue-600 text-white' : 'bg-gray-200 hover:bg-gray-300'
-            }`}
+            onClick={(e) =>{
+                e.preventDefault()
+                editor.chain().focus().toggleBulletList().run()}}
           >
-            Bullet
+            BP
           </button>
           <button
-            onClick={() => editor.chain().focus().toggleBlockquote().run()}
-            className={`p-2 rounded-md transition-colors duration-200 text-xs${
-              editor.isActive('blockquote') ? 'bg-blue-600 text-white' : 'bg-gray-200 hover:bg-gray-300'
-            }`}
+            onClick={(e) =>{
+                e.preventDefault()
+                editor.chain().focus().toggleBlockquote().run()}}
           >
-            quote
+            Qu
           </button>
           <button
-            onClick={() => editor.chain().focus().toggleOrderedList().run()}
-            className={`p-2 rounded-md transition-colors duration-200 text-xs ${
-              editor.isActive('orderedList') ? 'bg-blue-600 text-white' : 'bg-gray-200 hover:bg-gray-300'
-            }`}
+            onClick={(e) =>{
+                e.preventDefault()
+                editor.chain().focus().toggleOrderedList().run()}}
           >
              list
+          </button>
+          <button
+            onClick={(e) =>{
+                e.preventDefault()
+                editor.chain().focus().toggleCodeBlock().run()}}
+          >
+           code
           </button>
         </div>
       </BubbleMenu>
     )}
-    {editor && (
+    {/* {editor && (
       <FloatingMenu editor={editor} tippyOptions={{ duration: 100 }}>
         <div className="bg-white rounded-md shadow-md flex gap-2 p-2">
           <button
-            onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+            onClick={(e) =>{
+                e.preventDefault()
+                editor.chain().focus().toggleHeading({ level: 1 }).run()}}
             className={`p-2 rounded-md transition-colors duration-200 ${
               editor.isActive('heading', { level: 1 }) ? 'bg-blue-600 text-white' : 'bg-gray-200 hover:bg-gray-300'
             }`}
@@ -150,7 +148,9 @@ const Tiptap = ({tipTapContent , onChange} : {tipTapContent : string , onChange 
             H1
           </button>
           <button
-            onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+            onClick={(e) => {
+                e.preventDefault()
+                editor.chain().focus().toggleHeading({ level: 2 }).run()}}
             className={`p-2 rounded-md transition-colors duration-200 ${
               editor.isActive('heading', { level: 2 }) ? 'bg-blue-600 text-white' : 'bg-gray-200 hover:bg-gray-300'
             }`}
@@ -158,7 +158,9 @@ const Tiptap = ({tipTapContent , onChange} : {tipTapContent : string , onChange 
             H2
           </button>
           <button
-            onClick={() => editor.chain().focus().toggleBulletList().run()}
+            onClick={(e) => {
+                e.preventDefault()
+                editor.chain().focus().toggleBulletList().run()}}
             className={`p-2 rounded-md transition-colors duration-200 text-xs ${
               editor.isActive('bulletList') ? 'bg-blue-600 text-white' : 'bg-gray-200 hover:bg-gray-300'
             }`}
@@ -166,7 +168,9 @@ const Tiptap = ({tipTapContent , onChange} : {tipTapContent : string , onChange 
             Bullet
           </button>
           <button
-            onClick={() => editor.chain().focus().toggleBlockquote().run()}
+            onClick={(e) =>{
+                e.preventDefault()
+                editor.chain().focus().toggleBlockquote().run()}}
             className={`p-2 rounded-md transition-colors duration-200 text-xs${
               editor.isActive('blockquote') ? 'bg-blue-600 text-white' : 'bg-gray-200 hover:bg-gray-300'
             }`}
@@ -174,7 +178,9 @@ const Tiptap = ({tipTapContent , onChange} : {tipTapContent : string , onChange 
             quote
           </button>
           <button
-            onClick={() => editor.chain().focus().toggleOrderedList().run()}
+            onClick={(e) =>{
+                e.preventDefault()
+                editor.chain().focus().toggleOrderedList().run()}}
             className={`p-2 rounded-md transition-colors duration-200 text-xs ${
               editor.isActive('orderedList') ? 'bg-blue-600 text-white' : 'bg-gray-200 hover:bg-gray-300'
             }`}
@@ -183,7 +189,7 @@ const Tiptap = ({tipTapContent , onChange} : {tipTapContent : string , onChange 
           </button>
         </div>
       </FloatingMenu>
-    )}
+    )} */}
     <EditorContent style={{ whiteSpace: 'pre-line' }} editor={editor} />
   </>
   )
