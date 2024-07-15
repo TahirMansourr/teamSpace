@@ -8,6 +8,7 @@ type CreateNoteDto = {
     projectId : string,
     body : string, 
     creator : string,
+    _id? : string
 }
 
 export async function CreateNote(params : CreateNoteDto){
@@ -29,5 +30,24 @@ export async function CreateNote(params : CreateNoteDto){
 
     } catch (error) {
         throw new Error(`Error at CreateNote : ${error}`);
+    }
+}
+
+export async function UpdateNote(params : CreateNoteDto){
+    try {
+        await connectToDB()
+        const requiredNote = await Note.findOneAndUpdate({_id : params._id} , {
+            $set : {
+                body : params.body,
+                updatedAt : new Date()
+            }
+        })
+        await requiredNote.save()
+        const objResponse = requiredNote.toObject()
+        const response = JSON.parse(JSON.stringify(objResponse))
+        return({status : 'success' , note : response})
+
+    } catch (error) {
+        throw new Error(`error at updateNote in NoteAction.ts : ${error}`)
     }
 }

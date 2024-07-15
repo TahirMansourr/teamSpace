@@ -58,6 +58,7 @@ export type MesssageDto= {
 }
 
 export type NotesDto = {
+    _id : string,
     body : string,
     creator : UserDto,
     project : ProjectDto,

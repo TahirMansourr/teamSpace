@@ -1,8 +1,9 @@
 'use client'
 import { IssueDto, ProjectDto, UserDto } from "@/Utils/types";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { createOrUpdateIssueForm } from "../Forms/createOrUpdateIssue";
 import { CreateIssue, UpdateIssue } from "@/lib/actions/IssueActions";
+import { socket } from "@/socket";
 
 type IssuesContextDto = {
     allIssues : IssueDto[], 
@@ -53,7 +54,8 @@ type IssuesContextDto = {
                     assignedTo : assignedToMembers,
                     creationDate : res.issue.creationDate
                 }
-                setIssuesInfo((prev) => [...prev , newIssue])
+                socket.emit('createIssue' , newIssue)
+                // setIssuesInfo((prev) => [...prev , newIssue])
             })
         } catch (error) {
             throw new Error(`error at handleCreateIssue : ${error}`);
@@ -90,7 +92,8 @@ type IssuesContextDto = {
                     assignedTo : assignedToMembers,
                     creationDate : ''
                 }
-                setIssuesInfo(((prev : IssueDto[] )=> prev.map((prevIssue : IssueDto) => prevIssue._id === newIssue._id ? newIssue : prevIssue)))
+                socket.emit('updateIssue' , newIssue)
+                // setIssuesInfo(((prev : IssueDto[] )=> prev.map((prevIssue : IssueDto) => prevIssue._id === newIssue._id ? newIssue : prevIssue)))
             })
         } catch (error) {
             throw new Error(`error at handleCreateIssue : ${error}`);
@@ -100,6 +103,16 @@ type IssuesContextDto = {
             close
         }
     }
+
+    useEffect(()=>{
+        socket.on('createIssue' ,(issue : IssueDto) => {
+            setIssuesInfo((prev : IssueDto[]) => [issue , ...prev])
+        })
+        socket.on('updateIssue' , (newIssue : IssueDto) => {
+            setIssuesInfo(((prev : IssueDto[] )=> prev.map((prevIssue : IssueDto) => prevIssue._id === newIssue._id ? newIssue : prevIssue)))
+
+        })
+    } , [])
 
     const value = {
         allIssues : issuesInfo,

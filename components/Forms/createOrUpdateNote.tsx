@@ -1,41 +1,39 @@
 'use client'
 import React, { useState } from 'react'
 import Tiptap from '../TipTapEditor/TipTap'
-import { useForm } from '@mantine/form'
 import { Button, LoadingOverlay } from '@mantine/core'
 import { useNotesContext } from '../Contexts/NotesContext'
+import { NotesDto } from '@/Utils/types'
 
-const CreateOrUpdateNote = () => {
-    const {formLoading, handleCreateNote} = useNotesContext()
-    const [content , setContent] = useState<string>('')
-    console.log("🚀 ~ CreateOrUpdateNote ~ content:", content)
-    const handleContentChange = (contents : any)=>{
-        setContent(contents)
+const CreateOrUpdateNote = ({existingNoteContent} : {existingNoteContent? : NotesDto }) => {
+    const { formLoading, handleCreateNote , handleUpdateNote } = useNotesContext()
+    const [content, setContent] = useState<string>(existingNoteContent ? existingNoteContent.body : '')
+
+    const handleContentChange = (newContent: string) => {
+        setContent(newContent)
     }
-    const form = useForm({
-        mode : 'uncontrolled',
-        initialValues : {
-            body : content
-        }
-    })
-    const handleSubmit = async () => {
-        form.setFieldValue('body' , content)
-        console.log("🚀 ~ handleSubmit ~ values:", content)
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault()
+        if(!existingNoteContent){
         await handleCreateNote(content)
-       
+        }else{
+        await handleUpdateNote({ ...existingNoteContent , body : content})
+        }
     }
-  return (
-    <form onSubmit={form.onSubmit(handleSubmit)}>
-        <LoadingOverlay visible = {formLoading} />
-        <Tiptap 
-            tipTapContent={content}
-            onChange={(newContent : string) =>handleContentChange(newContent)}
-            
-            />
-        <Button type='submit'>sumbit</Button>
-    </form>
-    
-  )
+
+    return (
+        <>
+            <LoadingOverlay visible={formLoading} />
+            <form onSubmit={handleSubmit}>
+                <Tiptap 
+                    tipTapContent={content}
+                    onChange={(newContent: string) => handleContentChange(newContent)}
+                />
+                <Button type="submit" className='m-2'>Save</Button>
+            </form>
+        </>
+    )
 }
 
 export default CreateOrUpdateNote

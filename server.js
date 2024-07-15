@@ -32,6 +32,22 @@ app.prepare().then(() => {
       console.log('recieved' , value);
       io.emit('updateTask' , value)
     })
+    socket.on('newNote' , (value) => {
+      console.log('recieved note' , value);
+      io.emit('newNote' , value) 
+    })
+    socket.on('updateNote' , (value) => {
+      console.log('recieved note' , value);
+      io.emit('updateNote' , value) 
+    })
+    socket.on('createIssue' , (value) => {
+      console.log('recieved Issue' , value);
+      io.emit('createIssue' , value) 
+    })
+    socket.on('updateIssue' , (value) => {
+      console.log('recieved Issue' , value);
+      io.emit('updateIssue' , value) 
+    })
   
     console.log('Your server is now connected')
   });

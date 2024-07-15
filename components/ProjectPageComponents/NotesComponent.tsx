@@ -1,5 +1,5 @@
 'use client'
-import { ScrollArea, Text, Tooltip } from '@mantine/core'
+import { Indicator, ScrollArea, Text, Tooltip } from '@mantine/core'
 import React from 'react'
 import { useWorkSpaceContext } from '../Contexts/WorkSpaceContext'
 import TeamSpaceNotes from './NotesComponents/TeamSpaceNotes'
@@ -13,6 +13,8 @@ const NotesComponent = () => {
     const {notesComponentExpandState ,setNotesComponentExpandState , projectInfo , userInfo} = useWorkSpaceContext()
     const [modalOpened , {open , close : closeModal}] = useDisclosure(false)
   return (
+    <NotesProvider project={projectInfo.project} user={userInfo}>
+      <Indicator color='teal' withBorder size={15}>
     <article  className={`transition-all ease-in-out duration-200 border flex flex-col bg-white rounded-md shadow-xl p-2 ${notesComponentExpandState ? 'opacity-0 overflow-hidden' : 'opacity-100 w-[20rem] h-full flex-grow'}`}
     style={{
         width: notesComponentExpandState ? '0' : '20rem',
@@ -34,14 +36,16 @@ const NotesComponent = () => {
           </section>
        </header> 
        <section>
-        <NotesProvider project={projectInfo.project} user={userInfo}>
+        
           <CreateOrUpdateNotesModal modalOpened = {modalOpened} closeModal={closeModal}/>
           <ScrollArea h={600} w={'100%'}>
             <TeamSpaceNotes/>
           </ScrollArea>
-        </NotesProvider>
        </section>
       </article>
+      </Indicator>
+      </NotesProvider>
+
   )
 }
 
