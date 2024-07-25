@@ -2,7 +2,7 @@
 import { useChatContext } from '@/components/Contexts/ChatContext'
 import { useWorkSpaceContext } from '@/components/Contexts/WorkSpaceContext'
 import React from 'react'
-import './chatSection.css'; // Import your custom CSS file
+import './chatsection.css'; // Import your custom CSS file
 
 const ChatSection = () => {
   const { messages } = useChatContext();
