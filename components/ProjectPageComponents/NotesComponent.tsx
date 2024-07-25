@@ -15,7 +15,7 @@ const NotesComponent = () => {
   
   return (
     <NotesProvider project={projectInfo.project} user={userInfo}>
-      <Indicator color='teal' withBorder size={15}>
+      
     <article  className={`transition-all ease-in-out duration-200 border flex flex-col bg-white rounded-md shadow-xl p-2 ${notesComponentExpandState ? 'opacity-0 overflow-hidden' : 'opacity-100 w-[20rem] h-full flex-grow'}`}
     style={{
         width: notesComponentExpandState ? '0' : '20rem',
@@ -24,7 +24,9 @@ const NotesComponent = () => {
     }}
     >
        <header className=' flex justify-between'> 
+       {/* <Indicator color='teal' withBorder size={15} position='top-start'> */}
         <Text size="xl" fw={600}>Notes:</Text>
+        {/* </Indicator> */}
         <section className=' flex items-center gap-3'>
           <div> 
               <Tooltip label = 'Create a new Task' color='blue'>
@@ -45,7 +47,7 @@ const NotesComponent = () => {
           </ScrollArea>
        </section>
       </article>
-      </Indicator>
+     
       </NotesProvider>
 
   )

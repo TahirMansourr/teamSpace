@@ -22,7 +22,7 @@ function SideBar({
         <section
             className={`transform transition-all duration-150 ${
                 opened
-                    ? ' w-[15rem] flex-grow bg-gray-300 min-h-[30rem] rounded-lg m-2 '
+                    ? ' max-w-[15rem] flex-grow min-h-[30rem] rounded-xl m-2 w-fit p-4 shadow-xl border '
                     : 'max-h-0 opacity-0 w-0 flex-grow-0 min-h-0'
                 }`}
             >

@@ -3,7 +3,7 @@ import { CreateNote, UpdateNote } from "@/lib/actions/NoteAction"
 import { socket } from "@/socket"
 import { NotesDto, ProjectDto, UserDto } from "@/Utils/types"
 import { notifications } from "@mantine/notifications"
-import { useContext, useState, createContext, useEffect } from "react"
+import { useContext, useState, createContext, useEffect, useRef } from "react"
 
 type NotesContextDto = {
  allNotes : NotesDto[],
@@ -32,6 +32,7 @@ const NotesContext = createContext<NotesContextDto>({} as NotesContextDto)
     const [isConnected, setIsConnected] = useState(false);
     const [transport, setTransport] = useState("N/A");
     const [activeUsers , setActiveUsers] = useState<string[]>([])
+    const didMountRef = useRef(false);
 
     async function handleCreateNote(body : string, close : ()=>void){
         setFormLoading(true)
@@ -78,12 +79,10 @@ const NotesContext = createContext<NotesContextDto>({} as NotesContextDto)
     }
 
     useEffect(() => {
-        console.log('Chat Context Rerendered');
-        
-    //     if (didMountRef.current) {
-    //       return;
-    //   }
-    //   didMountRef.current = true;
+        if (didMountRef.current) {
+          return;
+      }
+      didMountRef.current = true;
       console.log('Chat Context Rerendered');
           if (socket.connected) {
             onConnect();
@@ -99,6 +98,9 @@ const NotesContext = createContext<NotesContextDto>({} as NotesContextDto)
             socket.io.engine.on("upgrade", (transport : any) => {
               setTransport(transport.name);
             });
+            socket.on('connection' , (socket :any) => {
+              socket.join('thisRoom')
+            })
           }
           socket.on('newNote', (note : NotesDto) => {
             if(note){
@@ -111,7 +113,7 @@ const NotesContext = createContext<NotesContextDto>({} as NotesContextDto)
           })
           socket.on('updateNote' , (note : NotesDto) => {
             console.log('triggered');
-            setNotes(((prev : NotesDto[])=> prev.map((prevNote : NotesDto) => prevNote._id === note._id ? note : prevNote)))
+            setNotes(((prev : NotesDto[])=> prev.map((prevNote : NotesDto) => {return prevNote._id === note._id ? note : prevNote})))
           })
           function onDisconnect() {
             setIsConnected(false);
