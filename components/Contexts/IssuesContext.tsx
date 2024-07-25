@@ -76,7 +76,7 @@ type IssuesContextDto = {
             setFormLoading(true)
             UpdateIssue({
                 _id : values._id as string,
-                assignedTo : assignedToMembers.map((member : UserDto) => member._id),
+                assignedTo : assignedToMembers.map((member : UserDto | undefined) => member ? member._id : ''),
                 description : values.description,
                 dueDate : values.dueDate,
                 name : values.name,

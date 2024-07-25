@@ -58,7 +58,7 @@ const TaskProvider = ({
             try {
                 CreateTask({
                     name : values.name,
-                    assignedTo : assignedToMembers ? assignedToMembers.map((member : UserDto) =>  member._id) : [],
+                    assignedTo : assignedToMembers ? assignedToMembers.map((member : UserDto | undefined) => member ? member._id : '') : [],
                     description : values.description,
                     dueDate : values.dueDate,
                     priority : values.priority,
@@ -92,7 +92,7 @@ const TaskProvider = ({
                      await UpdateTask({
                         _id : values._id as string,
                         name : values.name,
-                        assignedTo : assignedToMembers.map((member : UserDto) => member._id),
+                        assignedTo : assignedToMembers.map((member : UserDto | undefined) => member ? member._id : ''),
                         description : values.description,
                         dueDate : values.dueDate,
                         priority : values.priority,
