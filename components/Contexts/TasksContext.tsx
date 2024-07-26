@@ -54,7 +54,7 @@ const TaskProvider = ({
             const assignedToMembers  = values.assignedTo.map((name) =>{
                 const assignedToMember = projectInfo.team.find( (member : UserDto) => name === member.username)
                 return assignedToMember
-            }).filter((id) => id !== undefined)
+            }).filter((id): id is UserDto => id !== undefined);
             try {
                 CreateTask({
                     name : values.name,
@@ -89,7 +89,7 @@ const TaskProvider = ({
             const assignedToMembers = values.assignedTo.map((name) =>{
                 const assignedToMember = projectInfo.team.find( (member : UserDto) => name === member.username)
                 return assignedToMember
-            }).filter((id) => id !== undefined)
+            }).filter((id): id is UserDto => id !== undefined);
                 try {
                      await UpdateTask({
                         _id : values._id as string,
