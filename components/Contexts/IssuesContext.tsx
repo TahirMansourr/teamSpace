@@ -51,7 +51,7 @@ type IssuesContextDto = {
                 const newIssue = {
                     ...values,
                     _id : res.issue._id,
-                    assignedTo : assignedToMembers ? assignedToMembers : [] as UserDto[],
+                    assignedTo : assignedToMembers as UserDto[],
                     creationDate : res.issue.creationDate
                 }
                 // socket.emit('createIssue' , newIssue)
@@ -90,7 +90,7 @@ type IssuesContextDto = {
                 const newIssue = {
                     ...values,
                     _id: values._id as string,
-                    assignedTo : assignedToMembers ? assignedToMembers : [] as UserDto[],
+                    assignedTo : assignedToMembers as UserDto[],
                     creationDate : ''
                 }
                 // socket.emit('updateIssue' , newIssue)
