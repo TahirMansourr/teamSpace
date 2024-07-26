@@ -42,8 +42,9 @@ const NotesContext = createContext<NotesContextDto>({} as NotesContextDto)
                 body,
                 creator : userInfo._id
             }).then((res : {status : string , note : NotesDto})=>{
-                socket.emit('newNote' , res.note)
-                console.log('emmitted');
+              setNotes((prev : NotesDto[]) => [{...res.note , creator : userInfo} , ...prev])
+                // socket.emit('newNote' , res.note)
+                // console.log('emmitted');
                 
             })
            
@@ -65,7 +66,9 @@ const NotesContext = createContext<NotesContextDto>({} as NotesContextDto)
           createdAt : existingNote.createdAt,
           _id: existingNote._id
         }).then((res : {status : string , note : NotesDto})=>{
-          socket.emit('updateNote', {...res.note , creator : existingNote.creator});
+          const UpdateNote = {...res.note , creator : existingNote.creator}
+          setNotes(((prev : NotesDto[])=> prev.map((prevNote : NotesDto) => {return prevNote._id === UpdateNote._id ? UpdateNote : prevNote})))
+          // socket.emit('updateNote', {...res.note , creator : existingNote.creator});
         })
     
          // Emit the updated note

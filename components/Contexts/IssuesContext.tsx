@@ -54,7 +54,8 @@ type IssuesContextDto = {
                     assignedTo : assignedToMembers,
                     creationDate : res.issue.creationDate
                 }
-                socket.emit('createIssue' , newIssue)
+                // socket.emit('createIssue' , newIssue)
+                setIssuesInfo((prev : IssueDto[]) => [newIssue , ...prev])
                 // setIssuesInfo((prev) => [...prev , newIssue])
             })
         } catch (error) {
@@ -92,7 +93,8 @@ type IssuesContextDto = {
                     assignedTo : assignedToMembers,
                     creationDate : ''
                 }
-                socket.emit('updateIssue' , newIssue)
+                // socket.emit('updateIssue' , newIssue)
+                setIssuesInfo(((prev : IssueDto[] )=> prev.map((prevIssue : IssueDto) => prevIssue._id === newIssue._id ? newIssue : prevIssue)))
                 // setIssuesInfo(((prev : IssueDto[] )=> prev.map((prevIssue : IssueDto) => prevIssue._id === newIssue._id ? newIssue : prevIssue)))
             })
         } catch (error) {

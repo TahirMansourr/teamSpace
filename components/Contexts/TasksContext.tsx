@@ -71,9 +71,10 @@ const TaskProvider = ({
                       ...values , 
                       assignedTo : assignedToMembers,
                       _id : res.task._id
-                    }
-                    socket.emit('createTask' , newTask)
-                    console.log('sent task' , newTask); 
+                    } as TaskDto
+                    setAllTasks((prev : TaskDto[]) => [newTask , ...prev  ])
+                    // socket.emit('createTask' , newTask)
+                    // console.log('sent task' , newTask); 
                 })
             } catch (error) {
                 throw new Error(`error at handleCreateTask : ${error}`);
@@ -104,9 +105,12 @@ const TaskProvider = ({
                         const newTask = {
                           ...values , 
                           assignedTo : assignedToMembers,
-                        }
-                        socket.emit('updateTask' , newTask)
-                        console.log('sent task' , newTask); 
+                        } as TaskDto
+                        setAllTasks(((prev : TaskDto[] )=> prev.map((prevTask : TaskDto) => prevTask._id === newTask._id ? newTask : prevTask)  ))
+
+            
+                        // socket.emit('updateTask' , newTask)
+                        // console.log('sent task' , newTask); 
                     })
                 } catch (error) {
                     throw new Error(`error at handleCreateTask : ${error}`);
