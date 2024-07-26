@@ -33,7 +33,7 @@ type IssuesContextDto = {
         const assignedToMembers  = values.assignedTo.map((id) =>{
             const assignedToMember = project.team.find( (member : UserDto) => id === member._id)
             return assignedToMember
-        }).filter((id) => id !== undefined)
+        }).filter((id): id is UserDto => id !== undefined);
         
         try {
             setFormLoading(true)
@@ -71,7 +71,7 @@ type IssuesContextDto = {
         const assignedToMembers  = values.assignedTo.map((name) =>{
             const assignedToMember = project.team.find( (member : UserDto) => name === member.username)
             return assignedToMember
-        }).filter((id) => id !== undefined)
+        }).filter((id): id is UserDto => id !== undefined);
         
         try {
             setFormLoading(true)
