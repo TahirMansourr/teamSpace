@@ -70,9 +70,10 @@ const TaskProvider = ({
                     const newTask = {
                       ...values , 
                       assignedTo : assignedToMembers,
-                      _id : res.task._id
-                    } as TaskDto
-                    setAllTasks((prev : TaskDto[]) => [newTask , ...prev  ])
+                      _id : res.task._id,
+                      creationDate : res.task.creationDate
+                    } 
+                    setAllTasks((prev : TaskDto[] | undefined) =>prev ? [newTask , ...prev  ] : [])
                     // socket.emit('createTask' , newTask)
                     // console.log('sent task' , newTask); 
                 })
@@ -101,11 +102,13 @@ const TaskProvider = ({
                         projectId : projectInfo._id,
                         tags : values.tags,
                         status : values.status
-                     }).then((res) => {
+                     }).then((res : {status : string , task : TaskDto}) => {
                         const newTask = {
                           ...values , 
+                          _id : res.task._id,
                           assignedTo : assignedToMembers,
-                        } as TaskDto
+                          creationDate : res.task.creationDate
+                        }
                         setAllTasks(((prev : TaskDto[] )=> prev.map((prevTask : TaskDto) => prevTask._id === newTask._id ? newTask : prevTask)  ))
 
             
