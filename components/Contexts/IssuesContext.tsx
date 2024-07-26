@@ -51,7 +51,7 @@ type IssuesContextDto = {
                 const newIssue = {
                     ...values,
                     _id : res.issue._id,
-                    assignedTo : assignedToMembers,
+                    assignedTo : assignedToMembers ? assignedToMembers : [] as UserDto[],
                     creationDate : res.issue.creationDate
                 }
                 // socket.emit('createIssue' , newIssue)
