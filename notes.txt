@@ -1,0 +1,33 @@
+Things i want to add
+    1- first of all i want to link the pages together.
+    2- I would like to put the account settings where people can manage thier accounts.
+    3- I would like to add an image for the users.
+    4- Yup, these are the important things so far.
+
+
+As for the teamSpace page the features i want to add:
+    * Ok as far as for the teams space page i want to add something else.
+    in each component I want to add a dropdown menu at the top and then this drop down menu should have a list of options to 
+    organize the given tasks, notes, or issues. the filters could be completedTasks, organize by priority, date, and stuff. and same goes for issues.
+    resolved issues , and organize according to date and stuff.
+
+And then As for the Docs page:
+    The feautre i Want is that to render the docs as HTML and then you have the ability to edit them, and then i want like the ability to create a sideBar
+    for the docs to be more clear and stuff.
+
+As for authenctication and authorization: 
+    I want to create a button like the clerk button which is a button that has you avatar and then when you click it it gives you the ability to logout or 
+    manage your account and shows some of the account info. 
+
+as for the dashboard: 
+     If you are the one that created the account you should have a page where you can see the user activity of the team and add admins with permissions to 
+     the team and you can delete or ban users.
+
+
+     Ok let's start with the docs:
+     ok so so far my idea is that in the page only certain can people can have access to update the docs and these people are granted access by the project 
+     creator.
+     users should have the ability to
+     1-create a sidebar option.
+     2-inside this side bar can have the ability to add titles and nested titles, bullet points and lists.
+     3-
