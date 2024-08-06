@@ -5,7 +5,10 @@ const docSchema = new mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Project'
     },
-    body : String,
+    body : [{
+        title : String ,
+        content : String
+    }],
     edits : [{
         editedBy : { 
             type : mongoose.Schema.Types.ObjectId,

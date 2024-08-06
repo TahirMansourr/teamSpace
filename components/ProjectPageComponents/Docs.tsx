@@ -1,6 +1,7 @@
 'use client'
 import { Button, Transition } from '@mantine/core'
 import React, { Dispatch, SetStateAction, useEffect } from 'react'
+import SingleDoc from './DocsComponenets/SingleDoc'
 
 const Docs = ({
     opened,
@@ -27,9 +28,10 @@ const Docs = ({
            <section className='m-5 w-full ' style={styles}>
               <div className=' flex justify-between items-center w-full '>
                 <h1></h1>
-                <Button variant='outline'>Create a new document</Button>
+                {/* <Button variant='outline'>Create a new document</Button> */}
               </div>
-              <div className='flex grow mt-7 w-full items-center justify-center'>
+              <SingleDoc/>
+              {/* <div className='flex grow mt-7 w-full items-center justify-center'>
                 <ul>
                   <li>Doc1</li>
                   <li>Doc2</li>
@@ -37,7 +39,7 @@ const Docs = ({
                   <li>Doc4</li>
                   <li>Doc5</li>
                 </ul>
-              </div>
+              </div> */}
          </section>
          )
          }
