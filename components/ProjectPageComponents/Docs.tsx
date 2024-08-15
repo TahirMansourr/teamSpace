@@ -2,6 +2,8 @@
 import { Button, Transition } from '@mantine/core'
 import React, { Dispatch, SetStateAction, useEffect } from 'react'
 import SingleDoc from './DocsComponenets/SingleDoc'
+import DocsProvider from '../Contexts/DocsContext'
+import { useWorkSpaceContext } from '../Contexts/WorkSpaceContext'
 
 const Docs = ({
     opened,
@@ -15,6 +17,8 @@ const Docs = ({
         setOpened(true)
         return ()=>setOpened(false)
       })
+
+      const {userInfo , projectInfo} = useWorkSpaceContext()
       
       return (
         <Transition
@@ -25,6 +29,10 @@ const Docs = ({
           >
         {
         (styles) =>(
+          <DocsProvider
+            userInfo={userInfo}
+            projectInfo={projectInfo.project}
+            >
            <section className='m-5 w-full ' style={styles}>
               <div className=' flex justify-between items-center w-full '>
                 <h1></h1>
@@ -41,6 +49,7 @@ const Docs = ({
                 </ul>
               </div> */}
          </section>
+         </DocsProvider>
          )
          }
         </Transition>

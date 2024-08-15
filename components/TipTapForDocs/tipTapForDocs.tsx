@@ -10,7 +10,10 @@ import { Color } from '@tiptap/extension-color'
 import TextStyle from '@tiptap/extension-text-style'
 import './styles.css'
 
-const TiptapForDocs = () => {
+const TiptapForDocs = ({content , onChange} : {content : string , onChange : Function}) => {
+    const handleChange = (newContent : string) =>{
+        onChange(newContent)
+    }
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -29,13 +32,17 @@ const TiptapForDocs = () => {
         },
       }),
     ],
-    content: '<p>Hello World! 🌎️</p>',
+    content,
     editorProps: {
       attributes: {
         class: 'w-full outline-none h-full',
         InputPlaceholder: 'Write something',
       },
     },
+    onUpdate : ({editor}) => {
+        handleChange(editor.getHTML())
+    }
+    
   })
 
   const setLink = useCallback(() => {
