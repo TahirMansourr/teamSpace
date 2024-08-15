@@ -1,0 +1,124 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    padding: 20px;
+}
+
+p {
+    margin-bottom: 1em;
+}
+
+/* Strong Text */
+strong {
+    font-weight: bold;
+    color: #222;
+}
+
+/* Emphasized Text */
+em {
+    font-style: italic;
+    color: #555;
+}
+
+/* Strikethrough */
+s {
+    text-decoration: line-through;
+    color: #d31717;
+}
+
+/* Lists */
+ul, ol {
+    margin: 1em 0;
+    padding-left: 1.5em;
+}
+
+ul li, ol li {
+    margin-bottom: 0.5em;
+}
+
+/* Blockquotes */
+blockquote {
+    border-left: 5px solid #d3d3d3;
+    margin: 1.5em 10px;
+    padding: 0.5em 10px;
+    color: #666;
+    background-color: #f9f9f9;
+    font-style: italic;
+}
+
+blockquote ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+blockquote ul li {
+    margin: 0;
+}
+
+/* Preformatted Code */
+pre {
+    background-color: #2e3b4e;
+    color: #fff;
+    padding: 1em;
+    border-radius: 5px;
+    overflow-x: auto;
+    margin-bottom: 1em;
+}
+
+code {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* Links */
+a {
+    color: #1e90ff;
+    text-decoration: underline;
+}
+
+a:hover {
+    color: #1c7cd6;
+}
+
+/* Styled Link */
+.text-blue-500 {
+    color: #007bff;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+/* Images */
+img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 1em;
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    blockquote {
+        padding: 0.5em;
+        margin: 1em 0;
+    }
+}
+
+@media (max-width: 480px) {
+    p, li {
+        font-size: 14px;
+    }
+
+    pre {
+        font-size: 12px;
+    }
+}
