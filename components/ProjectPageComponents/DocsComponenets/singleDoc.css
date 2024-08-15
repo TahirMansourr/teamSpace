@@ -13,6 +13,33 @@ p {
     margin-bottom: 1em;
 }
 
+/* Headings */
+h1, h2, h3, h4 {
+    margin: 0.5em 0;
+    font-weight: bold;
+    color: #222;
+}
+
+h1 {
+    font-size: 2em;
+    color: #2c3e50;
+}
+
+h2 {
+    font-size: 1.75em;
+    color: #34495e;
+}
+
+h3 {
+    font-size: 1.5em;
+    color: #7f8c8d;
+}
+
+h4 {
+    font-size: 1.25em;
+    color: #95a5a6;
+}
+
 /* Strong Text */
 strong {
     font-weight: bold;
@@ -74,6 +101,14 @@ code {
     font-family: 'Courier New', Courier, monospace;
 }
 
+/* Horizontal Rules */
+hr {
+    border: 0;
+    height: 1px;
+    background: #ccc;
+    margin: 2em 0;
+}
+
 /* Links */
 a {
     color: #1e90ff;
@@ -120,5 +155,21 @@ img {
 
     pre {
         font-size: 12px;
+    }
+
+    h1 {
+        font-size: 1.75em;
+    }
+
+    h2 {
+        font-size: 1.5em;
+    }
+
+    h3 {
+        font-size: 1.25em;
+    }
+
+    h4 {
+        font-size: 1em;
     }
 }

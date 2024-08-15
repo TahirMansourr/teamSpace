@@ -14,15 +14,15 @@ const SingleDoc = () => {
 
   return (
     <main className=' flex w-full mt-12' >
-        <Button>{edit ? 'Preview' : 'Edit'}</Button>
+        <Button onClick={() => setEdit(!edit)}>{edit ? 'Preview' : 'Edit'}</Button>
         {/* <section className='border-r-4 p-4 flex flex-col '>
             <Input placeholder='enter the title of the script'/>
         </section> */}
         <section className=' flex flex-grow  p-3'>
-           <TiptapForDocs
+           {edit ?<TiptapForDocs
                 content  = {content}
                 onChange={(newContent: string) => handleContentChange(newContent)}
-            />
+            /> : null}
             {!edit ?<div dangerouslySetInnerHTML={{ __html : content}}/> : null}
 
         </section>
