@@ -14,7 +14,7 @@ const IssueCard = ({Issue } : {Issue : IssueDto}) => {
   return (
     <section className={`flex flex-col w-[95%] shadow-md m-2 rounded-md p-2 border 
         ${Issue.priority === 'HIGH' ? 'bg-red-700 text-white' : Issue.priority === 'MEDIUM' ? 'bg-orange-500 text-white' : null}`}>
-       <h1 className=' font-bold underline-offset-2 underline'>{Issue.name}</h1>
+       <h5 className=' font-bold underline-offset-2 underline'>{Issue.name}</h5>
        <p className='my-1'>
        <Badge
           radius='md'
@@ -33,14 +33,14 @@ const IssueCard = ({Issue } : {Issue : IssueDto}) => {
            modalOpened ={modalOpened} closeModal={closeModal} 
            initialValues = {{...Issue , dueDate : date , assignedTo : Issue.assignedTo.map((user : any) => user.username )}}
           />
-       <h1 className=' text-sm font-bold my-2'>DeadLine: {date.toLocaleString()}</h1>
+       <p className=' text-sm font-bold my-2'>DeadLine: {date.toLocaleString()}</p>
        <Spoiler maxHeight={40} showLabel="..." hideLabel="Hide">
            <div className=' text-xs font-light whitespace-pre-line'>
                 {Issue.description}
            </div> 
         </Spoiler>
         <div className="flex flex-col mt-2">
-            <h1 className=' font-bold '>Assigned To</h1>    
+            <p className=' font-bold '>Assigned To</p>    
             <div className=' flex gap-2'>{Issue.assignedTo.map((user : UserDto) => (<Badge color="blue">{user.username}</Badge>))}</div>
             <FiEdit className=' ml-auto hover:cursor-pointer' onClick={open}/>
         </div>

@@ -2,7 +2,7 @@
 import TiptapForDocs from '@/components/TipTapForDocs/tipTapForDocs'
 import React from 'react'
 import '../DocsComponenets/singleDoc.css'
-import SideBarForDocs from './sideBarForDocs'
+import SideBarForDocs from './SideBarForDocs'
 
 const SingleDoc = ({edit} : {edit : boolean}) => {
     const [content , setContent] = React.useState('')
@@ -15,7 +15,7 @@ const SingleDoc = ({edit} : {edit : boolean}) => {
   return ( 
     <main className=' flex flex-grow pt-20 ' >
         <section className=' flex flex-grow'>
-            <div className=' flex-initial w-36 overflow-hidden ' >
+            <div className=' flex-initial w-36  ' >
             <SideBarForDocs content = {content} />
             </div>
         <section className=' flex flex-grow  p-3 border shadow-md m-3 '>

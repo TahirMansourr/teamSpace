@@ -20,6 +20,7 @@ const Docs = ({
 
       const {userInfo , projectInfo} = useWorkSpaceContext()
       const [edit , setEdit] = React.useState(false)
+      const [onMainPage , setOnMainPage] = React.useState(false)
       
       return (
         <Transition
