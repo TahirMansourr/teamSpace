@@ -1,6 +1,4 @@
 'use server'
-
-import path from "path"
 import Feature from "../models/FeatureModel"
 import Project from "../models/ProjectModel"
 import { connectToDB } from "../mongoose"
