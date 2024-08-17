@@ -2,6 +2,7 @@
 import React from 'react'
 import { useWorkSpaceContext } from '../Contexts/WorkSpaceContext'
 
+
 const NotificationsBar = () => {
     const {
         notesComponentExpandState ,
@@ -15,7 +16,7 @@ const NotificationsBar = () => {
         } = useWorkSpaceContext()
   return (
     <section className=' mx-auto flex bg-slate-100 rounded-lg p-2 gap-2 items-center shadow-lg border'>
-       <div>Status Bar:</div>
+       {/* <div>Status Bar:</div> */}
        <div className={` cursor-pointer transition-all ease-in-out duration-200 rounded-md px-2 bg-slate-600 text-white ${notesComponentExpandState ? 'p-1 opacity-100 shadow-sm ' : 'opacity-0 w-0 h-0 translate-x-10 '}`}
         onClick={()=> setNotesComponentExpandState(false)}
        >

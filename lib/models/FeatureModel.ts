@@ -11,7 +11,6 @@ const featureSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        required: true
     },
     docs : {
         type : mongoose.Schema.Types.ObjectId,

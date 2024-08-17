@@ -1,6 +1,7 @@
 'use server'
 
 import mongoose from "mongoose"
+import { features } from "process";
 
 const ProjectSchema = new mongoose.Schema({
     name : String,
@@ -32,6 +33,10 @@ const ProjectSchema = new mongoose.Schema({
     chatSpace : [{
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Message'
+    }],
+    features : [{
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'Feature'
     }],
     likes: Number,
     content : String,

@@ -4,8 +4,11 @@ import NotesComponent from './NotesComponent'
 import TasksComponent from './TasksComponent'
 import IssuesComponent from './IssuesComponent'
 import ChatSpaceComponent from './ChatSpaceComponent'
-import { Transition } from '@mantine/core'
+import { Button, Transition , Modal } from '@mantine/core'
 import NotificationsBar from './NotificationsBar'
+import { useDisclosure } from '@mantine/hooks';
+import CreateFeatureForm from './FeatureComponents/createFeatureForm'
+;
 
 const MultiTabsComponent = ({
     opened,
@@ -20,6 +23,8 @@ const MultiTabsComponent = ({
         return ()=>setOpened(false)
       } , [])
 
+      const [Modalopened, { open, close }] = useDisclosure(false);
+
   return (
     <Transition
         mounted={opened}
@@ -30,7 +35,16 @@ const MultiTabsComponent = ({
      {
         (styles) =>(
             <section className=' flex flex-col w-full  gap-2 rounded-xl   items-center justify-center p-3'>
-            <NotificationsBar/>
+              <div className='flex w-full'>
+              <NotificationsBar/>
+              <Modal opened={Modalopened} onClose={close} title="New Feature !!"  overlayProps={{
+                backgroundOpacity: 0.55,
+                blur: 3,
+              }}>
+                <CreateFeatureForm/>
+              </Modal>
+              <Button className='mr-0' onClick={open}> + new Feature</Button>
+              </div>  
                 <section className=" flex w-full h-full  gap-2  items-center" style={styles}>
                   <NotesComponent/> 
                   <TasksComponent/> 
