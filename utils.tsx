@@ -8,6 +8,7 @@ import MultiTabsComponent from "./components/ProjectPageComponents/MultiTabsComp
 import NotesPageComponent from "./components/ProjectPageComponents/NotesPageComponent"
 import IssuesPageComponent from "./components/ProjectPageComponents/IssuesPageComponent"
 import TasksPageComponent from "./components/ProjectPageComponents/TasksPageComponent"
+import FeaturesComponent from "./components/ProjectPageComponents/FeaturesComponent"
 
 export const SelectedItemInSideBarToRenderOnScreen = ({
   selectedItemInSideBar,
@@ -56,6 +57,8 @@ export const SelectedItemToRenderOnScreen = ({
         return <IssuesPageComponent opened = {opened} setOpened = {setOpened}/>
       case 'TasksPage':
         return <TasksPageComponent opened = {opened} setOpened = {setOpened}/>
+      case 'Features':
+        return <FeaturesComponent opened = {opened} setOpened = {setOpened}/>
       default: 
         return <MultiTabsComponent opened = {opened} setOpened = {setOpened}/>
     }

@@ -1,8 +1,7 @@
 'use client'
-import { useProjectContext } from '@/components/Contexts/ProjectContext';
 import { useWorkSpaceContext } from '@/components/Contexts/WorkSpaceContext';
 import { createFeature } from '@/lib/actions/FeatureAction';
-import { Button, Checkbox, Group, Textarea, TextInput } from '@mantine/core';
+import { Button, Group, Textarea, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 
 function CreateFeatureForm() {
@@ -15,13 +14,14 @@ function CreateFeatureForm() {
     },
   });
 
-  const {projectInfo} = useWorkSpaceContext()
+  const {projectInfo , userInfo} = useWorkSpaceContext()
 
   async function handleSubmit(values : {name : string , description : string}){
     await createFeature({
         name : values.name,
         description : values.description,
-        projectId : projectInfo.project._id
+        projectId : projectInfo.project._id,
+        userId : userInfo._id
     })
   }
 

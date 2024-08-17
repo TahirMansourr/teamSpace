@@ -7,7 +7,7 @@ import ChatSpaceComponent from './ChatSpaceComponent'
 import { Button, Transition , Modal } from '@mantine/core'
 import NotificationsBar from './NotificationsBar'
 import { useDisclosure } from '@mantine/hooks';
-import CreateFeatureForm from './FeatureComponents/createFeatureForm'
+import CreateFeatureForm from '../Forms/createFeatureForm'
 ;
 
 const MultiTabsComponent = ({

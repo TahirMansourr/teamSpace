@@ -14,7 +14,7 @@ function SideBar({
     }) {
 
   const [opened, { toggle }] = useDisclosure();
-  const dataForSideBar = ['Docs' , 'TeamSpace' , 'NotesPage' , 'IssuesPage' , 'TasksPage']
+  const dataForSideBar = ['Docs' , 'TeamSpace' , 'NotesPage' , 'IssuesPage' , 'TasksPage' , 'Features']
   
   return (
     <div className='relative '>
@@ -34,8 +34,8 @@ function SideBar({
                   dataForSideBar.map((item : string , index : number) =>(
                       <li 
                       key = {index}
-                      className={` mb-2 capitalize ${SelectedItemInSideBar === item ?
-                      ' bg-gradient-to-br from-blue-600 to-blue-400 rounded-md p-2 shadow-md  text-white transition-all ease-in duration-200 translate-x-2 translate-y-1 ' : null}`}
+                      className={` mb-2 ml-0 capitalize ${SelectedItemInSideBar === item ?
+                      ' bg-gradient-to-br from-blue-600 w-full to-blue-400 rounded-md p-2 shadow-md  text-white transition-all ease-in duration-200 translate-x-2 translate-y-1 ' : null}`}
                       onClick={()=>{
                         setSelectedItemInSideBar(item)
                         setOpened(false)

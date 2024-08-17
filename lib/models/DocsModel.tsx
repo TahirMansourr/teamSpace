@@ -27,5 +27,5 @@ const docSchema = new mongoose.Schema({
     }]
 })
 
-const Doc = mongoose.models.Doc || mongoose.model('Issue' , docSchema)
+const Doc = mongoose.models.Doc || mongoose.model('Doc' , docSchema)
 export default Doc;
