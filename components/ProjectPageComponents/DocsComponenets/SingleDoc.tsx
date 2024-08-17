@@ -1,31 +1,33 @@
 'use client'
 import TiptapForDocs from '@/components/TipTapForDocs/tipTapForDocs'
-import { Button, Input } from '@mantine/core'
 import React from 'react'
 import '../DocsComponenets/singleDoc.css'
+import SideBarForDocs from './sideBarForDocs'
 
-const SingleDoc = () => {
+const SingleDoc = ({edit} : {edit : boolean}) => {
     const [content , setContent] = React.useState('')
     console.log("🚀 ~ SingleDoc ~ content:", content)
-    const [edit , setEdit] = React.useState(false)
+    
     const handleContentChange = (newContent: string) => {
         setContent(newContent)
     }
 
-  return (
-    <main className=' flex w-full mt-12' >
-        <Button onClick={() => setEdit(!edit)}>{edit ? 'Preview' : 'Edit'}</Button>
-        {/* <section className='border-r-4 p-4 flex flex-col '>
-            <Input placeholder='enter the title of the script'/>
-        </section> */}
-        <section className=' flex flex-grow  p-3'>
+  return ( 
+    <main className=' flex flex-grow pt-20 ' >
+        <section className=' flex flex-grow'>
+            <div className=' flex-initial w-36 overflow-hidden ' >
+            <SideBarForDocs content = {content} />
+            </div>
+        <section className=' flex flex-grow  p-3 border shadow-md m-3 '>
            {edit ?<TiptapForDocs
                 content  = {content}
                 onChange={(newContent: string) => handleContentChange(newContent)}
             /> : null}
-            {!edit ?<div dangerouslySetInnerHTML={{ __html : content}}/> : null}
+            {!edit ?<div  className = {'w-full'}dangerouslySetInnerHTML={{ __html : content}}/> : null}
 
         </section>
+        </section>
+        
     </main>
   )
 }

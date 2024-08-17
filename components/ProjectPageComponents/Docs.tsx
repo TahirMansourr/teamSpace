@@ -19,6 +19,7 @@ const Docs = ({
       })
 
       const {userInfo , projectInfo} = useWorkSpaceContext()
+      const [edit , setEdit] = React.useState(false)
       
       return (
         <Transition
@@ -33,21 +34,18 @@ const Docs = ({
             userInfo={userInfo}
             projectInfo={projectInfo.project}
             >
-           <section className='m-5 w-full ' style={styles}>
-              <div className=' flex justify-between items-center w-full '>
-                <h1></h1>
+           <section className=' flex flex-grow ' style={styles}>
+              <div className=' fixed right-2 top-2 '>
                 {/* <Button variant='outline'>Create a new document</Button> */}
+                <Button 
+                  onClick={() => setEdit(!edit)}
+                  className='mr-0'
+                  >
+                {edit ? 'Preview' : 'Edit'}
+                   </Button>
               </div>
-              <SingleDoc/>
-              {/* <div className='flex grow mt-7 w-full items-center justify-center'>
-                <ul>
-                  <li>Doc1</li>
-                  <li>Doc2</li>
-                  <li>Doc3</li>
-                  <li>Doc4</li>
-                  <li>Doc5</li>
-                </ul>
-              </div> */}
+              <SingleDoc edit = {edit}/>
+  
          </section>
          </DocsProvider>
          )

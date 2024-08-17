@@ -9,6 +9,17 @@ import { notifications } from '@mantine/notifications'
 import { Color } from '@tiptap/extension-color'
 import TextStyle from '@tiptap/extension-text-style'
 import './styles.css'
+import { GrBold } from "react-icons/gr"
+import { BsChatSquareQuote } from "react-icons/bs";
+import { MdFormatListBulleted } from "react-icons/md";
+import { FaCode } from "react-icons/fa6";
+import { RiH1 } from "react-icons/ri";
+import { RiH2 , RiH3, RiH4   } from "react-icons/ri";
+import { AiOutlineOrderedList } from "react-icons/ai";
+import { RiStrikethrough } from "react-icons/ri";
+import { TbItalic } from "react-icons/tb";
+import { FaLink } from "react-icons/fa6";
+import { FaLinkSlash } from "react-icons/fa6";
 
 const TiptapForDocs = ({content , onChange} : {content : string , onChange : Function}) => {
     const handleChange = (newContent : string) =>{
@@ -74,8 +85,8 @@ const TiptapForDocs = ({content , onChange} : {content : string , onChange : Fun
   }
 
   return (
-    <div className="w-full">
-      <div className='toolbar mx-auto'>
+    <div className="w-full ">
+      <div className='toolbar mx-auto fixed top-0'>
         <input
           type="color"
           onInput={(event : any) => (editor.chain().focus().setColor(event.target.value).run())}
@@ -86,77 +97,77 @@ const TiptapForDocs = ({content , onChange} : {content : string , onChange : Fun
           e.preventDefault()
           editor?.chain().focus().toggleBold().run()
         }}>
-          Bold
+          <GrBold />
         </button>
         <button className={editor.isActive('blockquote') ? 'is-active' : ''} onClick={(e) => {
           e.preventDefault()
           editor?.chain().focus().toggleBlockquote().run()
         }}>
-          Quote
+          <BsChatSquareQuote />
         </button>
         <button className={editor.isActive('bulletList') ? 'is-active' : ''} onClick={(e) => {
           e.preventDefault()
           editor?.chain().focus().toggleBulletList().run()
         }}>
-          Bullet
+         <MdFormatListBulleted />
         </button>
         <button className={editor.isActive('codeBlock') ? 'is-active' : ''} onClick={(e) => {
           e.preventDefault()
           editor?.chain().focus().toggleCodeBlock().run()
         }}>
-          Code
+          <FaCode />
         </button>
         <button className={editor.isActive('heading', { level: 1 }) ? 'is-active' : ''} onClick={(e) => {
           e.preventDefault()
           editor?.chain().focus().toggleHeading({ level: 1 }).run()
         }}>
-          H1
+          <RiH1 />
         </button>
         <button className={editor.isActive('heading', { level: 2 }) ? 'is-active' : ''} onClick={(e) => {
           e.preventDefault()
           editor?.chain().focus().toggleHeading({ level: 2 }).run()
         }}>
-          H2
+         <RiH2 />
         </button>
         <button className={editor.isActive('heading', { level: 3 }) ? 'is-active' : ''} onClick={(e) => {
           e.preventDefault()
           editor?.chain().focus().toggleHeading({ level: 3 }).run()
         }}>
-          H3
+          <RiH3 />
         </button>
         <button className={editor.isActive('heading', { level: 4 }) ? 'is-active' : ''} onClick={(e) => {
           e.preventDefault()
           editor?.chain().focus().toggleHeading({ level: 4 }).run()
         }}>
-          H4
+          <RiH4 />
         </button>
         <button className={editor.isActive('orderedList') ? 'is-active' : ''} onClick={(e) => {
           e.preventDefault()
           editor?.chain().focus().toggleOrderedList().run()
         }}>
-          Ordered List
+         <AiOutlineOrderedList />
         </button>
         <button className={editor.isActive('strike') ? 'is-active' : ''} onClick={(e) => {
           e.preventDefault()
           editor?.chain().focus().toggleStrike().run()
         }}>
-          Strike
+          <RiStrikethrough />
         </button>
         <button className={editor.isActive('italic') ? 'is-active' : ''} onClick={(e) => {
           e.preventDefault()
           editor?.chain().focus().toggleItalic().run()
         }}>
-          Italics
+          <TbItalic />
         </button>
         <div className="button-group">
           <button onClick={setLink} className={editor.isActive('link') ? 'is-active' : ''}>
-            Set link
+          <FaLink />
           </button>
           <button
             onClick={() => editor.chain().focus().unsetLink().run()}
             disabled={!editor.isActive('link')}
           >
-            Unset link
+            <FaLinkSlash />
           </button>
         </div>
         <button onClick={(e) => {
