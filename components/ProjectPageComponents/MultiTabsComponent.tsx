@@ -9,6 +9,7 @@ import NotificationsBar from './NotificationsBar'
 import { useDisclosure } from '@mantine/hooks';
 import CreateFeatureForm from '../Forms/createFeatureForm'
 ;
+import FeatureProvider from '../Contexts/featureContext'
 
 const MultiTabsComponent = ({
     opened,
@@ -41,7 +42,10 @@ const MultiTabsComponent = ({
                 backgroundOpacity: 0.55,
                 blur: 3,
               }}>
-                <CreateFeatureForm/>
+                <FeatureProvider>
+                  <CreateFeatureForm/>
+                </FeatureProvider>
+                
               </Modal>
               <Button className='mr-0' onClick={open}> + new Feature</Button>
               </div>  

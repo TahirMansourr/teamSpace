@@ -2,6 +2,7 @@ import  useGetAllFeatures  from '@/app/Hooks/featureHooks'
 import { Transition } from '@mantine/core'
 import React, { Dispatch, SetStateAction, useEffect } from 'react'
 import FeaturePage from './FeatureComponents/FeaturePage'
+import FeatureProvider from '../Contexts/featureContext'
 
 const FeaturesComponent = ({opened , setOpened} : {opened : boolean , setOpened :  Dispatch<SetStateAction<boolean>>}) => {
    
@@ -9,9 +10,7 @@ const FeaturesComponent = ({opened , setOpened} : {opened : boolean , setOpened 
         setOpened(true)
         return ()=>setOpened(false)
       })
-    const {allFeatures} = useGetAllFeatures()
-    console.log("🚀 ~ FeaturesComponent ~ allFeatures:", allFeatures)
- 
+     
       return (
         <Transition
         mounted={opened}
@@ -24,7 +23,10 @@ const FeaturesComponent = ({opened , setOpened} : {opened : boolean , setOpened 
             <section className='m-5 w-full' style={styles}>
                 <div className=' flex flex-col w-full'>
                     <h1 className='mx-auto'>Feautres</h1>
-                    <FeaturePage allFeatures={allFeatures} />
+                    <FeatureProvider >
+                        <FeaturePage  />
+                    </FeatureProvider>
+                    
                 </div>
             </section>
             )

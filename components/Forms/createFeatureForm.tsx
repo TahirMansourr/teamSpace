@@ -3,6 +3,7 @@ import { useWorkSpaceContext } from '@/components/Contexts/WorkSpaceContext';
 import { createFeature } from '@/lib/actions/FeatureAction';
 import { Button, Group, Textarea, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { useFeatureContext } from '../Contexts/featureContext';
 
 function CreateFeatureForm() {
 
@@ -14,19 +15,19 @@ function CreateFeatureForm() {
     },
   });
 
-  const {projectInfo , userInfo} = useWorkSpaceContext()
+ const {submitCreateFeatureForm} = useFeatureContext()
 
-  async function handleSubmit(values : {name : string , description : string}){
-    await createFeature({
-        name : values.name,
-        description : values.description,
-        projectId : projectInfo.project._id,
-        userId : userInfo._id
-    })
-  }
+  // async function handleSubmit(values : {name : string , description : string}){
+  //   await createFeature({
+  //       name : values.name,
+  //       description : values.description,
+  //       projectId : projectInfo.project._id,
+  //       userId : userInfo._id
+  //   })
+  // }
 
   return (
-    <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
+    <form onSubmit={form.onSubmit((values) => submitCreateFeatureForm(values))}>
       <TextInput
         withAsterisk
         label="Name"

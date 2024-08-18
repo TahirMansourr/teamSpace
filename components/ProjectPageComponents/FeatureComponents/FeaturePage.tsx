@@ -1,11 +1,12 @@
 'use client'
+import { useFeatureContext } from '@/components/Contexts/featureContext'
 import CreateFeatureForm from '@/components/Forms/createFeatureForm'
 import { Button, Modal } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import React from 'react'
 
-const FeaturePage = ({allFeatures} : {allFeatures : any[]}) => {
-  console.log("🚀 ~ FeaturePage ~ allFeatures:", allFeatures)
+const FeaturePage = () => {
+  const {allFeatures} = useFeatureContext()
   const [Modalopened, { open, close }] = useDisclosure(false);
   return (
     <main className='flex flex-col w-full'>
