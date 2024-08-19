@@ -66,3 +66,17 @@ export type NotesDto = {
     updatedAt : Date | null,
     comments : string[]
 }
+
+export type FeatureDto = {
+    _id : string,
+    name : string,
+    description : string,
+    docs? : any , 
+    tasks : TaskDto[],
+    issues : IssueDto[],
+    notes : NotesDto[],
+    projectId : string,
+    createdAt : Date,
+    updatedAt : Date | null,
+    createdBy : UserDto,
+}

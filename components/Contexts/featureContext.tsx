@@ -1,13 +1,13 @@
 'use client'
 
 import { createFeature, GetAllFeatures } from "@/lib/actions/FeatureAction"
-import { ProjectDto, UserDto } from "@/Utils/types"
+import { FeatureDto, ProjectDto, UserDto } from "@/Utils/types"
 import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from "react"
 import { useWorkSpaceContext } from "./WorkSpaceContext"
 import useGetAllFeatures from "@/app/Hooks/featureHooks"
 
 interface FeatureContextDto{
-    allFeatures : any[]
+    allFeatures : FeatureDto[]
     submitCreateFeatureForm : (values : {name : string, description : string})=>void
 }
 
@@ -29,7 +29,7 @@ const FeatureProvider = (
     // const {allFeatures : initailFeatures} = useGetAllFeatures()
     const {projectInfo , userInfo} = useWorkSpaceContext()
 
-    const [allFeatures , setAllFeatures] = useState<any[]>([])
+    const [allFeatures , setAllFeatures] = useState<FeatureDto[]>([])
     console.log("🚀 ~ allFeatures:", allFeatures)
     useEffect(()=>{
         async function getAllFeatures(){
