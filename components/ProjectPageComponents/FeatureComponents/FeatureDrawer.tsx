@@ -8,6 +8,7 @@ import FeaturesTabsTasks from './FeaturesTabsTasks';
 import TaskProvider from '@/components/Contexts/TasksContext';
 import { useWorkSpaceContext } from '@/components/Contexts/WorkSpaceContext';
 import { IoIosArrowBack } from "react-icons/io";
+import IssuesProvider from '@/components/Contexts/IssuesContext';
 
 const FeatureDrawer = ({feature , close} : {feature : FeatureDto , close : ()=>void}) => {
     const {projectInfo , userInfo} = useWorkSpaceContext()
@@ -42,7 +43,10 @@ const FeatureDrawer = ({feature , close} : {feature : FeatureDto , close : ()=>v
             </Tabs.Panel>
 
             <Tabs.Panel value="Issues">
-                <FeaturesIssuesTab/>
+                <IssuesProvider project={projectInfo.project} user={userInfo} featureIssues = {feature.issues}>
+                    <FeaturesIssuesTab featureId={feature._id}/>
+                </IssuesProvider>
+                
             </Tabs.Panel>
 
             <Tabs.Panel value="Tasks">

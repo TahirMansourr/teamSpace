@@ -17,7 +17,7 @@ const FeaturesTabsTasks = ({featureId} : {featureId : string} ) => {
     
         
     <section className='flex flex-col w-full'>
-        <MdOutlineLibraryAdd onClick={open} className=' ml-auto hover:cursor-pointer hover:scale-105 shadow-md' size={30} color='blue' />
+        <MdOutlineLibraryAdd onClick={open} className=' ml-auto hover:cursor-pointer hover:scale-105 shadow-sm' size={30} color='blue' />
 
         <CreateOrUpdateTaskModal modalOpened ={modalOpened} closeModal={closeModal} featureId={featureId} />
         <div className="grid grid-cols-3 mt-4">

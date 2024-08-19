@@ -10,6 +10,7 @@ type IssuesContextDto = {
     formLoading : boolean,
     handleCreateIssue : ( values : createOrUpdateIssueForm , close :() => void)=>void
     handleUpdateIssue : ( values : createOrUpdateIssueForm , close :() => void)=>void
+    allFeatureIssues : IssueDto[]
 }
  const IssuesContext = createContext<IssuesContextDto>({} as IssuesContextDto)
  
@@ -21,10 +22,21 @@ type IssuesContextDto = {
     }
  }
 
- const IssuesProvider = ({children , project , user} : {children : React.ReactNode , project : ProjectDto , user : UserDto }) => {
+ const IssuesProvider = ({
+    children , 
+    project , 
+    user,
+    featureIssues
+    } : {
+    children : React.ReactNode , 
+    project : ProjectDto , 
+    user : UserDto
+    featureIssues? : IssueDto[]
+}) => {
 
     const [userInfo , setUserInfo] = useState<UserDto>(user)
     const [issuesInfo , setIssuesInfo] = useState<IssueDto[]>(project.issues)
+    const [allFeatureIssues , setAllFeatureIssues] = useState<IssueDto[]>(featureIssues? featureIssues : [])
     console.log("🚀 ~ IssuesProvider ~ issuesInfo:", issuesInfo)
     const [formLoading , setFormLoading] = useState<boolean>(false)
 
@@ -56,6 +68,9 @@ type IssuesContextDto = {
                 }
                 // socket.emit('createIssue' , newIssue)
                 setIssuesInfo((prev : IssueDto[]) => [newIssue , ...prev])
+                if(values.featureId){
+                    setAllFeatureIssues((prev : IssueDto[]) => [newIssue , ...prev])
+                }
                 // setIssuesInfo((prev) => [...prev , newIssue])
             })
         } catch (error) {
@@ -95,6 +110,7 @@ type IssuesContextDto = {
                 }
                 // socket.emit('updateIssue' , newIssue)
                 setIssuesInfo(((prev : IssueDto[] )=> prev.map((prevIssue : IssueDto) => prevIssue._id === newIssue._id ? newIssue : prevIssue)))
+                setAllFeatureIssues(((prev : IssueDto[] )=> prev.map((prevIssue : IssueDto) => prevIssue._id === newIssue._id ? newIssue : prevIssue)))
                 // setIssuesInfo(((prev : IssueDto[] )=> prev.map((prevIssue : IssueDto) => prevIssue._id === newIssue._id ? newIssue : prevIssue)))
             })
         } catch (error) {
@@ -120,7 +136,8 @@ type IssuesContextDto = {
         allIssues : issuesInfo,
         formLoading,
         handleCreateIssue,
-        handleUpdateIssue
+        handleUpdateIssue,
+        allFeatureIssues
     }
     return(
         <IssuesContext.Provider value={value}>

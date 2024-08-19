@@ -5,6 +5,7 @@ import Issue from "../models/IssuesModel"
 import Project from "../models/ProjectModel"
 import Task from "../models/TasksModel"
 import { connectToDB } from "../mongoose"
+import Feature from "../models/FeatureModel"
 
 type createIssueFormDto = {
     name : string,
@@ -15,7 +16,8 @@ type createIssueFormDto = {
     userId : string,
     projectId : string,
     tags : string[],
-    status : 'To Do' | 'In Progress' | "Done" | 'Review'
+    status : 'To Do' | 'In Progress' | "Done" | 'Review',
+    featureId? : string
 }
 
 export async function CreateIssue(params : createIssueFormDto) {
@@ -35,9 +37,13 @@ export async function CreateIssue(params : createIssueFormDto) {
             project : params.projectId,
             createdBy : params.userId,
             tags : params.tags,
-            status : params.status
+            status : params.status,
+            featureId : params.featureId
         })
         await newIssue.save()
+        if(params.featureId && params.featureId !== ''){
+            await Feature.findOneAndUpdate({_id : params.featureId}, {$push : { issues : newIssue._id}})
+         }
         await Project.findOneAndUpdate({_id : params.projectId} , {$push : { issues : newIssue._id}})
         const objResponse = newIssue.toObject()
         const response = JSON.parse(JSON.stringify(objResponse))

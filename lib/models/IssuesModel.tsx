@@ -33,7 +33,8 @@ const issueSchema = new mongoose.Schema({
     dependencies : [{
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Issue'
-    }]
+    }],
+    featureId : String
 })
 
 const Issue = mongoose.models.Issue || mongoose.model('Issue' , issueSchema)

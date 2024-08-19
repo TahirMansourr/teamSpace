@@ -17,10 +17,19 @@ export type createOrUpdateIssueForm = {
     assignedTo : string[] ,
     tags : string[],
     status : 'To Do' | 'In Progress' | "Done" | 'Review'
-    _id? : string
+    _id? : string,
+    featureId? : string
 }
 
-const CreateOrUpdateIssueForm = ({close , updateFormInput } : {close : Function , updateFormInput? : createOrUpdateIssueForm }) => {
+const CreateOrUpdateIssueForm = ({
+    close , 
+    updateFormInput, 
+    featureId 
+} : {
+    close : Function , 
+    updateFormInput? : createOrUpdateIssueForm , 
+    featureId? : string 
+}) => {
    
     const form = useForm<createOrUpdateIssueForm>({
         mode : 'uncontrolled',
@@ -32,7 +41,8 @@ const CreateOrUpdateIssueForm = ({close , updateFormInput } : {close : Function 
             assignedTo :updateFormInput? updateFormInput.assignedTo : [],
             tags : updateFormInput? updateFormInput.tags :[],
             status : updateFormInput ? updateFormInput.status :'To Do',
-            _id : updateFormInput ? updateFormInput._id : ''
+            _id : updateFormInput ? updateFormInput._id : '',
+            featureId : featureId?featureId : ''
         }
     })
 
