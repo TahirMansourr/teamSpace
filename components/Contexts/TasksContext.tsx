@@ -13,7 +13,8 @@ type formValuesType = {
     assignedTo : string[],
     tags : string[],
     status : 'To Do' | 'In Progress' | "Done" | 'Review'
-    _id? : string
+    _id? : string,
+    featureId? : string
 }
 type TaskContextDto = {
     useHandleCreateTask : () => [ 
@@ -65,7 +66,8 @@ const TaskProvider = ({
                     userId : userInfo._id,
                     projectId : projectInfo._id,
                     tags : values.tags,
-                    status : values.status
+                    status : values.status,
+                    featureId : values.featureId
                 }).then((res) => {
                     const newTask = {
                       ...values , 

@@ -38,7 +38,11 @@ export async function GetAllFeatures(params : { projectId : string}) {
                 model : Doc
             },{
                 path : 'tasks',
-                model : Task
+                model : Task,
+                populate : {
+                    path : 'assignedTo',
+                    model : User
+                }
             },
                { 
                 path : 'createdBy', 

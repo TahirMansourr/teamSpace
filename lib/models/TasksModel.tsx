@@ -33,7 +33,8 @@ const taskSchema = new mongoose.Schema({
     dependencies : [{
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Task'
-    }]
+    }],
+    featureId : String
 })
 
 const Task = mongoose.models.Task || mongoose.model('Task' , taskSchema)

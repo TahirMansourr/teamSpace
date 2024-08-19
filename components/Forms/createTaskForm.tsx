@@ -14,10 +14,11 @@ export type createTaskFormDto = {
     assignedTo : string[] ,
     tags : string[],
     status : 'To Do' | 'In Progress' | "Done" | 'Review'
-    _id? : string
+    _id? : string,
+    featureId? : string
 }
 
-const CreateOrUpdateTaskForm = ({close , updateFormInput } : {close : Function , updateFormInput? : createTaskFormDto }) => {
+const CreateOrUpdateTaskForm = ({close , updateFormInput , featureId  } : {close : Function , updateFormInput? : createTaskFormDto , featureId? : string }) => {
    
     const form = useForm<createTaskFormDto>({
         mode : 'uncontrolled',
@@ -29,7 +30,8 @@ const CreateOrUpdateTaskForm = ({close , updateFormInput } : {close : Function ,
             assignedTo :updateFormInput? updateFormInput.assignedTo : [],
             tags : updateFormInput? updateFormInput.tags :[],
             status : updateFormInput ? updateFormInput.status :'To Do',
-            _id : updateFormInput ? updateFormInput._id : ''
+            _id : updateFormInput ? updateFormInput._id : '',
+            featureId : featureId ? featureId : ''
         }
     })
 

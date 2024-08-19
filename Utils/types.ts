@@ -37,7 +37,8 @@ export type TaskDto = {
     tags : string[],
     status : 'To Do' | 'In Progress' | "Done" | 'Review'
     _id : string,
-    creationDate : string
+    creationDate : string,
+    featureId? : string
 }
 export type IssueDto = {
     name : string,

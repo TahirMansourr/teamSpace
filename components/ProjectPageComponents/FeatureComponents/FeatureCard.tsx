@@ -1,6 +1,6 @@
 'use client'
 import { FeatureDto } from '@/Utils/types';
-import { Button, Drawer } from '@mantine/core';
+import { Drawer } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import React from 'react'
 import { IoLogOutOutline } from "react-icons/io5";
@@ -10,7 +10,7 @@ const FeatureCard = ({feature} : {feature : FeatureDto}) => {
     const [opened, { open, close }] = useDisclosure(false);
   return (
     <section className=' border h-20 shadow-md rounded-md p-3 relative flex flex-col'>
-        <Drawer offset={8} radius="md" size={'100%'} opened={opened} onClose={close} title="Authentication">
+        <Drawer  radius="md" size={'100%'} opened={opened} onClose={close} withCloseButton={false} >
             <FeatureDrawer feature = {feature}/>
         </Drawer>
         {feature.name}

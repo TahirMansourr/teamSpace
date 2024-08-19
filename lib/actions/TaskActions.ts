@@ -1,5 +1,6 @@
 'use server'
 
+import Feature from "../models/FeatureModel"
 import Project from "../models/ProjectModel"
 import Task from "../models/TasksModel"
 import { connectToDB } from "../mongoose"
@@ -13,6 +14,7 @@ type createTaskFormDto = {
     projectId : string,
     tags : string[],
     status : 'To Do' | 'In Progress' | "Done" | 'Review'
+    featureId? : string
 }
 export async function CreateTask(params : createTaskFormDto) {
     try {
@@ -28,9 +30,13 @@ export async function CreateTask(params : createTaskFormDto) {
             project : params.projectId,
             createdBy : params.userId,
             tags : params.tags,
-            status : params.status
+            status : params.status,
+            featureId : params.featureId
         })
         await newTask.save()
+        if(params.featureId && params.featureId !== ''){
+           await Feature.findOneAndUpdate({_id : params.featureId}, {$push : { tasks : newTask._id}})
+        }
         await Project.findOneAndUpdate({_id : params.projectId} , {$push : { Tasks : newTask._id}})
         const objResponse = newTask.toObject()
         const response = JSON.parse(JSON.stringify(objResponse))
