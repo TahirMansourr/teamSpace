@@ -5,8 +5,11 @@ import React from 'react'
 import FeaturesDocsTab from './FeaturesDocsTab';
 import FeaturesIssuesTab from './FeaturesIssuesTab';
 import FeaturesTabsTasks from './FeaturesTabsTasks';
+import TaskProvider from '@/components/Contexts/TasksContext';
+import { useWorkSpaceContext } from '@/components/Contexts/WorkSpaceContext';
 
 const FeatureDrawer = ({feature} : {feature : FeatureDto}) => {
+    const {projectInfo , userInfo} = useWorkSpaceContext()
   return (
     <main className='flex flex-col w-full h-full m-0 p-0'>
         <p className='mx-auto'> {feature.name} </p>
@@ -36,7 +39,13 @@ const FeatureDrawer = ({feature} : {feature : FeatureDto}) => {
             </Tabs.Panel>
 
             <Tabs.Panel value="Tasks">
-                <FeaturesTabsTasks featureTasks={{tasks :feature.tasks , id : feature._id}}/>
+            <TaskProvider project={projectInfo} user={userInfo} featureTasks={feature.tasks}>
+                <FeaturesTabsTasks featureId={ feature._id}/>
+            </TaskProvider>
+            </Tabs.Panel>
+
+            <Tabs.Panel value="Settings">
+                Settings tab content
             </Tabs.Panel>
         </Tabs>
         

@@ -23,7 +23,8 @@ type TaskContextDto = {
         (values: formValuesType , close : ()=> void) => Promise<void>
     ]
     projectInfo : ProjectDto,
-    allTasks : TaskDto[]
+    allTasks : TaskDto[],
+    allFeatureTasks : TaskDto[]
 }
 const TaskContext = createContext<TaskContextDto>({} as TaskContextDto)
 export const useTaskContext = () => {
@@ -31,7 +32,7 @@ export const useTaskContext = () => {
 }
 
 const TaskProvider = ({
-    children , user , project
+    children , user , project , featureTasks
 } : {
     children : React.ReactNode ,
     user : UserDto ,
@@ -39,11 +40,13 @@ const TaskProvider = ({
         status : string ,
         message : string , 
         project :ProjectDto
-    }
+    },
+    featureTasks? : TaskDto[]
 }) => {
     const [userInfo , setUserInfo] = useState<UserDto>(user)
     const [projectInfo , setProjectInfo] = useState<ProjectDto>(project.project)
     const [allTasks , setAllTasks] = useState<TaskDto[]>(project.project.Tasks ? project.project.Tasks : [] )
+    const [allFeatureTasks , setAllFeatureTasks] = useState<TaskDto[]>(featureTasks ? featureTasks : [])
 
     const useHandleCreateTask = (): 
     [boolean, (values: formValuesType , close : ()=> void) => Promise<void> ,(values: formValuesType , close : ()=> void) => Promise<void>] => {
@@ -76,6 +79,9 @@ const TaskProvider = ({
                       creationDate : res.task.creationDate
                     } 
                     setAllTasks((prev : TaskDto[] | undefined) =>prev ? [newTask , ...prev  ] : [])
+                    if(values.featureId){
+                        setAllFeatureTasks((prev : TaskDto[] | undefined) => prev ? [newTask, ...prev] : [])
+                    }
                     // socket.emit('createTask' , newTask)
                     // console.log('sent task' , newTask); 
                 })
@@ -112,7 +118,9 @@ const TaskProvider = ({
                           creationDate : res.task.creationDate
                         }
                         setAllTasks(((prev : TaskDto[] )=> prev.map((prevTask : TaskDto) => prevTask._id === newTask._id ? newTask : prevTask)  ))
-
+                        
+                        setAllFeatureTasks(((prev : TaskDto[] )=> prev.map((prevTask : TaskDto) => prevTask._id === newTask._id ? newTask : prevTask)  ))
+                        
             
                         // socket.emit('updateTask' , newTask)
                         // console.log('sent task' , newTask); 
@@ -142,7 +150,8 @@ const TaskProvider = ({
     const value = {
         useHandleCreateTask,
         projectInfo,
-        allTasks
+        allTasks,
+        allFeatureTasks
         }
     return(
         <TaskContext.Provider value={value}>
