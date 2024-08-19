@@ -46,7 +46,7 @@ const TiptapForDocs = ({content , onChange} : {content : string , onChange : Fun
     content,
     editorProps: {
       attributes: {
-        class: 'w-full outline-none h-full',
+        class: 'w-full outline-none h-full leading-normal',
         InputPlaceholder: 'Write something',
       },
     },

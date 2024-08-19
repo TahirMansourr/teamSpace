@@ -7,11 +7,18 @@ import FeaturesIssuesTab from './FeaturesIssuesTab';
 import FeaturesTabsTasks from './FeaturesTabsTasks';
 import TaskProvider from '@/components/Contexts/TasksContext';
 import { useWorkSpaceContext } from '@/components/Contexts/WorkSpaceContext';
+import { IoIosArrowBack } from "react-icons/io";
 
-const FeatureDrawer = ({feature} : {feature : FeatureDto}) => {
+const FeatureDrawer = ({feature , close} : {feature : FeatureDto , close : ()=>void}) => {
     const {projectInfo , userInfo} = useWorkSpaceContext()
   return (
     <main className='flex flex-col w-full h-full m-0 p-0'>
+        <div 
+            className='fixed top-2 left-2 hover:cursor-pointer hover:scale-105'
+            onClick={close}
+            >
+            <IoIosArrowBack size={20}/>
+        </div>
         <p className='mx-auto'> {feature.name} </p>
        
         <Tabs variant="pills" radius="lg" defaultValue="Docs" className='!flex !flex-col !w-full' >

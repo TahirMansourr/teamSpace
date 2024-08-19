@@ -17,12 +17,12 @@ const FeaturesTabsTasks = ({featureId} : {featureId : string} ) => {
     
         
     <section className='flex flex-col w-full'>
-        <MdOutlineLibraryAdd onClick={open} className=' ml-auto hover:cursor-pointer hover:scale-105' size={30} color='blue' />
+        <MdOutlineLibraryAdd onClick={open} className=' ml-auto hover:cursor-pointer hover:scale-105 shadow-md' size={30} color='blue' />
 
         <CreateOrUpdateTaskModal modalOpened ={modalOpened} closeModal={closeModal} featureId={featureId} />
-        <div className="grid grid-cols-3">
+        <div className="grid grid-cols-3 mt-4">
         {
-            allFeatureTasks ? allFeatureTasks.map((task : TaskDto) => (
+            allFeatureTasks.length > 0 ? allFeatureTasks.map((task : TaskDto) => (
                 <TaskCard task = {task}/>
             ))
          : <h1>No tasks yet</h1>}
