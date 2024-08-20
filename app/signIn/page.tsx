@@ -3,13 +3,19 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import {useRouter} from "next/navigation";
 import axios from "axios";
-import { Button, Checkbox, Group, LoadingOverlay, TextInput } from '@mantine/core';
+import { Button, Checkbox, Group, LoadingOverlay, TextInput, Transition } from '@mantine/core';
 import { useForm } from '@mantine/form';
 
 
 export default function SignUpPage(){
     const router = useRouter()
     const [loading , setLoading] = useState<boolean>(false)
+    const [opened, setOpened] = useState(false);
+
+    useEffect(() => {
+        setOpened(true);
+    }, []);
+
     const onSignUp = async (values : any) => {
         try {
              setLoading(true)
@@ -35,7 +41,14 @@ export default function SignUpPage(){
       });
 
     return(
-        <div className=" flex justify-center items-center w-full h-screen">
+      <Transition
+      mounted={opened}
+      transition="skew-down"
+      duration={400}
+      timingFunction="ease"
+    >
+      {(styles) => <div style={styles}>
+      <div className=" flex justify-center items-center w-full h-screen">
     <form onSubmit={form.onSubmit((values) => onSignUp(values))}>
         <div className=" flex flex-col min-w-96  border p-5 shadow-2xl rounded-lg bg-opacity-0 ">
             {loading? <div>Processing<LoadingOverlay visible/></div> : null}
@@ -61,6 +74,9 @@ export default function SignUpPage(){
       </Group>
       </div>
     </form>
-    </div>
+        </div>
+        </div>}
+    </Transition>
+        
     )
 } 

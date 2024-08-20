@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import {useRouter} from "next/navigation";
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { Avatar, Button, Checkbox, Group, Image, LoadingOverlay, TextInput } from '@mantine/core';
+import { Avatar, Button, Checkbox, Group, Image, LoadingOverlay, TextInput, Transition } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { UploadButton } from "@/Utils/uploadThing";
 import { notifications } from "@mantine/notifications";
@@ -13,7 +13,11 @@ import { notifications } from "@mantine/notifications";
 export default function SignUpPage(){
     const router = useRouter()
     const [loading , setLoading] = useState<boolean>(false)
+    const [opened, setOpened] = useState(false);
 
+    useEffect(() => {
+        setOpened(true);
+    }, []);
     const onSignUp = async (values : {email : string , password : string , username : string , image : string}) => {
         setLoading(true)
         try {
@@ -49,7 +53,15 @@ export default function SignUpPage(){
       });
 
     return(
-        <div className=" flex justify-center items-center w-full h-screen">
+      <Transition
+      mounted={opened}
+      transition="skew-up"
+      duration={400}
+      timingFunction="ease"
+    >
+     
+      {(styles) => <div style={styles}>
+      <div className=" transition-all duration-200 ease-in-out flex justify-center items-center w-full h-screen" >
             <form onSubmit={form.onSubmit((values) => onSignUp(values))}>
               {loading ? <LoadingOverlay visible/> : null}
                 <div className=" flex flex-col min-w-96  border p-5 shadow-2xl rounded-lg">
@@ -106,5 +118,8 @@ export default function SignUpPage(){
               </div>
             </form>
         </div>
+        </div>}
+    </Transition>
+        
     )
 } 
