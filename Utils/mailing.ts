@@ -32,7 +32,7 @@ export const SendEmail = async ({ email, emailType, userId }: any) => {
       from: 'tahir@gmail.com',
       to: email,
       subject: emailType === "VERIFY" ? "Verify your email" : "Reset your password",
-      html: `<p>Click <a href="https://localhost:3000/verifyEmail?token=${hashedToken}">here</a> to 
+      html: `<p>Click <a href="http://localhost:3000/verifyEmail?token=${hashedToken}">here</a> to 
             ${emailType === "VERIFY" ? "Verify your email" : "Reset your password"}</p>`,
     };
     console.log('I have reached here successfullly 2');

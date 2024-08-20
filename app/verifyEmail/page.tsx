@@ -2,14 +2,13 @@
 
 import axios from "axios";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const VerifyEmailPage = ()=> {
   const [token, setToken] = useState("");
   const [verified, setVerified] = useState(false);
   const [error, setError] = useState(false);
-  const params = useSearchParams()
+
   const verifyUserEmail = async () => {
     try {
       await axios.post("/api/users/verifyemail", { token });
@@ -19,10 +18,10 @@ const VerifyEmailPage = ()=> {
       console.log(error.response.data);
     }
   };
-  // useEffect(() => {
-  //   const urlToken = window.location.search.split("=")[1];
-  //   setToken(urlToken || "");
-  // }, []);
+  useEffect(() => {
+    const urlToken = window.location.search.split("=")[1];
+    setToken(urlToken || "");
+  }, []);
 
   useEffect(() => {
     if (token.length > 0) {
