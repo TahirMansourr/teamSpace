@@ -36,6 +36,7 @@ export default function WorkSpace({params}:{params : {id : string[]}}) {
               SelectedItemInSideBar={selectedItemInSideBar}
               setSelectedItemInSideBar={setSelectedItemInSideBar}
               setOpened={setOpened}
+              projectName = {projectInfo.project.name}
               />
             <SelectedItemToRenderOnScreen
               selectedItemInSideBar={selectedItemInSideBar}

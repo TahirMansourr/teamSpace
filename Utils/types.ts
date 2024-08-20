@@ -10,6 +10,7 @@ export type ProjectDto = {
     chatSpace : MesssageDto[],
     likes?: number,
     content : string,
+    
     // meetings: String,
     // messages : String,
     activity? : Number
@@ -27,6 +28,7 @@ export type UserDto = {
     forgotPasswordTokenExpiry?: Date,
     verifyToken?: string,
     verifyTokenExpiry?: Date,
+    image : string,
 }
 export type TaskDto = {
     name : string,

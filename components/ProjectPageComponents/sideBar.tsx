@@ -2,15 +2,19 @@
 import { useDisclosure } from '@mantine/hooks';
 import { Burger } from '@mantine/core';
 import { Dispatch, SetStateAction } from 'react';
+import UserButton from '../user-button/UserButton';
 
 function SideBar({
     setSelectedItemInSideBar,
     SelectedItemInSideBar,
-    setOpened 
+    setOpened,
+    projectName 
+
 } : {
     setSelectedItemInSideBar : Dispatch<SetStateAction<string>>,
     SelectedItemInSideBar : string,
-    setOpened : Dispatch<SetStateAction<boolean>>
+    setOpened : Dispatch<SetStateAction<boolean>>,
+    projectName : string
     }) {
 
   const [opened, { toggle }] = useDisclosure();
@@ -26,7 +30,8 @@ function SideBar({
                     : 'max-h-0 opacity-0 w-0 flex-grow-0 min-h-0'
                 }`}
             >
-                <h1 className=' text-xl text-center mt-3 shadow-xl mb-5'>Project Name</h1>
+                <UserButton/>
+                <h1 className=' text-xl text-center mt-3 shadow-xl mb-5'>{projectName}</h1>
         <section
          className=' flex h-full w-[15rem] pl-3 border-r text-xl mt-3 hover:cursor-pointer '>
           <ul>
