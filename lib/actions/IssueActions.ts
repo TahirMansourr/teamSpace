@@ -3,7 +3,6 @@
 import { IssueDto } from "@/Utils/types"
 import Issue from "../models/IssuesModel"
 import Project from "../models/ProjectModel"
-import Task from "../models/TasksModel"
 import { connectToDB } from "../mongoose"
 import Feature from "../models/FeatureModel"
 
