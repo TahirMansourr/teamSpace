@@ -17,22 +17,25 @@ export const SendEmail = async ({ email, emailType, userId }: any) => {
       });
     }
 
-    const transport = nodemailer.createTransport({
+    var transport = nodemailer.createTransport({
       host: "sandbox.smtp.mailtrap.io",
-      port: 2525,
+      port: 587,
       auth: {
         user: "42a4c824ac90f0",
-        pass: "2060f09c159002",
-      },
+        pass: "2060f09c159002"
+      }
     });
-
+    console.log('I have reached here successfullly 1');
+    console.log('this is the eamil' , email);
+    
     const mailOptions = {
-      from: 'tahirelmag@mailtrap.io',
+      from: 'tahir@gmail.com',
       to: email,
       subject: emailType === "VERIFY" ? "Verify your email" : "Reset your password",
-      html: `<p>Click <a href="https://localhost:3000/verifyemail?token=${hashedToken}">here</a> to 
+      html: `<p>Click <a href="https://localhost:3000/verifyEmail?token=${hashedToken}">here</a> to 
             ${emailType === "VERIFY" ? "Verify your email" : "Reset your password"}</p>`,
     };
+    console.log('I have reached here successfullly 2');
 
     const mailresponse = await transport.sendMail(mailOptions);
     console.log('Email sent: ' + mailresponse.response);

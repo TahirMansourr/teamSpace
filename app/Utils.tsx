@@ -2,7 +2,7 @@ import axios from "axios";
 
 export async function LogOut(){
     try{
-       await axios.get('/api/users/logOut')
+       await axios.get('/api/users/signOut')
     }catch(error : any){
         console.log(error.message);
         

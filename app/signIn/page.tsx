@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import {useRouter} from "next/navigation";
 import axios from "axios";
@@ -7,7 +6,7 @@ import { Button, Checkbox, Group, LoadingOverlay, TextInput, Transition } from '
 import { useForm } from '@mantine/form';
 
 
-export default function SignUpPage(){
+export default function SignInPage(){
     const router = useRouter()
     const [loading , setLoading] = useState<boolean>(false)
     const [opened, setOpened] = useState(false);
@@ -16,13 +15,19 @@ export default function SignUpPage(){
         setOpened(true);
     }, []);
 
-    const onSignUp = async (values : any) => {
+    const onSignIn = async (values : {email : string , password : string}) => {
         try {
              setLoading(true)
              await axios.post('api/users/signIn' , values)
              router.push('/')
         } catch (error : any) {
-            console.log('failed to signUp' , error.message);
+            if(error.response.data.error == 'This email does not exist'){
+                form.setFieldError('email', error.response.data.error)
+            }else if(error.response.data.error == 'Password is incorrect'){
+                form.setFieldError('password', error.response.data.error)
+            }else{
+                alert(error.response.data.error)
+            }
         }finally{
             setLoading(false)
         }
@@ -32,8 +37,7 @@ export default function SignUpPage(){
         mode: 'uncontrolled',
         initialValues: {
             email : '',
-            password : '',
-            username : ''
+            password : ''
         },
         validate: {
           email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
@@ -42,40 +46,39 @@ export default function SignUpPage(){
 
     return(
       <Transition
-      mounted={opened}
-      transition="skew-down"
-      duration={400}
-      timingFunction="ease"
-    >
-      {(styles) => <div style={styles}>
-      <div className=" flex justify-center items-center w-full h-screen">
-    <form onSubmit={form.onSubmit((values) => onSignUp(values))}>
-        <div className=" flex flex-col min-w-96  border p-5 shadow-2xl rounded-lg bg-opacity-0 ">
-            {loading? <div>Processing<LoadingOverlay visible/></div> : null}
-      <TextInput
-        withAsterisk
-        label="Email"
-        placeholder="your@email.com"
-        key={form.key('email')}
-        {...form.getInputProps('email')}
-      />
-      <TextInput
-        withAsterisk
-        type="password"
-        label="password"
-        placeholder="Make sure to have a strong password"
-        key={form.key('password')}
-        {...form.getInputProps('password')}
-      />
-
-
-      <Group justify="flex-end" mt="md">
-        <Button type="submit" disabled = {loading}>Login</Button>
-      </Group>
-      </div>
-    </form>
+        mounted={opened}
+        transition="skew-down"
+        duration={400}
+        timingFunction="ease"
+       >
+      {(styles) => 
+      <div style={styles}>
+        <div className=" flex justify-center items-center w-full h-screen">
+          <form onSubmit={form.onSubmit((values) => onSignIn(values))}>
+              <div className=" flex flex-col min-w-96  border p-5 shadow-2xl rounded-lg bg-opacity-0 ">
+                  {loading? <div>Processing<LoadingOverlay visible/></div> : null}
+                    <TextInput
+                      withAsterisk
+                      label="Email"
+                      placeholder="your@email.com"
+                      key={form.key('email')}
+                      {...form.getInputProps('email')}
+                    />
+                    <TextInput
+                      withAsterisk
+                      type="password"
+                      label="password"
+                      placeholder="Make sure to have a strong password"
+                      key={form.key('password')}
+                      {...form.getInputProps('password')}
+                    />
+                    <Group justify="flex-end" mt="md">
+                      <Button type="submit" disabled = {loading}>Login</Button>
+                    </Group>
+            </div>
+          </form>
         </div>
-        </div>}
+      </div>}
     </Transition>
         
     )

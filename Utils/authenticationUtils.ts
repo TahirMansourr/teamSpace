@@ -1,4 +1,5 @@
 'use server'
+import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -17,3 +18,12 @@ export const GetDataFromToken = async (request: NextRequest) => {
     throw new Error(`error at authenticationUtils : ${error.message}`);
   }
 };
+
+export const logout = async () => {
+  try {
+      await axios.get('/api/users/signOut');
+  } catch (error: any) {
+      console.log(error.message)
+  }
+
+}

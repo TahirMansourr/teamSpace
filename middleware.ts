@@ -25,6 +25,6 @@ export const config = {
       '/project/(.*)',
       '/signUp',
       '/signIn',
-      '/verifyEmail'
+    //   '/verifyEmail'
     ]
   }
