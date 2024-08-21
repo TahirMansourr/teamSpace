@@ -30,8 +30,11 @@ function SideBar({
                     : 'max-h-0 opacity-0 w-0 flex-grow-0 min-h-0'
                 }`}
             >
-                <UserButton/>
-                <h1 className=' text-xl text-center mt-3 shadow-xl mb-5'>{projectName}</h1>
+                <div className="flex flex-col rounded-md shadow-lg  p-3 border">
+                    <UserButton/>
+                    <h1 className=' text-xl text-center mt-3 '>{projectName}</h1>
+                </div>
+                
         <section
          className=' flex h-full w-[15rem] pl-3 border-r text-xl mt-3 hover:cursor-pointer '>
           <ul>
