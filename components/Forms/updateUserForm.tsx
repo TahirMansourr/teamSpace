@@ -20,7 +20,13 @@ export default function UpdateUserForm({opened} : {opened : boolean}){
     const onUpdateUser = async (values : {email : string , username : string , image : string}) => {
         setLoading(true)
         try {
-            await handleUpdateUser({...values , id : userInfo._id})
+            const response = await handleUpdateUser({...values , id : userInfo._id})
+            if(response?.status === 'Fail' && response.message === 'Username already exists'){
+              form.setFieldError('username', 'Username already exists')
+            }
+            if(response?.status === 'Fail' && response.message === 'Email already exists'){
+              form.setFieldError('email', 'Email already exists')
+            }
         } catch (error : any) {
             console.log(`error : ${error}`);
             

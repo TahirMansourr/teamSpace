@@ -66,3 +66,13 @@ export async function UpdateUser(params: {id : string , username ? : string , em
     }
     
 }
+
+export async function DeleteUser(id:string) {
+    try {
+        await connectToDB()
+        const user = await User.findByIdAndDelete(id)
+        return {status : 'success' , message : 'Deleted successfully'}
+    } catch (error) {
+        return {status : 'Fail' , message : `${error}`}
+    }
+}

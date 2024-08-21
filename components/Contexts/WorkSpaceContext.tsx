@@ -65,11 +65,10 @@ const WorkSpaceProvider = (
        const response = await UpdateUser(params)
        console.log("🚀 ~ handleUpdateUser ~ params:", params)
        console.log("🚀 ~ handleUpdateUser ~ response:", response)
-       setUser((prev : UserDto) => ({...prev , ...params}))
        if(response?.status === 'success'){
        notifications.show({message : response.message , color : 'blue'})
        console.log(response);
-       
+       setUser((prev : UserDto) => ({...prev , ...params}))
        return response
         }else{
             notifications.show({message : response?.message, color : 'red'})

@@ -23,7 +23,7 @@ const AccountSettings = ({user} : {user : UserDto}) => {
        <Button variant='gradient'>Change My Password</Button>
         </div>
         <div>
-        <Button variant='gradient' rightSection = {<MdDeleteOutline color='red' size={30}/>}>Delete My Account</Button>
+        <Button variant='gradient' color='red' rightSection = {<MdDeleteOutline color='red' size={30}/>}>Delete My Account</Button>
         </div>
       </div>
      
