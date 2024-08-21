@@ -1,6 +1,8 @@
 'use client'
+import { UpdateUser } from "@/lib/actions/UserActions";
 import { socket } from "@/socket";
 import { ProjectDto, UserDto } from "@/Utils/types";
+import { notifications } from "@mantine/notifications";
 import React, { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
 
 type projectInfoResponse = {
@@ -20,7 +22,15 @@ interface WorkSpaceContextDto{
     setIssuesComponentExpandState: Dispatch<SetStateAction<boolean>>
     setChatComponentExpandState: Dispatch<SetStateAction<boolean>>
     projectInfo : projectInfoResponse
-    userInfo : UserDto
+    userInfo : UserDto,
+    handleUpdateUser : (params: 
+        {
+            id : string ,
+             username ? : string , 
+             email? : string , 
+             image? : string
+        }
+    ) => Promise<{status : string, message : string} | undefined>
 }
 
 const WorkSpaceContext = createContext<WorkSpaceContextDto>({} as WorkSpaceContextDto)
@@ -51,7 +61,24 @@ const WorkSpaceProvider = (
     console.log("🚀 ~ user:", user)
     console.log('workSpace Context Rerendered');
     
-
+    const handleUpdateUser = async (params : {id : string, username ? : string, email? : string, image? : string})=>{
+       const response = await UpdateUser(params)
+       console.log("🚀 ~ handleUpdateUser ~ params:", params)
+       console.log("🚀 ~ handleUpdateUser ~ response:", response)
+       setUser((prev : UserDto) => ({...prev , ...params}))
+       if(response?.status === 'success'){
+       notifications.show({message : response.message , color : 'blue'})
+       console.log(response);
+       
+       return response
+        }else{
+            notifications.show({message : response?.message, color : 'red'})
+            console.log(response);
+            
+            return response
+        }
+        }
+       
    
 
     return(
@@ -67,7 +94,8 @@ const WorkSpaceProvider = (
                 chatComponentExpandState ,
                 setChatComponentExpandState,
                 projectInfo : project,
-                userInfo : user
+                userInfo : user,
+                handleUpdateUser
             }}
             >
             {children}

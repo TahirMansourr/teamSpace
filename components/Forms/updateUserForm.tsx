@@ -14,24 +14,17 @@ import { useWorkSpaceContext } from "../Contexts/WorkSpaceContext";
 export default function UpdateUserForm({opened} : {opened : boolean}){
     const router = useRouter()
     const [loading , setLoading] = useState<boolean>(false)
-    const {userInfo} = useWorkSpaceContext()
+    const {userInfo , handleUpdateUser} = useWorkSpaceContext()
     
 
-    const onSignUp = async (values : {email : string , username : string , image : string}) => {
+    const onUpdateUser = async (values : {email : string , username : string , image : string}) => {
         setLoading(true)
         try {
-             await axios.post('api/users/signUp' , values)
-                    router.push('signIn')
-               
-            //  router.push('signIn')
+            await handleUpdateUser({...values , id : userInfo._id})
         } catch (error : any) {
-         if(error.response.data.error == 'Email already exists'){
-          form.setFieldError('email', error.response.data.error)
-        }else if(error.response.data.error =='Username already exists'){
-          form.setFieldError('username', error.response.data.error)
-        }else{
-          alert(error.response.data.error)
-        }
+            console.log(`error : ${error}`);
+            
+        notifications.show({message : error.message , color : 'red'})
             
         }finally{
           setLoading(false)
@@ -60,7 +53,7 @@ export default function UpdateUserForm({opened} : {opened : boolean}){
      
       {(styles) => <div style={styles}>
       <div className=" transition-all duration-200 ease-in-out mt-2 " >
-            <form onSubmit={form.onSubmit((values) => onSignUp(values))}>
+            <form onSubmit={form.onSubmit((values) => onUpdateUser(values))}>
               {loading ? <LoadingOverlay visible/> : null}
                 <div className=" flex flex-col min-w-96  border p-5 shadow-2xl rounded-lg mt-2">
                   <div  className="flex items-start  gap-3 justify-center">
