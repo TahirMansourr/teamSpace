@@ -5,6 +5,7 @@ import { useForm, UseFormReturnType } from "@mantine/form";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useWorkSpaceContext } from "./WorkSpaceContext";
 import { MesssageDto } from "@/Utils/types";
+import { useChannel, useConnectionStateListener } from "ably/react";
 
 type chatContextDTO = {
     trial : () => void
@@ -25,6 +26,9 @@ const ChatProvider = ({children } : {children : React.ReactNode })=>{
     console.log("🚀 ~ ChatProvider ~ projectInfo:", projectInfo)
     console.log("🚀 ~ ChatProvider ~ messages:", messages)
     const didMountRef = useRef(false);
+    const { channel } = useChannel('get-started', 'first', (message) => {
+      setMessages([]);
+    });
    
 
     useEffect(() => {
@@ -34,6 +38,9 @@ const ChatProvider = ({children } : {children : React.ReactNode })=>{
         return;
     }
     didMountRef.current = true;
+    useConnectionStateListener('connected', () => {
+      console.log('Connected to Ably!');
+    });
     console.log('Chat Context Rerendered');
         if (socket.connected) {
           onConnect();
@@ -95,6 +102,7 @@ const ChatProvider = ({children } : {children : React.ReactNode })=>{
         console.log("🚀 ~ handleSendMessage ~ body:", body)
         
         const newMessage = await CreateMessage({body , userId : userInfo._id , projectId : projectInfo.project._id})
+        channel.publish('get-started', newMessage.response);
         socket.emit('Groupmessage' , newMessage.response)
         console.log("🚀 ~ handleSendMessage ~ newMessage:", newMessage)
       }

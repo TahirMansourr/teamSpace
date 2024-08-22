@@ -38,9 +38,9 @@ const UserButton = () => {
          </Modal>
       <Menu shadow="md" width={200}>
              <Menu.Target>
-                <div className='flex items-center gap-3 hover:cursor-pointer'>
+                <div className='flex flex-col justify-center items-center gap-3 hover:cursor-pointer '>
                     <Avatar src={userInfo.image} size={60} className='!hover:scale-105'/>
-                    <div className="flex flex-col">
+                    <div className="flex flex-col items-center">
                         <p className='font-bold text-lg'>{userInfo.username}</p>
                         <p className='text-sm'>{userInfo.email}</p>
                     </div>
