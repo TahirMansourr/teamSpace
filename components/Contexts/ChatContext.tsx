@@ -27,7 +27,13 @@ const ChatProvider = ({children } : {children : React.ReactNode })=>{
     console.log("🚀 ~ ChatProvider ~ messages:", messages)
     const didMountRef = useRef(false);
     const { channel } = useChannel('get-started', 'first', (message) => {
-      setMessages([]);
+      console.log("🚀 ~ const{channel}=useChannel ~ message:", message)
+      console.log(message);
+      
+      setMessages((prev: any) => [...prev, message.data]);
+    });
+    useConnectionStateListener('connected', () => {
+      console.log('Connected to Ably!');
     });
    
 
@@ -38,9 +44,7 @@ const ChatProvider = ({children } : {children : React.ReactNode })=>{
         return;
     }
     didMountRef.current = true;
-    useConnectionStateListener('connected', () => {
-      console.log('Connected to Ably!');
-    });
+   
     console.log('Chat Context Rerendered');
         if (socket.connected) {
           onConnect();
@@ -102,9 +106,11 @@ const ChatProvider = ({children } : {children : React.ReactNode })=>{
         console.log("🚀 ~ handleSendMessage ~ body:", body)
         
         const newMessage = await CreateMessage({body , userId : userInfo._id , projectId : projectInfo.project._id})
-        channel.publish('get-started', newMessage.response);
-        socket.emit('Groupmessage' , newMessage.response)
         console.log("🚀 ~ handleSendMessage ~ newMessage:", newMessage)
+        
+        channel.publish('first' , { ...newMessage.response , author : userInfo});
+        // socket.emit('Groupmessage' , newMessage.response)
+        console.log("🚀 ~ handleSendMessage ~ newMessage:",{ ...newMessage.response , author : userInfo})
       }
       const value ={
         trial,
