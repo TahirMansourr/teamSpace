@@ -3,6 +3,7 @@ import { CreateNote, UpdateNote } from "@/lib/actions/NoteAction"
 import { socket } from "@/socket"
 import { NotesDto, ProjectDto, UserDto } from "@/Utils/types"
 import { notifications } from "@mantine/notifications"
+import { useChannel } from "ably/react"
 import { useContext, useState, createContext, useEffect, useRef } from "react"
 
 type NotesContextDto = {
@@ -33,20 +34,42 @@ const NotesContext = createContext<NotesContextDto>({} as NotesContextDto)
     const [transport, setTransport] = useState("N/A");
     const [activeUsers , setActiveUsers] = useState<string[]>([])
     const didMountRef = useRef(false);
+    const { channel } = useChannel('get-started',()=>{} )
+
+    useEffect(()=>{
+      channel.subscribe('create-note' , (note)=>{
+        setNotes((prev : NotesDto[]) => [{...note.data.note , creator : userInfo} , ...prev])
+      })
+      channel.subscribe('update-note' , (note) => {
+        const UpdatedNote = {...note.data.newNote.note , creator : note.data.existingNote.creator}
+        console.log("🚀 ~ handleUpdateNote ~ UpdatedNote:", UpdatedNote)
+        setNotes(((prev : NotesDto[])=> prev.map((prevNote : NotesDto) => {
+          if(prevNote._id === UpdatedNote._id){
+            return UpdatedNote
+           }else{
+              return prevNote
+            }
+        }
+        )))
+      })
+    },[])
 
     async function handleCreateNote(body : string, close : ()=>void){
         setFormLoading(true)
         try {
-             CreateNote({
+            const new_note = await CreateNote({
                 projectId : projectInfo._id,
                 body,
                 creator : userInfo._id
-            }).then((res : {status : string , note : NotesDto})=>{
-              setNotes((prev : NotesDto[]) => [{...res.note , creator : userInfo} , ...prev])
+            })
+
+            channel.publish('create-note' , new_note)
+            // .then((res : {status : string , note : NotesDto})=>
+              // setNotes((prev : NotesDto[]) => [{...res.note , creator : userInfo} , ...prev])
                 // socket.emit('newNote' , res.note)
                 // console.log('emmitted');
                 
-            })
+            
            
         } catch (error) {
             throw new Error(`error at handleCreateNote : ${error}`)
@@ -66,19 +89,9 @@ const NotesContext = createContext<NotesContextDto>({} as NotesContextDto)
           createdAt : existingNote.createdAt,
           _id: existingNote._id
         })
-        console.log("🚀 ~ new-note ~ UpdatedNote:", new_note)
-          const UpdatedNote = {...new_note.note , creator : existingNote.creator}
-          console.log("🚀 ~ handleUpdateNote ~ UpdatedNote:", UpdatedNote)
-          setNotes(((prev : NotesDto[])=> prev.map((prevNote : NotesDto) => {
-            if(prevNote._id === UpdatedNote._id){
-          
-              return UpdatedNote
-              
-             }else{
-                return prevNote
-              }
-          }
-          )))
+        console.log("🚀 ~ new-note ~ UpdatedNote:", {newNote :new_note , existingNote})
+         channel.publish('update-note', {newNote :new_note, existingNote})
+          // socket.emit('updateNote', res.note);
           // socket.emit('updateNote', {...res.note , creator : existingNote.creator});
         
     

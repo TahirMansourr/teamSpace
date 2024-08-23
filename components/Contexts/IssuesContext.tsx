@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { createOrUpdateIssueForm } from "../Forms/createOrUpdateIssue";
 import { CreateIssue, UpdateIssue } from "@/lib/actions/IssueActions";
 import { socket } from "@/socket";
+import { useChannel } from "ably/react";
 
 type IssuesContextDto = {
     allIssues : IssueDto[], 
@@ -35,10 +36,38 @@ type IssuesContextDto = {
 }) => {
 
     const [userInfo , setUserInfo] = useState<UserDto>(user)
-    const [issuesInfo , setIssuesInfo] = useState<IssueDto[]>(project.issues)
+    const [issuesInfo , setIssuesInfo] = useState<IssueDto[]>(project.issues ? project.issues : [])
     const [allFeatureIssues , setAllFeatureIssues] = useState<IssueDto[]>(featureIssues? featureIssues : [])
     console.log("🚀 ~ IssuesProvider ~ issuesInfo:", issuesInfo)
     const [formLoading , setFormLoading] = useState<boolean>(false)
+    const { channel } = useChannel('get-started',()=>{} )
+
+    useEffect(()=>{
+        channel.subscribe('create-issue' , (issue)=>{
+            setIssuesInfo((prev : IssueDto[]) => [issue.data.newIssue , ...prev])
+            if(issue.data.featureId){
+                setAllFeatureIssues((prev : IssueDto[]) => [issue.data.newIssue , ...prev])
+            }
+        })
+        channel.subscribe('update-issue', (issue) => {
+            console.log('Received update-issue:', issue);
+        
+            if (issue?.data._id) {
+                try {
+                    setIssuesInfo(((prev : IssueDto[] )=> prev.map((prevIssue : IssueDto) => prevIssue._id === issue.data._id ? issue.data : prevIssue)))
+
+            
+                    setAllFeatureIssues(((prev : IssueDto[] )=> prev.map((prevIssue : IssueDto) => prevIssue._id === issue.data._id ? issue.data : prevIssue)))
+
+                } catch (error) {
+                 console.error(error)
+                }
+               
+            } else {
+                console.error("Invalid issue data received:", issue);
+            }
+        });
+      },[])
 
     async function handleCreateIssue( values : createOrUpdateIssueForm , close : ()=>void){
         console.log(values , 'thhhhhhhhhh');
@@ -66,11 +95,12 @@ type IssuesContextDto = {
                     assignedTo : assignedToMembers as UserDto[],
                     creationDate : res.issue.creationDate
                 }
+                channel.publish('create-issue' ,{ newIssue ,  featureId : values.featureId});
                 // socket.emit('createIssue' , newIssue)
-                setIssuesInfo((prev : IssueDto[]) => [newIssue , ...prev])
-                if(values.featureId){
-                    setAllFeatureIssues((prev : IssueDto[]) => [newIssue , ...prev])
-                }
+                // setIssuesInfo((prev : IssueDto[]) => [newIssue , ...prev])
+                // if(values.featureId){
+                //     setAllFeatureIssues((prev : IssueDto[]) => [newIssue , ...prev])
+                // }
                 // setIssuesInfo((prev) => [...prev , newIssue])
             })
         } catch (error) {
@@ -108,9 +138,10 @@ type IssuesContextDto = {
                     assignedTo : assignedToMembers as UserDto[],
                     creationDate : ''
                 }
+                 channel.publish('update-issue', newIssue);
                 // socket.emit('updateIssue' , newIssue)
-                setIssuesInfo(((prev : IssueDto[] )=> prev.map((prevIssue : IssueDto) => prevIssue._id === newIssue._id ? newIssue : prevIssue)))
-                setAllFeatureIssues(((prev : IssueDto[] )=> prev.map((prevIssue : IssueDto) => prevIssue._id === newIssue._id ? newIssue : prevIssue)))
+                // setIssuesInfo(((prev : IssueDto[] )=> prev.map((prevIssue : IssueDto) => prevIssue._id === newIssue._id ? newIssue : prevIssue)))
+                // setAllFeatureIssues(((prev : IssueDto[] )=> prev.map((prevIssue : IssueDto) => prevIssue._id === newIssue._id ? newIssue : prevIssue)))
                 // setIssuesInfo(((prev : IssueDto[] )=> prev.map((prevIssue : IssueDto) => prevIssue._id === newIssue._id ? newIssue : prevIssue)))
             })
         } catch (error) {
@@ -122,15 +153,15 @@ type IssuesContextDto = {
         }
     }
 
-    useEffect(()=>{
-        socket.on('createIssue' ,(issue : IssueDto) => {
-            setIssuesInfo((prev : IssueDto[]) => [issue , ...prev])
-        })
-        socket.on('updateIssue' , (newIssue : IssueDto) => {
-            setIssuesInfo(((prev : IssueDto[] )=> prev.map((prevIssue : IssueDto) => prevIssue._id === newIssue._id ? newIssue : prevIssue)))
+    // useEffect(()=>{
+    //     socket.on('createIssue' ,(issue : IssueDto) => {
+    //         setIssuesInfo((prev : IssueDto[]) => [issue , ...prev])
+    //     })
+    //     socket.on('updateIssue' , (newIssue : IssueDto) => {
+    //         setIssuesInfo(((prev : IssueDto[] )=> prev.map((prevIssue : IssueDto) => prevIssue._id === newIssue._id ? newIssue : prevIssue)))
 
-        })
-    } , [])
+    //     })
+    // } , [])
 
     const value = {
         allIssues : issuesInfo,
