@@ -14,7 +14,7 @@ export default function WorkSpace({params}:{params : {id : string[]}}) {
     const [opened , setOpened] = useState<boolean>(false)
     const [projectInfo , setProjectInfo] = useState<any>()
     const [user , setUser] = useState<any>()
-    const client = new Ably.Realtime({key :'nF519A.1dF-ug:LCA1D7I3e1ylWStmCYaro4XPBJOLcYC2P2vxCQIdyCw'})
+    const client = new Ably.Realtime({key :process.env.NEXT_PUBLIC_ABLY_KEY})
 
     useEffect(()=>{
      async function getProjectInfo(){
