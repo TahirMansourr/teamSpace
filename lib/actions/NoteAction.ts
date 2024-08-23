@@ -34,24 +34,34 @@ export async function CreateNote(params : CreateNoteDto){
     }
 }
 
-export async function UpdateNote(params : CreateNoteDto){
+export async function UpdateNote(params: CreateNoteDto) {
+    console.log("🚀 ~ UpdateNote ~ params:", params);
     try {
-        await connectToDB()
-        const requiredNote = await Note.findOneAndUpdate({_id : params._id} , {
-            $set : {
-                body : params.body,
-                updatedAt : new Date(),
-                project : params.projectId,
-                createdAt : params.createdAt,
-                creator : params.creator,
-            }
-        })
-        await requiredNote.save()
-        const objResponse = requiredNote.toObject()
-        const response = JSON.parse(JSON.stringify(objResponse))
-        return({status : 'success' , note : response})
+        await connectToDB();
+        const requiredNote = await Note.findOneAndUpdate(
+            { _id: params._id },
+            {
+                $set: {
+                    body: params.body,
+                    updatedAt: new Date(),
+                    project: params.projectId,
+                    createdAt: params.createdAt,
+                    creator: params.creator,
+                }
+            },
+            { new: true } // Add this option to return the updated document
+        );
+
+        if (!requiredNote) {
+            throw new Error('Note not found');
+        }
+
+        const objResponse = requiredNote.toObject();
+        console.log("🚀 ~ UpdateNote ~ objResponse:", objResponse);
+        const response = JSON.parse(JSON.stringify(objResponse));
+        return { status: 'success', note: response };
 
     } catch (error) {
-        throw new Error(`error at updateNote in NoteAction.ts : ${error}`)
+        throw new Error(`error at updateNote in NoteAction.ts : ${error}`);
     }
 }

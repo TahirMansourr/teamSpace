@@ -59,17 +59,28 @@ const NotesContext = createContext<NotesContextDto>({} as NotesContextDto)
     async function handleUpdateNote(existingNote: NotesDto, close: () => void) {
       setFormLoading(true);
       try {
-         UpdateNote({
+        const new_note = await UpdateNote({
           projectId: projectInfo._id,
           body: existingNote.body,
           creator: existingNote.creator._id,
           createdAt : existingNote.createdAt,
           _id: existingNote._id
-        }).then((res : {status : string , note : NotesDto})=>{
-          const UpdateNote = {...res.note , creator : existingNote.creator}
-          setNotes(((prev : NotesDto[])=> prev.map((prevNote : NotesDto) => {return prevNote._id === UpdateNote._id ? UpdateNote : prevNote})))
-          // socket.emit('updateNote', {...res.note , creator : existingNote.creator});
         })
+        console.log("🚀 ~ new-note ~ UpdatedNote:", new_note)
+          const UpdatedNote = {...new_note.note , creator : existingNote.creator}
+          console.log("🚀 ~ handleUpdateNote ~ UpdatedNote:", UpdatedNote)
+          setNotes(((prev : NotesDto[])=> prev.map((prevNote : NotesDto) => {
+            if(prevNote._id === UpdatedNote._id){
+          
+              return UpdatedNote
+              
+             }else{
+                return prevNote
+              }
+          }
+          )))
+          // socket.emit('updateNote', {...res.note , creator : existingNote.creator});
+        
     
          // Emit the updated note
         notifications.show({ message: 'Updated Note successfully', color: 'blue' });
@@ -81,60 +92,63 @@ const NotesContext = createContext<NotesContextDto>({} as NotesContextDto)
       }
     }
 
-    useEffect(() => {
-        if (didMountRef.current) {
-          return;
-      }
-      didMountRef.current = true;
-      console.log('Chat Context Rerendered');
-          if (socket.connected) {
-            onConnect();
-          }
+    // useEffect(() => {
+        // console.log("🚀 ~ handleUpdateNote ~ new_note:", new_note)
+        // console.log("🚀 ~ handleUpdateNote ~ new_note:", new_note)
+        // console.log("🚀 ~ handleUpdateNote ~ new_note:", new_note)
+    //     if (didMountRef.current) {
+    //       return;
+    //   }
+    //   didMountRef.current = true;
+    //   console.log('Chat Context Rerendered');
+    //       if (socket.connected) {
+    //         onConnect();
+    //       }
       
-          function onConnect() {
-            setIsConnected(true);
-            setTransport(socket.io.engine.transport.name);
-            setActiveUsers((prev : string[]) => [...prev , userInfo.username])
-              console.log(userInfo.username , 'is now connected');
-              console.log('Notes Is Connected');
+    //       function onConnect() {
+    //         setIsConnected(true);
+    //         setTransport(socket.io.engine.transport.name);
+    //         setActiveUsers((prev : string[]) => [...prev , userInfo.username])
+    //           console.log(userInfo.username , 'is now connected');
+    //           console.log('Notes Is Connected');
               
-            socket.io.engine.on("upgrade", (transport : any) => {
-              setTransport(transport.name);
-            });
-            socket.on('connection' , (socket :any) => {
-              socket.join('thisRoom')
-            })
-          }
-          socket.on('newNote', (note : NotesDto) => {
-            if(note){
-                setNotes((prev : NotesDto[]) => [{...note , creator : userInfo} , ...prev])
-                console.log('i was triggered');
+    //         socket.io.engine.on("upgrade", (transport : any) => {
+    //           setTransport(transport.name);
+    //         });
+    //         socket.on('connection' , (socket :any) => {
+    //           socket.join('thisRoom')
+    //         })
+    //       }
+    //       socket.on('newNote', (note : NotesDto) => {
+    //         if(note){
+    //             setNotes((prev : NotesDto[]) => [{...note , creator : userInfo} , ...prev])
+    //             console.log('i was triggered');
                 
-            }else{
-                console.error('Recieved Note is undefined or has not response property' , note)
-            }
-          })
-          socket.on('updateNote' , (note : NotesDto) => {
-            console.log('triggered');
-            setNotes(((prev : NotesDto[])=> prev.map((prevNote : NotesDto) => {return prevNote._id === note._id ? note : prevNote})))
-          })
-          function onDisconnect() {
-            setIsConnected(false);
-            setTransport("N/A");
-            console.log('i am connected disconnected');
-          }
+    //         }else{
+    //             console.error('Recieved Note is undefined or has not response property' , note)
+    //         }
+    //       })
+    //       socket.on('updateNote' , (note : NotesDto) => {
+    //         console.log('triggered');
+    //         setNotes(((prev : NotesDto[])=> prev.map((prevNote : NotesDto) => {return prevNote._id === note._id ? note : prevNote})))
+    //       })
+    //       function onDisconnect() {
+    //         setIsConnected(false);
+    //         setTransport("N/A");
+    //         console.log('i am connected disconnected');
+    //       }
       
-          socket.on("connect", (userInfo : UserDto) =>{
-              onConnect
-            });
-          socket.on("disconnect", onDisconnect);
+    //       socket.on("connect", (userInfo : UserDto) =>{
+    //           onConnect
+    //         });
+    //       socket.on("disconnect", onDisconnect);
          
       
-          return () => {
-            socket.off("connect", onConnect);
-            socket.off("disconnect", onDisconnect);
-          };
-        }, [])
+    //       return () => {
+    //         socket.off("connect", onConnect);
+    //         socket.off("disconnect", onDisconnect);
+    //       };
+    //     }, [])
     const value = {
         allNotes : notes,
         formLoading,
