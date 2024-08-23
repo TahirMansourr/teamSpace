@@ -36,19 +36,19 @@ export default function WorkSpace({params}:{params : {id : string[]}}) {
      { user && projectInfo &&
         <WorkSpaceProvider projectInfo = {projectInfo} userInfo={user}>
             <AblyProvider client={client}>
-            <ChannelProvider channelName="get-started">
-            <SideBar
-              SelectedItemInSideBar={selectedItemInSideBar}
-              setSelectedItemInSideBar={setSelectedItemInSideBar}
-              setOpened={setOpened}
-              projectName = {projectInfo.project.name}
-              />
-            <SelectedItemToRenderOnScreen
-              selectedItemInSideBar={selectedItemInSideBar}
-              setOpened = {setOpened}
-              opened = {opened}
-              />
-              </ChannelProvider>
+              <ChannelProvider channelName="get-started">
+                <SideBar
+                  SelectedItemInSideBar={selectedItemInSideBar}
+                  setSelectedItemInSideBar={setSelectedItemInSideBar}
+                  setOpened={setOpened}
+                  projectName = {projectInfo.project.name}
+                  />
+                <SelectedItemToRenderOnScreen
+                  selectedItemInSideBar={selectedItemInSideBar}
+                  setOpened = {setOpened}
+                  opened = {opened}
+                  />
+                </ChannelProvider>
               </AblyProvider>
             </WorkSpaceProvider>
     

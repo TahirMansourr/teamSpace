@@ -23,8 +23,8 @@ const ChatProvider = ({children } : {children : React.ReactNode })=>{
     const [isConnected, setIsConnected] = useState(false);
     const [transport, setTransport] = useState("N/A");
     const [messages , setMessages] = useState<MesssageDto[]>(projectInfo.project.chatSpace)
-    console.log("🚀 ~ ChatProvider ~ projectInfo:", projectInfo)
-    console.log("🚀 ~ ChatProvider ~ messages:", messages)
+    // console.log("🚀 ~ ChatProvider ~ projectInfo:", projectInfo)
+    // console.log("🚀 ~ ChatProvider ~ messages:", messages)
     const didMountRef = useRef(false);
     const { channel } = useChannel('get-started', 'first', (message) => {
       console.log("🚀 ~ const{channel}=useChannel ~ message:", message)
