@@ -48,7 +48,7 @@ const WorkSpaceProvider = (
     :
     {
         children : React.ReactNode
-        projectInfo : projectInfoResponse
+        projectInfo? : projectInfoResponse
         userInfo : UserDto
     }
 )=>{
@@ -56,7 +56,7 @@ const WorkSpaceProvider = (
     const [ tasksComponentExpandState , setTasksComponentExpandState] = useState<boolean>(false)
     const [ issuesComponentExpandState , setIssuesComponentExpandState] = useState<boolean>(false)
     const [ chatComponentExpandState , setChatComponentExpandState] = useState<boolean>(false)
-    const [project  ,setProject] = useState<projectInfoResponse>(projectInfo)
+    const [project  ,setProject] = useState<projectInfoResponse>(projectInfo ? projectInfo : { } as projectInfoResponse)
     const [user , setUser] = useState<UserDto>(userInfo)
     console.log("🚀 ~ user:", user)
     console.log('workSpace Context Rerendered');

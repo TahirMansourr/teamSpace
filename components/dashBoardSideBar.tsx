@@ -1,5 +1,6 @@
 'use client'
 import React, { Dispatch, SetStateAction } from 'react'
+import UserButton from './user-button/UserButton'
 
 const DashBoardSideBar = ({
   setSelectedItemInSideBar,
@@ -17,7 +18,9 @@ const DashBoardSideBar = ({
   
   return (
     <div>
-      <h1 className=' text-xl text-center mt-3 shadow-xl mb-5'>{user.data.username ? user.data.username : 'User'}</h1>
+      <div className="flex flex-col rounded-md shadow-lg  p-1 border overflow-hidden m-2">
+          <UserButton/> 
+      </div>
         <section
          className=' flex h-full w-[15rem] pl-3 border-r text-xl mt-3 hover:cursor-pointer '>
           <ul>

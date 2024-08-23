@@ -14,6 +14,7 @@ import AccountSettings from './AccountSettings';
 const UserButton = () => {
     const router = useRouter()
     const {userInfo} = useWorkSpaceContext()
+    console.log("🚀 ~ UserButton ~ userInfo:", userInfo)
     const [opened, { open, close }] = useDisclosure(false);
 
     const handleSignOut = async () => {
