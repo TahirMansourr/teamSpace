@@ -20,7 +20,7 @@ const FeaturePage = () => {
           </Modal>
           <section className=' grid grid-cols-3 gap-2 p-3'>
           {
-            allFeatures ? 
+            allFeatures.length > 0 ? 
               allFeatures.map((feature : FeatureDto) => (
                   <FeatureCard feature = {feature}/>
               )) :

@@ -8,7 +8,7 @@ const TaskTableBody = ({index , task , date } :{ index : number , task : TaskDto
     <Table.Tbody>
         <Table.Tr key={index}>
             <Table.Td>
-                {<h1 className=' font-bold text-slate-700 font-sans'>{task.name}</h1>}
+                {<p className=' font-bold text-slate-700 font-sans'>{task.name}</p>}
             </Table.Td>
             <Table.Td>
                 <Badge
@@ -38,10 +38,10 @@ const TaskTableBody = ({index , task , date } :{ index : number , task : TaskDto
                 </Badge>
             </Table.Td>
             <Table.Td>
-                 <h1 className=' font-bold'> {date.toLocaleString()}</h1>
+                 <p className=' font-bold'> {date.toLocaleString()}</p>
             </Table.Td>
             <Table.Td>{task.tags? task.tags.map((item : any) => ( 
-                <h1 className='font-sans font-bold text-slate-600'>
+                <p className='font-sans font-bold text-slate-600'>
                     @ <Badge
                         radius='md'
                             size="sm"
@@ -49,10 +49,10 @@ const TaskTableBody = ({index , task , date } :{ index : number , task : TaskDto
                             >
                             {item}
                     </Badge>
-                </h1>)) : 'Uncategorized'}
+                </p>)) : 'Uncategorized'}
             </Table.Td>
             <Table.Td>
-                {task.assignedTo? task.assignedTo.map((item : any) => (<h1 className=' font-bold text-slate-600'>-{item.username ? item.username : item}</h1>)) : 'username'}
+                {task.assignedTo? task.assignedTo.map((item : any) => (<p className=' font-bold text-slate-600'>-{item.username ? item.username : item}</p>)) : 'username'}
             </Table.Td>
             <Table.Td>
                  <FiEdit className=' ml-auto hover:cursor-pointer mr-3' color='blue' />

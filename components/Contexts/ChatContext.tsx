@@ -26,15 +26,17 @@ const ChatProvider = ({children } : {children : React.ReactNode })=>{
     // console.log("🚀 ~ ChatProvider ~ projectInfo:", projectInfo)
     // console.log("🚀 ~ ChatProvider ~ messages:", messages)
     const didMountRef = useRef(false);
-    const { channel } = useChannel('get-started', 'first', (message) => {
-      console.log("🚀 ~ const{channel}=useChannel ~ message:", message)
-      console.log(message);
+
+    // @ uncomment me to use Ably {
+    // const { channel } = useChannel('get-started', 'first', (message) => {
+    //   console.log("🚀 ~ const{channel}=useChannel ~ message:", message)
+    //   console.log(message);
       
-      setMessages((prev: any) => [...prev, message.data]);
-    });
-    useConnectionStateListener('connected', () => {
-      console.log('Connected to Ably!');
-    });
+    //   setMessages((prev: any) => [...prev, message.data]);
+    // });
+    // useConnectionStateListener('connected', () => {
+    //   console.log('Connected to Ably!');
+    // });}
    
 
     useEffect(() => {
@@ -107,8 +109,9 @@ const ChatProvider = ({children } : {children : React.ReactNode })=>{
         
         const newMessage = await CreateMessage({body , userId : userInfo._id , projectId : projectInfo.project._id})
         console.log("🚀 ~ handleSendMessage ~ newMessage:", newMessage)
-        
-        channel.publish('first' , { ...newMessage.response , author : userInfo});
+        setMessages((prev: any) => [...prev, newMessage.response]);
+        //uncomment me to use Ably{
+        // channel.publish('first' , { ...newMessage.response , author : userInfo});}
         // socket.emit('Groupmessage' , newMessage.response)
         console.log("🚀 ~ handleSendMessage ~ newMessage:",{ ...newMessage.response , author : userInfo})
       }

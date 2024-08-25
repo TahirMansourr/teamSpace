@@ -14,7 +14,7 @@ export default function WorkSpace({params}:{params : {id : string[]}}) {
     const [opened , setOpened] = useState<boolean>(false)
     const [projectInfo , setProjectInfo] = useState<any>()
     const [user , setUser] = useState<any>()
-    const client = new Ably.Realtime({key :process.env.NEXT_PUBLIC_ABLY_KEY})
+    // const client = new Ably.Realtime({key :process.env.NEXT_PUBLIC_ABLY_KEY})
 
     useEffect(()=>{
      async function getProjectInfo(){
@@ -35,8 +35,8 @@ export default function WorkSpace({params}:{params : {id : string[]}}) {
     <main className="flex w-full min-h-screen">
      { user && projectInfo &&
         <WorkSpaceProvider projectInfo = {projectInfo} userInfo={user}>
-            <AblyProvider client={client}>
-              <ChannelProvider channelName="get-started">
+            {/* <AblyProvider client={client}> */}
+              {/* <ChannelProvider channelName="get-started"> */}
                 <SideBar
                   SelectedItemInSideBar={selectedItemInSideBar}
                   setSelectedItemInSideBar={setSelectedItemInSideBar}
@@ -48,8 +48,8 @@ export default function WorkSpace({params}:{params : {id : string[]}}) {
                   setOpened = {setOpened}
                   opened = {opened}
                   />
-                </ChannelProvider>
-              </AblyProvider>
+                {/* </ChannelProvider> */}
+               {/* </AblyProvider> */}
             </WorkSpaceProvider>
     
         

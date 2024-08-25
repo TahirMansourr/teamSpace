@@ -40,34 +40,36 @@ type IssuesContextDto = {
     const [allFeatureIssues , setAllFeatureIssues] = useState<IssueDto[]>(featureIssues? featureIssues : [])
     console.log("🚀 ~ IssuesProvider ~ issuesInfo:", issuesInfo)
     const [formLoading , setFormLoading] = useState<boolean>(false)
-    const { channel } = useChannel('get-started',()=>{} )
+   
+    // uncomment me to use Ably{
+    // const { channel } = useChannel('get-started',()=>{} )
 
-    useEffect(()=>{
-        channel.subscribe('create-issue' , (issue)=>{
-            setIssuesInfo((prev : IssueDto[]) => [issue.data.newIssue , ...prev])
-            if(issue.data.featureId){
-                setAllFeatureIssues((prev : IssueDto[]) => [issue.data.newIssue , ...prev])
-            }
-        })
-        channel.subscribe('update-issue', (issue) => {
-            console.log('Received update-issue:', issue);
+    // useEffect(()=>{
+    //     channel.subscribe('create-issue' , (issue)=>{
+    //         setIssuesInfo((prev : IssueDto[]) => [issue.data.newIssue , ...prev])
+    //         if(issue.data.featureId){
+    //             setAllFeatureIssues((prev : IssueDto[]) => [issue.data.newIssue , ...prev])
+    //         }
+    //     })
+    //     channel.subscribe('update-issue', (issue) => {
+    //         console.log('Received update-issue:', issue);
         
-            if (issue?.data._id) {
-                try {
-                    setIssuesInfo(((prev : IssueDto[] )=> prev.map((prevIssue : IssueDto) => prevIssue._id === issue.data._id ? issue.data : prevIssue)))
+    //         if (issue?.data._id) {
+    //             try {
+    //                 setIssuesInfo(((prev : IssueDto[] )=> prev.map((prevIssue : IssueDto) => prevIssue._id === issue.data._id ? issue.data : prevIssue)))
 
             
-                    setAllFeatureIssues(((prev : IssueDto[] )=> prev.map((prevIssue : IssueDto) => prevIssue._id === issue.data._id ? issue.data : prevIssue)))
+    //                 setAllFeatureIssues(((prev : IssueDto[] )=> prev.map((prevIssue : IssueDto) => prevIssue._id === issue.data._id ? issue.data : prevIssue)))
 
-                } catch (error) {
-                 console.error(error)
-                }
+    //             } catch (error) {
+    //              console.error(error)
+    //             }
                
-            } else {
-                console.error("Invalid issue data received:", issue);
-            }
-        });
-      },[])
+    //         } else {
+    //             console.error("Invalid issue data received:", issue);
+    //         }
+    //     });
+    //   },[])}
 
     async function handleCreateIssue( values : createOrUpdateIssueForm , close : ()=>void){
         console.log(values , 'thhhhhhhhhh');
@@ -95,13 +97,14 @@ type IssuesContextDto = {
                     assignedTo : assignedToMembers as UserDto[],
                     creationDate : res.issue.creationDate
                 }
-                channel.publish('create-issue' ,{ newIssue ,  featureId : values.featureId});
+                //uncomment me to use ably{
+                // channel.publish('create-issue' ,{ newIssue ,  featureId : values.featureId});}
                 // socket.emit('createIssue' , newIssue)
-                // setIssuesInfo((prev : IssueDto[]) => [newIssue , ...prev])
-                // if(values.featureId){
-                //     setAllFeatureIssues((prev : IssueDto[]) => [newIssue , ...prev])
-                // }
-                // setIssuesInfo((prev) => [...prev , newIssue])
+                setIssuesInfo((prev : IssueDto[]) => [newIssue , ...prev])
+                if(values.featureId){
+                    setAllFeatureIssues((prev : IssueDto[]) => [newIssue , ...prev])
+                }
+                setIssuesInfo((prev) => [...prev , newIssue])
             })
         } catch (error) {
             throw new Error(`error at handleCreateIssue : ${error}`);
@@ -138,10 +141,11 @@ type IssuesContextDto = {
                     assignedTo : assignedToMembers as UserDto[],
                     creationDate : ''
                 }
-                 channel.publish('update-issue', newIssue);
+                //uncomment me to use ably{
+                //  channel.publish('update-issue', newIssue);}
                 // socket.emit('updateIssue' , newIssue)
-                // setIssuesInfo(((prev : IssueDto[] )=> prev.map((prevIssue : IssueDto) => prevIssue._id === newIssue._id ? newIssue : prevIssue)))
-                // setAllFeatureIssues(((prev : IssueDto[] )=> prev.map((prevIssue : IssueDto) => prevIssue._id === newIssue._id ? newIssue : prevIssue)))
+                setIssuesInfo(((prev : IssueDto[] )=> prev.map((prevIssue : IssueDto) => prevIssue._id === newIssue._id ? newIssue : prevIssue)))
+                setAllFeatureIssues(((prev : IssueDto[] )=> prev.map((prevIssue : IssueDto) => prevIssue._id === newIssue._id ? newIssue : prevIssue)))
                 // setIssuesInfo(((prev : IssueDto[] )=> prev.map((prevIssue : IssueDto) => prevIssue._id === newIssue._id ? newIssue : prevIssue)))
             })
         } catch (error) {

@@ -4,6 +4,7 @@ import {useRouter} from "next/navigation";
 import axios from "axios";
 import { Button, Checkbox, Group, LoadingOverlay, TextInput, Transition } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import LinkToSignUpPage from "@/components/LinkToSignUpPage";
 
 
 export default function SignInPage(){
@@ -72,9 +73,13 @@ export default function SignInPage(){
                       key={form.key('password')}
                       {...form.getInputProps('password')}
                     />
-                    <Group justify="flex-end" mt="md">
+                    <div className=" flex flex-col justify-end mt-3 ">
                       <Button type="submit" disabled = {loading}>Login</Button>
-                    </Group>
+                      <div className="mt-2 flex justify-end">
+                        <LinkToSignUpPage/>
+                      </div>
+                     
+                    </div>
             </div>
           </form>
         </div>

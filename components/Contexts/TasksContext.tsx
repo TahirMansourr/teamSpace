@@ -49,22 +49,23 @@ const TaskProvider = ({
     const [allTasks , setAllTasks] = useState<TaskDto[]>(project.project.Tasks ? project.project.Tasks : [] )
     const [allFeatureTasks , setAllFeatureTasks] = useState<TaskDto[]>(featureTasks ? featureTasks : [])
     const didMountRef = useRef(false);
-    const { channel } = useChannel('get-started',()=>{} )
 
+    //uncomment me to use ably{
+    // const { channel } = useChannel('get-started',()=>{} )
 
-    useEffect(() => {
-        channel.subscribe('create-task', (task) => {
-        setAllTasks((prev : TaskDto[] | undefined) =>prev ? [task.data.task , ...prev  ] : [])
-        if(task.data.featureId){
-            setAllFeatureTasks((prev : TaskDto[] | undefined) => prev ? [task.data.task, ...prev] : [])
-        }
-      console.log("🚀 ~ const{channel}=useChannel ~ task:", task)
-        });
-        channel.subscribe('update-task', (task) => {
-            setAllTasks(((prev : TaskDto[] )=> prev.map((prevTask : TaskDto) => prevTask._id === task.data._id ? task.data : prevTask)  ))
-             setAllFeatureTasks(((prev : TaskDto[] )=> prev.map((prevTask : TaskDto) => prevTask._id === task.data._id ? task.data : prevTask)))
-        })
-    } , [])
+    // useEffect(() => {
+    //     channel.subscribe('create-task', (task) => {
+    //     setAllTasks((prev : TaskDto[] | undefined) =>prev ? [task.data.task , ...prev  ] : [])
+    //     if(task.data.featureId){
+    //         setAllFeatureTasks((prev : TaskDto[] | undefined) => prev ? [task.data.task, ...prev] : [])
+    //     }
+    //   console.log("🚀 ~ const{channel}=useChannel ~ task:", task)
+    //     });
+    //     channel.subscribe('update-task', (task) => {
+    //         setAllTasks(((prev : TaskDto[] )=> prev.map((prevTask : TaskDto) => prevTask._id === task.data._id ? task.data : prevTask)  ))
+    //          setAllFeatureTasks(((prev : TaskDto[] )=> prev.map((prevTask : TaskDto) => prevTask._id === task.data._id ? task.data : prevTask)))
+    //     })
+    // } , [])}
     const useHandleCreateTask = (): 
     [boolean, (values: formValuesType , close : ()=> void) => Promise<void> ,(values: formValuesType , close : ()=> void) => Promise<void>] => {
         
@@ -95,7 +96,12 @@ const TaskProvider = ({
                       _id : res.task._id,
                       creationDate : res.task.creationDate
                     }
-                    channel.publish('create-task' , {task : newTask , featureId : values.featureId});
+                    setAllTasks(((prev : TaskDto[] )=> prev.map((prevTask : TaskDto) => prevTask._id === newTask._id ? newTask : prevTask) ))
+                    if(values.featureId){
+                                setAllFeatureTasks((prev : TaskDto[] | undefined) => prev ? [newTask, ...prev] : [])
+                            }
+                    //uncomment me to use ably{
+                    // channel.publish('create-task' , {task : newTask , featureId : values.featureId});}
                     // socket.emit('createTask' , newTask)
                     // console.log('sent task' , newTask); 
                 })
@@ -131,9 +137,10 @@ const TaskProvider = ({
                           assignedTo : assignedToMembers,
                           creationDate : res.task.creationDate
                         }
-                        // setAllTasks(((prev : TaskDto[] )=> prev.map((prevTask : TaskDto) => prevTask._id === newTask._id ? newTask : prevTask)  ))
-                        // setAllFeatureTasks(((prev : TaskDto[] )=> prev.map((prevTask : TaskDto) => prevTask._id === newTask._id ? newTask : prevTask)))
-                        channel.publish('update-task' , newTask);
+                        setAllTasks(((prev : TaskDto[] )=> prev.map((prevTask : TaskDto) => prevTask._id === newTask._id ? newTask : prevTask)  ))
+                        setAllFeatureTasks(((prev : TaskDto[] )=> prev.map((prevTask : TaskDto) => prevTask._id === newTask._id ? newTask : prevTask)))
+                        //uncomment me to use ably
+                        // channel.publish('update-task' , newTask);
             
                         // socket.emit('updateTask' , newTask)
                         // console.log('sent task' , newTask); 

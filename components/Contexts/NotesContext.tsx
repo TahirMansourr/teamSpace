@@ -34,25 +34,27 @@ const NotesContext = createContext<NotesContextDto>({} as NotesContextDto)
     const [transport, setTransport] = useState("N/A");
     const [activeUsers , setActiveUsers] = useState<string[]>([])
     const didMountRef = useRef(false);
-    const { channel } = useChannel('get-started',()=>{} )
+    
+  //uncomment me to use ably { 
+    // const { channel } = useChannel('get-started',()=>{} )
 
-    useEffect(()=>{
-      channel.subscribe('create-note' , (note)=>{
-        setNotes((prev : NotesDto[]) => [{...note.data.note , creator : userInfo} , ...prev])
-      })
-      channel.subscribe('update-note' , (note) => {
-        const UpdatedNote = {...note.data.newNote.note , creator : note.data.existingNote.creator}
-        console.log("🚀 ~ handleUpdateNote ~ UpdatedNote:", UpdatedNote)
-        setNotes(((prev : NotesDto[])=> prev.map((prevNote : NotesDto) => {
-          if(prevNote._id === UpdatedNote._id){
-            return UpdatedNote
-           }else{
-              return prevNote
-            }
-        }
-        )))
-      })
-    },[])
+    // useEffect(()=>{
+    //   channel.subscribe('create-note' , (note)=>{
+    //     setNotes((prev : NotesDto[]) => [{...note.data.note , creator : userInfo} , ...prev])
+    //   })
+    //   channel.subscribe('update-note' , (note) => {
+    //     const UpdatedNote = {...note.data.newNote.note , creator : note.data.existingNote.creator}
+    //     console.log("🚀 ~ handleUpdateNote ~ UpdatedNote:", UpdatedNote)
+    //     setNotes(((prev : NotesDto[])=> prev.map((prevNote : NotesDto) => {
+    //       if(prevNote._id === UpdatedNote._id){
+    //         return UpdatedNote
+    //        }else{
+    //           return prevNote
+    //         }
+    //     }
+    //     )))
+    //   })
+    // },[])}
 
     async function handleCreateNote(body : string, close : ()=>void){
         setFormLoading(true)
@@ -62,10 +64,10 @@ const NotesContext = createContext<NotesContextDto>({} as NotesContextDto)
                 body,
                 creator : userInfo._id
             })
-
-            channel.publish('create-note' , new_note)
-            // .then((res : {status : string , note : NotesDto})=>
-              // setNotes((prev : NotesDto[]) => [{...res.note , creator : userInfo} , ...prev])
+            //uncommentme to use ably{
+            // channel.publish('create-note' , new_note)}
+            .then((res : {status : string , note : NotesDto})=>
+              setNotes((prev : NotesDto[]) => [{...res.note , creator : userInfo} , ...prev]))
                 // socket.emit('newNote' , res.note)
                 // console.log('emmitted');
                 
@@ -90,7 +92,9 @@ const NotesContext = createContext<NotesContextDto>({} as NotesContextDto)
           _id: existingNote._id
         })
         console.log("🚀 ~ new-note ~ UpdatedNote:", {newNote :new_note , existingNote})
-         channel.publish('update-note', {newNote :new_note, existingNote})
+        setNotes(((prev : NotesDto[])=> prev.map((prevNote : NotesDto) => {return prevNote._id === existingNote._id? new_note.note : prevNote})))
+        //ucomment me to use ably{
+        //  channel.publish('update-note', {newNote :new_note, existingNote})}
           // socket.emit('updateNote', res.note);
           // socket.emit('updateNote', {...res.note , creator : existingNote.creator});
         
