@@ -1,6 +1,9 @@
 'use client'
 import { Transition } from '@mantine/core'
 import React, { Dispatch, SetStateAction, useEffect } from 'react'
+import IssuesProvider from '../Contexts/IssuesContext'
+import { useWorkSpaceContext } from '../Contexts/WorkSpaceContext'
+import AllIssues from './IssuesComponents/AllIssues'
 
 const IssuesPageComponent = ({
     opened,
@@ -14,6 +17,8 @@ const IssuesPageComponent = ({
         setOpened(true)
         return ()=>setOpened(false)
       })
+
+      const {projectInfo , userInfo} = useWorkSpaceContext()
       
       return (
         <Transition
@@ -26,7 +31,10 @@ const IssuesPageComponent = ({
         (styles) =>(
            <section className='m-5 w-full' style={styles}>
               <div className=' flex justify-between items-center w-full'>
-                <h1>messages</h1>
+                <IssuesProvider project={projectInfo.project} user={userInfo}>
+                  <AllIssues/>
+                </IssuesProvider>
+                
               </div>
          </section>
          )

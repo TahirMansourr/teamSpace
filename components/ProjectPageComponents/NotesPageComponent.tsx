@@ -1,6 +1,9 @@
 'use client'
 import { Transition } from '@mantine/core'
 import React, { Dispatch, SetStateAction, useEffect } from 'react'
+import AllNotes from './NotesComponents/AllNotes'
+import NotesProvider from '../Contexts/NotesContext'
+import { useWorkSpaceContext } from '../Contexts/WorkSpaceContext'
 
 const NotesPageComponent = ({
     opened,
@@ -14,6 +17,8 @@ const NotesPageComponent = ({
         setOpened(true)
         return ()=>setOpened(false)
       })
+
+      const {projectInfo , userInfo} = useWorkSpaceContext()
       
       return (
         <Transition
@@ -25,8 +30,10 @@ const NotesPageComponent = ({
         {
         (styles) =>(
            <section className='m-5 w-full' style={styles}>
-              <div className=' flex justify-between items-center w-full'>
-                <h1>messages</h1>
+              <div className=' flex items-center w-full justify-center'>
+              <NotesProvider project={projectInfo.project} user={userInfo} >
+                <AllNotes/>
+              </NotesProvider>
               </div>
          </section>
          )

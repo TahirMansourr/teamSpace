@@ -14,7 +14,8 @@ const CreateOrUpdateNote = ({existingNoteContent , close} : {existingNoteContent
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
+       
+        
         if(!existingNoteContent){
         await handleCreateNote(content , close)
         }else{
