@@ -10,6 +10,7 @@ import IssuesPageComponent from "./components/ProjectPageComponents/IssuesPageCo
 import TasksPageComponent from "./components/ProjectPageComponents/TasksPageComponent"
 import FeaturesComponent from "./components/ProjectPageComponents/FeaturesComponent"
 import Activity from "./components/ProjectPageComponents/Activity"
+import Settings from "./components/ProjectPageComponents/Settings"
 
 export const SelectedItemInSideBarToRenderOnScreen = ({
   selectedItemInSideBar,
@@ -63,7 +64,7 @@ export const SelectedItemToRenderOnScreen = ({
       case 'Activity':
         return <Activity opened = {opened} setOpened = {setOpened}/>
       case 'Settings':
-        return <FeaturesComponent opened = {opened} setOpened = {setOpened}/>
+        return <Settings opened = {opened} setOpened = {setOpened}/>
       default: 
         return <MultiTabsComponent opened = {opened} setOpened = {setOpened}/>
     }
