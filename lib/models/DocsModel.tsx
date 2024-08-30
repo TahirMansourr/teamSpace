@@ -1,11 +1,7 @@
 import mongoose from "mongoose";
 
-// const docsContentSchema = new mongoose.Schema({
-//     title : String,
-//     content : String
-// })
 
-const docSchema = new mongoose.Schema({
+const SingleDocSchema = new mongoose.Schema({
     title : String,
     project : {
         type : mongoose.Schema.Types.ObjectId,
@@ -26,6 +22,11 @@ const docSchema = new mongoose.Schema({
         editedContent : String
     }]
 })
+const docSchema = new mongoose.Schema({
+    folder : String,
+    docs : [SingleDocSchema]
+})
+
 
 const Doc = mongoose.models.Doc || mongoose.model('Doc' , docSchema)
 export default Doc;

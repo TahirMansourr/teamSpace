@@ -21,6 +21,10 @@ const ProjectSchema = new mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Note'
     }],
+    docs : [{
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'Doc'
+    }],
     Tasks : [{
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Task'

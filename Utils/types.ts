@@ -10,7 +10,7 @@ export type ProjectDto = {
     chatSpace : MesssageDto[],
     likes?: number,
     content : string,
-    
+    docs : any[],
     // meetings: String,
     // messages : String,
     activity? : Number

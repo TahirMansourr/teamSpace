@@ -1,0 +1,12 @@
+as for the docs the structure should be as follows:
+there should be a folder in which docs reside. in the schema you should create a folder in which the docs reside.
+this folder should be something like an accordion with the docs inside. like have a folder for example containing TaskFeature , Issue TaskFeature
+task and issue feature should be the name of the folder and inside it there should be a list of docs if you want, each doc with it's own title and stuff.
+
+
+one of the main uses of usecall back is that You cache a function that you pass as a param to a child component.
+When memoizing a component using memo you tell the component to skip rerendering if the props are the same.
+In JS a function ()=>{} always creates a new function ie when rerendering just as an object litereal {} always creates a new object.
+
+so basically if you are passing a function as a prop without using usecall back everytime the fucntion is created again and there for in the props
+it is different than the last function which will cause a rerender even if you are using memo
