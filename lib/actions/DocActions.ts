@@ -7,11 +7,23 @@ type NewDocDto = {
     project : string ,
     title : string,
     createdBy : string,
+    type : 'File' | 'Folder',
+    body? : string,
+    parent ? : string
 }
 
 export async function CreateNewDoc(params : NewDocDto ){
     try {
         await connectToDB()
+        if(params.type === 'File'){
+            const newFile = {
+                project : params.project,
+                createdBy : params.createdBy,
+                createdAt : new Date(),
+               ...(parent ?  {parent : params.parent} : {}),
+            }
+           
+        }
         const newDoc = await Doc.create({
             folder : params.title,
             project : params.project,

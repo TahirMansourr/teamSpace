@@ -4,7 +4,7 @@ import { createContext, use, useContext, useState } from "react";
 
 interface DocsContextType{
     allDocs : any[],
-    handleCreateDoc : (title : string) => void
+    handleCreateDoc : (title : string , type : 'File' | 'Folder') => void
 }
 const DocsContext = createContext<DocsContextType>({} as DocsContextType)
 
@@ -19,11 +19,12 @@ const DocsProvider = ({
     const [project , setProject] = useState<ProjectDto>(projectInfo)
     const [allDocs , setAllDocs] = useState<any[]>(projectInfo.docs)
 
-    const handleCreateDoc = async (title : string) => {
+    const handleCreateDoc = async (title : string , type : 'File' | 'Folder' , parents? : [string] ) => {
         const newDoc = await CreateNewDoc({
             project : projectInfo._id,
             createdBy : userInfo._id,
-            title 
+            title ,
+            type
         })
 
         setAllDocs((prev : any) => [...prev , newDoc])
