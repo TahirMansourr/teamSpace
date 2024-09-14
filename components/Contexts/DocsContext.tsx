@@ -1,4 +1,4 @@
-import { CreateNewDoc } from "@/lib/actions/DocActions";
+import { CreateOrphanDoc } from "@/lib/actions/DocActions";
 import { ProjectDto, UserDto } from "@/Utils/types";
 import { createContext, use, useContext, useState } from "react";
 
@@ -13,18 +13,30 @@ export const useDocsContext = ()=>{
 }
 
 const DocsProvider = ({
-    children , userInfo , projectInfo} : {children : React.ReactNode , userInfo : UserDto , projectInfo : ProjectDto})=>{
-    
+    children , 
+    userInfo , 
+    projectInfo
+} : {
+    children : React.ReactNode , 
+    userInfo : UserDto , 
+    projectInfo : ProjectDto
+})=>{    
     const [user , setUser] = useState<UserDto>(userInfo)
     const [project , setProject] = useState<ProjectDto>(projectInfo)
     const [allDocs , setAllDocs] = useState<any[]>(projectInfo.docs)
 
-    const handleCreateDoc = async (title : string , type : 'File' | 'Folder' , parents? : [string] ) => {
-        const newDoc = await CreateNewDoc({
+    const handleCreateDoc = async (
+        name : string , 
+        type : 'File' | 'Folder' , 
+        parent? : string [] | undefined
+    ) => {
+
+        const newDoc = await CreateOrphanDoc({
             project : projectInfo._id,
             createdBy : userInfo._id,
-            title ,
-            type
+            name ,
+            type,
+            parent : parent || undefined
         })
 
         setAllDocs((prev : any) => [...prev , newDoc])

@@ -2,7 +2,7 @@
 import TiptapForDocs from '@/components/TipTapForDocs/tipTapForDocs'
 import React from 'react'
 import '../DocsComponenets/singleDoc.css'
-import SideBarForDocs from './SideBarForDocs'
+// import SideBarForDocs from './SideBarForDocs'
 import LeftSideBar from './LeftSideBar'
 
 const SingleDoc = ({edit} : {edit : boolean}) => {

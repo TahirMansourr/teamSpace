@@ -2,7 +2,7 @@
 import Feature from "../models/FeatureModel"
 import Project from "../models/ProjectModel"
 import { connectToDB } from "../mongoose"
-import Doc from "../models/DocsModel"
+import Doc from "../models/FolderModel"
 import Task from "../models/TasksModel"
 import User from "../models/UserModel"
 import Issue from "../models/IssuesModel"

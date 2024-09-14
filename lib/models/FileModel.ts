@@ -1,17 +1,18 @@
 import mongoose from "mongoose";
 
-const SingleDocSchema = new mongoose.Schema({
-    title : String,
+export const fileSchema = new mongoose.Schema({
+    name : String,
+    body : String,
+    createdAt : Date,
+    featureId : String,
     project : {
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Project'
     },
-    body : String,
     createdBy : {
         type : mongoose.Schema.Types.ObjectId,
         ref : 'User'
     },
-    createdAt : Date,
     edits : [{
         editedBy : { 
             type : mongoose.Schema.Types.ObjectId,
@@ -22,13 +23,9 @@ const SingleDocSchema = new mongoose.Schema({
     }],
     parent : {
         type : mongoose.Schema.Types.ObjectId,
-        ref : 'Doc'
-    },
-    children : [{
-        type : mongoose.Schema.Types.ObjectId,
-        ref : 'Doc'
-    }]
+        ref : 'Folder'
+    }
 })
 
-const SingleDoc = mongoose.models.SingleDoc || mongoose.model('SingleDoc' , SingleDocSchema)
-export default SingleDoc;
+const File = mongoose.models.File || mongoose.model('File' , fileSchema)
+export default File;

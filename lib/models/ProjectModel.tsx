@@ -41,10 +41,16 @@ const ProjectSchema = new mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Feature'
     }],
+    files : [{
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'File'
+    }],
+    folders : [{
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'Folder'
+    }],
     likes: Number,
     content : String,
-    // meetings: String,
-    // messages : String,
     activity : Number
 
 })

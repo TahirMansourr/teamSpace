@@ -11,9 +11,12 @@ export type ProjectDto = {
     likes?: number,
     content : string,
     docs : any[],
+    files : FileDto[],
+    folders : FolderDto[],
+    // docs : String,
     // meetings: String,
     // messages : String,
-    activity? : Number
+    activity? : number
 
 }
 export type UserDto = {
@@ -82,4 +85,41 @@ export type FeatureDto = {
     createdAt : Date,
     updatedAt : Date | null,
     createdBy : UserDto,
+}
+
+export type Edits = {
+    editedBy : UserDto,
+    editedAt : Date,
+    editedContent : string
+}
+
+export type FileDto = {
+    _id : string,
+    featureId? : string,
+    name : string,
+    body : string,
+    createdAt : Date,
+    project : ProjectDto,
+    createdBy : UserDto,
+    edits : Edits[],
+    parent : FolderDto | null
+   
+}
+export type FolderDto = {
+    _id: string;
+    featureId?: string;
+    name: string;
+    project: ProjectDto;
+    children: (FileDto | FolderDto) []; // Children array can hold both files and folders
+    createdAt: Date;
+    createdBy: UserDto;
+    edits: Edits[];
+    parent: FolderDto | null;
+}
+
+export type ChildrenDto = {
+    _id: string;
+    name: string;
+    childrenType: 'File' | 'Folder'; // Indicates if the child is a file or folder
+    child: FileDto | FolderDto;       // The actual file or folder object
 }

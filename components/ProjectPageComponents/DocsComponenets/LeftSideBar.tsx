@@ -1,36 +1,45 @@
 'use client'
 import { useDocsContext } from '@/components/Contexts/DocsContext';
-import { Button, Input, TextInput } from '@mantine/core'
+import { Button, TextInput ,Tree  } from '@mantine/core'
 import React, { useState } from 'react'
 import { FaRegFolderOpen } from "react-icons/fa";
 import { MdOutlineDone } from "react-icons/md";
-import { Tree } from '@mantine/core';
 import { CiFileOn } from "react-icons/ci";
 
 const LeftSideBar = () => {
+   
     const [title , setTitle] = useState<string>('')
     const [createFolder , setCreateFolder] = useState<boolean>(false)
     const [createFile , setCreateFile] = useState<boolean>(false)
     const [type , setType] = useState<'File' | 'Folder'>('File')
     const { handleCreateDoc , allDocs } = useDocsContext()
-    const titles = allDocs.map((doc)=>doc.folder)
-  return (
+    const titles = allDocs.map((doc)=>doc.name)
+ 
+    return (
     <div className=' w-full flex flex-col items-center'>
       <div className="flex">
-        <Button variant='transparent' size = 'compact-sm' onClick={()=>{
+        <Button 
+          variant='transparent' 
+          size = 'compact-sm' 
+          onClick={()=>{
           setCreateFile(false)
           setCreateFolder(true)
-          setType('Folder')}}> 
+          setType('Folder')}}
+          > 
           <div className=' flex items-center justify-center'>
             +
             <FaRegFolderOpen />
           </div>
         </Button>
-        <Button variant='transparent' size = 'compact-sm' onClick={()=>{
+        <Button 
+          variant='transparent' 
+          size = 'compact-sm' 
+          onClick={()=>{
           setCreateFolder(false)
           setCreateFile(true)
           setType("File")}
-          }>
+          }
+          >
         <div className=' flex items-center justify-center'>
             +
             <CiFileOn />
@@ -63,6 +72,9 @@ const LeftSideBar = () => {
             />
        </div>  
        : null}
+       <div>
+        {titles}
+       </div>
     </div>
   )
 }

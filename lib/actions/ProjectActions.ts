@@ -7,7 +7,7 @@ import Message from "../models/MessagesModel"
 import Task from "../models/TasksModel"
 import Issue from "../models/IssuesModel"
 import Note from "../models/NotesModel"
-import Doc from "../models/DocsModel"
+import Doc from "../models/FolderModel"
 
 interface ProjectInitialProps{
     name : string,
