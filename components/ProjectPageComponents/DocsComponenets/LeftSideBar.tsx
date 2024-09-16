@@ -5,15 +5,17 @@ import React, { useState } from 'react'
 import { FaRegFolderOpen } from "react-icons/fa";
 import { MdOutlineDone } from "react-icons/md";
 import { CiFileOn } from "react-icons/ci";
+import FolderStructureWrapper from './FolderStructure';
 
 const LeftSideBar = () => {
-   
+
+    const {allFolders , allFiles} = useDocsContext()
     const [title , setTitle] = useState<string>('')
     const [createFolder , setCreateFolder] = useState<boolean>(false)
     const [createFile , setCreateFile] = useState<boolean>(false)
     const [type , setType] = useState<'File' | 'Folder'>('File')
-    const { handleCreateDoc , allDocs } = useDocsContext()
-    const titles = allDocs.map((doc)=>doc.name)
+    const { handleCreateDoc  } = useDocsContext()
+    // const titles = allDocs.map((doc)=>doc.name)
  
     return (
     <div className=' w-full flex flex-col items-center'>
@@ -46,10 +48,6 @@ const LeftSideBar = () => {
           </div>
         </Button>
       </div>
-        
-        <div className='w-full'>
-            <Tree data={[]} />
-        </div>
        { createFolder || createFile ? 
        <div className='flex gap-1 mt-3 wfull mx-2 items-center'>
         <TextInput 
@@ -72,9 +70,10 @@ const LeftSideBar = () => {
             />
        </div>  
        : null}
-       <div>
-        {titles}
-       </div>
+        <FolderStructureWrapper 
+          allFolders={allFolders}
+          allFiles={allFiles}
+        />
     </div>
   )
 }

@@ -8,6 +8,8 @@ import Task from "../models/TasksModel"
 import Issue from "../models/IssuesModel"
 import Note from "../models/NotesModel"
 import Doc from "../models/FolderModel"
+import Folder from "../models/FolderModel"
+import File from "../models/FileModel"
 
 interface ProjectInitialProps{
     name : string,
@@ -108,8 +110,26 @@ export async function GetProjectByIdAndPopulate({id} : {id : string}){
                     
                 ]
             },{
-                path : 'docs',
-                model : Doc
+                path : 'folders',
+                model : Folder,
+                populate : [
+                    {
+                        path : 'createdBy',
+                        model : User
+                    },
+                    
+                ]
+            },
+            {
+                path : 'files',
+                model : File,
+                populate : [
+                    {
+                        path : 'createdBy',
+                        model : User
+                    },
+                    
+                ]
             }
            
             

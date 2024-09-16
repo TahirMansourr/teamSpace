@@ -2,7 +2,7 @@
 
 import File from "../models/FileModel"
 import Folder from "../models/FolderModel"
-import Doc from "../models/FolderModel"
+import Project from "../models/ProjectModel"
 import { connectToDB } from "../mongoose"
 
 type NewFileOrFolderDto = {
@@ -27,13 +27,35 @@ export async function CreateOrphanDoc(params : NewFileOrFolderDto ){
            ...(params.body ?  {body : params.body} : {}),
         }
 
+        
+
         if(params.type === 'File'){
             const newFile = await File.create(NewFileOrFolderFields)
+            console.log("🚀 ~ CreateOrphanDoc ~ newFile:", newFile)
             await newFile.save()
+            const project = await Project.findOneAndUpdate(
+                {_id : params.project} ,
+                {
+                    $push : {
+                        files : newFile
+                    }
+                }
+            )
+            await project.save()
             const response = newFile.toObject()
             return {status : 'success' , newFile : JSON.parse(JSON.stringify(response))}
         }else{
             const newFolder = await Folder.create(NewFileOrFolderFields)
+            console.log("🚀 ~ CreateOrphanDoc ~ newFolder:", newFolder)
+            const project = await Project.findOneAndUpdate(
+                {_id : params.project} ,
+                {
+                    $push : {
+                        folders : newFolder._id
+                    }
+                }
+            )
+            await project.save()
             await newFolder.save()
             const response = newFolder.toObject()
             return {status : 'success' , newFolder : JSON.parse(JSON.stringify(response))}
@@ -42,4 +64,8 @@ export async function CreateOrphanDoc(params : NewFileOrFolderDto ){
     } catch (error: any) {
         throw new Error(`error at CreateNewDoc : ${error}`)
     }
+}
+
+export async function CreateFolderInsideFolder(params:any) {
+    
 }
