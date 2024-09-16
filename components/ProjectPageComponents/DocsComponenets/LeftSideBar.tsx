@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import { FaRegFolderOpen } from "react-icons/fa";
 import { MdOutlineDone } from "react-icons/md";
 import { CiFileOn } from "react-icons/ci";
-import FolderStructureWrapper from './FolderStructure';
+import FolderStructureWrapper from './FolderStructureWrapper';
 
 const LeftSideBar = () => {
 
