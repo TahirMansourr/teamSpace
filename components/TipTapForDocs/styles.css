@@ -17,11 +17,12 @@
     height: fit-content;
     background-color: #f9f9f9;
     margin-bottom: 16px;
-    width: fit-content; /* Adjust width to fit content */
-    position: fixed;
-    top: 5px; /* Adjust this value as needed */
-    left: 50%;
-    transform: translateX(-50%);
+
+    /* width: fit-content; */
+    /* position: fixed; */
+    /* top: 5px;  */
+    /* left: 50%; */
+    /* transform: translateX(-50%); */
     z-index: 10;
   }
   

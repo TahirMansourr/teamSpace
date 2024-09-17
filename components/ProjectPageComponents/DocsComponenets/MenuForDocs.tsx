@@ -39,7 +39,6 @@ const MenuForDocs = ({
                 setMenuVisible(false); 
               };
 
-              const {setInitialContentOfFile} = useDocsContext()
   return (
     
     <div

@@ -69,3 +69,39 @@ export async function CreateOrphanDoc(params : NewFileOrFolderDto ){
 export async function CreateFolderInsideFolder(params:any) {
     
 }
+
+interface UpdateFileParams {
+    fileId : string ,
+    body? : string
+    name? : string,
+    parentId? : string,
+    editedBy : string
+}
+export async function UpdateFile(params : UpdateFileParams){
+    try {
+        await connectToDB()
+        if(!params.parentId){
+        const file = await File.findOneAndUpdate({_id : params.fileId} , {
+            $set : {
+                ...(params.body ? {body : params.body} : {}) ,
+                ...(params.name ? {name : params.name} : {})
+            },
+            $push : {
+                edits : {
+                    editedBy : params.editedBy ,
+                    editedAt : new Date(),
+                    ...(params.body ? {editedContent : params.body} : {}) ,
+                    ...(params.name ? {editedName : params.name} : {})
+                }
+            }
+            }
+         )
+         await file.save()
+         const response = file.toObject()
+         return {status : 'success' , file : JSON.parse(JSON.stringify(response))}
+        }
+         
+    } catch (error) {
+        throw new Error(`error at UpdateFile : ${error}`)
+    }
+}

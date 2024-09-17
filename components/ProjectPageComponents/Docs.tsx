@@ -4,6 +4,7 @@ import React, { Dispatch, SetStateAction, useEffect } from 'react'
 import SingleDoc from './DocsComponenets/SingleDoc'
 import DocsProvider from '../Contexts/DocsContext'
 import { useWorkSpaceContext } from '../Contexts/WorkSpaceContext'
+import { TfiSave } from "react-icons/tfi";
 
 const Docs = ({
     opened,
@@ -19,8 +20,6 @@ const Docs = ({
       })
 
       const {userInfo , projectInfo} = useWorkSpaceContext()
-      const [edit , setEdit] = React.useState(false)
-      const [onMainPage , setOnMainPage] = React.useState(false)
       
       return (
         <Transition
@@ -38,14 +37,9 @@ const Docs = ({
            <section className=' flex flex-grow ' style={styles}>
               <div className=' fixed right-2 top-2 '>
                 {/* <Button variant='outline'>Create a new document</Button> */}
-                <Button 
-                  onClick={() => setEdit(!edit)}
-                  className='mr-0'
-                  >
-                {edit ? 'Preview' : 'Edit'}
-                   </Button>
+                
               </div>
-              <SingleDoc edit = {edit}/>
+              <SingleDoc />
   
          </section>
          </DocsProvider>

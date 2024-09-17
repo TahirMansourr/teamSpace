@@ -19,7 +19,8 @@ export const fileSchema = new mongoose.Schema({
             ref : 'User'
         },
         editedAt : Date,
-        editedContent : String
+        editedContent : String,
+        editedName : String
     }],
     parent : {
         type : mongoose.Schema.Types.ObjectId,

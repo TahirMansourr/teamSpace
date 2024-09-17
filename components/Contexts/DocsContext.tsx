@@ -9,6 +9,10 @@ interface DocsContextType{
     handleCreateDoc : (title : string , type : 'File' | 'Folder') => void
     initialContentOfFile : string 
     setInitialContentOfFile : Dispatch<SetStateAction<string >>
+    selectedFile : FileDto | undefined
+    setSelectedFile : Dispatch<SetStateAction<FileDto | undefined>>
+    selectedFolder : FolderDto | undefined
+    setSelectedFolder : Dispatch<SetStateAction<FolderDto | undefined>>
 }
 const DocsContext = createContext<DocsContextType>({} as DocsContextType)
 
@@ -32,6 +36,8 @@ const DocsProvider = ({
     const [allFolders , setAllFolders] = useState<any[]>(projectInfo.folders)
     console.log("🚀 ~ allFolders:", allFolders)
     const [initialContentOfFile , setInitialContentOfFile] = useState<string >('<h1> Start By Choosing A File<h1>')
+    const [selectedFile , setSelectedFile] = useState<FileDto | undefined >()
+    const [selectedFolder , setSelectedFolder] = useState<FolderDto | undefined>()
 
     const handleCreateDoc = async (
         name : string , 
@@ -52,7 +58,9 @@ const DocsProvider = ({
         }else{
             setAllFolders([...allFolders , newDoc.newFolder])
         }
+    }
 
+    const handleUpdateFile = async ({content , userId} : {content : string , userId : string} )=>{
         
     }
 
@@ -61,7 +69,11 @@ const DocsProvider = ({
         allFolders ,
         handleCreateDoc,
         initialContentOfFile,
-        setInitialContentOfFile
+        setInitialContentOfFile,
+        selectedFile,
+        setSelectedFile,
+        selectedFolder,
+        setSelectedFolder
     }
     return (
         <DocsContext.Provider value={value}>

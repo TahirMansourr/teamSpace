@@ -21,7 +21,7 @@ export const isFolder = (item: FolderDto | FileDto): item is FolderDto => {
   const [menuVisible, setMenuVisible] = useState<boolean>(false);
   const [menuPosition, setMenuPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [clickedItem, setClickedItem] = useState<FolderDto | FileDto | null>(null);
-  const {setInitialContentOfFile} = useDocsContext()
+  const {setInitialContentOfFile , setSelectedFile , setSelectedFolder} = useDocsContext()
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -44,7 +44,10 @@ export const isFolder = (item: FolderDto | FileDto): item is FolderDto => {
       {/* Render the folder */}
       <div
         className='flex items-center cursor-pointer'
-        onClick={() => setIsOpen(!isOpen)} 
+        onClick={() =>{
+             setIsOpen(!isOpen)
+             setSelectedFolder(folder)
+            }} 
         onContextMenu={(e) => handleContextMenu(e, folder)} // Handle right-click
       >
         {isOpen ? <FaRegFolderOpen /> : <FaRegFolder />}
@@ -53,19 +56,23 @@ export const isFolder = (item: FolderDto | FileDto): item is FolderDto => {
 
       {isOpen && (
         <div className='ml-4'>
-          {folder.children?.map((child) =>
+          {folder.children?.map((child : FolderDto | FileDto) =>
             isFolder(child) ? (
               <FolderStructure
                 key={child._id}
                 folder={child}
                 handleContextMenu={handleContextMenu}
+               
               />
             ) : (
               <div
                 key={child._id}
                 className='flex items-center cursor-pointer'
                 onContextMenu={(e) => handleContextMenu(e, child)}
-                onClick={(e) => { setInitialContentOfFile(child.body)}}
+                onClick={(e) => { 
+                    setInitialContentOfFile(child.body)
+                    setSelectedFile(child)
+                }}
               >
                 <CiFileOn />
                 <span className='ml-2'>{child.name}</span>

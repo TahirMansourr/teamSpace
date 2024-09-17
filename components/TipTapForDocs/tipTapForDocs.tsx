@@ -46,7 +46,7 @@ const TiptapForDocs = ({content , onChange} : {content : string , onChange : Fun
     content,
     editorProps: {
       attributes: {
-        class: 'w-full outline-none h-full leading-normal',
+        class: 'w-full outline-none h-full leading-normal fixed ',
         InputPlaceholder: 'Write something',
       },
     },
@@ -85,8 +85,8 @@ const TiptapForDocs = ({content , onChange} : {content : string , onChange : Fun
   }
 
   return (
-    <div className="w-full ">
-      <div className='toolbar mx-auto fixed top-0'>
+    <div className="flex flex-col w-full gap-2  ">
+      <div className='toolbar mx-auto'>
         <input
           type="color"
           onInput={(event : any) => (editor.chain().focus().setColor(event.target.value).run())}
