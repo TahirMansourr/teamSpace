@@ -4,9 +4,12 @@ import React from 'react'
 import '../DocsComponenets/singleDoc.css'
 // import SideBarForDocs from './SideBarForDocs'
 import LeftSideBar from './LeftSideBar'
+import { useDocsContext } from '@/components/Contexts/DocsContext'
 
 const SingleDoc = ({edit} : {edit : boolean}) => {
-    const [content , setContent] = React.useState('')
+    
+    const {initialContentOfFile} = useDocsContext()
+    const [content , setContent] = React.useState(initialContentOfFile)
     console.log("🚀 ~ SingleDoc ~ content:", content)
     
     const handleContentChange = (newContent: string) => {

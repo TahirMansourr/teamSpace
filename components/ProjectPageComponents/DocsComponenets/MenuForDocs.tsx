@@ -1,42 +1,81 @@
-import { Button, Menu } from '@mantine/core'
+'use client'
+import { FileDto, FolderDto } from '@/Utils/types';
 import React from 'react'
+import { isFolder } from './FolderStructure';
+import { useDocsContext } from '@/components/Contexts/DocsContext';
 
-const MenuForDocs = () => {
+const MenuForDocs = ({
+        menuPosition ,
+        setMenuVisible,
+        clickedItem,
+        
+} : {
+         menuPosition : {x : number , y : number} ,
+         setMenuVisible : React.Dispatch<React.SetStateAction<boolean>> ,
+         clickedItem : FolderDto | FileDto | null ,
+}) => {
+
+            const handleMenuAction = (action: string) => {
+                switch (action) {
+                  case 'Rename':
+                    // Handle rename action
+                    break;
+                  case 'Delete':
+                    // Handle delete action
+                    break;
+                  case 'Move':
+                    // Handle move action
+                    break;
+                  case 'Create New Folder':
+                    // Handle create new folder action
+                    break;
+                  case 'Create New File':
+                    // Handle create new file action
+                    break;
+                  default:
+                    break;
+                }
+                // Close the menu after action selection
+                setMenuVisible(false); 
+              };
+
+              const {setInitialContentOfFile} = useDocsContext()
   return (
-    <>
-     <Menu shadow="md" width={200}>
-        <Menu.Target>
-            <Button>Toggle menu</Button>
-        </Menu.Target>
-
-        <Menu.Dropdown>
-            <Menu.Label>Application</Menu.Label>
-            <Menu.Item  >
-            Settings
-            </Menu.Item>
-            <Menu.Item >
-            Messages
-            </Menu.Item>
-            <Menu.Item >
-            Gallery
-            </Menu.Item>
-            <Menu.Item>
-            Search
-            </Menu.Item>
-
-            <Menu.Divider />
-
-            <Menu.Label>Danger zone</Menu.Label>
-            <Menu.Item>
-            Transfer my data
-            </Menu.Item>
-            <Menu.Item
-            color="red">
-            Delete my account
-            </Menu.Item>
-        </Menu.Dropdown>
-    </Menu>
-    </>
+    
+    <div
+          className='fixed z-50 bg-white border shadow-md rounded p-2'
+          style={{ top: `${menuPosition.y}px`, left: `${menuPosition.x}px` }}
+        >
+            { clickedItem && isFolder(clickedItem) ?
+            
+            <>
+                <div className='hover:bg-gray-100 p-2 cursor-pointer' onClick={() => handleMenuAction('Rename')}>
+                    Rename
+                </div>
+                <div className='hover:bg-gray-100 p-2 cursor-pointer' onClick={() => handleMenuAction('Delete')}>
+                    Delete
+                </div>
+                <div className='hover:bg-gray-100 p-2 cursor-pointer' onClick={() => handleMenuAction('Move')}>
+                    Create New Folder
+                </div>
+                <div className='hover:bg-gray-100 p-2 cursor-pointer' onClick={() => handleMenuAction('Move')}>
+                    Create New File
+                </div>
+            </>
+            
+            :
+            
+            <>
+                <div className='hover:bg-gray-100 p-2 cursor-pointer' onClick={() => handleMenuAction('Rename')}>
+                    Rename
+                </div>
+                <div className='hover:bg-gray-100 p-2 cursor-pointer' onClick={() => handleMenuAction('Delete')}>
+                    Delete
+                </div>
+            </>
+            }
+          
+        </div>
   )
 }
 

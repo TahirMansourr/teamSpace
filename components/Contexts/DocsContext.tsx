@@ -1,12 +1,14 @@
 import { CreateOrphanDoc } from "@/lib/actions/DocActions";
 import { FileDto, FolderDto, ProjectDto, UserDto } from "@/Utils/types";
 import { all } from "axios";
-import { createContext, use, useContext, useState } from "react";
+import { createContext, Dispatch, SetStateAction, use, useContext, useState } from "react";
 
 interface DocsContextType{
     allFiles : FileDto[],
     allFolders : FolderDto[] ,
     handleCreateDoc : (title : string , type : 'File' | 'Folder') => void
+    initialContentOfFile : string 
+    setInitialContentOfFile : Dispatch<SetStateAction<string >>
 }
 const DocsContext = createContext<DocsContextType>({} as DocsContextType)
 
@@ -29,6 +31,7 @@ const DocsProvider = ({
     console.log("🚀 ~ allFiles:", allFiles)
     const [allFolders , setAllFolders] = useState<any[]>(projectInfo.folders)
     console.log("🚀 ~ allFolders:", allFolders)
+    const [initialContentOfFile , setInitialContentOfFile] = useState<string >('<h1> Start By Choosing A File<h1>')
 
     const handleCreateDoc = async (
         name : string , 
@@ -56,7 +59,9 @@ const DocsProvider = ({
     const value = {
         allFiles ,
         allFolders ,
-        handleCreateDoc
+        handleCreateDoc,
+        initialContentOfFile,
+        setInitialContentOfFile
     }
     return (
         <DocsContext.Provider value={value}>

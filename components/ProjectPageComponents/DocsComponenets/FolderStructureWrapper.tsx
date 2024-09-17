@@ -4,6 +4,8 @@ import { FileDto, FolderDto } from "@/Utils/types";
 import FolderStructure from "./FolderStructure";
 import { CiFileOn } from "react-icons/ci";
 import { useEffect, useState } from "react";
+import MenuForDocs from "./MenuForDocs";
+import { useDocsContext } from "@/components/Contexts/DocsContext";
 
 
 const FolderStructureWrapper = ({
@@ -14,15 +16,16 @@ const FolderStructureWrapper = ({
   allFiles: FileDto[];
 }) => {
 
-  const [isOpen, setIsOpen] = useState<boolean>(false); // Toggle folder open/close state
+  const [isOpen, setIsOpen] = useState<boolean>(false); 
   const [menuVisible, setMenuVisible] = useState<boolean>(false);
   const [menuPosition, setMenuPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-  const [clickedItem, setClickedItem] = useState<string | null>(null);
+  const [clickedItem, setClickedItem] = useState<FolderDto | FileDto | null>(null);
+  const [chosenFile , setChosenFile] = useState<string | null>(null);
+  const {setInitialContentOfFile} = useDocsContext()
 
-  // Handle right-click for context menu
-  const handleContextMenu = (e: React.MouseEvent, item: string) => {
+  const handleContextMenu = (e: React.MouseEvent, item: FolderDto | FileDto) => {
     e.preventDefault();
-
+    handleCloseMenu()
     const menuHeight = 120; // Estimate menu height
     const menuWidth = 160;  // Estimate menu width
 
@@ -39,7 +42,6 @@ const FolderStructureWrapper = ({
     setClickedItem(null);
   };
 
-  // Close menu if clicking outside
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (menuVisible) {
@@ -52,14 +54,10 @@ const FolderStructureWrapper = ({
     };
   }, [menuVisible]);
 
-  const handleMenuAction = (action: string) => {
-    console.log(`${action} clicked for ${clickedItem}`);
-    setMenuVisible(false); // Close menu after action
-  };
 
   return (
     <div>
-      {allFolders.map((folder) => (
+      {allFolders.map((folder : FolderDto) => (
         <FolderStructure 
           key={folder._id} 
           folder={folder} 
@@ -68,19 +66,30 @@ const FolderStructureWrapper = ({
           />
       ))}
 
-      {/* Render orphaned files (files without parent folders) */}
       <div>
-        {allFiles.map((file) => (
+        {allFiles.map((file : FileDto) => (
           <div
             key={file._id}
             className='flex items-center cursor-pointer'
-            onContextMenu={(e) => handleContextMenu(e, file.name)} // Right-click for context menu
+            onContextMenu={(e) => {
+              handleContextMenu(e, file)
+            }} 
+            onClick={(e) => { setInitialContentOfFile(file.body)}}
           >
             <CiFileOn />
             <span className='ml-2'>{file.name}</span>
           </div>
         ))}
       </div>
+      {
+        menuVisible && (
+        <MenuForDocs
+         clickedItem= {clickedItem}
+         menuPosition={menuPosition}
+         setMenuVisible={setMenuVisible}
+        />
+      )
+      }
     </div>
   );
 };
