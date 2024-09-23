@@ -93,8 +93,9 @@ export async function UpdateFile(params : UpdateFileParams){
                     ...(params.body ? {editedContent : params.body} : {}) ,
                     ...(params.name ? {editedName : params.name} : {})
                 }
-            }
-            }
+            },
+            },
+            {new : true}
          )
          await file.save()
          const response = file.toObject()

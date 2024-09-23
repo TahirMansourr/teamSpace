@@ -1,24 +1,27 @@
 'use client'
 import { FileDto, FolderDto } from '@/Utils/types';
-import React from 'react'
+import React, { useState } from 'react'
 import { isFolder } from './FolderStructure';
 import { useDocsContext } from '@/components/Contexts/DocsContext';
+import { Input } from 'postcss';
+import { TextInput } from '@mantine/core';
 
 const MenuForDocs = ({
         menuPosition ,
         setMenuVisible,
-        clickedItem,
-        
+        clickedItem,  
 } : {
          menuPosition : {x : number , y : number} ,
          setMenuVisible : React.Dispatch<React.SetStateAction<boolean>> ,
-         clickedItem : FolderDto | FileDto | null ,
+         clickedItem : FolderDto | FileDto | null , 
 }) => {
+
+    const [ showInputField , setShowInputField] = useState<boolean>(false)
 
             const handleMenuAction = (action: string) => {
                 switch (action) {
                   case 'Rename':
-                    // Handle rename action
+                    setShowInputField(true)
                     break;
                   case 'Delete':
                     // Handle delete action
@@ -27,16 +30,16 @@ const MenuForDocs = ({
                     // Handle move action
                     break;
                   case 'Create New Folder':
-                    // Handle create new folder action
+                   setShowInputField(true)
                     break;
                   case 'Create New File':
-                    // Handle create new file action
+                    setShowInputField(true)
                     break;
                   default:
                     break;
                 }
                 // Close the menu after action selection
-                setMenuVisible(false); 
+                 
               };
 
   return (
@@ -45,8 +48,8 @@ const MenuForDocs = ({
           className='fixed z-50 bg-white border shadow-md rounded p-2'
           style={{ top: `${menuPosition.y}px`, left: `${menuPosition.x}px` }}
         >
-            { clickedItem && isFolder(clickedItem) ?
-            
+            { clickedItem && isFolder(clickedItem) && !showInputField ?
+                 
             <>
                 <div className='hover:bg-gray-100 p-2 cursor-pointer' onClick={() => handleMenuAction('Rename')}>
                     Rename
@@ -60,10 +63,16 @@ const MenuForDocs = ({
                 <div className='hover:bg-gray-100 p-2 cursor-pointer' onClick={() => handleMenuAction('Move')}>
                     Create New File
                 </div>
+            </> 
+            
+            : clickedItem && isFolder(clickedItem) && showInputField ?
+            <>
+            <TextInput/>
             </>
-            
-            :
-            
+            : clickedItem && !isFolder(clickedItem) && showInputField ?
+            <>
+            <TextInput/>
+            </> : clickedItem && !isFolder(clickedItem) && !showInputField ?
             <>
                 <div className='hover:bg-gray-100 p-2 cursor-pointer' onClick={() => handleMenuAction('Rename')}>
                     Rename
@@ -71,7 +80,7 @@ const MenuForDocs = ({
                 <div className='hover:bg-gray-100 p-2 cursor-pointer' onClick={() => handleMenuAction('Delete')}>
                     Delete
                 </div>
-            </>
+            </> : null
             }
           
         </div>

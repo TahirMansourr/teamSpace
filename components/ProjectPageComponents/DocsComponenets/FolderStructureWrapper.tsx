@@ -16,16 +16,15 @@ const FolderStructureWrapper = ({
   allFiles: FileDto[];
 }) => {
 
-  const [isOpen, setIsOpen] = useState<boolean>(false); 
+ 
   const [menuVisible, setMenuVisible] = useState<boolean>(false);
   const [menuPosition, setMenuPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [clickedItem, setClickedItem] = useState<FolderDto | FileDto | null>(null);
-  const [chosenFile , setChosenFile] = useState<string | null>(null);
-  const {setInitialContentOfFile} = useDocsContext()
+  const {setInitialContentOfFile , setSelectedFile} = useDocsContext()
 
   const handleContextMenu = (e: React.MouseEvent, item: FolderDto | FileDto) => {
     e.preventDefault();
-    handleCloseMenu()
+    // handleCloseMenu()
     const menuHeight = 120; // Estimate menu height
     const menuWidth = 160;  // Estimate menu width
 
@@ -60,8 +59,7 @@ const FolderStructureWrapper = ({
       {allFolders.map((folder : FolderDto) => (
         <FolderStructure 
           key={folder._id} 
-          folder={folder} 
-          // handleCloseMenu={handleCloseMenu} 
+          folder={folder}  
           handleContextMenu={handleContextMenu}
           />
       ))}
@@ -74,7 +72,10 @@ const FolderStructureWrapper = ({
             onContextMenu={(e) => {
               handleContextMenu(e, file)
             }} 
-            onClick={(e) => { setInitialContentOfFile(file.body)}}
+            onClick={(e) => { 
+              setInitialContentOfFile(file.body)
+              setSelectedFile(file)
+            }}
           >
             <CiFileOn />
             <span className='ml-2'>{file.name}</span>
