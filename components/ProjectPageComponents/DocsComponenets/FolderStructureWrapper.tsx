@@ -20,18 +20,20 @@ const FolderStructureWrapper = ({
   const [menuVisible, setMenuVisible] = useState<boolean>(false);
   const [menuPosition, setMenuPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [clickedItem, setClickedItem] = useState<FolderDto | FileDto | null>(null);
+  const [ showInputField , setShowInputField] = useState<boolean>(false)
   const {setInitialContentOfFile , setSelectedFile} = useDocsContext()
 
   const handleContextMenu = (e: React.MouseEvent, item: FolderDto | FileDto) => {
     e.preventDefault();
-    // handleCloseMenu()
-    const menuHeight = 120; // Estimate menu height
-    const menuWidth = 160;  // Estimate menu width
+    handleCloseMenu();
+    setShowInputField(false)
+    const menuHeight = 120; 
+    const menuWidth = 160;  
 
     let xPos = e.pageX + menuWidth > window.innerWidth ? window.innerWidth - menuWidth : e.pageX;
     let yPos = e.pageY + menuHeight > window.innerHeight ? window.innerHeight - menuHeight : e.pageY;
 
-    setMenuPosition({ x: xPos, y: yPos });
+    setMenuPosition({ x: xPos + 2, y: yPos + 2 });
     setMenuVisible(true);
     setClickedItem(item);
   };
@@ -41,17 +43,17 @@ const FolderStructureWrapper = ({
     setClickedItem(null);
   };
 
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (menuVisible) {
-        handleCloseMenu();
-      }
-    };
-    document.addEventListener('click', handleClickOutside);
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, [menuVisible]);
+  // useEffect(() => {
+  //   const handleClickOutside = (e: MouseEvent) => {
+  //     if (menuVisible) {
+  //       handleCloseMenu();
+  //     }
+  //   };
+  //   document.addEventListener('click', handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener('click', handleClickOutside);
+  //   };
+  // }, [menuVisible]);
 
 
   return (
@@ -61,6 +63,8 @@ const FolderStructureWrapper = ({
           key={folder._id} 
           folder={folder}  
           handleContextMenu={handleContextMenu}
+          showInputField = {showInputField}
+          setShowInputField = {setShowInputField}
           />
       ))}
 
@@ -85,6 +89,8 @@ const FolderStructureWrapper = ({
       {
         menuVisible && (
         <MenuForDocs
+         setShowInputField={setShowInputField}
+         showInputField ={showInputField}
          clickedItem= {clickedItem}
          menuPosition={menuPosition}
          setMenuVisible={setMenuVisible}

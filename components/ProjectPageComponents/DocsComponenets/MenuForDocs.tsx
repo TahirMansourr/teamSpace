@@ -10,13 +10,17 @@ const MenuForDocs = ({
         menuPosition ,
         setMenuVisible,
         clickedItem,  
+        showInputField , 
+        setShowInputField
 } : {
          menuPosition : {x : number , y : number} ,
          setMenuVisible : React.Dispatch<React.SetStateAction<boolean>> ,
          clickedItem : FolderDto | FileDto | null , 
+         showInputField : boolean ,
+         setShowInputField : React.Dispatch<React.SetStateAction<boolean>>
 }) => {
 
-    const [ showInputField , setShowInputField] = useState<boolean>(false)
+   
 
             const handleMenuAction = (action: string) => {
                 switch (action) {
@@ -48,6 +52,7 @@ const MenuForDocs = ({
           className='fixed z-50 bg-white border shadow-md rounded p-2'
           style={{ top: `${menuPosition.y}px`, left: `${menuPosition.x}px` }}
         >
+            <div className='ml-0 hover:cursor-pointer' onClick={()=>{setMenuVisible(false)}}>x</div>
             { clickedItem && isFolder(clickedItem) && !showInputField ?
                  
             <>

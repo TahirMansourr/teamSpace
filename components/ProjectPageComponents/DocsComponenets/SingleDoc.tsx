@@ -30,7 +30,7 @@ const SingleDoc = () => {
             <div className=' flex-initial w-52 pt-20  ' >
                 <LeftSideBar/>
             </div>
-        <section className=' flex flex-grow  px-3 border shadow-md '>
+        <section className=' flex flex-grow  px-3 border shadow-inner'>
            {edit ?
            <TiptapForDocs
                 content  = {content}

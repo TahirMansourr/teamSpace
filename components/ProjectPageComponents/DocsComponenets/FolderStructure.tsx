@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { CiFileOn } from 'react-icons/ci';
 import { FaRegFolder, FaRegFolderOpen } from 'react-icons/fa6';
 import { FileDto, FolderDto } from '@/Utils/types';
@@ -13,9 +13,13 @@ export const isFolder = (item: FolderDto | FileDto): item is FolderDto => {
   const FolderStructure = ({
   folder,
   handleContextMenu,
+  showInputField ,
+  setShowInputField
 }: {
   folder: FolderDto;
   handleContextMenu: (e: React.MouseEvent, item : FolderDto | FileDto) => void;
+  showInputField: boolean;
+  setShowInputField: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false); // Folder toggle state
   const [menuVisible, setMenuVisible] = useState<boolean>(false);
@@ -62,6 +66,8 @@ export const isFolder = (item: FolderDto | FileDto): item is FolderDto => {
                 key={child._id}
                 folder={child}
                 handleContextMenu={handleContextMenu}
+                showInputField={showInputField}
+                setShowInputField={setShowInputField}
                
               />
             ) : (
@@ -88,6 +94,8 @@ export const isFolder = (item: FolderDto | FileDto): item is FolderDto => {
         clickedItem= {clickedItem}
         menuPosition={menuPosition}
         setMenuVisible={setMenuVisible}
+        setShowInputField={setShowInputField}
+        showInputField = {showInputField}
         
         />
       )}
