@@ -43,19 +43,7 @@ const FolderStructureWrapper = ({
     setClickedItem(null);
   };
 
-  // useEffect(() => {
-  //   const handleClickOutside = (e: MouseEvent) => {
-  //     if (menuVisible) {
-  //       handleCloseMenu();
-  //     }
-  //   };
-  //   document.addEventListener('click', handleClickOutside);
-  //   return () => {
-  //     document.removeEventListener('click', handleClickOutside);
-  //   };
-  // }, [menuVisible]);
-
-
+  
   return (
     <div>
       {allFolders.map((folder : FolderDto) => (
@@ -94,6 +82,7 @@ const FolderStructureWrapper = ({
          clickedItem= {clickedItem}
          menuPosition={menuPosition}
          setMenuVisible={setMenuVisible}
+         isChild = {false}
         />
       )
       }

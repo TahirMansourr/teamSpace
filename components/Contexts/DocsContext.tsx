@@ -1,4 +1,4 @@
-import { CreateOrphanDoc, UpdateFile } from "@/lib/actions/DocActions";
+import { CreateOrphanDoc, RenameFolder, UpdateFile } from "@/lib/actions/DocActions";
 import { FileDto, FolderDto, ProjectDto, UserDto } from "@/Utils/types";
 import { notifications } from "@mantine/notifications";
 import { createContext, Dispatch, SetStateAction, use, useContext, useEffect, useState } from "react";
@@ -13,7 +13,8 @@ interface DocsContextType{
     setSelectedFile : Dispatch<SetStateAction<FileDto | undefined>>
     selectedFolder : FolderDto | undefined
     setSelectedFolder : Dispatch<SetStateAction<FolderDto | undefined>>
-    handleUpdateFile : ({content} : {content : string}) => void
+    handleUpdateFile : ({content} : {content : string}) => void,
+    renameFileOrFolder : ({id , child , name , type } :{id : string, child : boolean , type : "File" | 'Folder' , name : string}) => void
 }
 const DocsContext = createContext<DocsContextType>({} as DocsContextType)
 
@@ -42,19 +43,20 @@ const DocsProvider = ({
     const [selectedFolder , setSelectedFolder] = useState<FolderDto | undefined>()
     console.log("🚀 ~ selectedFolder:", selectedFolder)
 
+    useEffect(()=>{
+        if (selectedFile) {
+            setInitialContentOfFile(selectedFile.body)
+            console.log("🚀 ~ useEffect ~ selectedFile.body:", selectedFile.body)
+        }
+            
+    } , [selectedFile])
+
     const handleCreateDoc = async (
         name : string , 
         type : 'File' | 'Folder' , 
         parent? : string [] | undefined
     ) => {
 
-        useEffect(()=>{
-            if (selectedFile) {
-                setInitialContentOfFile(selectedFile.body)
-                console.log("🚀 ~ useEffect ~ selectedFile.body:", selectedFile.body)
-            }
-                
-        } , [selectedFile])
 
         const newDoc = await CreateOrphanDoc({
             project : project._id,
@@ -92,6 +94,76 @@ const DocsProvider = ({
         }
     }
 
+    const createChildFileOrFolder = async ( )=>{
+
+    }
+
+    const renameFileOrFolder = async ({
+        name , 
+        type , 
+        child,
+        id
+    } : {
+        name : string ,
+        type : 'File' | 'Folder' , 
+        child : boolean,
+        id : string
+    })=>{
+        try {
+            if(type === "File"){
+            const updatedFile = await UpdateFile({
+                fileId : id,
+                editedBy : user._id,
+                name
+            })
+            if(!updatedFile){ 
+                notifications.show({message : 'cannot update File at the moment' , color : 'red'})
+                return
+            }
+            const updates = {
+                ...updatedFile.file,
+                edits : {
+                    editedBy : {
+                        _id : user._id,
+                        name : user.username,
+                        email : user.email, 
+                        image : user.image
+                    },
+                    editedAt : new Date()
+                }
+            }
+            setAllFiles((prev)=> prev.map((prevFile) => { return prevFile._id === updatedFile.file._id ? updates : prevFile}) )
+            } else {
+            const updatedFolder = await RenameFolder({
+                id,
+                editedBy : user._id,
+                name,
+                child
+            })
+            if(!updatedFolder){ 
+                notifications.show({message : 'cannot update folder at the moment' , color : 'red'})
+                return
+            }
+            const updates = {
+                ...updatedFolder.folder,
+                edits : {
+                    editedBy : {
+                        _id : user._id,
+                        name : user.username,
+                        email : user.email, 
+                        image : user.image
+                    },
+                    editedAt : new Date()
+                }
+            }
+            setAllFolders((prev)=> prev.map((prevFile) => { return prevFile._id === updatedFolder.folder._id ? updates : prevFile}) )
+        }
+        } catch (error) {
+            throw new Error(`error at renameFileOrFolder : ${error}`);
+            
+        }
+    }
+
     const value = {
         allFiles ,
         allFolders ,
@@ -102,7 +174,8 @@ const DocsProvider = ({
         setSelectedFile,
         selectedFolder,
         setSelectedFolder,
-        handleUpdateFile
+        handleUpdateFile,
+        renameFileOrFolder
     }
     return (
         <DocsContext.Provider value={value}>

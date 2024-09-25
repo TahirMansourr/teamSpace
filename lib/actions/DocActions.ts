@@ -106,3 +106,29 @@ export async function UpdateFile(params : UpdateFileParams){
         throw new Error(`error at UpdateFile : ${error}`)
     }
 }
+
+export async function RenameFolder({ name , child , id , editedBy} : {name : string , child : boolean , id : string , editedBy : string}) {
+    try {
+        await connectToDB()
+        if(!child){
+            const folder = await Folder.findOneAndUpdate({_id : id} , {
+                $set : {
+                    name
+                },
+                $push : {
+                    edits : {
+                        editedBy : editedBy ,
+                        editedAt : new Date(),
+                        name
+                    }
+                },
+            } , {new : true})
+            await folder.save()
+            const response = folder.toObject()
+            return {status : 'success' , folder : JSON.parse(JSON.stringify(response))}
+        }
+
+    } catch (error) {
+        
+    }
+}

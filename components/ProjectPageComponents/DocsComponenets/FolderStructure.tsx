@@ -27,18 +27,18 @@ export const isFolder = (item: FolderDto | FileDto): item is FolderDto => {
   const [clickedItem, setClickedItem] = useState<FolderDto | FileDto | null>(null);
   const {setInitialContentOfFile , setSelectedFile , setSelectedFolder} = useDocsContext()
 
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (menuVisible) {
-        setMenuVisible(false);
-        setClickedItem(null);
-      }
-    };
-    document.addEventListener('click', handleClickOutside);
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, [menuVisible]);
+//   useEffect(() => {
+//     const handleClickOutside = (e: MouseEvent) => {
+//       if (menuVisible) {
+//         setMenuVisible(false);
+//         setClickedItem(null);
+//       }
+//     };
+//     document.addEventListener('click', handleClickOutside);
+//     return () => {
+//       document.removeEventListener('click', handleClickOutside);
+//     };
+//   }, [menuVisible]);
 
 
  
@@ -88,7 +88,6 @@ export const isFolder = (item: FolderDto | FileDto): item is FolderDto => {
         </div>
       )}
 
-      {/*context menu */}
       {menuVisible && (
        < MenuForDocs 
         clickedItem= {clickedItem}
@@ -96,6 +95,7 @@ export const isFolder = (item: FolderDto | FileDto): item is FolderDto => {
         setMenuVisible={setMenuVisible}
         setShowInputField={setShowInputField}
         showInputField = {showInputField}
+        isChild = {true}
         
         />
       )}

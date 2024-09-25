@@ -3,23 +3,28 @@ import { FileDto, FolderDto } from '@/Utils/types';
 import React, { useState } from 'react'
 import { isFolder } from './FolderStructure';
 import { useDocsContext } from '@/components/Contexts/DocsContext';
-import { Input } from 'postcss';
 import { TextInput } from '@mantine/core';
+import { MdOutlineDone } from 'react-icons/md';
+import { notifications } from '@mantine/notifications';
 
 const MenuForDocs = ({
         menuPosition ,
         setMenuVisible,
         clickedItem,  
         showInputField , 
-        setShowInputField
+        setShowInputField,
+        isChild
 } : {
          menuPosition : {x : number , y : number} ,
          setMenuVisible : React.Dispatch<React.SetStateAction<boolean>> ,
          clickedItem : FolderDto | FileDto | null , 
          showInputField : boolean ,
-         setShowInputField : React.Dispatch<React.SetStateAction<boolean>>
+         setShowInputField : React.Dispatch<React.SetStateAction<boolean>>,
+         isChild : boolean
 }) => {
 
+    const {renameFileOrFolder} = useDocsContext()
+    const [inputValue, setInputValue] = useState<string>('');
    
 
             const handleMenuAction = (action: string) => {
@@ -71,12 +76,46 @@ const MenuForDocs = ({
             </> 
             
             : clickedItem && isFolder(clickedItem) && showInputField ?
-            <>
-            <TextInput/>
-            </>
+            <div className='flex items-center'>
+            <TextInput 
+                onChange={(e)=> setInputValue(e.target.value)}
+            />
+            <MdOutlineDone
+                onClick={()=>{
+                    try {
+                        renameFileOrFolder({
+                            name : inputValue,
+                            id : clickedItem._id,
+                            child : isChild,
+                            type : isFolder(clickedItem) ? 'Folder' : 'File'
+                        })
+                    } catch (error : any) {
+                        notifications.show({message : error.message , color : 'red'})
+                    }
+                }}
+            />
+            </div>
             : clickedItem && !isFolder(clickedItem) && showInputField ?
             <>
-            <TextInput/>
+            <div className='flex items-center'>
+            <TextInput 
+                onChange={(e)=> setInputValue(e.target.value)}
+            />
+            <MdOutlineDone
+                onClick={()=>{
+                    try {
+                        renameFileOrFolder({
+                            name : inputValue,
+                            id : clickedItem._id,
+                            child : isChild,
+                            type : isFolder(clickedItem) ? 'Folder' : 'File'
+                        })
+                    } catch (error : any) {
+                        notifications.show({message : error.message , color : 'red'})
+                    }
+                }}
+            />
+            </div>
             </> : clickedItem && !isFolder(clickedItem) && !showInputField ?
             <>
                 <div className='hover:bg-gray-100 p-2 cursor-pointer' onClick={() => handleMenuAction('Rename')}>
