@@ -1,5 +1,6 @@
 'use server'
 
+import { FileDto } from "@/Utils/types"
 import File from "../models/FileModel"
 import Folder from "../models/FolderModel"
 import Project from "../models/ProjectModel"
@@ -11,7 +12,7 @@ type NewFileOrFolderDto = {
     createdBy : string,
     type : 'File' | 'Folder',
     body ? : string,
-    parent ? : string []
+    parent ? : string 
 }
 
 export async function CreateOrphanDoc(params : NewFileOrFolderDto ){
@@ -128,6 +129,42 @@ export async function RenameFolder({ name , child , id , editedBy} : {name : str
             return {status : 'success' , folder : JSON.parse(JSON.stringify(response))}
         }
 
+    } catch (error) {
+        
+    }
+}
+
+export async function CreateChildFolderOrFile({
+    parentId , 
+    name , 
+    type , 
+    fileData
+} : {
+    parentId : string , 
+    name : string , 
+    type : 'File'| 'Folder', 
+    fileData? : NewFileOrFolderDto
+}) {
+    try {
+        await connectToDB()
+        const parentFolder = await Folder.findById(parentId);
+        if (!parentFolder) {
+            throw new Error("Parent folder not found");
+        }
+        let newChild;
+        if (type === 'File') {
+            newChild = new File({
+                ...fileData 
+            });
+            await newChild.save();
+            parentFolder.children.push({ type: 'File', file: newChild });
+        } else if (type === 'Folder') {
+            newChild = new Folder({ name, parent: parentFolder._id });
+            await newChild.save();
+            parentFolder.children.push({ type: 'Folder', folder: newChild._id });
+        }
+        await parentFolder.save();
+        return newChild;
     } catch (error) {
         
     }

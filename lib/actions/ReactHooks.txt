@@ -1,0 +1,22 @@
+Use Callback:
+
+it's a react hook that let's you cache a functions definition between rerenders.
+
+export default function Something(){
+    const anotherThing = useCallback(()=>{
+        anotherThing'sBody
+    } , [dependencies])
+}
+
+anotherThing is the function that you want to cache
+
+' Using memo on the component you can tell it to stop any rerenders if it's props are the same'
+
+In javaScript a function function(){} or ()=>{} always creates a new function similar to object literals always creates a new object.
+
+So basically when you want a component to skip rerendering you have to wrap it around memo(wrap the entire component around memo) and this tells the 
+component that if it has the same props to not rerender, but the twist is that when you pass a function or an object as a prop, this function
+or object will always be a new fucntion or object because java script always returns a new function or object. so in order for the function 
+or the object passed to the props to be the same you have to wrap them around useCallback and this makes it the same if the dependencies of
+useCallback do not change.
+So usecallback and memo are normally used together.

@@ -1,17 +1,14 @@
 'use client'
 import { UpdateUser } from "@/lib/actions/UserActions";
-import { socket } from "@/socket";
 import { ProjectDto, UserDto } from "@/Utils/types";
 import { notifications } from "@mantine/notifications";
-import React, { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
+import React, { createContext, Dispatch, SetStateAction, useContext, useState } from "react";
 
 type projectInfoResponse = {
     status : string,
     project : ProjectDto,
     message : string
 }
-
-
 interface WorkSpaceContextDto{
     notesComponentExpandState : boolean
     tasksComponentExpandState : boolean

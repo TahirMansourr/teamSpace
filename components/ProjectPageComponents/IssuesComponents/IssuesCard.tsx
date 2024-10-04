@@ -41,7 +41,7 @@ const IssueCard = ({Issue } : {Issue : IssueDto}) => {
         </Spoiler>
         <div className="flex flex-col mt-2">
             <p className=' font-bold '>Assigned To</p>    
-            <div className=' flex gap-2'>{Issue.assignedTo.map((user : UserDto) => (<Badge color="blue">{user.username}</Badge>))}</div>
+            <div className=' flex gap-2'>{Issue.assignedTo.map((user : UserDto) => (<Badge color="blue" key={user._id}>{user.username}</Badge>))}</div>
             <FiEdit className=' ml-auto hover:cursor-pointer' onClick={open}/>
         </div>
         <footer className='text-xs'>

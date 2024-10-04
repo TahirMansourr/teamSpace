@@ -12,7 +12,7 @@ const TeamSpaceIssue = () => {
     {
         allIssues ? 
           allIssues.map((Issue : IssueDto) => (
-              <IssueCard Issue={Issue}/>
+              <IssueCard Issue={Issue} key={Issue._id}/>
           )) :
           <h1>No Issues </h1>
     }

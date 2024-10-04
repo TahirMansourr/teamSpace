@@ -1,4 +1,4 @@
-import { CreateOrphanDoc, RenameFolder, UpdateFile } from "@/lib/actions/DocActions";
+import { CreateChildFolderOrFile, CreateOrphanDoc, RenameFolder, UpdateFile } from "@/lib/actions/DocActions";
 import { FileDto, FolderDto, ProjectDto, UserDto } from "@/Utils/types";
 import { notifications } from "@mantine/notifications";
 import { createContext, Dispatch, SetStateAction, use, useContext, useEffect, useState } from "react";
@@ -15,6 +15,7 @@ interface DocsContextType{
     setSelectedFolder : Dispatch<SetStateAction<FolderDto | undefined>>
     handleUpdateFile : ({content} : {content : string}) => void,
     renameFileOrFolder : ({id , child , name , type } :{id : string, child : boolean , type : "File" | 'Folder' , name : string}) => void
+    createChildFileOrFolder : ({name, type, parentId} : {name : string, type : 'File' | 'Folder', parentId : string}) => void
 }
 const DocsContext = createContext<DocsContextType>({} as DocsContextType)
 
@@ -33,9 +34,9 @@ const DocsProvider = ({
 })=>{    
     const [user , setUser] = useState<UserDto>(userInfo)
     const [project , setProject] = useState<ProjectDto>(projectInfo)
-    const [allFiles , setAllFiles] = useState<any[]>(projectInfo.files)
+    const [allFiles , setAllFiles] = useState<FileDto[]>(projectInfo.files)
     console.log("🚀 ~ allFiles:", allFiles)
-    const [allFolders , setAllFolders] = useState<any[]>(projectInfo.folders)
+    const [allFolders , setAllFolders] = useState<FolderDto[]>(projectInfo.folders)
     console.log("🚀 ~ allFolders:", allFolders)
     const [initialContentOfFile , setInitialContentOfFile] = useState<string >('<h1> Start By Choosing A File<h1>')
     const [selectedFile , setSelectedFile] = useState<FileDto | undefined >()
@@ -54,7 +55,7 @@ const DocsProvider = ({
     const handleCreateDoc = async (
         name : string , 
         type : 'File' | 'Folder' , 
-        parent? : string [] | undefined
+        parent? : string | undefined
     ) => {
 
 
@@ -94,8 +95,36 @@ const DocsProvider = ({
         }
     }
 
-    const createChildFileOrFolder = async ( )=>{
+    const createChildFileOrFolder = async ({
+        name , 
+        parentId , 
+        type,
+        // fileData
+    } : {
+        name : string , 
+        parentId : string , 
+        type : 'File' | 'Folder',
+        // fileData? : FileDto
 
+    })=>{
+
+        const fileData = {
+            project : project._id,
+            createdBy : user._id,
+            name ,
+            type,
+            parent : parentId
+        }
+        try {
+            await CreateChildFolderOrFile({
+                name ,
+                parentId,
+                type,
+                fileData
+            })
+        } catch (error) {
+            
+        }
     }
 
     const renameFileOrFolder = async ({
@@ -175,7 +204,8 @@ const DocsProvider = ({
         selectedFolder,
         setSelectedFolder,
         handleUpdateFile,
-        renameFileOrFolder
+        renameFileOrFolder,
+        createChildFileOrFolder
     }
     return (
         <DocsContext.Provider value={value}>

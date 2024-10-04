@@ -10,14 +10,11 @@ export async function LogOut(){
 }
 
 export async function GetUserInfo() {
-    console.log('reacher here');
-    
     try {
      const user = await axios.get('/api/users/userInfo') // here if you remove the '/' at the begginnig of the route axios will return html
      console.log("🚀 ~ getUserInfo ~ user:", user)
     return user.data
     } catch (errors : any) {
      throw new Error(`error at getUser Infor : ${errors}`);
-     
     }
    }

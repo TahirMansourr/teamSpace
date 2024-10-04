@@ -25,9 +25,11 @@ const MenuForDocs = ({
 
     const {renameFileOrFolder} = useDocsContext()
     const [inputValue, setInputValue] = useState<string>('');
+    const [action , setAction] = useState<string>('')
    
 
             const handleMenuAction = (action: string) => {
+                setAction(action)
                 switch (action) {
                   case 'Rename':
                     setShowInputField(true)
@@ -67,10 +69,10 @@ const MenuForDocs = ({
                 <div className='hover:bg-gray-100 p-2 cursor-pointer' onClick={() => handleMenuAction('Delete')}>
                     Delete
                 </div>
-                <div className='hover:bg-gray-100 p-2 cursor-pointer' onClick={() => handleMenuAction('Move')}>
+                <div className='hover:bg-gray-100 p-2 cursor-pointer' onClick={() => handleMenuAction('create')}>
                     Create New Folder
                 </div>
-                <div className='hover:bg-gray-100 p-2 cursor-pointer' onClick={() => handleMenuAction('Move')}>
+                <div className='hover:bg-gray-100 p-2 cursor-pointer' onClick={() => handleMenuAction('create')}>
                     Create New File
                 </div>
             </> 
@@ -83,12 +85,15 @@ const MenuForDocs = ({
             <MdOutlineDone
                 onClick={()=>{
                     try {
+                        if(action === 'rename'){
                         renameFileOrFolder({
                             name : inputValue,
                             id : clickedItem._id,
                             child : isChild,
                             type : isFolder(clickedItem) ? 'Folder' : 'File'
-                        })
+                        })}else if(action === 'create'){
+                            
+                        }
                     } catch (error : any) {
                         notifications.show({message : error.message , color : 'red'})
                     }
