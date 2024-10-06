@@ -1,31 +1,26 @@
 'use client'
 import { UserDto } from '@/Utils/types'
 import React, { useEffect, useState } from 'react'
-import { GetUserInfo } from '../Utils'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/lib/store'
+import { useAppDispatch } from '@/lib/hooks'
+import { fetchUser } from '@/lib/features/CounterState/CounterSlice'
 
 const useGetUserInfo = () => {
-    const [user , setUser] = useState<UserDto >()
-    const [loading , setLoading] = useState<boolean>(true)
-    const [userForContext , setUserForContext] = useState<UserDto>()
+    const { user, loading , error } = useSelector((state: RootState) => state.user);
+    console.log("🚀 ~ useGetUserInfo ~ user:", user)
+    const dispatch = useAppDispatch()
 
-    useEffect(
-        ()=>{
-        const getUserInfoAndSetState = async() => {
-            try {
-                setLoading(true)
-                const user = await GetUserInfo()
-                setUser(user)
-                setUserForContext(user.data)
-            } catch (error) {
-                console.error(`error at useGetUserInfo Hook : ${error}`)
-            }
-            finally{
-                setLoading(false)
-            }
-        }
-       getUserInfoAndSetState()
-      },[])
-  return {user , userForContext , loading}
+  useEffect(() => {
+    dispatch(fetchUser());
+    console.log("🚀 ~ useGetUserInfo ~ user:", 'i eas fired')
+  }, [dispatch]);
+
+   return {
+    user,
+    loading,
+    error
+   }
 }
 
 export default useGetUserInfo

@@ -6,33 +6,34 @@ import { SelectedItemInSideBarToRenderOnScreen } from '@/utils'
 import WorkSpaceProvider from './Contexts/WorkSpaceContext'
 import useGetUserInfo from '@/app/Hooks/GetUserInfo'
 
+
 const Dashboard = () => {
 
   const [selectedItemInSideBar , setSelectedItemInSideBar] = useState<string>('projects')
   const [opened , setOpened] = useState<boolean>(false)
-  const {user , userForContext , loading} = useGetUserInfo()
+  const { user ,  loading  , error  } = useGetUserInfo()
+  console.log("🚀 ~ Dashboard ~ user:", user)
   
   
   return (
     
     <main className=' flex h-screen w-screen '>
      
-       { user && userForContext && 
-       <WorkSpaceProvider userInfo={userForContext}>
+       { user && !loading &&
+       <WorkSpaceProvider userInfo={user}>
 
         <DashBoardSideBar 
             setSelectedItemInSideBar={ setSelectedItemInSideBar }
             SelectedItemInSideBar={selectedItemInSideBar}
             setOpened = {setOpened}
-            user = {user}
             />
       
-          <SelectedItemInSideBarToRenderOnScreen
+        <SelectedItemInSideBarToRenderOnScreen
             selectedItemInSideBar={selectedItemInSideBar}
             setOpened = {setOpened}
             opened = {opened}
             user = {user}
-          />
+            />
           
         </WorkSpaceProvider>
         }

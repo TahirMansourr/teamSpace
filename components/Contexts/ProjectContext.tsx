@@ -21,13 +21,13 @@ const ProjectProvider = (
     :
     { 
      children : React.ReactNode,
-     user : { data : UserDto}
+     user : UserDto
 
     }
 )=>{
 
     
-    const [userProjects , setUserProjects] = useState<ProjectDto[]>(user.data.projects)
+    const [userProjects , setUserProjects] = useState<ProjectDto[]>(user.projects)
     console.log("🚀 ~ userProjects:", userProjects)
     
 

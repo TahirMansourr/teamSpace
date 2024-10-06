@@ -8,12 +8,14 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useDisclosure } from '@mantine/hooks';
 import AccountSettings from './AccountSettings';
+import { useAppSelector } from '@/lib/hooks';
 
 
 
 const UserButton = () => {
     const router = useRouter()
-    const {userInfo} = useWorkSpaceContext()
+    // const {userInfo} = useWorkSpaceContext()
+    const userInfo = useAppSelector(state => state.user.user)
     console.log("🚀 ~ UserButton ~ userInfo:", userInfo)
     const [opened, { open, close }] = useDisclosure(false);
 

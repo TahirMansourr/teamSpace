@@ -55,8 +55,7 @@ const WorkSpaceProvider = (
     const [ chatComponentExpandState , setChatComponentExpandState] = useState<boolean>(false)
     const [project  ,setProject] = useState<projectInfoResponse>(projectInfo ? projectInfo : { } as projectInfoResponse)
     const [user , setUser] = useState<UserDto>(userInfo)
-    console.log("🚀 ~ user:", user)
-    console.log('workSpace Context Rerendered');
+
     
     const handleUpdateUser = async (params : {id : string, username ? : string, email? : string, image? : string})=>{
        const response = await UpdateUser(params)

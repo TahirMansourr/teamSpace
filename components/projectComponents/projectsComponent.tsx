@@ -5,6 +5,8 @@ import { useDisclosure } from '@mantine/hooks'
 import CreateProjectForm from '../Forms/createProjectForm'
 import ProjectProvider from '../Contexts/ProjectContext'
 import AllProjectsSection from './AllProjectsSection'
+import { useAppSelector } from '@/lib/hooks'
+import { stat } from 'fs'
 
 const ProjectsComponent = (
   { 
@@ -19,6 +21,8 @@ const ProjectsComponent = (
     setOpened(true)
     return () => setOpened(false)
   })
+
+  const userinfo = useAppSelector(state => state.user.user)
 
   return (
     <Transition
@@ -41,7 +45,7 @@ const ProjectsComponent = (
             blur: 4,
           }}
           >
-            <CreateProjectForm close = {closeModal} userId  = {user.data._id} />
+            <CreateProjectForm close = {closeModal} userId  = {user._id} />
         </Modal>
 
           <div className=' flex justify-between items-center w-full'>

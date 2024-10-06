@@ -9,6 +9,7 @@ import { Notifications } from '@mantine/notifications';
 
 
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
+import StoreProvider from "./StoreProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
@@ -28,12 +29,15 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <MantineProvider>
+          <StoreProvider>
+
         {/* <AblyProvider client={client}>
         <ChannelProvider channelName="get-started"> */}
           <Notifications position="top-right" zIndex={1} />
            {children}
            {/* </ChannelProvider>
            </AblyProvider> */}
+          </StoreProvider>
         </MantineProvider>
       </body>
     </html>

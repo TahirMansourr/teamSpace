@@ -20,3 +20,24 @@ or object will always be a new fucntion or object because java script always ret
 or the object passed to the props to be the same you have to wrap them around useCallback and this makes it the same if the dependencies of
 useCallback do not change.
 So usecallback and memo are normally used together.
+
+
+Use memo is a react hook that let's you cache the result of a calculation between rerenders.
+const cachedValue = useMemo(calculateValue, dependencies)
+
+
+When should we use usecallback and usememo?
+If in the application the application interactions are coarse(replacing pages and componenets), momization and usecallback are usually 
+unneccessary, if the app is more like a drawing editor and most interactions are granular(like moving shapes) it makes more sense to use them.
+
+What is the difference between usememo and usecallback?
+Usecallback memoizes a function meaning that it will return the same function if the dependencies haven't changed.
+useMemo momoizes the result of a computation or a value.
+
+UseRef :
+lets you reference a value that is not needed for rendering
+const something = UseRef(initialValue) the initial value is ofcourse ignored after the first rendering
+You should not read or write refs during rendering as it leads to unexpected behaviour instead you should use it inside event handlers.
+It can also be used to manipulate the dom for example you write const inputRef = useRef(null) and then in the input <input ref={inputRef}/>
+and then in an event handler like on click maybe you write inputRef.current.focus. so you can use the ref on one element in the code and 
+from a button from another element or on another button you can access that elements properties, the element tied to the ref.

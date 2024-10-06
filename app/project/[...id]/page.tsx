@@ -24,8 +24,8 @@ export default function WorkSpace({params}:{params : {id : string[]}}) {
       }
       const getUserInfoAndSetState = async () => {
         const user = await GetUserInfo()
-        console.log("🚀 ~ getUserInfoAndSetState ~ user:", user.data)
-        setUser(user.data)
+        console.log("🚀 ~ getUserInfoAndSetState ~ user:", user)
+        setUser(user)
         }
        getUserInfoAndSetState()
       getProjectInfo()

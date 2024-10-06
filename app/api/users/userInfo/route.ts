@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
     const returnedUser = user.toObject();
     console.log("🚀 ~ GET ~ returnedUser:", returnedUser);
 
-    return NextResponse.json({ data: returnedUser });
+    return NextResponse.json( returnedUser );
   } catch (error: any) {
     console.error("Error in GET /api/users/userInfo:", error.message);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

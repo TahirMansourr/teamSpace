@@ -69,4 +69,3 @@ export const SelectedItemToRenderOnScreen = ({
         return <MultiTabsComponent opened = {opened} setOpened = {setOpened}/>
     }
 }
-//'NotesPage' , 'IssuesPage' , 'TasksPage'
