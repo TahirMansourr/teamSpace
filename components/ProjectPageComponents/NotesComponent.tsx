@@ -26,7 +26,7 @@ const NotesComponent = () => {
             <TeamSpaceNotes/>
           </ScrollArea>
       </MultiTabsComponentWrapper>
-      </NotesProvider>
+    </NotesProvider>
 
   )
 }

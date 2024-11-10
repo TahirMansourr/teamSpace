@@ -15,27 +15,27 @@ const NotesCard = ({Note} : {Note : NotesDto}) => {
     const sanitizedContent = DOMPurify.sanitize(Note.body)
     const [modalOpened , {open , close : closeModal}] = useDisclosure(false)
   return (
-    <section className=' rounded-md  shadow-md flex flex-col my-2'>
+    <section className=' rounded-md  shadow-md flex flex-col justify-between my-2 border w-[90%] p-2 mx-auto min-h-[15rem] '>
       <CreateOrUpdateNotesModal modalOpened = {modalOpened} closeModal={closeModal} initialValues={Note} />
-         <Spoiler maxHeight={80} showLabel="..." hideLabel="Hide">
+         <Spoiler maxHeight={150} showLabel="..." hideLabel="Hide">
            <div className=' text-xs font-light whitespace-pre-line' dangerouslySetInnerHTML={{ __html: sanitizedContent  }}>
                 
            </div> 
         </Spoiler>
-        <footer className='flex flex-col'>
-            <div className='flex flex-col'>
+        <footer className='flex justify-between items-center'>
+            
                 <div className='flex text-xs gap-2'>
-                   <p className='font-bold'>createdAt :</p>  <p className=' text-gray-600'>{ date.toLocaleDateString()} {date.toLocaleTimeString()}</p>
+                  <p className=' text-gray-600'>{ date.toLocaleDateString()} {date.toLocaleTimeString()}</p>
                 </div>
-               { Note.updatedAt? <div className='flex text-xs gap-2'>
-                   <p className='font-bold'>last Updated :</p>  <p className=' text-gray-600'>{FormattedDate}</p>  
-                </div> : null}
                 <div className='flex text-xs gap-2'>
-                <p className='font-bold'>Created By : </p>  <p className=' text-gray-600'>{Note.creator.username}</p>  
+                <p className=' text-gray-600 font-bold'>{Note.creator.username}</p>  
+                </div>
+                <div>
+
                 <FiEdit className=' ml-auto hover:cursor-pointer mr-3' onClick={open}/>
                 </div>
                
-            </div>
+            
         </footer>
     </section>
   )

@@ -26,12 +26,12 @@ const CreateOrUpdateNote = ({existingNoteContent , close} : {existingNoteContent
     return (
         <>
             <LoadingOverlay visible={formLoading} />
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className='flex flex-col'>
                 <Tiptap 
-                    tipTapContent={content}
+                    content={content}
                     onChange={(newContent: string) => handleContentChange(newContent)}
                 />
-                <Button type="submit" className='m-2'>Save</Button>
+                <Button type="submit" className='m-2 mr-0' size='sm'>Save</Button>
             </form>
         </>
     )

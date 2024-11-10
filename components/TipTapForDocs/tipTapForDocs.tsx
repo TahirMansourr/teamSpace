@@ -83,7 +83,7 @@ const TiptapForDocs = ({content , onChange} : {content : string , onChange : Fun
   if (!editor) {
     return null
   }
-
+ 
   return (
     <div className="flex flex-col w-full gap-2  ">
       <div className='toolbar mx-auto'>

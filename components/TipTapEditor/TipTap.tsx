@@ -1,198 +1,174 @@
 'use client'
 
-import { useEditor, EditorContent, BubbleMenu, Editor ,FloatingMenu } from '@tiptap/react'
+import { InputPlaceholder } from '@mantine/core'
+import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import { useEffect, useState } from 'react'
-import '../TipTapEditor/styles.css' // Ensure your custom CSS file is imported
+import Link from '@tiptap/extension-link'
+import { useCallback } from 'react'
+import { notifications } from '@mantine/notifications'
+import { Color } from '@tiptap/extension-color'
+import TextStyle from '@tiptap/extension-text-style'
+import './styles.css'
+import { GrBold } from "react-icons/gr"
+import { BsChatSquareQuote } from "react-icons/bs";
+import { MdFormatListBulleted } from "react-icons/md";
+import { FaCode } from "react-icons/fa6";
+import { RiH1 } from "react-icons/ri";
+import { RiH2 , RiH3, RiH4   } from "react-icons/ri";
+import { AiOutlineOrderedList } from "react-icons/ai";
+import { RiStrikethrough } from "react-icons/ri";
+import { TbItalic } from "react-icons/tb";
+import { FaLink } from "react-icons/fa6";
+import { FaLinkSlash } from "react-icons/fa6";
 
-const Tiptap = ({tipTapContent , onChange} : {tipTapContent : string , onChange : Function}) => {
+const TiptapForDocs = ({content , onChange} : {content : string , onChange : Function}) => {
     const handleChange = (newContent : string) =>{
         onChange(newContent)
     }
   const editor = useEditor({
-    extensions: [StarterKit],
-    editorProps : {
-        attributes : {
-            class :'border bg-white outline-none p-2 min-h-96 text-gray-500'
-        }
+    extensions: [
+      StarterKit,
+      TextStyle,
+      Color.configure({
+        types: ['textStyle'],
+      }),
+      Link.configure({
+        openOnClick: true,
+        autolink: true,
+        defaultProtocol: 'https',
+        linkOnPaste: true,
+        validate: (href) => /^https?:\/\//.test(href),
+        HTMLAttributes: {
+          class: 'text-blue-500 underline',
+        },
+      }),
+    ],
+    content,
+    editorProps: {
+      attributes: {
+        class: 'w-full outline-none h-full leading-normal fixed ',
+        InputPlaceholder: 'Write something',
+      },
     },
-    content : tipTapContent,
     onUpdate : ({editor}) => {
         handleChange(editor.getHTML())
     }
     
   })
-    console.log("🚀 ~ Tiptap ~ tipTapContent:", tipTapContent)
 
-  const [isEditable, setIsEditable] = useState(true)
-  const [activeFormats, setActiveFormats] = useState({
-    bold: false,
-    italic: false,
-    strike: false,
-    bulletList : false,
-    blockquote : false,
-    orderedList : false,
-    codeblock : false
-  })
+  const setLink = useCallback(() => {
+    const previousUrl = editor?.getAttributes('link').href
+    const url = window.prompt('URL', previousUrl)
 
-  useEffect(() => {
-    if (editor) {
-      editor.setEditable(isEditable)
-
-      // Update active formats when the editor's state changes
-      const updateActiveFormats = () => {
-        setActiveFormats({
-          bold: editor.isActive('bold'),
-          italic: editor.isActive('italic'),
-          strike: editor.isActive('strike'),
-          bulletList : editor.isActive('bulletList'),
-          blockquote : editor.isActive('blockquote'),
-          orderedList : editor.isActive('orderedList'),
-          codeblock : editor.isActive('codeblock')
-        })
-      }
-
-      editor.on('update', updateActiveFormats)
-      editor.on('selectionUpdate', updateActiveFormats)
-
-      return () => {
-        editor.off('update', updateActiveFormats)
-        editor.off('selectionUpdate', updateActiveFormats)
-      }
+    // cancelled
+    if (url === null) {
+      return
     }
-  }, [isEditable, editor])
 
+    // empty
+    if (url === '') {
+      editor?.chain().focus().extendMarkRange('link').unsetLink().run()
+      notifications.show({ color: 'red', message: 'You cannot have an empty URL' })
+      return
+    }
+    if (!/^https?:\/\//.test(url)) {
+      notifications.show({ color: 'red', message: 'Invalid URL. Please enter a valid URL starting with http:// or https://' })
+      return
+    }
+
+    // update link
+    editor?.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
+  }, [editor])
+
+  if (!editor) {
+    return null
+  }
+ 
   return (
-    <>
-    {editor && (
-      <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
-        <div className='bubble-menu'>
-          <button
-            onClick={(e) => {
-                e.preventDefault()    
-                editor.chain().focus().toggleBold().run()
-            }}
-          >
-            <strong>B</strong>
+    <div className="flex flex-col w-full gap-2  min-h-[20rem] ">
+      <div className='toolbar mx-auto'>
+        <input
+          type="color"
+          onInput={(event : any) => (editor.chain().focus().setColor(event.target.value).run())}
+          value={editor.getAttributes('textStyle').color}
+          data-testid="setColor"
+        />
+        <button className={editor.isActive('bold') ? 'is-active' : ''} onClick={(e) => {
+          e.preventDefault()
+          editor?.chain().focus().toggleBold().run()
+        }}>
+          <GrBold />
+        </button>
+        <button className={editor.isActive('blockquote') ? 'is-active' : ''} onClick={(e) => {
+          e.preventDefault()
+          editor?.chain().focus().toggleBlockquote().run()
+        }}>
+          <BsChatSquareQuote />
+        </button>
+        <button className={editor.isActive('bulletList') ? 'is-active' : ''} onClick={(e) => {
+          e.preventDefault()
+          editor?.chain().focus().toggleBulletList().run()
+        }}>
+         <MdFormatListBulleted />
+        </button>
+        <button className={editor.isActive('codeBlock') ? 'is-active' : ''} onClick={(e) => {
+          e.preventDefault()
+          editor?.chain().focus().toggleCodeBlock().run()
+        }}>
+          <FaCode />
+        </button>
+        <button className={editor.isActive('heading', { level: 1 }) ? 'is-active' : ''} onClick={(e) => {
+          e.preventDefault()
+          editor?.chain().focus().toggleHeading({ level: 1 }).run()
+        }}>
+          <RiH1 />
+        </button>
+        <button className={editor.isActive('heading', { level: 2 }) ? 'is-active' : ''} onClick={(e) => {
+          e.preventDefault()
+          editor?.chain().focus().toggleHeading({ level: 2 }).run()
+        }}>
+         <RiH2 />
+        </button>
+
+        <button className={editor.isActive('orderedList') ? 'is-active' : ''} onClick={(e) => {
+          e.preventDefault()
+          editor?.chain().focus().toggleOrderedList().run()
+        }}>
+         <AiOutlineOrderedList />
+        </button>
+        <button className={editor.isActive('strike') ? 'is-active' : ''} onClick={(e) => {
+          e.preventDefault()
+          editor?.chain().focus().toggleStrike().run()
+        }}>
+          <RiStrikethrough />
+        </button>
+        <button className={editor.isActive('italic') ? 'is-active' : ''} onClick={(e) => {
+          e.preventDefault()
+          editor?.chain().focus().toggleItalic().run()
+        }}>
+          <TbItalic />
+        </button>
+        <div className="button-group">
+          <button onClick={setLink} className={editor.isActive('link') ? 'is-active' : ''}>
+          <FaLink />
           </button>
           <button
-            onClick={(e) => {
-                e.preventDefault()
-                editor.chain().focus().toggleItalic().run()}}
+            onClick={() => editor.chain().focus().unsetLink().run()}
+            disabled={!editor.isActive('link')}
           >
-            <em>I</em>
-          </button>
-          <button
-            onClick={(e) =>{
-                e.preventDefault()
-                editor.chain().focus().toggleStrike().run()}}
-          >
-            <s>S</s>
-          </button>
-          <button
-            onClick={(e) =>{
-                e.preventDefault()
-                editor.chain().focus().toggleHeading({ level: 1 }).run()}}
-          >
-            H1
-          </button>
-          <button
-            onClick={(e) =>{
-                e.preventDefault()
-                editor.chain().focus().toggleHeading({ level: 2 }).run()}}
-          >
-            H2
-          </button>
-          <button
-            onClick={(e) =>{
-                e.preventDefault()
-                editor.chain().focus().toggleBulletList().run()}}
-          >
-            BP
-          </button>
-          <button
-            onClick={(e) =>{
-                e.preventDefault()
-                editor.chain().focus().toggleBlockquote().run()}}
-          >
-            Qu
-          </button>
-          <button
-            onClick={(e) =>{
-                e.preventDefault()
-                editor.chain().focus().toggleOrderedList().run()}}
-          >
-             list
-          </button>
-          <button
-            onClick={(e) =>{
-                e.preventDefault()
-                editor.chain().focus().toggleCodeBlock().run()}}
-          >
-           code
-          </button>
-        </div>
-      </BubbleMenu>
-    )}
-    {/* {editor && (
-      <FloatingMenu editor={editor} tippyOptions={{ duration: 100 }}>
-        <div className="bg-white rounded-md shadow-md flex gap-2 p-2">
-          <button
-            onClick={(e) =>{
-                e.preventDefault()
-                editor.chain().focus().toggleHeading({ level: 1 }).run()}}
-            className={`p-2 rounded-md transition-colors duration-200 ${
-              editor.isActive('heading', { level: 1 }) ? 'bg-blue-600 text-white' : 'bg-gray-200 hover:bg-gray-300'
-            }`}
-          >
-            H1
-          </button>
-          <button
-            onClick={(e) => {
-                e.preventDefault()
-                editor.chain().focus().toggleHeading({ level: 2 }).run()}}
-            className={`p-2 rounded-md transition-colors duration-200 ${
-              editor.isActive('heading', { level: 2 }) ? 'bg-blue-600 text-white' : 'bg-gray-200 hover:bg-gray-300'
-            }`}
-          >
-            H2
-          </button>
-          <button
-            onClick={(e) => {
-                e.preventDefault()
-                editor.chain().focus().toggleBulletList().run()}}
-            className={`p-2 rounded-md transition-colors duration-200 text-xs ${
-              editor.isActive('bulletList') ? 'bg-blue-600 text-white' : 'bg-gray-200 hover:bg-gray-300'
-            }`}
-          >
-            Bullet
-          </button>
-          <button
-            onClick={(e) =>{
-                e.preventDefault()
-                editor.chain().focus().toggleBlockquote().run()}}
-            className={`p-2 rounded-md transition-colors duration-200 text-xs${
-              editor.isActive('blockquote') ? 'bg-blue-600 text-white' : 'bg-gray-200 hover:bg-gray-300'
-            }`}
-          >
-            quote
-          </button>
-          <button
-            onClick={(e) =>{
-                e.preventDefault()
-                editor.chain().focus().toggleOrderedList().run()}}
-            className={`p-2 rounded-md transition-colors duration-200 text-xs ${
-              editor.isActive('orderedList') ? 'bg-blue-600 text-white' : 'bg-gray-200 hover:bg-gray-300'
-            }`}
-          >
-             list
+            <FaLinkSlash />
           </button>
         </div>
-      </FloatingMenu>
-    )} */}
-    <EditorContent style={{ whiteSpace: 'pre-line' }} editor={editor} />
-  </>
+        <button onClick={(e) => {
+          e.preventDefault()
+          editor?.commands.setHorizontalRule()
+        }}>
+          _
+        </button>
+      </div>
+      <EditorContent editor={editor} />
+    </div>
   )
 }
 
-export default Tiptap
+export default TiptapForDocs
