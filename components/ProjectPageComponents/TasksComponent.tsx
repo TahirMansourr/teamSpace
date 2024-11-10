@@ -14,22 +14,12 @@ const TasksComponent = () => {
     const [modalOpened , {open , close : closeModal}] = useDisclosure(false)
 
     return (
-    <MultiTabsComponentWrapper componentExpandState={tasksComponentExpandState}>
-             <header className=' flex justify-between items-center'> 
-          <Text size="xl" fw={600}>Tasks:</Text>
-          <section className=' flex items-center gap-3'>
-          <div> 
-              <Tooltip label = 'Create a new Task' color='blue'>
-                  <MdPlaylistAdd size={25} color='blue' className=' hover:cursor-pointer' onClick={open}/>
-              </Tooltip>
-          </div>
-          <div 
-          className='hover:cursor-pointer'
-          onClick={()=>setTasksComponentExpandState(true)}
-          >x</div>
-          </section>
-          
-        </header>
+    <MultiTabsComponentWrapper 
+        componentExpandState={tasksComponentExpandState}
+        componentName='Tasks'
+        stateSetter={setTasksComponentExpandState}
+        modalOpener={open}
+        >
          <section className=' flex w-full'>
             <TaskProvider project={projectInfo} user={userInfo}>
              <CreateOrUpdateTaskModal modalOpened = {modalOpened} closeModal={closeModal}/>

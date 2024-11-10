@@ -14,22 +14,12 @@ const IssuesComponent = () => {
     const {issuesComponentExpandState ,setIssuesComponentExpandState, projectInfo , userInfo} = useWorkSpaceContext()
     const [modalOpened , {open , close : closeModal}] = useDisclosure(false)
     return (
-    <MultiTabsComponentWrapper componentExpandState={issuesComponentExpandState}>
-         <header className=' flex justify-between items-center'> 
-          <Text size="xl" fw={600}>Issues:</Text>
-          <section className=' flex items-center gap-3'>
-          <div> 
-              <Tooltip label = 'Create a new Task' color='blue'>
-                  <MdPlaylistAdd size={25} color='blue' className=' hover:cursor-pointer' onClick={open}/>
-              </Tooltip>
-          </div>
-          <div 
-          className='hover:cursor-pointer'
-          onClick={()=>setIssuesComponentExpandState(true)}
-          >x</div>
-          </section>
-          
-        </header>
+    <MultiTabsComponentWrapper 
+        componentExpandState={issuesComponentExpandState}
+        stateSetter={setIssuesComponentExpandState}
+        componentName='Issues'
+        modalOpener={open}
+        >
          <section>
             <IssuesProvider project={projectInfo.project} user={userInfo}>
                 <CreateOrUpdateIssuesModal modalOpened = {modalOpened} closeModal={closeModal}/>

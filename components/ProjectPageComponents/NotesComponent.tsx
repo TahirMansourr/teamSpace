@@ -16,30 +16,16 @@ const NotesComponent = () => {
   
   return (
     <NotesProvider project={projectInfo.project} user={userInfo}>
-      <MultiTabsComponentWrapper componentExpandState={notesComponentExpandState}>
-      <header className=' flex justify-between'> 
-       {/* <Indicator color='teal' withBorder size={15} position='top-start'> */}
-        <Text size="xl" fw={600}>Notes:</Text>
-        {/* </Indicator> */}
-        <section className=' flex items-center gap-3'>
-          <div> 
-              <Tooltip label = 'Create a new Task' color='blue'>
-                  <MdPlaylistAdd size={25} color='blue' className=' hover:cursor-pointer' onClick={open}/>
-              </Tooltip>
-          </div>
-          <div 
-          className='hover:cursor-pointer'
-          onClick={()=>setNotesComponentExpandState(true)}
-          >x</div>
-          </section>
-       </header> 
-       <section>
-        
+      <MultiTabsComponentWrapper 
+          componentExpandState={notesComponentExpandState}
+          componentName='Notes'
+          stateSetter={setNotesComponentExpandState}
+          modalOpener={open}
+          >
           <CreateOrUpdateNotesModal modalOpened = {modalOpened} closeModal={closeModal}/>
           <ScrollArea h={600} w={'100%'}>
             <TeamSpaceNotes/>
           </ScrollArea>
-       </section>
       </MultiTabsComponentWrapper>
       </NotesProvider>
 

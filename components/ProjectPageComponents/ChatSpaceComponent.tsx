@@ -9,14 +9,19 @@ import MultiTabsComponentWrapper from './MultiTabsComponentWrapper'
 const ChatSpaceComponent = () => {
     const {chatComponentExpandState ,setChatComponentExpandState} = useWorkSpaceContext()
     return (
-        <MultiTabsComponentWrapper componentExpandState={chatComponentExpandState} className= 'opacity-100 min-w-[28rem] flex-grow h-full'>
-             <header className=' flex justify-between'> 
+        <MultiTabsComponentWrapper 
+            componentExpandState={chatComponentExpandState} 
+            className= 'opacity-100 min-w-[28rem] flex-grow h-full'
+            stateSetter={setChatComponentExpandState}
+            componentName='ChatSpace'
+            >
+             {/* <header className=' flex justify-between'> 
             <Text size="xl" fw={600}>ChatSpace:</Text>
             <div 
             className='hover:cursor-pointer'
             onClick={()=>setChatComponentExpandState(true)}
             >x</div>
-            </header>
+            </header> */}
             <section className='flex-grow'>
                     <ChatProvider >
                         <ChatComponent />
