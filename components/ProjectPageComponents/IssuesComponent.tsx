@@ -1,12 +1,10 @@
 'use client'
-import { ScrollArea, Text, Tooltip } from '@mantine/core'
+import { ScrollArea } from '@mantine/core'
 import React from 'react'
 import { useWorkSpaceContext } from '../Contexts/WorkSpaceContext'
 import { useDisclosure } from '@mantine/hooks'
-import { MdPlaylistAdd } from 'react-icons/md'
 import IssuesProvider from '../Contexts/IssuesContext'
 import CreateOrUpdateIssuesModal from './IssuesComponents/CreateOrUpdateIssueModal'
-import IssueCard from './IssuesComponents/IssuesCard'
 import TeamSpaceIssue from './IssuesComponents/TeamSpaceIssue'
 import MultiTabsComponentWrapper from './MultiTabsComponentWrapper'
 

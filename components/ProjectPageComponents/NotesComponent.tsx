@@ -1,11 +1,10 @@
 'use client'
-import { Code, Indicator, ScrollArea, Text, Tooltip } from '@mantine/core'
+import { ScrollArea } from '@mantine/core'
 import React from 'react'
 import { useWorkSpaceContext } from '../Contexts/WorkSpaceContext'
 import TeamSpaceNotes from './NotesComponents/TeamSpaceNotes'
 import NotesProvider from '../Contexts/NotesContext'
-import { MdPlaylistAdd } from 'react-icons/md'
-import { useDisclosure, useResizeObserver } from '@mantine/hooks'
+import { useDisclosure } from '@mantine/hooks'
 import CreateOrUpdateNotesModal from './NotesComponents/CreateOrUpdateNotesModal'
 import MultiTabsComponentWrapper from './MultiTabsComponentWrapper'
 

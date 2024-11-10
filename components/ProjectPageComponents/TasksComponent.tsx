@@ -1,10 +1,9 @@
 'use client'
-import { HoverCard, ScrollArea, Text, Tooltip } from '@mantine/core'
+import {ScrollArea} from '@mantine/core'
 import React from 'react'
 import { useWorkSpaceContext } from '../Contexts/WorkSpaceContext'
 import TaskProvider from '../Contexts/TasksContext'
 import TeamSpaceTask from './tasksComponents/teamSpaceTask'
-import { MdPlaylistAdd } from "react-icons/md"; 
 import CreateOrUpdateTaskModal from './tasksComponents/CreateTaskModal'
 import { useDisclosure } from '@mantine/hooks'
 import MultiTabsComponentWrapper from './MultiTabsComponentWrapper'
