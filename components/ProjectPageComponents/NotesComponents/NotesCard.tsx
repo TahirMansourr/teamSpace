@@ -1,5 +1,4 @@
 'use client'
-import Tiptap from '@/components/TipTapEditor/TipTap'
 import { NotesDto } from '@/Utils/types'
 import { Spoiler } from '@mantine/core'
 import React from 'react'

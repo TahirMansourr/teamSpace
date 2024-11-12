@@ -12,27 +12,36 @@ type CreateNoteDto = {
     _id? : string
 }
 
-export async function CreateNote(params : CreateNoteDto){
+export async function CreateNote(params: CreateNoteDto) {
     try {
         await connectToDB()
-         const newNote = await Note.create({
-            project : params.projectId,
-            body : params.body,
-            createdAt : new Date(),
-            creator : params.creator,
-            comments : []
-         })
+        
+        const newNote = await Note.create({
+            project: params.projectId,
+            body: params.body,
+            createdAt: new Date(),
+            creator: params.creator,
+            comments: []
+        })
 
-         await newNote.save()
-         await Project.findOneAndUpdate({_id : params.projectId} , {$push : {notes : newNote._id}})
-         const objResponse = newNote.toObject()
-         const response = JSON.parse(JSON.stringify(objResponse))
-         return({status : 'success' , note : response})
+        // Update project in background
+        Project.findOneAndUpdate(
+            { _id: params.projectId },
+            { $push: { notes: newNote._id } }
+        ).exec()
 
+        const formattedNote = JSON.parse(JSON.stringify(newNote.toObject()))
+        console.log("🚀 ~ file: NoteAction.ts:34 ~ formattedNote:", formattedNote)
+
+        return {
+            status: 'success',
+            note: formattedNote
+        }
     } catch (error) {
-        throw new Error(`Error at CreateNote : ${error}`);
+        throw new Error(`Error at CreateNote: ${error}`)
     }
 }
+
 
 export async function UpdateNote(params: CreateNoteDto) {
     console.log("🚀 ~ UpdateNote ~ params:", params);

@@ -6,14 +6,14 @@ import TaskProvider from '../Contexts/TasksContext'
 import TeamSpaceTask from './tasksComponents/teamSpaceTask'
 import CreateOrUpdateTaskModal from './tasksComponents/CreateTaskModal'
 import { useDisclosure } from '@mantine/hooks'
-import MultiTabsComponentWrapper from './MultiTabsComponentWrapper'
+import ComponentWrapper from './MultiTabsComponentWrapper'
 
 const TasksComponent = () => {
     const {tasksComponentExpandState ,setTasksComponentExpandState , projectInfo , userInfo} = useWorkSpaceContext()
     const [modalOpened , {open , close : closeModal}] = useDisclosure(false)
 
     return (
-    <MultiTabsComponentWrapper 
+    <ComponentWrapper 
         componentExpandState={tasksComponentExpandState}
         componentName='Tasks'
         stateSetter={setTasksComponentExpandState}
@@ -27,7 +27,7 @@ const TasksComponent = () => {
                 </ScrollArea>
             </TaskProvider>
          </section>
-    </MultiTabsComponentWrapper>
+    </ComponentWrapper>
     )
 }
 

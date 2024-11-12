@@ -3,12 +3,12 @@ import React from 'react'
 import { useWorkSpaceContext } from '../Contexts/WorkSpaceContext'
 import ChatComponent from './smallerComponents/ChatComponent'
 import ChatProvider from '../Contexts/ChatContext'
-import MultiTabsComponentWrapper from './MultiTabsComponentWrapper'
+import ComponentWrapper from './MultiTabsComponentWrapper'
 
 const ChatSpaceComponent = () => {
     const {chatComponentExpandState ,setChatComponentExpandState} = useWorkSpaceContext()
     return (
-        <MultiTabsComponentWrapper 
+        <ComponentWrapper 
             componentExpandState={chatComponentExpandState} 
             className= 'opacity-100 min-w-[28rem] flex-grow h-full'
             stateSetter={setChatComponentExpandState}
@@ -19,7 +19,7 @@ const ChatSpaceComponent = () => {
                         <ChatComponent />
                     </ChatProvider>
             </section>
-        </MultiTabsComponentWrapper>
+        </ComponentWrapper>
     )
 }
 

@@ -17,9 +17,9 @@ const CreateOrUpdateNote = ({existingNoteContent , close} : {existingNoteContent
        
         
         if(!existingNoteContent){
-        await handleCreateNote(content , close)
+        await handleCreateNote(content , close , e)
         }else{
-        await handleUpdateNote({ ...existingNoteContent , body : content} , close)
+        await handleUpdateNote({ ...existingNoteContent , body : content } , close , e)
         }
     }
 

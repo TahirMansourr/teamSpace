@@ -6,13 +6,13 @@ import { useDisclosure } from '@mantine/hooks'
 import IssuesProvider from '../Contexts/IssuesContext'
 import CreateOrUpdateIssuesModal from './IssuesComponents/CreateOrUpdateIssueModal'
 import TeamSpaceIssue from './IssuesComponents/TeamSpaceIssue'
-import MultiTabsComponentWrapper from './MultiTabsComponentWrapper'
+import ComponentWrapper from './MultiTabsComponentWrapper'
 
 const IssuesComponent = () => {
     const {issuesComponentExpandState ,setIssuesComponentExpandState, projectInfo , userInfo} = useWorkSpaceContext()
     const [modalOpened , {open , close : closeModal}] = useDisclosure(false)
     return (
-    <MultiTabsComponentWrapper 
+    <ComponentWrapper 
         componentExpandState={issuesComponentExpandState}
         stateSetter={setIssuesComponentExpandState}
         componentName='Issues'
@@ -26,7 +26,7 @@ const IssuesComponent = () => {
                     </ScrollArea>
             </IssuesProvider>
          </section>
-    </MultiTabsComponentWrapper>
+    </ComponentWrapper>
     )
 }
 

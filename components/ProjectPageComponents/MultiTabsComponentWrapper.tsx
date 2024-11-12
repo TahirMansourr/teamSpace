@@ -1,7 +1,7 @@
 import { Text, Tooltip } from "@mantine/core";
 import { MdPlaylistAdd } from "react-icons/md";
 
-const MultiTabsComponentWrapper = ({
+const ComponentWrapper = ({
     children , 
     componentExpandState,
     className,
@@ -42,4 +42,4 @@ const MultiTabsComponentWrapper = ({
   )
 };
 
-export default MultiTabsComponentWrapper
+export default ComponentWrapper

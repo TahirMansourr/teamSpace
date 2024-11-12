@@ -6,7 +6,7 @@ import TeamSpaceNotes from './NotesComponents/TeamSpaceNotes'
 import NotesProvider from '../Contexts/NotesContext'
 import { useDisclosure } from '@mantine/hooks'
 import CreateOrUpdateNotesModal from './NotesComponents/CreateOrUpdateNotesModal'
-import MultiTabsComponentWrapper from './MultiTabsComponentWrapper'
+import ComponentWrapper from './MultiTabsComponentWrapper'
 
 const NotesComponent = () => {
 
@@ -15,7 +15,7 @@ const NotesComponent = () => {
   
   return (
     <NotesProvider project={projectInfo.project} user={userInfo}>
-      <MultiTabsComponentWrapper 
+      <ComponentWrapper 
           componentExpandState={notesComponentExpandState}
           componentName='Notes'
           stateSetter={setNotesComponentExpandState}
@@ -25,7 +25,7 @@ const NotesComponent = () => {
           <ScrollArea h={600} w={'100%'}>
             <TeamSpaceNotes/>
           </ScrollArea>
-      </MultiTabsComponentWrapper>
+      </ComponentWrapper>
     </NotesProvider>
 
   )

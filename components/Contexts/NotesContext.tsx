@@ -9,8 +9,8 @@ import { useContext, useState, createContext, useEffect, useRef } from "react"
 type NotesContextDto = {
  allNotes : NotesDto[],
  formLoading : boolean,
- handleCreateNote : (body : string , close : ()=>void) => void
- handleUpdateNote : (existingNote : NotesDto , close : ()=>void) => void
+ handleCreateNote : (body : string , close : ()=>void , e : React.FormEvent) => void
+ handleUpdateNote : (existingNote : NotesDto , close : ()=>void , e : React.FormEvent) => void
  isConnected : boolean
 }
 
@@ -56,7 +56,8 @@ const NotesContext = createContext<NotesContextDto>({} as NotesContextDto)
     //   })
     // },[])}
 
-    async function handleCreateNote(body : string, close : ()=>void){
+    async function handleCreateNote(body : string, close : ()=>void , e : React.FormEvent){
+      e.preventDefault()
         setFormLoading(true)
         try {
             const new_note = await CreateNote({
@@ -64,14 +65,16 @@ const NotesContext = createContext<NotesContextDto>({} as NotesContextDto)
                 body,
                 creator : userInfo._id
             })
-            //uncommentme to use ably{
-            // channel.publish('create-note' , new_note)}
-            .then((res : {status : string , note : NotesDto})=>
-              setNotes((prev : NotesDto[]) => [{...res.note , creator : userInfo} , ...prev]))
+            if(new_note.status === 'success'){
+              console.log("🚀 ~ file: NotesContext.tsx:69 ~ new_note:", new_note.note)
+              setNotes((prev : NotesDto[]) => [{...new_note.note , creator : userInfo} , ...prev])
                 // socket.emit('newNote' , res.note)
                 // console.log('emmitted');
-                
-            
+            }else{
+              notifications.show({ message : 'Error creating note' , color : 'red'})
+            }
+            //uncomment me to use ably{
+            // channel.publish('create-note' , new_note)}
            
         } catch (error) {
             throw new Error(`error at handleCreateNote : ${error}`)
@@ -81,7 +84,8 @@ const NotesContext = createContext<NotesContextDto>({} as NotesContextDto)
             notifications.show({ message : 'created Note successfully' , color : 'green'})
         }
     }
-    async function handleUpdateNote(existingNote: NotesDto, close: () => void) {
+    async function handleUpdateNote(existingNote: NotesDto, close: () => void , e : React.FormEvent) {
+      e.preventDefault();
       setFormLoading(true);
       try {
         const new_note = await UpdateNote({
