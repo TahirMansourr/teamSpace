@@ -1,6 +1,6 @@
 'use client'
 import { NotesDto } from '@/Utils/types'
-import { Modal, Spoiler } from '@mantine/core'
+import { Badge, Modal, Spoiler } from '@mantine/core'
 import React from 'react'
 import { FiEdit } from 'react-icons/fi'
 import DOMPurify from 'dompurify'
@@ -10,7 +10,6 @@ import { useDisclosure } from '@mantine/hooks'
 const NotesCard = ({Note} : {Note : NotesDto}) => {
     const date = new Date(Note.createdAt)
     const updateDate = Note.updatedAt ? new Date(Note.updatedAt) : null
-    const FormattedDate = updateDate?.toLocaleDateString() + ' ' + updateDate?.toLocaleTimeString()
     const sanitizedContent = DOMPurify.sanitize(Note.body)
     const [modalOpened , {open , close : closeModal}] = useDisclosure(false)
   return (
@@ -27,11 +26,14 @@ const NotesCard = ({Note} : {Note : NotesDto}) => {
                   <p className=' text-gray-600'>{ date.toLocaleDateString()} {date.toLocaleTimeString()}</p>
                 </div>
                 <div className='flex text-xs gap-2'>
-                <p className=' text-gray-600 font-bold'>{Note.creator.username}</p>  
+                  <Badge>
+                    {Note.creator.username}
+                  </Badge>
+                 
                 </div>
                 <div>
 
-                <FiEdit className=' ml-auto hover:cursor-pointer mr-3' onClick={open}/>
+                <FiEdit className=' ml-auto hover:cursor-pointer mr-3 hover:scale-110' color='blue' onClick={open}/>
                 </div>
                
             

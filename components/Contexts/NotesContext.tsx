@@ -97,7 +97,7 @@ const NotesContext = createContext<NotesContextDto>({} as NotesContextDto)
           _id: existingNote._id
         })
         console.log("🚀 ~ new-note ~ UpdatedNote:", {newNote :new_note , existingNote})
-        setNotes(((prev : NotesDto[])=> prev.map((prevNote : NotesDto) => {return prevNote._id === existingNote._id? new_note.note : prevNote})))
+        setNotes(((prev : NotesDto[])=> prev.map((prevNote : NotesDto) => {return prevNote._id === existingNote._id? {...new_note.note , creator : user} : prevNote})))
         //ucomment me to use ably{
         //  channel.publish('update-note', {newNote :new_note, existingNote})}
           // socket.emit('updateNote', res.note);
