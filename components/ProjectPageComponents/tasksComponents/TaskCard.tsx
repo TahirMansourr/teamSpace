@@ -42,7 +42,7 @@ const TaskCard = ({task } : {task : TaskDto}) => {
         <div className="flex flex-col mt-2">
             <h5 className=' font-bold '>Assigned To</h5>    
             <div className=' flex gap-2'>{task.assignedTo.map((user : UserDto) => (<Badge color="blue">{user.username}</Badge>))}</div>
-            <FiEdit className=' ml-auto hover:cursor-pointer' onClick={open}/>
+            <FiEdit className=' ml-auto hover:cursor-pointer hover:scale-110' color='blue' onClick={open}/>
         </div>
         <footer className=' text-xs'>
           {task.creationDate ? formattedCreationDate : null}

@@ -1,10 +1,12 @@
 'use client'
 
-import { Button, LoadingOverlay, MultiSelect, Select, TagsInput, Textarea, TextInput } from '@mantine/core'
+import { Button, LoadingOverlay, Modal, MultiSelect, Select, TagsInput, Textarea, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import React, { useState } from 'react'
 import { DateInput } from '@mantine/dates';
 import { useTaskContext } from '../Contexts/TasksContext';
+import { MdOutlineDeleteSweep } from 'react-icons/md';
+import { useDisclosure } from '@mantine/hooks';
 
 export type createTaskFormDto = {
     name : string,
@@ -36,8 +38,9 @@ const CreateOrUpdateTaskForm = ({close , updateFormInput , featureId  } : {close
     })
 
     const {useHandleCreateTask , projectInfo } = useTaskContext()
-    const [formLoading , handleCreateTask , handleUpdateTask] = useHandleCreateTask()
+    const [formLoading , handleCreateTask , handleUpdateTask , handleDeleteTask] = useHandleCreateTask()
     const [open , setOpen] = useState<boolean>(false)
+    const [deleteModalOpened , {open :openDeleteModal , close :closeDeleteModal}] = useDisclosure(false)
 
   return (
     <form onSubmit={form.onSubmit((values) => !updateFormInput ? handleCreateTask(values , close()) : handleUpdateTask(values , close()))}>
@@ -81,9 +84,59 @@ const CreateOrUpdateTaskForm = ({close , updateFormInput , featureId  } : {close
                 key={form.key('assignedTo')}
                 {...form.getInputProps('assignedTo')}
                 />
-                <div className="  w-full mt-5  ">
-                   <Button type='submit' className=' w-full' w={'100%'}>{updateFormInput ? 'Update Task' : ' Create Task'}</Button>
-                </div>          
+                <div className="w-full mt-5 flex gap-2 justify-end">
+                    {updateFormInput && (
+                        <Button 
+                            color="red" 
+                            variant="outline" 
+                            className="w-1/2" 
+                            onClick={openDeleteModal}
+                        >
+                             <MdOutlineDeleteSweep size={25} className="text-red-500" />
+                        </Button>
+                    )}
+                    <Button type='submit' className={updateFormInput ? 'w-1/2' : 'w-full'}>
+                        {updateFormInput ? 'Update Task' : 'Create Task'}
+                    </Button>
+                </div>  
+                  <Modal 
+                        opened={deleteModalOpened}
+                        onClose={closeDeleteModal}
+                        withCloseButton={false}
+                        overlayProps={{
+                            backgroundOpacity: 0.8,
+                            blur: 4,
+                        }}
+                        className='bg-transparent'
+                    >
+                        <div className="flex flex-col items-center p-6 text-center">
+                            <LoadingOverlay visible={formLoading} />    
+                            <div className="mb-5">
+                                <MdOutlineDeleteSweep size={50} className="text-red-500" />
+                            </div>
+                            <h2 className="text-xl font-bold mb-2">Delete Task</h2>
+                            <p className="text-gray-600 mb-6">
+                                This action cannot be undone. Are you sure you want to delete this task?
+                            </p>
+                            <div className="flex gap-4">
+                                <Button 
+                                    onClick={closeDeleteModal}
+                                    variant="outline"
+                                    className="px-6"
+                                >
+                                    No, Keep It
+                                </Button>
+                              {updateFormInput &&  
+                                <Button 
+                                    onClick={() => handleDeleteTask(updateFormInput._id as string , closeDeleteModal , close())}
+                                    color="red"
+                                    className="px-6"
+                                >
+                                    Yes, Delete
+                                </Button>}
+                            </div>
+                        </div>
+                    </Modal>        
         </div>
     </form>
   )

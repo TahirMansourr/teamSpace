@@ -1,4 +1,3 @@
-'use client'
 import { useTaskContext } from '@/components/Contexts/TasksContext'
 import React from 'react'
 import TaskCard from './TaskCard'

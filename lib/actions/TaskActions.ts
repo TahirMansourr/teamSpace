@@ -71,3 +71,33 @@ export async function UpdateTask(params : createTaskFormDto & {_id : string}){
         throw new Error(`Error at updateTask : ${error}`);
     }
 }
+
+export async function DeleteTask(taskId: string) {
+    try {
+        await connectToDB();
+        
+        const taskToDelete = await Task.findById(taskId);
+        const deletedTask = await Task.findByIdAndDelete(taskId);
+        Project.findOneAndUpdate(
+            { _id: taskToDelete.project },
+            { $pull: { Tasks: taskId } }
+        ).exec();
+
+        if (taskToDelete.featureId) {
+            Feature.findOneAndUpdate(
+                { _id: taskToDelete.featureId },
+                { $pull: { tasks: taskId } }
+            ).exec();
+        }
+
+        const formattedTask = JSON.parse(JSON.stringify(deletedTask.toObject()));
+        
+        return {
+            status: 'success',
+            task: formattedTask
+        };
+
+    } catch (error) {
+        throw new Error(`Error at DeleteTask: ${error}`);
+    }
+}

@@ -1,5 +1,5 @@
 'use client'
-import { CreateTask, UpdateTask } from "@/lib/actions/TaskActions";
+import { CreateTask, DeleteTask, UpdateTask } from "@/lib/actions/TaskActions";
 import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import { socket } from "@/socket";
 import { ProjectDto, TaskDto, UserDto } from "@/Utils/types";
@@ -21,11 +21,13 @@ type TaskContextDto = {
     useHandleCreateTask : () => [ 
         boolean , 
         (values : formValuesType , close : ()=>void)=>Promise<void> , 
-        (values: formValuesType , close : ()=> void) => Promise<void>
+        (values: formValuesType , close : ()=> void) => Promise<void>,
+        (taskId: string ,  close :() =>void , closeMainModal : () => void)=>Promise<void> 
     ]
     projectInfo : ProjectDto,
     allTasks : TaskDto[],
-    allFeatureTasks : TaskDto[]
+    allFeatureTasks : TaskDto[],
+    formLoading : boolean
 }
 const TaskContext = createContext<TaskContextDto>({} as TaskContextDto)
 export const useTaskContext = () => {
@@ -48,6 +50,7 @@ const TaskProvider = ({
     const [projectInfo , setProjectInfo] = useState<ProjectDto>(project.project)
     const [allTasks , setAllTasks] = useState<TaskDto[]>(project.project.Tasks ? project.project.Tasks : [] )
     const [allFeatureTasks , setAllFeatureTasks] = useState<TaskDto[]>(featureTasks ? featureTasks : [])
+    const [formLoading , setFormLoading] = useState<boolean>(false)
     const didMountRef = useRef(false);
 
     //uncomment me to use ably{
@@ -67,9 +70,9 @@ const TaskProvider = ({
     //     })
     // } , [])}
     const useHandleCreateTask = (): 
-    [boolean, (values: formValuesType , close : ()=> void) => Promise<void> ,(values: formValuesType , close : ()=> void) => Promise<void>] => {
+    [boolean, (values: formValuesType , close : ()=> void) => Promise<void> ,(values: formValuesType ,
+     close : ()=> void) => Promise<void> , (taskId: string , close: () => void , closeMainModal : ()=>void)=>Promise<void> ] => {
         
-        const [formLoading , setFormLoading] = useState<boolean>(false) 
         async function handleCreateTask( values : formValuesType ,close : ()=> void){
             console.log("🚀 ~ handleCreateTask ~ values:", values)
             setFormLoading(true)
@@ -152,26 +155,52 @@ const TaskProvider = ({
                     close
                 }
         }
-        return [formLoading , handleCreateTask , handleUpdateTask]
+         async function handleDeleteTask(taskId: string ,  close : ()=> void , closeMainModal : () =>void){
+        setFormLoading(true);
+            try {
+                const response = await DeleteTask(taskId);
+                if (response.status === 'success') {
+                    setAllTasks((prev: TaskDto[]) => 
+                        prev.filter(task => task._id !== taskId)
+                    );
+                    setAllFeatureTasks((prev: TaskDto[]) => 
+                        prev.filter(task => task._id !== taskId)
+                    );
+                    notifications.show({ message: 'Task deleted successfully', color: 'green' });
+                    
+                    // Uncomment for Ably
+                    // channel.publish('delete-task', { taskId });
+                }
+            } catch (error) {
+                notifications.show({ message: 'Error deleting task', color: 'red' });
+                throw new Error(`Error at handleDeleteTask: ${error}`);
+            } finally {
+                setFormLoading(false);
+                close();
+                closeMainModal;
+            }
+        }
+        return [formLoading , handleCreateTask , handleUpdateTask , handleDeleteTask]
     }
 
-    useEffect(()=>{
-        socket.on('createTask' , (task : TaskDto) => {
-            setAllTasks((prev : TaskDto[]) => [task , ...prev  ])
-        })
-        socket.on('updateTask' , (task : TaskDto) => {
-            console.log('recieved the task' , task);
+    // useEffect(()=>{
+    //     socket.on('createTask' , (task : TaskDto) => {
+    //         setAllTasks((prev : TaskDto[]) => [task , ...prev  ])
+    //     })
+    //     socket.on('updateTask' , (task : TaskDto) => {
+    //         console.log('recieved the task' , task);
             
-            setAllTasks(((prev : TaskDto[] )=> prev.map((prevTask : TaskDto) => prevTask._id === task._id ? task : prevTask)  ))
-            notifications.show({ message : `${task.name} updated` , color : 'blue'})
-        })
-    } ,[])
+    //         setAllTasks(((prev : TaskDto[] )=> prev.map((prevTask : TaskDto) => prevTask._id === task._id ? task : prevTask)  ))
+    //         notifications.show({ message : `${task.name} updated` , color : 'blue'})
+    //     })
+    // } ,[])
 
     const value = {
         useHandleCreateTask,
         projectInfo,
         allTasks,
-        allFeatureTasks
+        allFeatureTasks, 
+        formLoading
         }
     return(
         <TaskContext.Provider value={value}>
