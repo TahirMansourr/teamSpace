@@ -1,5 +1,5 @@
 'use client'
-import { CreateNote, UpdateNote } from "@/lib/actions/NoteAction"
+import { CreateNote, DeleteNote, UpdateNote } from "@/lib/actions/NoteAction"
 import { socket } from "@/socket"
 import { NotesDto, ProjectDto, UserDto } from "@/Utils/types"
 import { notifications } from "@mantine/notifications"
@@ -9,8 +9,9 @@ import { useContext, useState, createContext, useEffect, useRef } from "react"
 type NotesContextDto = {
  allNotes : NotesDto[],
  formLoading : boolean,
- handleCreateNote : (body : string , close : ()=>void , e : React.FormEvent) => void
- handleUpdateNote : (existingNote : NotesDto , close : ()=>void , e : React.FormEvent) => void
+ handleCreateNote : (body : string , close : ()=>void , e : React.FormEvent) => void,
+ handleUpdateNote : (existingNote : NotesDto , close : ()=>void , e : React.FormEvent) => void,
+ handleDeleteNote : (noteId : string , close : ()=>void , e : React.FormEvent , mainModalClose : ()=>void) => void,
  isConnected : boolean
 }
 
@@ -112,6 +113,24 @@ const NotesContext = createContext<NotesContextDto>({} as NotesContextDto)
         close();
       }
     }
+    async function handleDeleteNote(noteId: string, close: () => void , e : React.FormEvent , mainModalClose : ()=>void) {
+      e.preventDefault();
+      setFormLoading(true);
+      try {
+        const res = await DeleteNote({noteId});
+        if (res.status === 'success') {
+          setNotes((prev : NotesDto[]) => prev.filter((note : NotesDto) => note._id !== noteId));
+          // socket.emit('deleteNote', noteId);
+          notifications.show({ message: 'Deleted Note successfully', color: 'blue' });
+        }
+      } catch (error) {
+        throw new Error(`error at handleDeleteNote : ${error}`);
+      } finally {
+        setFormLoading(false);
+        close();
+        mainModalClose();
+      }
+    }
 
     // useEffect(() => {
         // console.log("🚀 ~ handleUpdateNote ~ new_note:", new_note)
@@ -175,6 +194,7 @@ const NotesContext = createContext<NotesContextDto>({} as NotesContextDto)
         formLoading,
         handleCreateNote,
         handleUpdateNote,
+        handleDeleteNote,
         isConnected
     }
 

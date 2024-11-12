@@ -3,7 +3,15 @@ import { NotesDto } from '@/Utils/types'
 import { Modal } from '@mantine/core'
 import React from 'react'
 
-const CreateOrUpdateNotesModal = ({modalOpened , closeModal , initialValues} : {modalOpened : boolean , closeModal : () => void , initialValues? : NotesDto}) => {
+const CreateOrUpdateNotesModal = ({
+  modalOpened , 
+  closeModal , 
+  initialValues
+} : {
+  modalOpened : boolean , 
+  closeModal : () => void , 
+  initialValues? : NotesDto
+}) => {
   return (
     <Modal 
       opened={modalOpened} 

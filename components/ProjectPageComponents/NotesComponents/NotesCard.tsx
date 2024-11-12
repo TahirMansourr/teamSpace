@@ -1,6 +1,6 @@
 'use client'
 import { NotesDto } from '@/Utils/types'
-import { Spoiler } from '@mantine/core'
+import { Modal, Spoiler } from '@mantine/core'
 import React from 'react'
 import { FiEdit } from 'react-icons/fi'
 import DOMPurify from 'dompurify'
@@ -36,6 +36,7 @@ const NotesCard = ({Note} : {Note : NotesDto}) => {
                
             
         </footer>
+        
     </section>
   )
 }

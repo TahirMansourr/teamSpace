@@ -74,3 +74,20 @@ export async function UpdateNote(params: CreateNoteDto) {
         throw new Error(`error at updateNote in NoteAction.ts : ${error}`);
     }
 }
+
+export async function DeleteNote(params: { noteId: string }) {
+    try {
+        await connectToDB()
+        const note = await Note.findByIdAndDelete(params.noteId)
+        if (!note) {
+            throw new Error('Note not found')
+        }
+        await Project.findOneAndUpdate(
+            { _id: note.project },
+            { $pull: { notes: note._id } }
+        ).exec()
+        return { status: 'success', note: note }
+    } catch (error) {
+        throw new Error(`error at DeleteNote : ${error}`)
+    }
+}
