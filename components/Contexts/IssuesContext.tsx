@@ -2,7 +2,7 @@
 import { IssueDto, ProjectDto, UserDto } from "@/Utils/types";
 import { createContext, useContext, useEffect, useState } from "react";
 import { createOrUpdateIssueForm } from "../Forms/createOrUpdateIssue";
-import { CreateIssue, UpdateIssue } from "@/lib/actions/IssueActions";
+import { CreateIssue, DeleteIssue, UpdateIssue } from "@/lib/actions/IssueActions";
 import { socket } from "@/socket";
 import { useChannel } from "ably/react";
 
@@ -11,6 +11,7 @@ type IssuesContextDto = {
     formLoading : boolean,
     handleCreateIssue : ( values : createOrUpdateIssueForm , close :() => void)=>void
     handleUpdateIssue : ( values : createOrUpdateIssueForm , close :() => void)=>void
+     handleDeleteIssue: (issueId: string, close: () => void , closeMainModal : ()=>void) => void 
     allFeatureIssues : IssueDto[]
 }
  const IssuesContext = createContext<IssuesContextDto>({} as IssuesContextDto)
@@ -72,7 +73,6 @@ type IssuesContextDto = {
     //   },[])}
 
     async function handleCreateIssue( values : createOrUpdateIssueForm , close : ()=>void){
-        console.log(values , 'thhhhhhhhhh');
         const assignedToMembers  = values.assignedTo.map((id) =>{
             const assignedToMember = project.team.find( (member : UserDto) => id === member._id)
             return assignedToMember
@@ -115,7 +115,6 @@ type IssuesContextDto = {
         }
     }
     async function handleUpdateIssue( values : createOrUpdateIssueForm , close : ()=>void){
-        console.log(values , 'thhhhhhhhhh');
         const assignedToMembers  = values.assignedTo.map((name) =>{
             const assignedToMember = project.team.find( (member : UserDto) => name === member.username)
             return assignedToMember
@@ -156,7 +155,32 @@ type IssuesContextDto = {
             close
         }
     }
-
+    async function handleDeleteIssue(issueId: string, close: () => void , closeMainModal: () => void) {
+    try {
+        setFormLoading(true)
+        await DeleteIssue({
+            issueId: issueId,
+            projectId: project._id,
+            userId: userInfo._id
+        })
+        
+        // Update both issue lists by filtering out the deleted issue
+        setIssuesInfo((prev: IssueDto[]) => prev.filter(issue => issue._id !== issueId))
+        setAllFeatureIssues((prev: IssueDto[]) => prev.filter(issue => issue._id !== issueId))
+        
+        // Uncomment for Ably
+        // channel.publish('delete-issue', { issueId })
+        
+        // Uncomment for Socket.io
+        // socket.emit('deleteIssue', issueId)
+        
+    } catch (error) {
+        throw new Error(`error at handleDeleteIssue: ${error}`)
+    } finally {
+        setFormLoading(false)
+        close
+    }
+}
     // useEffect(()=>{
     //     socket.on('createIssue' ,(issue : IssueDto) => {
     //         setIssuesInfo((prev : IssueDto[]) => [issue , ...prev])
@@ -172,6 +196,7 @@ type IssuesContextDto = {
         formLoading,
         handleCreateIssue,
         handleUpdateIssue,
+        handleDeleteIssue,
         allFeatureIssues
     }
     return(

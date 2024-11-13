@@ -77,3 +77,28 @@ export async function UpdateIssue(params : createIssueFormDto & {_id : string}){
         throw new Error(`Error at updateIssue : ${error}`);
     }
 }
+
+export async function DeleteIssue(params: {issueId: string, projectId: string , userId : string}) {
+    try {
+        await connectToDB()
+        
+        const deletedIssue = await Issue.findOneAndDelete({ _id: params.issueId }).exec()
+        
+        await Project.findOneAndUpdate(
+            { _id: params.projectId },
+            { $pull: { issues: params.issueId } }
+        ).exec()
+        
+        if (deletedIssue.featureId) {
+            await Feature.findOneAndUpdate(
+                { _id: deletedIssue.featureId },
+                { $pull: { issues: params.issueId } }
+            ).exec()
+        }
+
+        return { status: 'success', message: 'Issue deleted successfully' }
+        
+    } catch (error: any) {
+        throw new Error(`Error at DeleteIssue: ${error}`)
+    }
+}

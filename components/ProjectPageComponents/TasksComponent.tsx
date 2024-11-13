@@ -22,7 +22,7 @@ const TasksComponent = () => {
          <section className=' flex w-full'>
             <TaskProvider project={projectInfo} user={userInfo}>
              <CreateOrUpdateTaskModal modalOpened = {modalOpened} closeModal={closeModal}/>
-                <ScrollArea h={600} w={'100%'}>
+                <ScrollArea mah={750} w={'100%'}>
                      <TeamSpaceTask />
                 </ScrollArea>
             </TaskProvider>

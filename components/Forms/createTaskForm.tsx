@@ -136,7 +136,7 @@ const CreateOrUpdateTaskForm = ({close , updateFormInput , featureId  } : {close
                                 </Button>}
                             </div>
                         </div>
-                    </Modal>        
+                  </Modal>        
         </div>
     </form>
   )
