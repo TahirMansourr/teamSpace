@@ -21,7 +21,7 @@ const IssuesComponent = () => {
          <section>
             <IssuesProvider project={projectInfo.project} user={userInfo}>
                 <CreateOrUpdateIssuesModal modalOpened = {modalOpened} closeModal={closeModal}/>
-                    <ScrollArea mah={750} w={'100%'}>
+                    <ScrollArea  className="h-[calc(100vh-200px)]" w={'100%'}>
                         <TeamSpaceIssue/>
                     </ScrollArea>
             </IssuesProvider>
