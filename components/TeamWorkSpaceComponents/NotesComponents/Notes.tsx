@@ -2,10 +2,10 @@
 import { ScrollArea } from '@mantine/core'
 import React from 'react'
 import { useWorkSpaceContext } from '../../Contexts/WorkSpaceContext'
-import TeamSpaceNotes from '../NotesComponents/TeamSpaceNotes'
+import TeamSpaceNotes from './TeamSpaceNotes'
 import NotesProvider from '../../Contexts/NotesContext'
 import { useDisclosure } from '@mantine/hooks'
-import CreateOrUpdateNotesModal from '../NotesComponents/CreateOrUpdateNotesModal'
+import CreateOrUpdateNotesModal from './CreateOrUpdateNotesModal'
 import ComponentWrapper from '../MultiTabsComponentWrapper'
 
 const NotesComponent = () => {

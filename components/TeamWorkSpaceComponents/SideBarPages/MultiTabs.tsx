@@ -1,15 +1,15 @@
 'use client'
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import NotesComponent from './Notes'
+import React, { Dispatch, SetStateAction, useEffect} from 'react'
+import NotesComponent from '../NotesComponents/Notes'
 import TasksComponent from '../tasksComponents/Tasks'
 import IssuesComponent from '../IssuesComponents/Issues'
 import ChatSpaceComponent from '../ChatComponents/ChatSpace'
-import { Button, Transition , Modal } from '@mantine/core'
+import { Button, Modal } from '@mantine/core'
 import NotificationsBar from '../NotificationsBar'
 import { useDisclosure } from '@mantine/hooks';
 import CreateFeatureForm from '../../Forms/createFeatureForm'
-;
 import FeatureProvider from '../../Contexts/featureContext'
+import { TransitionWrapper } from '../TransitionWrapper'
 
 const MultiTabsComponent = ({
     opened,
@@ -27,15 +27,8 @@ const MultiTabsComponent = ({
       const [Modalopened, { open, close }] = useDisclosure(false);
 
   return (
-    <Transition
-        mounted={opened}
-        transition="fade-left"
-        duration={600}
-        timingFunction="ease"
-        >
-     {
-        (styles) =>(
-            <section className=' flex flex-col w-full  gap-2 rounded-xl   items-center justify-center p-3 pt-9'>
+    <TransitionWrapper opened = {opened}>
+         <section className=' flex flex-col w-full  gap-2 rounded-xl   items-center justify-center p-3 pt-9'>
               <div className='flex w-full items-center'>
               <NotificationsBar/>
               <Modal opened={Modalopened} onClose={close} title="New Feature !!"  overlayProps={{
@@ -49,16 +42,14 @@ const MultiTabsComponent = ({
               </Modal>
               <Button className='mr-0' onClick={open}> + new Feature</Button>
               </div>  
-                <section className=" flex w-full h-full  gap-2  items-center" style={styles}>
+                <section className=" flex w-full h-full  gap-2  items-center" >
                   <NotesComponent/> 
                   <TasksComponent/> 
                   <IssuesComponent/>
                   <ChatSpaceComponent />
                 </section>
             </section>
-        )
-     }
-    </Transition>
+    </TransitionWrapper>
     
   )
 }

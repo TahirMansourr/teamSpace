@@ -1,3 +1,4 @@
+'use client'
 import { GetProjectByIdAndPopulate } from "@/lib/actions/ProjectActions"
 import { useEffect, useState } from "react"
 import { GetUserInfo } from "../Utils"
@@ -23,6 +24,9 @@ export const UseGetUserAndPopulate = ({projectId } : {projectId : string}) => {
        getUserInfoAndSetState()
       getProjectInfo()
     },[])
+
+
+    
     return {
         selectedItemInSideBar,
         setSelectedItemInSideBar,

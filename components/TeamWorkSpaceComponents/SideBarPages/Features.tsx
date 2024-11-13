@@ -1,8 +1,9 @@
 import  useGetAllFeatures  from '@/app/Hooks/featureHooks'
 import { Transition } from '@mantine/core'
 import React, { Dispatch, SetStateAction, useEffect } from 'react'
-import FeaturePage from './FeaturePage'
+import FeaturePage from '../FeatureComponents/FeaturePage'
 import FeatureProvider from '../../Contexts/featureContext'
+import { TransitionWrapper } from '../TransitionWrapper'
 
 const FeaturesComponent = ({opened , setOpened} : {opened : boolean , setOpened :  Dispatch<SetStateAction<boolean>>}) => {
    
@@ -12,26 +13,17 @@ const FeaturesComponent = ({opened , setOpened} : {opened : boolean , setOpened 
       })
      
       return (
-        <Transition
-        mounted={opened}
-        transition="fade-left"
-        duration={600}
-        timingFunction="ease"
-         >
-            {
-            (styles) =>(
-            <section className='m-5 w-full' style={styles}>
+        <TransitionWrapper opened = {opened}>
+            <section className='m-5 w-full' >
                 <div className=' flex flex-col w-full'>
-                    <h1 className='mx-auto'>Feautres</h1>
+                    <h1 className='mx-auto'>Features</h1>
                     <FeatureProvider >
                         <FeaturePage  />
                     </FeatureProvider>
                     
                 </div>
             </section>
-            )
-            }
-        </Transition>
+        </TransitionWrapper>
   )
 }
 
