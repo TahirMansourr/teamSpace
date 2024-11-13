@@ -5,12 +5,15 @@ import React from 'react'
 import { FiEdit } from "react-icons/fi";
 import { useDisclosure } from '@mantine/hooks';
 import CreateOrUpdateIssuesModal from './CreateOrUpdateIssueModal';
+import Task from '@/lib/models/TasksModel';
+import useGetUserInfo from '@/app/Hooks/GetUserInfo';
 
 const IssueCard = ({Issue } : {Issue : IssueDto}) => {
   const [modalOpened , {open , close : closeModal}] = useDisclosure(false)
     const date = new Date(Issue.dueDate)
     const creationDate = new Date(Issue.creationDate)
     const formattedCreationDate = creationDate.toLocaleDateString() + ' ' + creationDate.toLocaleTimeString()
+    const {user} = useGetUserInfo()
   return (
     <section className={`flex flex-col w-[95%] shadow-md m-2 rounded-md p-2 border 
         ${Issue.priority === 'HIGH' ? 'bg-red-700 text-white' : Issue.priority === 'MEDIUM' ? 'bg-orange-500 text-white' : null}`}>
@@ -31,7 +34,7 @@ const IssueCard = ({Issue } : {Issue : IssueDto}) => {
        </p>
         <CreateOrUpdateIssuesModal 
            modalOpened ={modalOpened} closeModal={closeModal} 
-           initialValues = {{...Issue , dueDate : date , assignedTo : Issue.assignedTo.map((user : any) => user.username )}}
+           initialValues = {{...Issue , createdBy : user ,dueDate : date , assignedTo : Issue.assignedTo.map((user : any) => user.username )}}
           />
        <p className=' text-sm font-bold my-2'>DeadLine: {date.toLocaleString()}</p>
        <Spoiler maxHeight={40} showLabel="..." hideLabel="Hide">
