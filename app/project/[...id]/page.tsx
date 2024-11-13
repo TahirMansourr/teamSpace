@@ -7,6 +7,10 @@ import { SelectedItemToRenderOnScreen } from "@/utils";
 import { AblyProvider, ChannelProvider } from "ably/react";
 import { useEffect, useState } from "react";
 import * as Ably from 'ably';
+import { Inter, Montserrat } from "next/font/google";
+
+const inter = Inter({ subsets: ['latin'] })
+const montserrat = Montserrat({ subsets: ['latin'] })
 
 export default function WorkSpace({params}:{params : {id : string[]}}) {
     // console.log("🚀 ~ WorkSpace ~ params:", params)
@@ -32,8 +36,8 @@ export default function WorkSpace({params}:{params : {id : string[]}}) {
     },[])
 
   return (
-    <main className="flex w-full h-screen p-2">
-     { user && projectInfo &&
+  <main className={`flex w-full h-screen p-2 ${montserrat.className}`}>
+       { user && projectInfo &&
         <WorkSpaceProvider projectInfo = {projectInfo} userInfo={user}>
             {/* <AblyProvider client={client}> */}
               {/* <ChannelProvider channelName="get-started"> */}

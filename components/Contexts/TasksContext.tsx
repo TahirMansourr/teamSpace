@@ -91,13 +91,14 @@ const TaskProvider = ({
                     projectId : projectInfo._id,
                     tags : values.tags,
                     status : values.status,
-                    featureId : values.featureId
+                    featureId : values.featureId,
                 }).then((res) => {
                     const newTask = {
                       ...values , 
                       assignedTo : assignedToMembers,
                       _id : res.task._id,
-                      creationDate : res.task.creationDate
+                      creationDate : res.task.creationDate,
+                      createdBy : userInfo,
                     }
                     setAllTasks(((prev : TaskDto[] )=> prev.map((prevTask : TaskDto) => prevTask._id === newTask._id ? newTask : prevTask) ))
                     if(values.featureId){
@@ -138,7 +139,8 @@ const TaskProvider = ({
                           ...values , 
                           _id : res.task._id,
                           assignedTo : assignedToMembers,
-                          creationDate : res.task.creationDate
+                          creationDate : res.task.creationDate,
+                          createdBy : userInfo,
                         }
                         setAllTasks(((prev : TaskDto[] )=> prev.map((prevTask : TaskDto) => prevTask._id === newTask._id ? newTask : prevTask)  ))
                         setAllFeatureTasks(((prev : TaskDto[] )=> prev.map((prevTask : TaskDto) => prevTask._id === newTask._id ? newTask : prevTask)))

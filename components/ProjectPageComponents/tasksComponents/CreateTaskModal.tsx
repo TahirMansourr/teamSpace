@@ -9,7 +9,7 @@ const CreateOrUpdateTaskModal = ({modalOpened , closeModal , initialValues , fea
     <Modal 
       opened={modalOpened} 
       onClose={closeModal} 
-      title="Create New Task"
+      title={initialValues ? `Update ${initialValues.name}` : 'Create Task'}
       withCloseButton = {false}
       overlayProps={{
         backgroundOpacity: 0.2,

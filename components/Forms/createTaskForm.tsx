@@ -1,12 +1,13 @@
 'use client'
 
-import { Button, LoadingOverlay, Modal, MultiSelect, Select, TagsInput, Textarea, TextInput } from '@mantine/core'
+import { Badge, Button, LoadingOverlay, Modal, MultiSelect, Select, TagsInput, Textarea, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import React, { useState } from 'react'
 import { DateInput } from '@mantine/dates';
 import { useTaskContext } from '../Contexts/TasksContext';
 import { MdOutlineDeleteSweep } from 'react-icons/md';
 import { useDisclosure } from '@mantine/hooks';
+import { UserDto } from '@/Utils/types';
 
 export type createTaskFormDto = {
     name : string,
@@ -17,7 +18,8 @@ export type createTaskFormDto = {
     tags : string[],
     status : 'To Do' | 'In Progress' | "Done" | 'Review'
     _id? : string,
-    featureId? : string
+    featureId? : string,
+    createdBy? : UserDto
 }
 
 const CreateOrUpdateTaskForm = ({close , updateFormInput , featureId  } : {close : Function , updateFormInput? : createTaskFormDto , featureId? : string }) => {
@@ -84,7 +86,14 @@ const CreateOrUpdateTaskForm = ({close , updateFormInput , featureId  } : {close
                 key={form.key('assignedTo')}
                 {...form.getInputProps('assignedTo')}
                 />
-                <div className="w-full mt-5 flex gap-2 justify-end">
+                <div className="w-full mt-5 flex gap-2 justify-between items-center">
+                   {updateFormInput && 
+                   <div>
+                       <p className='font-bold'>By : <Badge size='lg'> {updateFormInput?.createdBy?.username}  </Badge> </p>
+                   </div>
+                    }
+                    <div className="flex gap-2 items-center">
+
                     {updateFormInput && (
                         <Button 
                             color="red" 
@@ -98,6 +107,7 @@ const CreateOrUpdateTaskForm = ({close , updateFormInput , featureId  } : {close
                     <Button type='submit' className={updateFormInput ? 'w-1/2' : 'w-full'}>
                         {updateFormInput ? 'Update Task' : 'Create Task'}
                     </Button>
+                    </div>
                 </div>  
                   <Modal 
                         opened={deleteModalOpened}

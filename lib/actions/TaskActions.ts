@@ -14,7 +14,7 @@ type createTaskFormDto = {
     projectId : string,
     tags : string[],
     status : 'To Do' | 'In Progress' | "Done" | 'Review'
-    featureId? : string
+    featureId? : string,
 }
 export async function CreateTask(params : createTaskFormDto) {
     try {
@@ -31,7 +31,7 @@ export async function CreateTask(params : createTaskFormDto) {
             createdBy : params.userId,
             tags : params.tags,
             status : params.status,
-            featureId : params.featureId
+            featureId : params.featureId,
         })
         await newTask.save()
         if(params.featureId && params.featureId !== ''){

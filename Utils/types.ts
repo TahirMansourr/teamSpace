@@ -13,9 +13,6 @@ export type ProjectDto = {
     docs : any[],
     files : FileDto[],
     folders : FolderDto[],
-    // docs : String,
-    // meetings: String,
-    // messages : String,
     activity? : number
 
 }
@@ -43,7 +40,8 @@ export type TaskDto = {
     status : 'To Do' | 'In Progress' | "Done" | 'Review'
     _id : string,
     creationDate : string,
-    featureId? : string
+    featureId? : string,
+    createdBy : UserDto
 }
 export type IssueDto = {
     name : string,
