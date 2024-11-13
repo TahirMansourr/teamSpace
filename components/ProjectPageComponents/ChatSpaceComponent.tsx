@@ -10,7 +10,7 @@ const ChatSpaceComponent = () => {
     return (
         <ComponentWrapper 
             componentExpandState={chatComponentExpandState} 
-            className= 'opacity-100 min-w-[28rem] flex-grow h-full'
+            className= 'opacity-100  flex-grow h-full'
             stateSetter={setChatComponentExpandState}
             componentName='ChatSpace'
             >
