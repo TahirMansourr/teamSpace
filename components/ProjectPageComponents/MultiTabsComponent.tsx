@@ -35,8 +35,8 @@ const MultiTabsComponent = ({
         >
      {
         (styles) =>(
-            <section className=' flex flex-col w-full  gap-2 rounded-xl   items-center justify-center p-3'>
-              <div className='flex w-full'>
+            <section className=' flex flex-col w-full  gap-2 rounded-xl   items-center justify-center p-3 pt-9'>
+              <div className='flex w-full items-center'>
               <NotificationsBar/>
               <Modal opened={Modalopened} onClose={close} title="New Feature !!"  overlayProps={{
                 backgroundOpacity: 0.55,

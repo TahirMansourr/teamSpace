@@ -4,17 +4,16 @@ import ChatSection from './ChatSection'
 import MessageForm from '@/components/Forms/messageForm'
 
 const ChatComponent = () => {
-
   return (
-    <div className='flex h-full relative w-full'>
-        
-        <ScrollArea className='h-[calc(100vh-200px)]'  w={'100%'} >
-           <ChatSection />
-        </ScrollArea>
-        
-          <footer className=' absolute bottom-0  w-full bg-white mt-2'>
+    <div className='h-[calc(100vh-8rem)] flex flex-col'>
+        <div className='flex-1 relative'>
+            <ScrollArea className='absolute inset-0'>
+                <ChatSection />
+            </ScrollArea>
+        </div>
+        <div className='h-[4rem]'>
             <MessageForm />
-          </footer>  
+        </div>
     </div>
   )
 }

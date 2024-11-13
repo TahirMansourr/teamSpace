@@ -8,7 +8,7 @@ import IssueCard from './IssuesCard'
 const TeamSpaceIssue = () => {
     const {allIssues} = useIssuesContext()
   return (
-  <main>
+  <main className='flex flex-col w-full'>
     {
         allIssues ? 
           allIssues.map((Issue : IssueDto) => (

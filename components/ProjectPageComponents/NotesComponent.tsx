@@ -22,9 +22,7 @@ const NotesComponent = () => {
           modalOpener={open}
           >
           <CreateOrUpdateNotesModal modalOpened = {modalOpened} closeModal={closeModal}/>
-          <ScrollArea mah={750} w={'100%'}>
             <TeamSpaceNotes/>
-          </ScrollArea>
       </ComponentWrapper>
     </NotesProvider>
 

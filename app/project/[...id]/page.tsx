@@ -32,7 +32,7 @@ export default function WorkSpace({params}:{params : {id : string[]}}) {
     },[])
 
   return (
-    <main className="flex w-full min-h-screen">
+    <main className="flex w-full h-screen p-2">
      { user && projectInfo &&
         <WorkSpaceProvider projectInfo = {projectInfo} userInfo={user}>
             {/* <AblyProvider client={client}> */}

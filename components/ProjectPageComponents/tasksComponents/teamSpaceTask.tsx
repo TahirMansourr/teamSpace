@@ -6,7 +6,7 @@ import { TaskDto } from '@/Utils/types'
 const TeamSpaceTask = () => {
     const {allTasks} = useTaskContext()
   return (
-  <main>
+  <main className='flex flex-col w-full'>
     {
         allTasks ? 
           allTasks.map((task : TaskDto) => (
