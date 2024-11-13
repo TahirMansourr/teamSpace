@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Montserrat } from "next/font/google";
 import "./globals.css";
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
@@ -12,6 +12,7 @@ import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import StoreProvider from "./StoreProvider";
 
 const inter = Inter({ subsets: ["latin"] });
+const montserrat = Montserrat({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: "TeamSpace",
   description: "Your favourite workspace",
@@ -27,7 +28,7 @@ export default function RootLayout({
       <head>
       <ColorSchemeScript />
       </head>
-      <body className={inter.className}>
+      <body className={montserrat.className}>
         <MantineProvider>
           <StoreProvider>
 
