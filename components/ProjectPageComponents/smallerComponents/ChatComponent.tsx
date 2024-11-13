@@ -8,7 +8,7 @@ const ChatComponent = () => {
   return (
     <div className='flex h-full relative w-full'>
         
-        <ScrollArea className='h-[calc(100vh-200px)]' w={'100%'} >
+        <ScrollArea className='h-[calc(100vh-200px)]'  w={'100%'} >
            <ChatSection />
         </ScrollArea>
         
