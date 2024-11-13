@@ -1,7 +1,7 @@
 'use client'
 import TiptapForDocs from '@/components/TipTapForDocs/tipTapForDocs'
 import React, { useEffect, useState } from 'react'
-import '../DocsComponenets/singleDoc.css'
+import './singleDoc.css'
 // import SideBarForDocs from './SideBarForDocs'
 import LeftSideBar from './LeftSideBar'
 import { useDocsContext } from '@/components/Contexts/DocsContext'

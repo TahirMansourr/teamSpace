@@ -1,12 +1,12 @@
 'use client'
 import {ScrollArea} from '@mantine/core'
 import React from 'react'
-import { useWorkSpaceContext } from '../Contexts/WorkSpaceContext'
-import TaskProvider from '../Contexts/TasksContext'
-import TeamSpaceTask from './tasksComponents/teamSpaceTask'
-import CreateOrUpdateTaskModal from './tasksComponents/CreateTaskModal'
+import { useWorkSpaceContext } from '../../Contexts/WorkSpaceContext'
+import TaskProvider from '../../Contexts/TasksContext'
+import TeamSpaceTask from './teamSpaceTask'
+import CreateOrUpdateTaskModal from './CreateTaskModal'
 import { useDisclosure } from '@mantine/hooks'
-import ComponentWrapper from './MultiTabsComponentWrapper'
+import ComponentWrapper from '../MultiTabsComponentWrapper'
 
 const TasksComponent = () => {
     const {tasksComponentExpandState ,setTasksComponentExpandState , projectInfo , userInfo} = useWorkSpaceContext()

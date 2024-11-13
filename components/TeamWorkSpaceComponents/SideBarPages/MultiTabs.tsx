@@ -1,15 +1,15 @@
 'use client'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import NotesComponent from './NotesComponent'
-import TasksComponent from './TasksComponent'
-import IssuesComponent from './IssuesComponent'
-import ChatSpaceComponent from './ChatSpaceComponent'
+import NotesComponent from './Notes'
+import TasksComponent from '../tasksComponents/Tasks'
+import IssuesComponent from '../IssuesComponents/Issues'
+import ChatSpaceComponent from '../ChatComponents/ChatSpace'
 import { Button, Transition , Modal } from '@mantine/core'
-import NotificationsBar from './NotificationsBar'
+import NotificationsBar from '../NotificationsBar'
 import { useDisclosure } from '@mantine/hooks';
-import CreateFeatureForm from '../Forms/createFeatureForm'
+import CreateFeatureForm from '../../Forms/createFeatureForm'
 ;
-import FeatureProvider from '../Contexts/featureContext'
+import FeatureProvider from '../../Contexts/featureContext'
 
 const MultiTabsComponent = ({
     opened,

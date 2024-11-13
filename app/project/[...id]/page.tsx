@@ -1,7 +1,7 @@
 'use client'
 import { GetUserInfo } from "@/app/Utils";
 import WorkSpaceProvider from "@/components/Contexts/WorkSpaceContext";
-import SideBar from "@/components/ProjectPageComponents/sideBar";
+import SideBar from "@/components/TeamWorkSpaceComponents/sideBar";
 import { GetProjectByIdAndPopulate } from "@/lib/actions/ProjectActions";
 import { SelectedItemToRenderOnScreen } from "@/utils";
 import { AblyProvider, ChannelProvider } from "ably/react";

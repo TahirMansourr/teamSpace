@@ -1,9 +1,9 @@
 'use client'
 import React from 'react'
-import { useWorkSpaceContext } from '../Contexts/WorkSpaceContext'
-import ChatComponent from './smallerComponents/ChatComponent'
-import ChatProvider from '../Contexts/ChatContext'
-import ComponentWrapper from './MultiTabsComponentWrapper'
+import { useWorkSpaceContext } from '../../Contexts/WorkSpaceContext'
+import ChatComponent from './ChatComponent'
+import ChatProvider from '../../Contexts/ChatContext'
+import ComponentWrapper from '../MultiTabsComponentWrapper'
 
 const ChatSpaceComponent = () => {
     const {chatComponentExpandState ,setChatComponentExpandState} = useWorkSpaceContext()

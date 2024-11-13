@@ -1,11 +1,9 @@
 'use client'
 import { Transition } from '@mantine/core'
 import React, { Dispatch, SetStateAction, useEffect } from 'react'
-import AllTasksPage from './tasksComponents/allTasks'
-import TaskProvider from '../Contexts/TasksContext'
-import { useWorkSpaceContext } from '../Contexts/WorkSpaceContext'
+import { useWorkSpaceContext } from '../../Contexts/WorkSpaceContext'
 
-const TasksPageComponent = ({
+const Settings = ({
     opened,
     setOpened
 }:{
@@ -32,12 +30,7 @@ const TasksPageComponent = ({
            <section className=' w-full h-screen' >
               <div className='  flex flex-col h-full w-full  gap-2 rounded-xl   items-center p-3' style={styles}>
                 <section className='w-full h-full'>
-                  <TaskProvider 
-                    user = {userInfo}
-                    project = {projectInfo}
-                    >
-                      <AllTasksPage/>
-                  </TaskProvider>
+                  Settings
                 </section>
               </div>
          </section>
@@ -47,4 +40,4 @@ const TasksPageComponent = ({
       )
 }
 
-export default TasksPageComponent
+export default Settings

@@ -1,9 +1,9 @@
 'use client'
 import { Transition } from '@mantine/core'
 import React, { Dispatch, SetStateAction, useEffect } from 'react'
-import AllNotes from './NotesComponents/AllNotes'
-import NotesProvider from '../Contexts/NotesContext'
-import { useWorkSpaceContext } from '../Contexts/WorkSpaceContext'
+import AllNotes from './AllNotes'
+import NotesProvider from '../../Contexts/NotesContext'
+import { useWorkSpaceContext } from '../../Contexts/WorkSpaceContext'
 
 const NotesPageComponent = ({
     opened,

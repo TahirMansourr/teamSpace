@@ -1,8 +1,8 @@
 import  useGetAllFeatures  from '@/app/Hooks/featureHooks'
 import { Transition } from '@mantine/core'
 import React, { Dispatch, SetStateAction, useEffect } from 'react'
-import FeaturePage from './FeatureComponents/FeaturePage'
-import FeatureProvider from '../Contexts/featureContext'
+import FeaturePage from './FeaturePage'
+import FeatureProvider from '../../Contexts/featureContext'
 
 const FeaturesComponent = ({opened , setOpened} : {opened : boolean , setOpened :  Dispatch<SetStateAction<boolean>>}) => {
    
