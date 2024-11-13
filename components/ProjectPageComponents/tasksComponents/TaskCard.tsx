@@ -7,7 +7,7 @@ import CreateOrUpdateTaskModal from './CreateTaskModal';
 import { useDisclosure } from '@mantine/hooks';
 
 const TaskCard = ({task } : {task : TaskDto}) => {
-  console.log("🚀 ~ TaskCard ~ task:", task)
+  // console.log("🚀 ~ TaskCard ~ task:", task)
   const [modalOpened , {open , close : closeModal}] = useDisclosure(false)
     const date = new Date(task.dueDate)
     const creationDate = new Date(task.creationDate)

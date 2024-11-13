@@ -94,13 +94,15 @@ const TaskProvider = ({
                     featureId : values.featureId,
                 }).then((res) => {
                     const newTask = {
-                      ...values , 
-                      assignedTo : assignedToMembers,
-                      _id : res.task._id,
-                      creationDate : res.task.creationDate,
-                      createdBy : userInfo,
+                        ...values , 
+                        assignedTo : assignedToMembers,
+                        _id : res.task._id,
+                        creationDate : res.task.creationDate,
+                        createdBy : userInfo,
                     }
-                    setAllTasks(((prev : TaskDto[] )=> prev.map((prevTask : TaskDto) => prevTask._id === newTask._id ? newTask : prevTask) ))
+                    console.log("🚀 ~ file: TasksContext.tsx:97 ~ newTask:", newTask)
+                    setAllTasks((prev : TaskDto[] | undefined) => prev ? [newTask, ...prev] : [newTask])
+                    // setAllTasks(((prev : TaskDto[] )=> prev.map((prevTask : TaskDto) => {return prevTask._id === newTask._id ? newTask : prevTask}) ))
                     if(values.featureId){
                                 setAllFeatureTasks((prev : TaskDto[] | undefined) => prev ? [newTask, ...prev] : [])
                             }

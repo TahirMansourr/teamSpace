@@ -33,20 +33,20 @@ export async function CreateTask(params : createTaskFormDto) {
             status : params.status,
             featureId : params.featureId,
         })
-        await newTask.save()
+
         if(params.featureId && params.featureId !== ''){
-           await Feature.findOneAndUpdate({_id : params.featureId}, {$push : { tasks : newTask._id}})
+           await Feature.findOneAndUpdate({_id : params.featureId}, {$push : { tasks : newTask._id}}).exec()
         }
-        await Project.findOneAndUpdate({_id : params.projectId} , {$push : { Tasks : newTask._id}})
-        const objResponse = newTask.toObject()
-        const response = JSON.parse(JSON.stringify(objResponse))
-        return ({status : 'success' , task : response})
+        await Project.findOneAndUpdate({_id : params.projectId} , {$push : { Tasks : newTask._id}}).exec()
+
+        const response = JSON.parse(JSON.stringify(newTask))
+        return {status : 'success' , task : response}
         
     } catch (error: any) {
         throw new Error(`Error at CreateTask : ${error}`);
-        
     }
 }
+
 
 export async function UpdateTask(params : createTaskFormDto & {_id : string}){
     try {

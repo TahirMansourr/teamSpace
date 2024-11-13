@@ -13,7 +13,6 @@ const inter = Inter({ subsets: ['latin'] })
 const montserrat = Montserrat({ subsets: ['latin'] })
 
 export default function WorkSpace({params}:{params : {id : string[]}}) {
-    // console.log("🚀 ~ WorkSpace ~ params:", params)
     const [selectedItemInSideBar , setSelectedItemInSideBar] = useState<string>('projects')
     const [opened , setOpened] = useState<boolean>(false)
     const [projectInfo , setProjectInfo] = useState<any>()
