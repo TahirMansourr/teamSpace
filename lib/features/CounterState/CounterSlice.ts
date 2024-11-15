@@ -1,5 +1,5 @@
 'use client'
-import { GetUserInfo } from "@/app/Utils"
+import { GetUserInfo } from "@/Utils/AuthenticationUtils"
 import { UserDto } from "@/Utils/types"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import type { PayloadAction, Update } from "@reduxjs/toolkit"

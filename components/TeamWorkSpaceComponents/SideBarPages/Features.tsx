@@ -1,4 +1,4 @@
-import useGetAllFeatures from "@/app/Hooks/featureHooks";
+import useGetAllFeatures from "@/Utils/Hooks/featureHooks";
 import { Transition } from "@mantine/core";
 import React, { Dispatch, SetStateAction, useEffect } from "react";
 import FeaturePage from "../FeatureComponents/FeaturePage";
