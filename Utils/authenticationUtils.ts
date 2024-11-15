@@ -4,10 +4,10 @@ import jwt from 'jsonwebtoken';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const GetDataFromToken = async (request: NextRequest) => {
-  console.log("🚀 ~ GetDataFromToken ~ request:", request.cookies)
+  // console.log("🚀 ~ GetDataFromToken ~ request:", request.cookies)
   try {
     const token = request.cookies.get('token')?.value;
-    console.log("🚀 ~ GetDataFromToken ~ token:", token);
+    console.log("🚀 ~ GetDataFromToken ~ token:", token?.slice(1,5));
     if (!token) throw new Error('Sorry but there is no Token');
 
     const decodedToken = jwt.verify(token, process.env.TokenSecret!);

@@ -32,9 +32,9 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    console.log("🚀 ~ GET ~ user:", user);
+    console.log("🚀 ~ GET ~ user: User is returned successfully");
     const returnedUser = user.toObject();
-    console.log("🚀 ~ GET ~ returnedUser:", returnedUser);
+    console.log("🚀 ~ GET ~ returnedUser:User is successfully returned and is now an object");
 
     return NextResponse.json( returnedUser );
   } catch (error: any) {

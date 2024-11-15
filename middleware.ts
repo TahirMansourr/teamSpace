@@ -5,7 +5,7 @@ export default function middleware( request : NextRequest){
     console.log("🚀 ~ middleware ~ path:", path)
     const isPublicPath = path === '/signIn' || path === '/signUp' || path === '/verifyEmail' || path === '/api/users/signUp'
     const token = request.cookies.get('token')?.value 
-    console.log("🚀 ~ middleware ~ token:", token)
+    console.log("🚀 ~ middleware ~ token:", token?.slice(1,5))
 
     if(isPublicPath && token){
         return NextResponse.redirect(new URL('/' , request.nextUrl))
