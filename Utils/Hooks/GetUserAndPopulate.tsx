@@ -12,17 +12,31 @@ export const UseGetUserAndPopulate = ({ projectId }: { projectId: string }) => {
 
   useEffect(() => {
     async function getProjectInfo() {
+      const startTime = performance.now();
       const project = await GetProjectByIdAndPopulate({ id: projectId });
-      console.log("🚀 ~ getProjectInfo ~ project:", project);
+      const endTime = performance.now();
+      console.log(`Project fetch took ${endTime - startTime} milliseconds`);
       setProjectInfo(project);
     }
+
     const getUserInfoAndSetState = async () => {
+      const startTime = performance.now();
       const user = await GetUserInfo();
-      console.log("🚀 ~ getUserInfoAndSetState ~ user:", user);
+      const endTime = performance.now();
+      console.log(`User fetch took ${endTime - startTime} milliseconds`);
       setUser(user);
     };
-    getUserInfoAndSetState();
-    getProjectInfo();
+
+    const measureTotalTime = async () => {
+      const totalStart = performance.now();
+      await Promise.all([getUserInfoAndSetState(), getProjectInfo()]);
+      const totalEnd = performance.now();
+      console.log(
+        `Total execution time: ${totalEnd - totalStart} milliseconds`
+      );
+    };
+
+    measureTotalTime();
   }, []);
 
   return {
