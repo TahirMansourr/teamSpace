@@ -10,6 +10,7 @@ import { Notifications } from "@mantine/notifications";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import StoreProvider from "./StoreProvider";
 import LoadingBar from "@/Utils/NextProgressBar";
+import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 const montserrat = Montserrat({ subsets: ["latin"] });
@@ -33,7 +34,9 @@ export default function RootLayout({
           <StoreProvider>
             {/* <AblyProvider client={client}>
         <ChannelProvider channelName="get-started"> */}
-            <LoadingBar />
+            <Suspense fallback={<div>Loading...</div>}>
+              <LoadingBar />
+            </Suspense>
             <Notifications position="top-right" zIndex={1} />
             {children}
             {/* </ChannelProvider>
