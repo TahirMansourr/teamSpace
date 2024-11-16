@@ -1,7 +1,7 @@
 "use client";
 import { Button, Transition } from "@mantine/core";
 import React, { Dispatch, SetStateAction, useEffect } from "react";
-import SingleDoc from "../DocsComponenets/SingleDoc";
+import MainDocPage from "../DocsComponenets/MainDocPage";
 import DocsProvider from "../../Contexts/DocsContext";
 import { useWorkSpaceContext } from "../../Contexts/WorkSpaceContext";
 import { TfiSave } from "react-icons/tfi";
@@ -26,7 +26,7 @@ const Docs = ({
       <DocsProvider userInfo={userInfo} projectInfo={projectInfo.project}>
         <section className=" flex flex-grow ">
           <div className=" fixed right-2 top-2 "></div>
-          <SingleDoc />
+          <MainDocPage />
         </section>
       </DocsProvider>
     </TransitionWrapper>
