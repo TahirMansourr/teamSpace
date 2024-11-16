@@ -19,7 +19,7 @@ export default function SignInPage() {
     try {
       setLoading(true);
       await axios.post("api/users/signIn", values);
-      router.push("/");
+      router.push("/myDashboard");
     } catch (error: any) {
       if (error.response.data.error == "This email does not exist") {
         form.setFieldError("email", error.response.data.error);
