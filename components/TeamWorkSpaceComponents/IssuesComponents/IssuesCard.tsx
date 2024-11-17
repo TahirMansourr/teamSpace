@@ -1,11 +1,10 @@
 "use client";
-import { IssueDto, TaskDto, UserDto } from "@/Utils/types";
-import { Badge, Spoiler } from "@mantine/core";
+import { IssueDto, UserDto } from "@/Utils/types";
+import { Badge, Spoiler, Avatar } from "@mantine/core";
 import React from "react";
 import { FiEdit } from "react-icons/fi";
 import { useDisclosure } from "@mantine/hooks";
 import CreateOrUpdateIssuesModal from "./CreateOrUpdateIssueModal";
-import Task from "@/lib/models/TasksModel";
 import useGetUserInfo from "@/Utils/Hooks/GetUserInfo";
 
 const IssueCard = ({ Issue }: { Issue: IssueDto }) => {
@@ -15,37 +14,92 @@ const IssueCard = ({ Issue }: { Issue: IssueDto }) => {
   const formattedCreationDate =
     creationDate.toLocaleDateString() + " " + creationDate.toLocaleTimeString();
   const { user } = useGetUserInfo();
+
   return (
     <section
-      className={`flex flex-col w-[95%] shadow-md m-2 rounded-md p-2 border 
+      className={`w-[95%] rounded-xl p-4 transition-all duration-300 hover:shadow-lg mb-3
         ${
           Issue.priority === "HIGH"
-            ? "bg-red-700 text-white"
+            ? "bg-gradient-to-br from-red-600 to-red-700 text-white shadow-red-200"
             : Issue.priority === "MEDIUM"
-            ? "bg-orange-500 text-white"
-            : null
+            ? "bg-gradient-to-br from-orange-400 to-orange-500 text-white shadow-orange-200"
+            : "bg-gradient-to-br from-slate-50 to-white shadow-md hover:shadow-slate-200 border border-slate-200"
         }`}
     >
-      <h5 className=" font-bold underline-offset-2 underline">{Issue.name}</h5>
-      <p className="my-1">
-        <Badge
-          radius="md"
-          size="sm"
-          color={
-            Issue.status === "To Do"
-              ? "red"
-              : Issue.status === "In Progress"
-              ? "yellow"
-              : Issue.status === "Done"
-              ? "green"
-              : Issue.status === "Review"
-              ? "orange"
-              : "gray"
-          }
-        >
-          {Issue.status ? Issue.status : "no status yet"}
-        </Badge>
-      </p>
+      <h5 className="text-xl font-semibold mb-4">{Issue.name}</h5>
+
+      <div className="flex items-center gap-4 mb-4">
+        <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-black/10">
+          <Avatar size="sm" radius="xl" src="https://github.com/tahir.png" />
+          <div>
+            <span className="text-sm font-medium">Issued by</span>
+            <p className="text-sm font-semibold">Tahir</p>
+          </div>
+        </div>
+
+        <div className="px-3 py-2 rounded-lg bg-black/10">
+          <span className="text-sm font-medium">Deadline</span>
+          <p className="text-sm font-semibold">{date.toLocaleString()}</p>
+        </div>
+      </div>
+
+      <Spoiler
+        maxHeight={40}
+        showLabel="Show more"
+        hideLabel="Hide"
+        className="mt-4"
+      >
+        <div className="text-sm whitespace-pre-line">{Issue.description}</div>
+      </Spoiler>
+
+      <div className="mt-4">
+        <p className="font-medium mb-2">Assigned To</p>
+        <div className="flex flex-wrap gap-2">
+          {Issue.assignedTo.map((user: UserDto) => (
+            <div
+              key={user._id}
+              className="flex items-center gap-2 px-3 py-2 rounded-lg bg-black/10"
+            >
+              <Avatar
+                size="sm"
+                radius="xl"
+                src={user.image || "https://github.com/user.png"}
+              />
+              <span className="text-sm font-medium">{user.username}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex justify-between items-center mt-4 pt-3 border-t border-white/20">
+          {/* <div className="flex items-center gap-2"> */}
+          <span className="text-xs opacity-75">{formattedCreationDate}</span>
+          <Badge
+            radius="sm"
+            size="lg"
+            className="shadow-sm backdrop-blur-sm"
+            color={
+              Issue.status === "To Do"
+                ? "red"
+                : Issue.status === "In Progress"
+                ? "yellow"
+                : Issue.status === "Done"
+                ? "green"
+                : Issue.status === "Review"
+                ? "orange"
+                : "gray"
+            }
+          >
+            {Issue.status || "No status"}
+          </Badge>
+          {/* </div> */}
+          <FiEdit
+            className="cursor-pointer hover:scale-110 transition-transform"
+            onClick={open}
+            size={18}
+          />
+        </div>
+      </div>
+
       <CreateOrUpdateIssuesModal
         modalOpened={modalOpened}
         closeModal={closeModal}
@@ -56,26 +110,6 @@ const IssueCard = ({ Issue }: { Issue: IssueDto }) => {
           assignedTo: Issue.assignedTo.map((user: any) => user.username),
         }}
       />
-      <p className=" text-sm font-bold my-2">
-        DeadLine: {date.toLocaleString()}
-      </p>
-      <Spoiler maxHeight={40} showLabel="..." hideLabel="Hide">
-        <div className=" text-xs font-light whitespace-pre-line">
-          {Issue.description}
-        </div>
-      </Spoiler>
-      <div className="flex flex-col mt-2">
-        <p className=" font-bold ">Assigned To</p>
-        <div className=" flex gap-2">
-          {Issue.assignedTo.map((user: UserDto) => (
-            <Badge color="blue" key={user._id}>
-              {user.username}
-            </Badge>
-          ))}
-        </div>
-        <FiEdit className=" ml-auto hover:cursor-pointer" onClick={open} />
-      </div>
-      <footer className="text-xs">{formattedCreationDate}</footer>
     </section>
   );
 };
