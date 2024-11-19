@@ -1,10 +1,10 @@
-import { IssuesContext } from "@/components/Contexts/IssuesContext";
+import { useIssuesContext } from "@/components/Contexts/IssuesContext";
 import React from "react";
 import IssuesComponent from "./Issues";
 import IssueCard from "./IssuesCard";
 
 const AllIssues = () => {
-  const { allIssues } = IssuesContext();
+  const { allIssues } = useIssuesContext();
   return (
     <div>
       {
