@@ -1,5 +1,5 @@
 "use client";
-import { IssuesContext } from "@/components/Contexts/IssuesContext";
+import { useIssuesContext } from "@/components/Contexts/IssuesContext";
 import { IssueDto } from "@/Utils/types";
 import { useDisclosure } from "@mantine/hooks";
 import React from "react";
@@ -9,7 +9,7 @@ import { MdOutlineAddCard } from "react-icons/md";
 
 const FeaturesIssuesTab = ({ featureId }: { featureId: string }) => {
   const [modalOpened, { open, close: closeModal }] = useDisclosure(false);
-  const { allFeatureIssues } = IssuesContext();
+  const { allFeatureIssues } = useIssuesContext();
   return (
     <section className="flex flex-col w-full">
       <MdOutlineAddCard
