@@ -11,8 +11,14 @@ const IssueCard = ({ Issue }: { Issue: IssueDto }) => {
   const [modalOpened, { open, close: closeModal }] = useDisclosure(false);
   const date = new Date(Issue.dueDate);
   const creationDate = new Date(Issue.creationDate);
+  const lastModified = new Date(Issue.lastModified || 0);
   const formattedCreationDate =
     creationDate.toLocaleDateString() + " " + creationDate.toLocaleTimeString();
+  const lastModifiedDate = Issue.lastModified
+    ? new Date(Issue.lastModified).toLocaleDateString() +
+      " " +
+      new Date(Issue.lastModified).toLocaleTimeString()
+    : null;
   const { user } = useGetUserInfo();
 
   return (
@@ -30,10 +36,12 @@ const IssueCard = ({ Issue }: { Issue: IssueDto }) => {
 
       <div className="flex items-center gap-4 mb-4">
         <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-black/10">
-          <Avatar size="sm" radius="xl" src="https://github.com/tahir.png" />
+          <Avatar size="sm" radius="xl" src={Issue.createdBy?.image}>
+            {Issue.createdBy?.username.charAt(0)}
+          </Avatar>
           <div>
             <span className="text-sm font-medium">Issued by</span>
-            <p className="text-sm font-semibold">Tahir</p>
+            <p className="text-sm font-semibold">{Issue.createdBy?.username}</p>
           </div>
         </div>
 
@@ -63,7 +71,7 @@ const IssueCard = ({ Issue }: { Issue: IssueDto }) => {
               <Avatar
                 size="sm"
                 radius="xl"
-                src={user.image || "https://github.com/user.png"}
+                src={user.image || Issue.createdBy?.username.charAt(0)}
               />
               <span className="text-sm font-medium">{user.username}</span>
             </div>
@@ -72,7 +80,12 @@ const IssueCard = ({ Issue }: { Issue: IssueDto }) => {
 
         <div className="flex justify-between items-center mt-4 pt-3 border-t border-white/20">
           {/* <div className="flex items-center gap-2"> */}
-          <span className="text-xs opacity-75">{formattedCreationDate}</span>
+          <div className="flex flex-col">
+            <span className="text-xs opacity-75">{formattedCreationDate}</span>
+            {Issue.lastModified && (
+              <span className="text-xs opacity-75">{lastModifiedDate}</span>
+            )}
+          </div>
           <Badge
             radius="sm"
             size="lg"

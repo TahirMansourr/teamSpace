@@ -1,23 +1,21 @@
-'use client'
-import { useIssuesContext } from '@/components/Contexts/IssuesContext'
-import { IssueDto } from '@/Utils/types'
-import React from 'react'
-import IssueCard from './IssuesCard'
-
+import { useIssuesContext } from "@/components/Contexts/IssuesContext";
+import { IssueDto } from "@/Utils/types";
+import React from "react";
+import IssueCard from "./IssuesCard";
 
 const TeamSpaceIssue = () => {
-    const {allIssues} = useIssuesContext()
+  const { allIssues } = useIssuesContext();
   return (
-  <main className='flex flex-col w-full'>
-    {
-        allIssues ? 
-          allIssues.map((Issue : IssueDto) => (
-              <IssueCard Issue={Issue} key={Issue._id}/>
-          )) :
-          <h1>No Issues </h1>
-    }
-  </main>
-  )
-}
+    <main className="flex flex-col w-full">
+      {allIssues ? (
+        allIssues.map((Issue: IssueDto) => (
+          <IssueCard Issue={Issue} key={Issue._id} />
+        ))
+      ) : (
+        <h1>No Issues </h1>
+      )}
+    </main>
+  );
+};
 
-export default TeamSpaceIssue
+export default TeamSpaceIssue;

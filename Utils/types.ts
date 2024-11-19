@@ -52,7 +52,9 @@ export type IssueDto = {
     tags : string[],
     status : 'To Do' | 'In Progress' | "Done" | 'Review'
     _id : string,
-    creationDate : string
+    creationDate : string,
+    createdBy ?: UserDto,
+    lastModified? : Date,
 }
 export type MesssageDto= {
     body : string,

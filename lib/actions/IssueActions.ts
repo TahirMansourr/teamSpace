@@ -67,7 +67,8 @@ export async function UpdateIssue(params : createIssueFormDto & {_id : string}){
             project : params.projectId,
             createdBy : params.userId,
             tags : params.tags,
-            status : params.status
+            status : params.status,
+            lastModifed : new Date()
         }})
 
         await requiredIssue.save()
