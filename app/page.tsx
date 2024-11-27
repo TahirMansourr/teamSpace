@@ -7,6 +7,7 @@ import {
   FiTrello,
 } from "react-icons/fi";
 import "../public/styles/meshBackground.css";
+import Gemini from "@/components/Gemini/Gemini";
 const Page = () => {
   return (
     <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-gray-50 to-blue-50">
