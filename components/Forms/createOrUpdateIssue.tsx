@@ -76,80 +76,123 @@ const CreateOrUpdateIssueForm = ({
           ? handleCreateIssue(values, close())
           : handleUpdateIssue(values, close())
       )}
+      className="bg-white rounded-lg  p-6"
     >
-      <div>
+      <div className="space-y-4">
         <LoadingOverlay visible={formLoading} />
+
         <TextInput
           placeholder="Issue Name"
           label="Issue Name"
-          key={form.key("name")}
+          classNames={{
+            input: "border-gray-200 focus:border-blue-500 transition-colors",
+            label: "text-gray-700 font-medium mb-1",
+          }}
           {...form.getInputProps("name")}
         />
+
         <Textarea
           placeholder="Description"
           label="Description"
-          key={form.key("description")}
+          minRows={4}
+          classNames={{
+            input: "border-gray-200 focus:border-blue-500 transition-colors",
+            label: "text-gray-700 font-medium mb-1",
+          }}
           {...form.getInputProps("description")}
         />
-        <Select
-          label="Priority"
-          data={["LOW", "MEDIUM", "HIGH"]}
-          key={form.key("priority")}
-          {...form.getInputProps("priority")}
-        />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Select
+            label="Priority"
+            data={["LOW", "MEDIUM", "HIGH"]}
+            classNames={{
+              input: "border-gray-200 focus:border-blue-500 transition-colors",
+              label: "text-gray-700 font-medium mb-1",
+            }}
+            {...form.getInputProps("priority")}
+          />
+
+          <DateInput
+            valueFormat="DD/MM/YYYY HH:mm:ss"
+            label="Due Date"
+            placeholder="Select date"
+            classNames={{
+              input: "border-gray-200 focus:border-blue-500 transition-colors",
+              label: "text-gray-700 font-medium mb-1",
+            }}
+            {...form.getInputProps("dueDate")}
+          />
+        </div>
+
         <TagsInput
           label="Tags"
           data={[]}
-          key={form.key("tags")}
+          leftSection={<div className="text-gray-500 font-bold">@</div>}
+          classNames={{
+            input: "border-gray-200 focus:border-blue-500 transition-colors",
+            label: "text-gray-700 font-medium mb-1",
+            pill: "bg-blue-100 text-blue-700",
+
+            // tag: "bg-blue-100 text-blue-700"
+          }}
           {...form.getInputProps("tags")}
         />
-        <DateInput
-          valueFormat="DD/MM/YYYY HH:mm:ss"
-          label="Date input"
-          placeholder="Date input"
-          key={form.key("dueDate")}
-          {...form.getInputProps("dueDate")}
-          className={`${open ? "mt-10" : null}`}
-        />
+
         <MultiSelect
           label="Assign Task To"
-          data={projectInfo.project.team.map((member: UserDto) => {
-            return { label: member.username, value: member._id };
-          })}
-          key={form.key("assignedTo")}
+          data={projectInfo.project.team.map((member: UserDto) => ({
+            label: member.username,
+            value: member._id,
+          }))}
+          classNames={{
+            input: "border-gray-200 focus:border-blue-500 transition-colors",
+            label: "text-gray-700 font-medium mb-1",
+            // item: "hover:bg-blue-50"
+          }}
           {...form.getInputProps("assignedTo")}
         />
-        <div className="w-full mt-5 flex gap-2 justify-end items-center">
+
+        <div className="flex justify-end items-center gap-3 pt-4 border-t border-gray-100">
           {updateFormInput && (
-            <Button color="red" onClick={openDeleteModal} variant="outline">
-              <MdOutlineDeleteSweep
-                size={25}
-                className="text-red-500"
-                onClick={openDeleteModal}
-              />
+            <Button
+              color="red"
+              onClick={openDeleteModal}
+              variant="outline"
+              className="hover:bg-red-50 transition-colors"
+            >
+              <MdOutlineDeleteSweep size={25} className="text-red-500" />
             </Button>
           )}
-          <Button type="submit" size="sm">
+          <Button
+            type="submit"
+            size="md"
+            className="bg-blue-600 hover:bg-blue-700 transition-colors"
+          >
             {updateFormInput ? "Update Issue" : "Create Issue"}
           </Button>
         </div>
+
+        {/* Modal styling */}
         <Modal
           opened={deleteModalOpened}
           onClose={closeDeleteModal}
           withCloseButton={false}
           overlayProps={{
             backgroundOpacity: 0.8,
-            blur: 4,
+            blur: 6,
           }}
           className="bg-transparent"
         >
-          <div className="flex flex-col items-center p-6 text-center">
+          <div className="flex flex-col items-center p-8 bg-white rounded-xl">
             <LoadingOverlay visible={formLoading} />
-            <div className="mb-5">
+            <div className="mb-6 bg-red-50 p-4 rounded-full">
               <MdOutlineDeleteSweep size={50} className="text-red-500" />
             </div>
-            <h2 className="text-xl font-bold mb-2">Delete Task</h2>
-            <p className="text-gray-600 mb-6">
+            <h2 className="text-2xl font-bold mb-3 text-gray-800">
+              Delete Task
+            </h2>
+            <p className="text-gray-600 mb-8 text-center">
               This action cannot be undone. Are you sure you want to delete this
               task?
             </p>
@@ -157,7 +200,7 @@ const CreateOrUpdateIssueForm = ({
               <Button
                 onClick={closeDeleteModal}
                 variant="outline"
-                className="px-6"
+                className="px-8 py-2 hover:bg-gray-50 transition-colors"
               >
                 No, Keep It
               </Button>
@@ -171,7 +214,7 @@ const CreateOrUpdateIssueForm = ({
                     )
                   }
                   color="red"
-                  className="px-6"
+                  className="px-8 py-2 bg-red-500 hover:bg-red-600 transition-colors"
                 >
                   Yes, Delete
                 </Button>
