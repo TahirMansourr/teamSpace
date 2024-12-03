@@ -7,7 +7,6 @@ import Message from "../models/MessagesModel"
 import Task from "../models/TasksModel"
 import Issue from "../models/IssuesModel"
 import Note from "../models/NotesModel"
-import Doc from "../models/FolderModel"
 import Folder from "../models/FolderModel"
 import File from "../models/FileModel"
 
@@ -144,3 +143,61 @@ export async function GetProjectByIdAndPopulate({id} : {id : string}){
         
     }
 }
+
+export async function DeleteProject(projectId: string) {
+    try {
+        await connectToDB()
+        
+        // Find and delete the project
+        const project = await Project.findById(projectId)
+        if (!project) return { status: 'Fail', message: 'Project not found' }
+
+        // Remove project reference from all team members
+        await User.updateMany(
+            { projects: projectId },
+            { $pull: { projects: projectId } }
+        )
+
+        // Delete all associated data
+        await Message.deleteMany({ project: projectId })
+        await Task.deleteMany({ project: projectId })
+        await Issue.deleteMany({ project: projectId })
+        await Note.deleteMany({ project: projectId })
+        await File.deleteMany({ project: projectId })
+        await Folder.deleteMany({ project: projectId })
+
+        // Delete the project itself
+        await Project.findByIdAndDelete(projectId)
+
+        return {
+            status: 'success',
+            message: 'Project deleted successfully'
+        }
+
+    } catch (error: any) {
+        return {
+            status: 'Fail',
+            message: `Failed to delete project: ${error.message}`
+        }
+    }
+}
+
+export async function RearrangeUserProjectsArray({projectsArray, userId}: {projectsArray: string[], userId: string}) {
+    try {
+        await connectToDB()
+        const userProjects = await User.findById(userId)
+        if(!userProjects) return ({status: 'Fail', message: 'Sorry this user does not exist anymore', project: {}})
+        
+        userProjects.projects = projectsArray
+        await userProjects.save() 
+        
+        return ({
+            status: 'success', 
+            message: 'Projects rearranged successfully', 
+            project: JSON.parse(JSON.stringify(userProjects))
+        })
+    } catch (error: any) {
+        throw new Error(`error at RearrangeUserProjectsArray: ${error}`)
+    }
+}
+
