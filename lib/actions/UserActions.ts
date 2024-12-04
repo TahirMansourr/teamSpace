@@ -140,7 +140,7 @@ export async function GetUsersByIds(userIds: string[]) {
         }
 
         const usersData = users.map(user => ({
-            name: user.username,
+            username: user.username,
             id: user._id,
             email: user.email,
             image : user.image
