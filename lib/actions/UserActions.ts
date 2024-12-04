@@ -1,24 +1,70 @@
 'use server'
 
+import { JsonInput } from "@mantine/core"
 import User from "../models/UserModel"
 import { connectToDB } from "../mongoose"
 
-export async function FindUser(params:string) {
-    try {
-        await connectToDB()
-        const user = await User.findOne({ username : params})
-        const usertoObject = user.toObject()
-        const requiredFields = {
-            name : usertoObject.username,
-            id : usertoObject._id,
-            email : usertoObject.email
-        }
-        const response = JSON.parse(JSON.stringify(requiredFields))
-        return {status : 'success' , user : response}
-    } catch (error : any) {
-        return {status : 'Fail' , user : {name : 'not Found' , email : 'not Found' , id : 'not found'}}
-       
+
+// export async function FindUser(params: string) {
+//     try {
+//         await connectToDB();
         
+//         const user = await User.findOne(
+//             { username: { $regex: params, $options: 'i' } }, // now after this it is not case sensitive
+//             { username: 1, email: 1 } 
+//         );
+        
+//         if (!user) {
+//            return {status : 'Fail' , user : {name : 'not Found' , email : 'not Found' , id : 'not found'}}
+//         }
+
+//         const userData = {
+//             name: user.username,
+//             id: user._id,
+//             email: user.email
+//         };
+
+//         return { 
+//             status: 'success', 
+//             user: JSON.parse(JSON.stringify(userData)) 
+//         };
+//     } catch (error : any) {
+//       throw new Error(`Error in FindUser: ${error.message}`);
+//     }
+// }
+
+export async function FindUsers(params: string) {
+    try {
+        await connectToDB();
+        
+        const users = await User.find(
+            { username: { $regex: params, $options: 'i' } },
+            { username: 1, email: 1 }
+        ).limit(10); // Limit results to 10 users
+        
+        if (!users.length) {
+            return {
+                status: 'not_found',
+                users: []
+            };
+        }
+
+        const usersData = users.map(user => ({
+            name: user.username,
+            id: user._id,
+            email: user.email
+        }));
+
+        return { 
+            status: 'success', 
+            users: JSON.parse(JSON.stringify(usersData)) 
+        };
+    } catch (error : any) {
+        return { 
+            status: 'error',
+            message: error.message,
+            users: []
+        };
     }
 }
 
@@ -74,5 +120,41 @@ export async function DeleteUser(id:string) {
         return {status : 'success' , message : 'Deleted successfully'}
     } catch (error) {
         return {status : 'Fail' , message : `${error}`}
+    }
+}
+
+export async function GetUsersByIds(userIds: string[]) {
+    try {
+        await connectToDB();
+        
+        const users = await User.find(
+            { _id: { $in: userIds } },
+            { username: 1, email: 1 , image : 1 }
+        );
+        
+        if (!users.length) {
+            return {
+                status: 'not_found',
+                users: []
+            };
+        }
+
+        const usersData = users.map(user => ({
+            name: user.username,
+            id: user._id,
+            email: user.email,
+            image : user.image
+        }));
+
+        return { 
+            status: 'success', 
+            users: JSON.parse(JSON.stringify(usersData)) 
+        };
+    } catch (error : any) {
+        return { 
+            status: 'error',
+            message: error.message,
+            users: []
+        };
     }
 }
