@@ -201,3 +201,87 @@ export async function RearrangeUserProjectsArray({projectsArray, userId}: {proje
     }
 }
 
+export async function AddUsersToProject({
+    projectId,
+    userIds
+}: {
+    projectId: string,
+    userIds: string[]
+}) {
+    try {
+        await connectToDB()
+
+        const updatedProject = await Project.findByIdAndUpdate(
+            projectId,
+            { $addToSet: { team: { $each: userIds } } },
+            { new: true }
+        )
+
+        if (!updatedProject) {
+            return {
+                status: 'Fail',
+                message: 'Project not found'
+            }
+        }
+
+        await User.updateMany(
+            { _id: { $in: userIds } },
+            { $addToSet: { projects: projectId } }
+        )
+
+        return {
+            status: 'success',
+            message: 'Users added successfully',
+            project: JSON.parse(JSON.stringify(updatedProject.toObject()))
+        }
+
+    } catch (error: any) {
+        return {
+            status: 'Fail',
+            message: `Failed to add users: ${error.message}`
+        }
+    }
+}
+
+
+export async function RemoveUsersFromProject({
+    projectId,
+    userIds
+}: {
+    projectId: string,
+    userIds: string[]
+}) {
+    try {
+        await connectToDB()
+
+        const updatedProject = await Project.findByIdAndUpdate(
+            projectId,
+            { $pull: { team: { $in: userIds } } },
+            { new: true }
+        )
+
+        if (!updatedProject) {
+            return {
+                status: 'Fail',
+                message: 'Project not found'
+            }
+        }
+
+        await User.updateMany(
+            { _id: { $in: userIds } },
+            { $pull: { projects: projectId } }
+        )
+
+        return {
+            status: 'success',
+            message: 'Users removed successfully',
+            project: JSON.parse(JSON.stringify(updatedProject.toObject()))
+        }
+
+    } catch (error: any) {
+        return {
+            status: 'Fail',
+            message: `Failed to remove users: ${error.message}`
+        }
+    }
+}

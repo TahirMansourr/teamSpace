@@ -34,7 +34,7 @@ const AddUsers = ({ onChange }: AddUsersProps) => {
   return (
     <MultiSelect
       onChange={onChange}
-      label="Search Users"
+      // label="Search Users"
       placeholder="Type to search users..."
       data={users}
       searchValue={searchQuery}
