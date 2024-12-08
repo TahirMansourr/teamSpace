@@ -37,15 +37,11 @@ const CreateOrUpdateNote = ({
     setContent(newContent);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     if (!existingNoteContent) {
-      await handleCreateNote(content, close, e);
+      handleCreateNote(content, close, e);
     } else {
-      await handleUpdateNote(
-        { ...existingNoteContent, body: content },
-        close,
-        e
-      );
+      handleUpdateNote({ ...existingNoteContent, body: content }, close, e);
     }
   };
 
