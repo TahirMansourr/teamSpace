@@ -5,7 +5,6 @@ import { useDisclosure } from "@mantine/hooks";
 import CreateProjectForm from "../Forms/createProjectForm";
 import ProjectProvider from "../Contexts/ProjectContext";
 import AllProjectsSection from "./AllProjectsSection";
-import { useAppSelector } from "@/lib/hooks";
 import { IconPlus } from "@tabler/icons-react";
 
 const ProjectsComponent = ({
@@ -23,8 +22,6 @@ const ProjectsComponent = ({
     setOpened(true);
     return () => setOpened(false);
   });
-
-  const userinfo = useAppSelector((state) => state.user.user);
 
   return (
     <Transition
