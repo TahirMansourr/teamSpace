@@ -10,7 +10,7 @@ const Dashboard = () => {
   const [selectedItemInSideBar, setSelectedItemInSideBar] =
     useState<string>("projects");
   const [opened, setOpened] = useState<boolean>(false);
-  const { user, loading, error } = useGetUserInfo();
+  const { user, loading } = useGetUserInfo();
   console.log("🚀 ~ Dashboard ~ user:", user);
 
   return (

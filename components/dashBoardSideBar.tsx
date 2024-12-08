@@ -16,7 +16,7 @@ const DashBoardSideBar = ({
   return (
     <div className="flex flex-col h-full bg-white min-w-[280px]">
       <div className="p-4 border-b border-gray-100">
-        <div className="rounded-xl shadow-sm border border-gray-100 transition-all">
+        <div className="flex flex-col rounded-lg shadow-md border border-gray-100 p-3 bg-gradient-to-br from-gray-50 to-white">
           <UserButton />
         </div>
       </div>

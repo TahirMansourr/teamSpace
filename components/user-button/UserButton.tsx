@@ -1,7 +1,6 @@
 "use client";
 import { Avatar, Menu, Modal } from "@mantine/core";
 import React from "react";
-import { useWorkSpaceContext } from "../Contexts/WorkSpaceContext";
 import { TbLogout2 } from "react-icons/tb";
 import { IoIosSettings } from "react-icons/io";
 import axios from "axios";
