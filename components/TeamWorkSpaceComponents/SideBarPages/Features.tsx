@@ -1,3 +1,4 @@
+"use client";
 import useGetAllFeatures from "@/Utils/Hooks/featureHooks";
 import { Transition } from "@mantine/core";
 import React, { Dispatch, SetStateAction, useEffect } from "react";

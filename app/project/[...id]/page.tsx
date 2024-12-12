@@ -2,19 +2,23 @@
 import WorkSpaceProvider from "@/components/Contexts/WorkSpaceContext";
 import SideBar from "@/components/TeamWorkSpaceComponents/sideBar";
 import { SelectedItemToRenderOnScreen } from "@/utils";
-// import { AblyProvider, ChannelProvider } from "ably/react";
-// import * as Ably from "ably";
-import { UseGetUserAndPopulate } from "@/Utils/Hooks/GetUserAndPopulate";
+import { useGetProjectPopulated } from "@/Utils/Hooks/GetUserAndPopulate";
+import useGetUserInfo from "@/Utils/Hooks/GetUserInfo";
 
-export default function WorkSpace({ params }: { params: { id: string[] } }) {
+export default function WorkSpace({
+  params,
+}: Readonly<{
+  params: Readonly<{ id: readonly string[] }>;
+}>) {
+  const { user , loading : userLoading } = useGetUserInfo();
   const {
     selectedItemInSideBar,
     setSelectedItemInSideBar,
     opened,
     setOpened,
     projectInfo,
-    user,
-  } = UseGetUserAndPopulate({ projectId: params.id[0] });
+    loading : populatedProjectLoading
+  } = useGetProjectPopulated({ projectId: params.id[0] });
   // const client = new Ably.Realtime({key :process.env.NEXT_PUBLIC_ABLY_KEY})
   return (
     <main className={`flex w-full h-screen p-2`}>

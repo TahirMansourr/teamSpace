@@ -8,7 +8,7 @@ export default function middleware( request : NextRequest){
     console.log("🚀 ~ middleware ~ token:", token?.slice(1,5))
 
     if(isPublicPath && token){
-        return NextResponse.redirect(new URL('/' , request.nextUrl))
+        return NextResponse.redirect(new URL('/myDashboard' , request.nextUrl))
     }
 
     if(!isPublicPath && !token){

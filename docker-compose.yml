@@ -1,22 +1,7 @@
 version: '3.8'
 services:
-  teamspace:
-    build: .
-    ports:
-      - "3000:3000"
-    volumes:
-      - .:/app
-      - /app/node_modules
-    deploy:
-      resources:
-        limits:
-          memory: 6G
-        reservations:
-          memory: 4G
-    environment:
-      - NODE_ENV=development
-
   teamspace-alpine:
+    container_name: teamspace-alpine
     build: 
       context: .
       dockerfile: Dockerfile.alpine
@@ -33,3 +18,9 @@ services:
           memory: 2G
     environment:
       - NODE_ENV=development
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped

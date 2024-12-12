@@ -1,6 +1,6 @@
+"use client";
 import { ScrollArea, Text, Tooltip } from "@mantine/core";
-import { IoAddCircleOutline } from "react-icons/io5";
-import { IoClose } from "react-icons/io5";
+import { IoAddCircleOutline, IoClose } from "react-icons/io5";
 
 const ComponentWrapper = ({
   children,

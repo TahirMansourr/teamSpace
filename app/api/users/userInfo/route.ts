@@ -10,8 +10,8 @@ export async function GET(request: NextRequest) {
     console.log('i have reached here');
     
     const userInfo = await GetDataFromToken(request);
-    const tostr = JSON.stringify(userInfo);
-    const toObj = JSON.parse(tostr);
+    const toString = JSON.stringify(userInfo);
+    const toObj = JSON.parse(toString);
     const id = toObj.id;
 
     const user = await User.findOne({ _id: id })
