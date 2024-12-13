@@ -36,30 +36,17 @@ const CreateProjectForm = ({
   });
 
   const [loading, setLoading] = useState<boolean>(false);
-  const [overlayLoading, setOverlayLoading] = useState<boolean>(false);
   const [response, setResponse] = useState<{
     status: string;
     message: string;
     project: any;
   }>();
   const [TeamMembersIds, setTeamMembersIds] = useState<string[]>([]);
-  const [opened, setOpened] = useState(false);
-  const [wantedUser, setWantedUser] = useState<{
-    name: string;
-    id: string;
-    email: string;
-  }>();
-  const [data, setdata] = useState<
-    { name: string; id: string; email: string; image: string }[]
-  >([]);
 
   async function handleSubmit() {
     const values = form.getValues();
     setLoading(true);
-    // const TeamMembersIds = values.team.map((memberName: string) => {
-    //   const membersId = data.find((item) => item.name === memberName);
-    //   return membersId?.id;
-    // });
+
     console.log("🚀 ~ TeamMembersIds ~ TeamMembersIds:", TeamMembersIds);
     try {
       CreateProject({
@@ -76,7 +63,6 @@ const CreateProjectForm = ({
         );
         setResponse(res);
         GetUsersByIds(TeamMembersIds).then((res) => {
-          // setdata(res.users);
           setUserProjects((prev: any) => [
             ...prev,
             {
@@ -102,19 +88,6 @@ const CreateProjectForm = ({
       setLoading(false);
     }
   }
-
-  // async function handleSearch() {
-  //   const param = form.getValues().wantedTeamMember;
-  //   setOverlayLoading(true);
-  //   try {
-  //     const requiredUser = await FindUser(param);
-  //     setWantedUser(requiredUser.user);
-  //   } catch (error: any) {
-  //     throw new Error(`rrrrrrr : ${error}`);
-  //   } finally {
-  //     setOverlayLoading(false);
-  //   }
-  // }
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
