@@ -1,12 +1,8 @@
 "use client";
-import { Button, Modal, ScrollArea, Text, Transition } from "@mantine/core";
-import React, { useEffect, useRef, useState } from "react";
-import { useDisclosure } from "@mantine/hooks";
-import CreateProjectForm from "../Forms/createProjectForm";
+import { ScrollArea, Transition } from "@mantine/core";
+import React, { useEffect } from "react";
 import ProjectProvider from "../Contexts/ProjectContext";
 import AllProjectsSection from "./AllProjectsSection";
-import { IconPlus, IconSearch } from "@tabler/icons-react";
-import CreateProjectModal from "./createProjectModal";
 import DashboardHeader from "./DashboardHeader";
 
 const ProjectsComponent = ({

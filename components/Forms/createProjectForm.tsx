@@ -69,12 +69,18 @@ const CreateProjectForm = ({
         admins: [userId],
         team: TeamMembersIds,
       }).then((res: any) => {
+        const newProjectId = res.project._id;
+        console.log(
+          "🚀 ~ file: createProjectForm.tsx:73 ~ newProjectId:",
+          newProjectId
+        );
         setResponse(res);
         GetUsersByIds(TeamMembersIds).then((res) => {
           // setdata(res.users);
           setUserProjects((prev: any) => [
             ...prev,
             {
+              _id: newProjectId,
               name: values.name,
               image: values.image,
               content: values.content,

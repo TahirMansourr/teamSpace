@@ -10,14 +10,13 @@ export default function WorkSpace({
 }: Readonly<{
   params: Readonly<{ id: readonly string[] }>;
 }>) {
-  const { user , loading : userLoading } = useGetUserInfo();
+  const { user } = useGetUserInfo();
   const {
     selectedItemInSideBar,
     setSelectedItemInSideBar,
     opened,
     setOpened,
     projectInfo,
-    loading : populatedProjectLoading
   } = useGetProjectPopulated({ projectId: params.id[0] });
   // const client = new Ably.Realtime({key :process.env.NEXT_PUBLIC_ABLY_KEY})
   return (
