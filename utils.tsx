@@ -11,6 +11,8 @@ import TasksPageComponent from "./components/TeamWorkSpaceComponents/SideBarPage
 import FeaturesComponent from "./components/TeamWorkSpaceComponents/SideBarPages/Features";
 import Activity from "./components/TeamWorkSpaceComponents/SideBarPages/Activity";
 import Settings from "./components/TeamWorkSpaceComponents/SideBarPages/Settings";
+import Scrum from "./components/TeamWorkSpaceComponents/SideBarPages/Scrum";
+import ProductBackLog from "./components/TeamWorkSpaceComponents/SideBarPages/ProductBackLog";
 
 export const SelectedItemInSideBarToRenderOnScreen = ({
   selectedItemInSideBar,
@@ -64,6 +66,10 @@ export const SelectedItemToRenderOnScreen = ({
       return <Activity opened={opened} setOpened={setOpened} />;
     case "Settings":
       return <Settings opened={opened} setOpened={setOpened} />;
+    case "Scrum":
+      return <Scrum opened={opened} setOpened={setOpened} />;
+    case "Product Backlog":
+      return <ProductBackLog opened={opened} setOpened={setOpened} />;
     default:
       return <MultiTabsComponent opened={opened} setOpened={setOpened} />;
   }

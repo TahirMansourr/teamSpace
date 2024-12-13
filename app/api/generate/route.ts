@@ -9,7 +9,7 @@ export async function POST(req : NextRequest, res : NextResponse) {
 
         const model = genAI.getGenerativeModel({ model: "gemini-pro" })
 
-        // Retrieve the data we recieve as part of the request body
+        // Retrieve the data we receive as part of the request body
         const data = await req.json()
 
         // Define a prompt varibale
@@ -17,11 +17,11 @@ export async function POST(req : NextRequest, res : NextResponse) {
 
         // Pass the prompt to the model and retrieve the output
         const result = await model.generateContent(prompt)
-        const response = await result.response;
-        const output = await response.text();
+        const response =  result.response;
+        const output =  response.text();
 
-        // Send the llm output as a server reponse object
-        return NextResponse.json({ output: output })
+        // Send the llm output as a server response object
+        return NextResponse.json({ output })
     } catch (error) {
         console.error(error)
     }

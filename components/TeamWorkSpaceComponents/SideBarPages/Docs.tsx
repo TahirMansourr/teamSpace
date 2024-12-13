@@ -1,10 +1,8 @@
 "use client";
-import { Button, Transition } from "@mantine/core";
 import React, { Dispatch, SetStateAction, useEffect } from "react";
 import MainDocPage from "../DocsComponenets/MainDocPage";
 import DocsProvider from "../../Contexts/DocsContext";
 import { useWorkSpaceContext } from "../../Contexts/WorkSpaceContext";
-import { TfiSave } from "react-icons/tfi";
 import { TransitionWrapper } from "../TransitionWrapper";
 
 const Docs = ({
