@@ -1,6 +1,8 @@
 "use client";
 import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { TransitionWrapper } from "../TransitionWrapper";
+import ProductBackLogTable from "@/components/BackLogComponents/ProductBackLogTable";
+import ProductBackLogHeader from "@/components/BackLogComponents/ProductBackLogHeader";
 
 const ProductBackLog = ({
   opened,
@@ -12,14 +14,13 @@ const ProductBackLog = ({
   useEffect(() => {
     setOpened(true);
     return () => setOpened(false);
-  });
+  }, []);
 
   return (
     <TransitionWrapper opened={opened}>
-      <section className=" w-full h-screen">
-        <div className="  flex flex-col h-full w-full  gap-2 rounded-xl   items-center p-3">
-          <section className="w-full h-full px-8">Hi</section>
-        </div>
+      <section className="w-full h-screen flex flex-col bg-white dark:bg-gray-900  rounded-md gap-4">
+        <ProductBackLogHeader />
+        <ProductBackLogTable />
       </section>
     </TransitionWrapper>
   );
