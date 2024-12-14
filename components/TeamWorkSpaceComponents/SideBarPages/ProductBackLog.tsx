@@ -1,8 +1,8 @@
 "use client";
 import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { TransitionWrapper } from "../TransitionWrapper";
-import ProductBackLogTable from "@/components/BackLogComponents/ProductBackLogTable";
-import ProductBackLogHeader from "@/components/BackLogComponents/ProductBackLogHeader";
+import MainPage from "@/components/BackLogComponents/MainPage";
+import BackLogProvider from "@/components/Contexts/BackLogContext";
 
 const ProductBackLog = ({
   opened,
@@ -18,10 +18,9 @@ const ProductBackLog = ({
 
   return (
     <TransitionWrapper opened={opened}>
-      <section className="w-full h-screen flex flex-col bg-white dark:bg-gray-900  rounded-md gap-4">
-        <ProductBackLogHeader />
-        <ProductBackLogTable />
-      </section>
+      <BackLogProvider>
+        <MainPage />
+      </BackLogProvider>
     </TransitionWrapper>
   );
 };

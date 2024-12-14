@@ -9,7 +9,7 @@ const productBacklogSchema = new mongoose.Schema(
     },
     projectId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Project', // Reference to the associated project
+      ref: 'Project', 
       required: true,
     },
     description: {
@@ -36,6 +36,5 @@ const productBacklogSchema = new mongoose.Schema(
   }
 );
 
-const ProductBacklog = mongoose.model('ProductBacklog', productBacklogSchema);
-
-module.exports = ProductBacklog;
+const ProductBacklog = mongoose.models.ProductBacklog || mongoose.model("ProductBacklog", productBacklogSchema);
+export default ProductBacklog;

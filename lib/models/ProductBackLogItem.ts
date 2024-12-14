@@ -32,7 +32,7 @@ const productBacklogItemSchema = new Schema(
     },
     assignee: [{
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User', // Reference to the user assigned to this item
+      ref: 'User', 
     }],
     createdAt: {
       type: Date,
@@ -50,4 +50,4 @@ const productBacklogItemSchema = new Schema(
 
 const ProductBacklogItem = mongoose.model('ProductBacklogItem', productBacklogItemSchema);
 
-module.exports = ProductBacklogItem;
+export default  ProductBacklogItem;

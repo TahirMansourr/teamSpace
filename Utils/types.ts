@@ -1,3 +1,5 @@
+import exp from "constants"
+
 export type ProjectDto = {
     _id : string,
     name : string,
@@ -122,4 +124,28 @@ export type ChildrenDto = {
     name: string;
     childrenType: 'File' | 'Folder'; // Indicates if the child is a file or folder
     child: FileDto | FolderDto;       // The actual file or folder object
+}
+
+export type BackLogDto = {
+    _id : string,
+    projectId : string,
+    name : string,
+    description : string,
+    backlogItems? : BackLogItemDto[],
+    createdAt : Date,
+    updatedAt : Date | null,
+}
+
+export type BackLogItemDto = {
+    _id : string,
+    productBacklogId : string,
+    title : string,
+    description : string,
+    type : 'Feature' | 'Bug' | 'Technical Debt' | 'Improvement' | 'Spike',
+    priority : number,
+    status : 'To Do' | 'In Progress' | 'Done',
+    estimatedEffort : number,
+    assignee : string,
+    createdAt : Date,
+    updatedAt : Date | null
 }
