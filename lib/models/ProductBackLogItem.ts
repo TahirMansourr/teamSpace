@@ -48,6 +48,6 @@ const productBacklogItemSchema = new Schema(
   }
 );
 
-const ProductBacklogItem = mongoose.model('ProductBacklogItem', productBacklogItemSchema);
+const ProductBacklogItem = mongoose.models.ProductBacklogItem || mongoose.model('ProductBacklogItem', productBacklogItemSchema);
 
 export default  ProductBacklogItem;

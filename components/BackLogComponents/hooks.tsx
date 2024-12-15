@@ -23,7 +23,7 @@ export const useGetMyProductBackLogs = () => {
           setMyBackLogs(null);
         }
       } catch (error) {
-        throw new Error("Error in useGetMyProductBackLogs");
+        throw new Error(`"Error in useGetMyProductBackLogs" ${error}`);
       } finally {
         setLoading(false);
       }
@@ -31,7 +31,7 @@ export const useGetMyProductBackLogs = () => {
     FetchMyBackLogs();
   }, []);
 
-  const value = useMemo(() => ({ myBackLogs, loading }), [myBackLogs]);
+  const value = useMemo(() => ({ myBackLogs, loading }), [myBackLogs, loading]);
 
   return value;
 };

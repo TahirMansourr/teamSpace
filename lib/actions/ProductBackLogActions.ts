@@ -1,6 +1,7 @@
 'use server';
 
 import ProductBacklog from "../models/ProductBacklog";
+import ProductBacklogItem from "../models/ProductBackLogItem";
 import { connectToDB } from "../mongoose";
 
 export async function GetProductBackLogAndPopulate(projectId : string) {
@@ -10,7 +11,7 @@ export async function GetProductBackLogAndPopulate(projectId : string) {
     const productBacklogs = await ProductBacklog.find({ projectId }) 
       .populate({
         path : 'backlogItems',
-        model: 'ProductBacklogItem',
+        model: ProductBacklogItem,
         populate: {
           path: 'assignee',
           model: 'User',
