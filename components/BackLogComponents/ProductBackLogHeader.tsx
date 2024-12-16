@@ -1,23 +1,20 @@
 "use client";
 import React, { useState } from "react";
 import { FiArrowDown, FiFilter, FiPlus, FiSearch } from "react-icons/fi";
-interface BacklogItem {
-  id: string;
-  title: string;
-  priority: "High" | "Medium" | "Low";
-  status: "To Do" | "In Progress" | "Done";
-  storyPoints: number;
-  assignee?: string;
-  createdAt: Date;
-}
+import { IoArrowBackOutline } from "react-icons/io5";
+import { useBackLogContext } from "../Contexts/BackLogContext";
+import { BackLogDto } from "@/Utils/types";
 
-const ProductBackLogHeader = () => {
-  const [backlogItems, setBacklogItems] = useState<BacklogItem[]>([]);
+const ProductBackLogHeader = ({ backlog }: { backlog: BackLogDto }) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const { setSelectedBackLog } = useBackLogContext();
   return (
-    <div className="flex justify-between gap-4 p-4">
-      <div className="flex justify-between items-center ml-10">
-        <h1 className="text-2xl font-bold">Product Backlog</h1>
+    <div className="flex justify-between gap-4 p-4 px-14 items-center">
+      <button onClick={() => setSelectedBackLog(null)}>
+        <IoArrowBackOutline size={30} />
+      </button>
+      <div className="flex justify-between items-center ">
+        <h1 className="text-2xl font-bold">{backlog.name}</h1>
       </div>
 
       {/* Search and Filter Bar */}

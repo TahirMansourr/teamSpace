@@ -5,18 +5,20 @@ import { useEffect, useMemo, useState } from "react";
 import { useWorkSpaceContext } from "../Contexts/WorkSpaceContext";
 import { GetProductBackLogAndPopulate } from "@/lib/actions/ProductBackLogActions";
 
-export const useGetMyProductBackLogs = () => {
+export const useGetMyProductBackLogs = ({
+  projectId,
+}: {
+  projectId: string;
+}) => {
   const [myBackLogs, setMyBackLogs] = useState<BackLogDto[] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const { projectInfo } = useWorkSpaceContext();
+  // const { projectInfo } = useWorkSpaceContext();
 
   useEffect(() => {
     async function FetchMyBackLogs() {
       try {
         setLoading(true);
-        const result = await GetProductBackLogAndPopulate(
-          projectInfo.project._id
-        );
+        const result = await GetProductBackLogAndPopulate(projectId);
         if (result) {
           setMyBackLogs(result.result);
         } else {
@@ -31,7 +33,10 @@ export const useGetMyProductBackLogs = () => {
     FetchMyBackLogs();
   }, []);
 
-  const value = useMemo(() => ({ myBackLogs, loading }), [myBackLogs, loading]);
+  const value = useMemo(
+    () => ({ myBackLogs, loading, setMyBackLogs }),
+    [myBackLogs, loading, setMyBackLogs]
+  );
 
   return value;
 };

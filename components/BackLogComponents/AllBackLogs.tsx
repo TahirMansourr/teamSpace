@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { IconFilter, IconDotsVertical, IconSearch } from "@tabler/icons-react";
-import { BackLogDto, BackLogItemDto } from "@/Utils/types";
+import { IconFilter, IconSearch } from "@tabler/icons-react";
+import { BackLogDto } from "@/Utils/types";
 import SingleBackLogCard from "./SingleBackLogCard";
+import { useDisclosure } from "@mantine/hooks";
+import CreateBackLogModal from "./createBackLogModal";
 
 interface BacklogProps {
   backlogs: BackLogDto[];
@@ -9,9 +11,11 @@ interface BacklogProps {
 
 const AllBackLogs: React.FC<BacklogProps> = ({ backlogs }) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [opened, { open, close }] = useDisclosure(false);
 
   return (
     <div className="w-full h-screen flex flex-col bg-white dark:bg-gray-900  rounded-md px-10">
+      <CreateBackLogModal opened={opened} close={close} />
       <div className="flex justify-around items-center mb-6 mt-4">
         <h1 className="text-2xl font-bold text-indigo-600">Product Backlogs</h1>
         <div className="flex items-center gap-4">
@@ -31,7 +35,7 @@ const AllBackLogs: React.FC<BacklogProps> = ({ backlogs }) => {
           <button className="p-2 hover:bg-gray-100 rounded-md">
             <IconFilter size={20} className="text-gray-600" />
           </button>
-          <button className="p-2 hover:bg-gray-100 rounded-md">
+          <button className="p-2 hover:bg-gray-100 rounded-md" onClick={open}>
             Add a Backlog
           </button>
         </div>
@@ -39,7 +43,7 @@ const AllBackLogs: React.FC<BacklogProps> = ({ backlogs }) => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
         {backlogs?.map((backlog) => (
-          <SingleBackLogCard backlog={backlog} />
+          <SingleBackLogCard backlog={backlog} key={backlog._id} />
         ))}
       </div>
     </div>

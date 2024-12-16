@@ -1,8 +1,11 @@
-import { BackLogDto, BackLogItemDto } from "@/Utils/types";
-import { IconDotsVertical } from "@tabler/icons-react";
+"use client";
+import { BackLogDto } from "@/Utils/types";
 import React from "react";
+import { MdOpenInBrowser } from "react-icons/md";
+import { useBackLogContext } from "../Contexts/BackLogContext";
 
 const SingleBackLogCard = ({ backlog }: { backlog: BackLogDto }) => {
+  const { setSelectedBackLog } = useBackLogContext();
   return (
     <div
       key={backlog._id}
@@ -12,8 +15,11 @@ const SingleBackLogCard = ({ backlog }: { backlog: BackLogDto }) => {
         <h2 className="text-lg font-semibold text-indigo-600">
           {backlog.name}
         </h2>
-        <button className="p-1 hover:bg-gray-100 rounded-full">
-          <IconDotsVertical size={16} className="text-gray-600" />
+        <button
+          className=" hover:bg-gray-100 rounded-md hover:scale-110"
+          onClick={() => setSelectedBackLog(backlog)}
+        >
+          <MdOpenInBrowser size={25} className="text-blue-600" />
         </button>
       </div>
 
