@@ -14,6 +14,9 @@ const ProductBackLogTable = () => {
               Title
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              description
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Priority
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -23,7 +26,7 @@ const ProductBackLogTable = () => {
               Points
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Assignee
+              Assignee(s)
             </th>
           </tr>
         </thead>
@@ -35,6 +38,10 @@ const ProductBackLogTable = () => {
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
               User Authentication Feature
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+              As a user i would like to have a product that let's users login
+              and register
             </td>
             <td className="px-6 py-4 whitespace-nowrap">
               <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">

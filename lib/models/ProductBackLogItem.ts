@@ -30,6 +30,7 @@ const productBacklogItemSchema = new Schema(
     estimatedEffort: {
       type: Number, 
     },
+    acceptanceCriteria : { type : [String]},
     assignee: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User', 

@@ -4,12 +4,16 @@ import { FiArrowDown, FiFilter, FiPlus, FiSearch } from "react-icons/fi";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { useBackLogContext } from "../Contexts/BackLogContext";
 import { BackLogDto } from "@/Utils/types";
+import { useDisclosure } from "@mantine/hooks";
+import CreateBackLogItemModal from "./createBackLogItemModal";
 
 const ProductBackLogHeader = ({ backlog }: { backlog: BackLogDto }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const { setSelectedBackLog } = useBackLogContext();
+  const [opened, { open, close }] = useDisclosure();
   return (
     <div className="flex justify-between gap-4 p-4 px-14 items-center">
+      <CreateBackLogItemModal opened={opened} close={close} />
       <button onClick={() => setSelectedBackLog(null)}>
         <IoArrowBackOutline size={30} />
       </button>
@@ -40,7 +44,10 @@ const ProductBackLogHeader = ({ backlog }: { backlog: BackLogDto }) => {
           <FiArrowDown size={20} />
           Sort
         </button>
-        <button className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+        <button
+          className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+          onClick={open}
+        >
           <FiPlus size={20} />
           Add Item
         </button>

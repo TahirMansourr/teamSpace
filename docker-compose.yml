@@ -1,10 +1,10 @@
 version: '3.8'
 services:
-  teamspace-alpine:
-    container_name: teamspace-alpine
+  teamspace:
+    container_name: teamspace
     build: 
       context: .
-      dockerfile: Dockerfile.alpine
+      dockerfile: Dockerfile
     ports:
       - "3001:3000"
     volumes:
