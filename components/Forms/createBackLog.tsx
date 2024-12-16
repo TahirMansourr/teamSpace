@@ -1,15 +1,9 @@
 "use client";
-import {
-  Button,
-  LoadingOverlay,
-  Stack,
-  Textarea,
-  TextInput,
-} from "@mantine/core";
+import { Button, LoadingOverlay, Textarea, TextInput } from "@mantine/core";
 import React from "react";
 import { useBackLogContext } from "../Contexts/BackLogContext";
 
-const CreateBackLogForm = ({ close }: { close: () => void }) => {
+const CreateBackLogForm = ({ close }: { close?: () => void }) => {
   const [backlogName, setBacklogName] = React.useState<string | undefined>();
   const [description, setDescription] = React.useState<string | undefined>();
   const { handleCreateBackLog, loading } = useBackLogContext();

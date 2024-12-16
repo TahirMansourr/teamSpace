@@ -23,7 +23,7 @@ export type BackLogContextType = {
     e: React.FormEvent,
     backlogName: string | undefined,
     description: string | undefined,
-    close: () => void
+    close?: () => void
   ) => Promise<void>;
   loading: boolean;
 };
@@ -58,7 +58,7 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
     e: React.FormEvent,
     backlogName: string | undefined,
     description: string | undefined,
-    close: () => void
+    close?: () => void
   ): Promise<void> => {
     setLoading(true);
     e.preventDefault();
@@ -79,7 +79,7 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
       console.error("Failed to create backlog:", error);
     } finally {
       setLoading(false);
-      close();
+      close ? close() : null;
     }
   };
 

@@ -2,7 +2,6 @@
 
 import { BackLogDto } from "@/Utils/types";
 import { useEffect, useMemo, useState } from "react";
-import { useWorkSpaceContext } from "../Contexts/WorkSpaceContext";
 import { GetProductBackLogAndPopulate } from "@/lib/actions/ProductBackLogActions";
 
 export const useGetMyProductBackLogs = ({
@@ -12,7 +11,6 @@ export const useGetMyProductBackLogs = ({
 }) => {
   const [myBackLogs, setMyBackLogs] = useState<BackLogDto[] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  // const { projectInfo } = useWorkSpaceContext();
 
   useEffect(() => {
     async function FetchMyBackLogs() {
