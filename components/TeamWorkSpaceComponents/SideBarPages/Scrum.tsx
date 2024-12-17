@@ -18,7 +18,7 @@ const Scrum = ({
     <TransitionWrapper opened={opened}>
       <section className=" w-full h-screen">
         <div className="  flex flex-col h-full w-full  gap-2 rounded-xl   items-center p-3">
-          <section className="w-full h-full px-8">Hi</section>
+          <section className="w-full h-full px-8">Scrum Page to be</section>
         </div>
       </section>
     </TransitionWrapper>
