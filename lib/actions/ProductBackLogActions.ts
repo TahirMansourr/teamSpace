@@ -1,5 +1,6 @@
 'use server';
 
+import { BackLogItemDto } from "@/Utils/types";
 import ProductBacklog from "../models/ProductBacklog";
 import ProductBacklogItem from "../models/ProductBackLogItem";
 import { connectToDB } from "../mongoose";
@@ -55,3 +56,18 @@ export async function CreateProductBackLog(projectId : string, name? : string , 
     throw error;
   }
 }
+
+export async function RearrangeProductBackLogItem(backlogId: string, backLogs : string[]) {
+  try {
+    await connectToDB()
+    const requiredBackLog = await ProductBacklog.findById(backlogId)
+        if(!requiredBackLog) return ({status: 'Fail', message: 'Sorry this user does not exist anymore', backLog: {}})
+
+          requiredBackLog.backlogItems = backLogs
+          await requiredBackLog.save()
+
+          const res = JSON.parse(JSON.stringify(requiredBackLog))
+          return ({status: 'success', message: 'Backlog item rearranged successfully', backLog: res})
+  }catch (error) {
+    throw new Error (`Failed to rearrange product backlog item: ${error}`);
+  }}

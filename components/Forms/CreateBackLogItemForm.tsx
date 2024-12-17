@@ -24,13 +24,11 @@ const CreateBackLogItemForm = ({ close }: { close: () => void }) => {
   const { handleCreateBackLogItem } = useBackLogContext();
   const { projectInfo } = useWorkSpaceContext();
 
-  // Prepare data for MultiSelect
   const dataForMultiSelect = projectInfo.project.team.map((user) => ({
-    value: user._id, // Use user._id as the value
-    label: user.username, // Display username as the label
+    value: user._id,
+    label: user.username,
   }));
 
-  // Create userData object with _id as the key
   const userData = projectInfo.project.team.reduce(
     (acc: Record<string, { image: string; email: string }>, user: UserDto) => {
       acc[user._id] = {
@@ -42,7 +40,6 @@ const CreateBackLogItemForm = ({ close }: { close: () => void }) => {
     {}
   );
 
-  // Render MultiSelect option with Avatar
   const renderMultiSelectOption: MultiSelectProps["renderOption"] = ({
     option,
   }) => {

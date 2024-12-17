@@ -17,8 +17,7 @@ import {
 } from "@dnd-kit/sortable";
 
 const AllProjectsSection = () => {
-  const { userProjects, setUserProjects, rearrangeProjects } =
-    useProjectContext();
+  const { userProjects, rearrangeProjects } = useProjectContext();
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -42,7 +41,6 @@ const AllProjectsSection = () => {
       const [movedProject] = newProjects.splice(oldIndex, 1);
       newProjects.splice(newIndex, 0, movedProject);
       rearrangeProjects(newProjects);
-      // setUserProjects(newProjects);
     }
   };
 

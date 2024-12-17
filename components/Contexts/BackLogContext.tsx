@@ -1,6 +1,6 @@
 "use client";
 
-import { BackLogDto, UserDto } from "@/Utils/types";
+import { BackLogDto, BackLogItemDto, UserDto } from "@/Utils/types";
 import {
   createContext,
   Dispatch,
@@ -10,7 +10,10 @@ import {
   useState,
 } from "react";
 import { useGetMyProductBackLogs } from "../BackLogComponents/hooks";
-import { CreateProductBackLog } from "@/lib/actions/ProductBackLogActions";
+import {
+  CreateProductBackLog,
+  RearrangeProductBackLogItem,
+} from "@/lib/actions/ProductBackLogActions";
 import { useWorkSpaceContext } from "./WorkSpaceContext";
 import { notifications } from "@mantine/notifications";
 import { CreateProductBackLogItem } from "@/lib/actions/ProductBackLogItemActions";
@@ -53,6 +56,7 @@ export type BackLogContextType = {
     assignee,
     close,
   }: createBackLogItem) => Promise<void>;
+  rearrangeBacklogItems: (items: BackLogItemDto[]) => Promise<void>;
 };
 
 const BackLogContext = createContext<BackLogContextType>(
@@ -172,6 +176,31 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
       close ? close() : null;
     }
   };
+
+  const rearrangeBacklogItems = async (items: BackLogItemDto[]) => {
+    try {
+      setLoading(true);
+      const requiredItems = items.map((item) => item._id);
+      await RearrangeProductBackLogItem(
+        selectedBackLog?._id as string,
+        requiredItems
+      );
+    } catch (error) {
+      throw new Error(`error at rearrangeBacklogItems ${error}`);
+    } finally {
+      setSelectedBackLog((prevBackLog) => {
+        if (prevBackLog) {
+          const updatedBackLog = {
+            ...prevBackLog,
+            backlogItems: items,
+          };
+          return updatedBackLog;
+        }
+        return prevBackLog;
+      });
+      setLoading(false);
+    }
+  };
   const value = useMemo(
     () => ({
       myBackLogs,
@@ -181,6 +210,7 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
       handleCreateBackLog,
       loading,
       handleCreateBackLogItem,
+      rearrangeBacklogItems,
     }),
     [
       myBackLogs,
@@ -190,6 +220,7 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
       handleCreateBackLog,
       loading,
       handleCreateBackLogItem,
+      rearrangeBacklogItems,
     ]
   );
 
