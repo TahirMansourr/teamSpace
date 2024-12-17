@@ -27,10 +27,15 @@ const DashBoardSideBar = ({
             <li key={item}>
               <button
                 onClick={() => {
-                  setSelectedItemInSideBar(item);
+                  setSelectedItemInSideBar("projects");
                   setOpened(false);
                 }}
                 className={`w-full px-6 py-4 rounded-lg text-left capitalize transition-all text-lg
+                  ${
+                    SelectedItemInSideBar != item
+                      ? "hover:cursor-not-allowed"
+                      : null
+                  }
                   ${
                     SelectedItemInSideBar === item
                       ? "bg-blue-50 text-blue-600 font-medium shadow-sm"
