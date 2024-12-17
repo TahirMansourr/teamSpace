@@ -161,7 +161,7 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
               backlogItems: [
                 ...(prevBackLog.backlogItems || []),
                 {
-                  ...newBacklogItem.backlog,
+                  ...newBacklogItem.item,
                   assignee: selectedTeamMembers,
                 },
               ],

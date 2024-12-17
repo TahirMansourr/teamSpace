@@ -13,7 +13,7 @@ const CreateBackLogForm = ({ close }: { close?: () => void }) => {
   };
   return (
     <form onSubmit={handleSubmit}>
-      <div className="flex flex-col  gap-3  rounded-md w-full ">
+      <div className="flex flex-col  gap-3  rounded-md w-full  ">
         <LoadingOverlay visible={loading} />
         <TextInput
           required
