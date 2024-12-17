@@ -11,6 +11,7 @@ import {
   Dispatch,
   SetStateAction,
   useContext,
+  useMemo,
   useState,
 } from "react";
 
@@ -81,13 +82,17 @@ const ProjectProvider = ({
     }
   }
 
-  const value = {
-    userProjects,
-    setUserProjects,
-    loading,
-    deleteProject,
-    rearrangeProjects,
-  };
+  const value = useMemo(
+    () => ({
+      userProjects,
+      setUserProjects,
+      loading,
+      deleteProject,
+      rearrangeProjects,
+    }),
+    [userProjects, setUserProjects, loading, deleteProject, rearrangeProjects]
+  );
+
   return (
     <ProjectContext.Provider value={value}>{children}</ProjectContext.Provider>
   );

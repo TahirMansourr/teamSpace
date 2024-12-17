@@ -62,8 +62,8 @@ const BackLogItemTableRow = ({
         </span>
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-        {item.acceptanceCriteria[0].length > 20
-          ? `${item.acceptanceCriteria[0].slice(0, 20)} ...`
+        {item.acceptanceCriteria.length > 20
+          ? `${item.acceptanceCriteria.slice(0, 20)} ...`
           : item.acceptanceCriteria}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">

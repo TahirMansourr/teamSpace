@@ -11,7 +11,7 @@ type ProductBackLogItem = {
   priority: 'High' | 'Medium' | 'Low';
   status: "To Do" | "In Progress" | "Done" | "Review";
   estimatedEffort: number;
-  acceptanceCriteria: string[];
+  acceptanceCriteria: string;
   assignee: string[];
   backlogId: string;
 }

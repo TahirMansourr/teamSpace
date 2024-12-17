@@ -1,4 +1,3 @@
-import { BackLogDto } from "@/Utils/types";
 import ProductBackLogHeader from "./ProductBackLogHeader";
 import ProductBackLogTable from "./ProductBackLogTable";
 

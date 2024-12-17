@@ -82,7 +82,7 @@ const CreateBackLogItemForm = ({ close }: { close: () => void }) => {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     await handleCreateBackLogItem({
       e,
-      acceptanceCriteria: [values.acceptanceCriteria],
+      acceptanceCriteria: values.acceptanceCriteria,
       title: values.title,
       description: values.description,
       priority: values.priority,

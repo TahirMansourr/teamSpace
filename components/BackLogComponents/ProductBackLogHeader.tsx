@@ -3,10 +3,8 @@ import React, { useState } from "react";
 import { FiArrowDown, FiFilter, FiPlus, FiSearch } from "react-icons/fi";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { useBackLogContext } from "../Contexts/BackLogContext";
-import { BackLogDto } from "@/Utils/types";
 import { useDisclosure } from "@mantine/hooks";
 import CreateBackLogItemModal from "./createBackLogItemModal";
-import { Loader } from "@mantine/core";
 import FullScreenLoading from "@/Utils/FullScreenLoading";
 
 const ProductBackLogHeader = () => {

@@ -25,7 +25,7 @@ type createBackLogItem = {
   description: string;
   type: "Feature" | "Bug" | "Technical Debt" | "Improvement" | "Spike";
   estimatedEffort: number;
-  acceptanceCriteria: [string];
+  acceptanceCriteria: string;
   priority: "Low" | "Medium" | "High";
   status: "To Do" | "In Progress" | "Done" | "Review";
   assignee: string[];
@@ -160,7 +160,10 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
               ...prevBackLog,
               backlogItems: [
                 ...(prevBackLog.backlogItems || []),
-                { ...newBacklogItem.backlog, assignee: selectedTeamMembers },
+                {
+                  ...newBacklogItem.backlog,
+                  assignee: selectedTeamMembers,
+                },
               ],
             };
             return updatedBackLog;

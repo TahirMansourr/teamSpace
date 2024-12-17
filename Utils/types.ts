@@ -145,7 +145,7 @@ export type BackLogItemDto = {
     priority : number,
     status : 'To Do' | 'In Progress' | 'Done',
     estimatedEffort : number,
-    acceptanceCriteria : [string],
+    acceptanceCriteria : string,
     assignee : UserDto[],
     createdAt : Date,
     updatedAt : Date | null
