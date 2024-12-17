@@ -1,6 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 
 const itemTypes = ['Feature', 'Bug', 'Technical Debt', 'Improvement', 'Spike'];
+const priorityLevels = ['High', 'Medium', 'Low'];
 
 const productBacklogItemSchema = new Schema(
   {
@@ -19,7 +20,8 @@ const productBacklogItemSchema = new Schema(
       required: true,
     },
     priority: {
-      type: Number,
+      type: String,
+      enum: priorityLevels,
       required: true, 
     },
     status: {

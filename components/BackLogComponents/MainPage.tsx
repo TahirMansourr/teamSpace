@@ -4,21 +4,18 @@ import FirstBackLog from "./FirstBackLog";
 import AllBackLogs from "./AllBackLogs";
 import { Loader } from "@mantine/core";
 import { SingleBackLogComponent } from "./SingleBackLogComponent";
+import FullScreenLoading from "@/Utils/FullScreenLoading";
 
 const MainPage = () => {
   const { myBackLogs, backLogLoading, selectedBackLog } = useBackLogContext();
   if (backLogLoading) {
-    return (
-      <div className=" w-full h-screen flex items-center justify-center">
-        <Loader type="bars" size="xl" />
-      </div>
-    );
+    return <FullScreenLoading />;
   } else if (!backLogLoading && !myBackLogs && !selectedBackLog) {
     return <FirstBackLog />;
   } else if (!backLogLoading && myBackLogs && !selectedBackLog) {
     return <AllBackLogs backlogs={myBackLogs ?? []} />;
   } else if (selectedBackLog) {
-    return <SingleBackLogComponent backlog={selectedBackLog} />;
+    return <SingleBackLogComponent />;
   }
 };
 

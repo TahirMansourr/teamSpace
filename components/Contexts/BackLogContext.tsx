@@ -1,6 +1,6 @@
 "use client";
 
-import { BackLogDto } from "@/Utils/types";
+import { BackLogDto, UserDto } from "@/Utils/types";
 import {
   createContext,
   Dispatch,
@@ -13,6 +13,21 @@ import { useGetMyProductBackLogs } from "../BackLogComponents/hooks";
 import { CreateProductBackLog } from "@/lib/actions/ProductBackLogActions";
 import { useWorkSpaceContext } from "./WorkSpaceContext";
 import { notifications } from "@mantine/notifications";
+import { CreateProductBackLogItem } from "@/lib/actions/ProductBackLogItemActions";
+import { get } from "http";
+
+type createBackLogItem = {
+  e: React.FormEvent;
+  title: string;
+  description: string;
+  type: "Feature" | "Bug" | "Technical Debt" | "Improvement" | "Spike";
+  estimatedEffort: number;
+  acceptanceCriteria: [string];
+  priority: "Low" | "Medium" | "High";
+  status: "To Do" | "In Progress" | "Done" | "Review";
+  assignee: string[];
+  close?: () => void;
+};
 
 export type BackLogContextType = {
   myBackLogs: BackLogDto[] | null;
@@ -26,6 +41,18 @@ export type BackLogContextType = {
     close?: () => void
   ) => Promise<void>;
   loading: boolean;
+  handleCreateBackLogItem: ({
+    e,
+    title,
+    description,
+    type,
+    estimatedEffort,
+    acceptanceCriteria,
+    priority,
+    status,
+    assignee,
+    close,
+  }: createBackLogItem) => Promise<void>;
 };
 
 const BackLogContext = createContext<BackLogContextType>(
@@ -44,6 +71,7 @@ export const useBackLogContext = () => {
 
 const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
   const { projectInfo } = useWorkSpaceContext();
+  const team = projectInfo.project.team;
   const {
     myBackLogs,
     loading: backLogLoading,
@@ -53,6 +81,12 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
     null
   );
   const [loading, setLoading] = useState<boolean>(false);
+  const getSelectedTeamMembers = (
+    team: UserDto[],
+    assignee: string[]
+  ): UserDto[] => {
+    return team.filter((member) => assignee.includes(member._id));
+  };
 
   const handleCreateBackLog = async (
     e: React.FormEvent,
@@ -83,6 +117,61 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const handleCreateBackLogItem = async ({
+    e,
+    title,
+    description,
+    type,
+    estimatedEffort,
+    acceptanceCriteria,
+    priority,
+    status,
+    assignee,
+    close,
+  }: createBackLogItem) => {
+    setLoading(true);
+    e.preventDefault();
+    const selectedTeamMembers = getSelectedTeamMembers(team, assignee);
+    try {
+      const newBacklogItem = await CreateProductBackLogItem({
+        backlogId: selectedBackLog?._id as string,
+        title,
+        description,
+        type,
+        estimatedEffort,
+        acceptanceCriteria,
+        priority,
+        status,
+        assignee,
+      });
+      console.log(
+        "🚀 ~ file: BackLogContext.tsx:137 ~ newBacklogItem:",
+        newBacklogItem
+      );
+
+      if (newBacklogItem) {
+        setSelectedBackLog((prevBackLog) => {
+          if (prevBackLog) {
+            const updatedBackLog = {
+              ...prevBackLog,
+              backlogItems: [
+                ...(prevBackLog.backlogItems || []),
+                { ...newBacklogItem.backlog, assignee: selectedTeamMembers },
+              ],
+            };
+            return updatedBackLog;
+          }
+          return prevBackLog;
+        });
+      }
+      notifications.show({ message: `${title} created`, color: "green" });
+    } catch (error) {
+      console.error("Failed to create backlogItem", error);
+    } finally {
+      setLoading(false);
+      close ? close() : null;
+    }
+  };
   const value = useMemo(
     () => ({
       myBackLogs,
@@ -91,6 +180,7 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
       setSelectedBackLog,
       handleCreateBackLog,
       loading,
+      handleCreateBackLogItem,
     }),
     [
       myBackLogs,
@@ -99,6 +189,7 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
       setSelectedBackLog,
       handleCreateBackLog,
       loading,
+      handleCreateBackLogItem,
     ]
   );
 
