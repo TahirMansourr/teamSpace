@@ -2,9 +2,9 @@
 import { Modal, Badge, Avatar, Group, Text, Paper, Stack, Divider } from '@mantine/core';
 import { BackLogItemDto, UserDto } from '@/Utils/types';
 import { IconCalendar, IconUser, IconCheckbox } from '@tabler/icons-react';
-import UserModal from '../UserModal';
 import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
+import UserModal from '@/components/UserModal';
 
 interface PreviewBackLogItemProps {
   opened: boolean;

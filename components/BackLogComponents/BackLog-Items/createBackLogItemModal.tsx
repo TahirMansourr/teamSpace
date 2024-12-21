@@ -1,7 +1,7 @@
 import { Modal } from "@mantine/core";
 import React from "react";
-import CreateBackLogItemForm from "../Forms/CreateBackLogItemForm";
 import { BackLogItemDto } from "@/Utils/types";
+import CreateBackLogItemForm from "@/components/Forms/CreateBackLogItemForm";
 
 const CreateBackLogItemModal = ({
   opened,

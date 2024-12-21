@@ -1,5 +1,5 @@
-import ProductBackLogHeader from "./ProductBackLogHeader";
-import ProductBackLogTable from "./ProductBackLogTable";
+import ProductBackLogTable from "./BackLog-Items/ProductBackLogTable";
+import ProductBackLogHeader from "./BackLog-Items/ProductBackLogHeader";
 
 export function SingleBackLogComponent() {
   return (

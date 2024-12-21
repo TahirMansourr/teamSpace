@@ -4,11 +4,11 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import React from "react";
 import { MdDragIndicator } from "react-icons/md";
+import PreviewBackLogItem from "./PrieviewBackLogItem";
 import { useDisclosure } from "@mantine/hooks";
 import { FaPlay } from "react-icons/fa6";
 import { FaEdit } from "react-icons/fa";
-import CreateBackLogItemModal from "./BackLog-Items/createBackLogItemModal";
-import PreviewBackLogItem from "./BackLog-Items/PrieviewBackLogItem";
+import CreateBackLogItemModal from "./createBackLogItemModal";
 
 const BackLogItemTableRow = ({
   item,
