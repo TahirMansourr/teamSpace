@@ -16,6 +16,10 @@ type ProductBackLogItem = {
   backlogId: string;
 }
 
+type UpdateProductBackLogItem = ProductBackLogItem & {
+  itemId: string;
+}
+
 export async function CreateProductBackLogItem(productBackLogItem: ProductBackLogItem) {
   try {
     await connectToDB();
@@ -47,3 +51,30 @@ export async function CreateProductBackLogItem(productBackLogItem: ProductBackLo
   }
 }
 
+export async function UpdateProductBackLogItem(productBackLogItem: UpdateProductBackLogItem) {
+  try {
+    await connectToDB();
+
+    const { itemId, ...itemData } = productBackLogItem;
+
+    // Update backlog item
+    const updatedBacklogItem = await ProductBacklogItem.findByIdAndUpdate(
+      itemId,
+      {
+        ...itemData,
+        updatedAt: new Date()
+      },
+      { new: true }
+    );
+
+    if (!updatedBacklogItem) {
+      throw new Error('Backlog item not found');
+    }
+
+    const itemres = JSON.parse(JSON.stringify(updatedBacklogItem));
+    return { success: true, item: itemres };
+
+  } catch (error) {
+    throw new Error(`Failed to update product backlog item: ${error}`);
+  }
+}

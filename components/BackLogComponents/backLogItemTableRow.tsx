@@ -1,8 +1,14 @@
+"use client";
 import { BackLogItemDto } from "@/Utils/types";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import React from "react";
 import { MdDragIndicator } from "react-icons/md";
+import PreviewBackLogItem from "./PrieviewBackLogItem";
+import { useDisclosure } from "@mantine/hooks";
+import { FaPlay } from "react-icons/fa6";
+import { FaEdit } from "react-icons/fa";
+import CreateBackLogItemModal from "./createBackLogItemModal";
 
 const BackLogItemTableRow = ({
   item,
@@ -16,6 +22,9 @@ const BackLogItemTableRow = ({
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
 
+  const [opened, { open, close }] = useDisclosure();
+  const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure();
+
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
@@ -27,12 +36,11 @@ const BackLogItemTableRow = ({
       ref={setNodeRef}
       style={style}
     >
-      <td>
-        {" "}
+      <td className="w-8">
         <button
-          {...attributes}
+          {...attributes}                     
           {...listeners}
-          className="  hover:bg-gray-50 rounded-lg transition-colors cursor-grab z-10" // Positioned absolutely
+          className="hover:bg-gray-50 rounded-lg transition-colors cursor-grab z-10 p-2"
         >
           <MdDragIndicator className="text-gray-400 hover:text-gray-600" />
         </button>
@@ -41,7 +49,9 @@ const BackLogItemTableRow = ({
         {index + 1}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-        {item.title}
+        {item.title.length > 15
+          ? `${item.title.slice(0, 20)} ...`
+          : item.title}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
         {item.description.length > 20
@@ -75,6 +85,16 @@ const BackLogItemTableRow = ({
             {assignee.username}
           </span>
         ))}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        <PreviewBackLogItem backlogItem={item}
+        opened={opened}
+        close={close} />
+        <div className="flex gap-2">
+          <FaPlay onClick={open} className="text-gray-500 hover:text-gray-600 cursor-pointer" />
+          <FaEdit onClick={openEdit} className="text-gray-500 hover:text-gray-600 cursor-pointer" />
+        </div>
+        <CreateBackLogItemModal opened={editOpened} close={closeEdit} initialValues={item} />
       </td>
     </tr>
   );

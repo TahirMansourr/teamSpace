@@ -18,7 +18,7 @@ const BackLogItemTableBody = ({
   const [opened, { open, close }] = useDisclosure();
 
   return (
-    <tbody className="bg-white divide-y divide-gray-200">
+    <tbody className="bg-white divide-y divide-gray-200 block md:table-row-group">
       <LoadingOverlay visible={loading} />
       {backLog?.backlogItems?.map((item: BackLogItemDto, index) => (
         <BackLogItemTableRow
@@ -28,16 +28,18 @@ const BackLogItemTableBody = ({
           id={item._id}
         />
       ))}
-      <tr>
+      <tr className="block md:table-row">
         <CreateBackLogItemModal opened={opened} close={close} />
-        <Button
-          className=" m-4 transition-all duration-150 hover:scale-105"
-          onClick={open}
-        >
-          <div className="flex items-center justify-center gap-3">
-            <FaPlus /> <Text ml={2}>Add Item</Text>
-          </div>
-        </Button>
+        <td className="block w-full md:table-cell md:w-auto">
+          <Button
+            className="w-full md:w-auto m-4 transition-all duration-150 hover:scale-105"
+            onClick={open}
+          >
+            <div className="flex items-center justify-center gap-3">
+              <FaPlus /> <Text ml={2}>Add Item</Text>
+            </div>
+          </Button>
+        </td>
       </tr>
     </tbody>
   );

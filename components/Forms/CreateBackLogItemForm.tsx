@@ -10,18 +10,27 @@ import {
   Text,
   Textarea,
   TextInput,
+  Paper,
+  Title,
+  Divider,
 } from "@mantine/core";
 import React, { useState } from "react";
 import { useBackLogContext } from "../Contexts/BackLogContext";
 import { useWorkSpaceContext } from "../Contexts/WorkSpaceContext";
-import { UserDto } from "@/Utils/types";
+import { BackLogItemDto, UserDto } from "@/Utils/types";
 
 type Priority = "Low" | "Medium" | "High";
 type Status = "To Do" | "In Progress" | "Done" | "Review";
 type Type = "Feature" | "Bug" | "Technical Debt" | "Improvement" | "Spike";
 
-const CreateBackLogItemForm = ({ close }: { close: () => void }) => {
-  const { handleCreateBackLogItem } = useBackLogContext();
+const CreateBackLogItemForm = ({
+  close,
+  initialValues,
+}: {
+  close: () => void;
+  initialValues?: BackLogItemDto;
+}) => {
+  const { handleCreateBackLogItem, handleUpdateBackLogItem } = useBackLogContext();
   const { projectInfo } = useWorkSpaceContext();
 
   const dataForMultiSelect = projectInfo.project.team.map((user) => ({
@@ -43,7 +52,7 @@ const CreateBackLogItemForm = ({ close }: { close: () => void }) => {
   const renderMultiSelectOption: MultiSelectProps["renderOption"] = ({
     option,
   }) => {
-    const user = userData[option.value]; // Use user._id as the key to find user details
+    const user = userData[option.value];
     return (
       <Group gap="sm">
         <Avatar src={user?.image || ""} size={36} radius="xl" />
@@ -68,94 +77,152 @@ const CreateBackLogItemForm = ({ close }: { close: () => void }) => {
     assignee: string[];
     estimatedEffort: number;
   }>({
-    title: "",
-    description: "",
+    title: initialValues?.title || "",
+    description: initialValues?.description || "",
+    priority: initialValues?.priority || "Medium",
+    status: initialValues?.status || "To Do",
+    type: initialValues?.type || "Feature",
+    acceptanceCriteria: initialValues?.acceptanceCriteria || "",
+    assignee: initialValues?.assignee ? initialValues.assignee.map(user => user._id) : [],
+    estimatedEffort: initialValues?.estimatedEffort || 0,
     points: 0,
-    priority: "Low",
-    status: "To Do",
-    type: "Feature",
-    acceptanceCriteria: "",
-    assignee: [],
-    estimatedEffort: 0,
   });
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    await handleCreateBackLogItem({
+    e.preventDefault();
+    const submitData = {
       e,
-      acceptanceCriteria: values.acceptanceCriteria,
       title: values.title,
       description: values.description,
       priority: values.priority,
       status: values.status,
       type: values.type,
+      acceptanceCriteria: values.acceptanceCriteria,
       assignee: values.assignee,
       estimatedEffort: values.estimatedEffort,
+      points: values.points,
       close,
-    });
+    };
+
+    if (initialValues) {
+      await handleUpdateBackLogItem({
+        ...submitData,
+        backlogItemId: initialValues._id,
+      });
+    } else {
+      await handleCreateBackLogItem(submitData);
+    }
   };
 
   return (
-    <form onSubmit={onSubmit}>
-      <div>
-        <TextInput
-          label="Title"
-          onChange={(e) => setValues({ ...values, title: e.target.value })}
-        />
-        <Textarea
-          label="Description"
-          placeholder="As a user I would like a feature to do a task"
-          onChange={(e) =>
-            setValues({ ...values, description: e.target.value })
-          }
-        />
-        <div className="flex justify-between gap-4">
-          <NumberInput
-            label="Points"
-            size="sm"
-            onChange={(e) => setValues({ ...values, points: e as number })}
+    <Paper shadow="sm" radius="md" p="xl" className="max-w-3xl mx-auto">
+      <form onSubmit={onSubmit} className="space-y-6">
+        <Title order={2} className="text-center mb-6 text-gray-800">
+          {initialValues ? 'Update Backlog Item' : 'Create New Backlog Item'}
+        </Title>
+
+        <div className="space-y-4">
+          <TextInput
+            label="Title"
+            placeholder="Enter backlog item title"
+            value={values.title}
+            onChange={(e) => setValues({ ...values, title: e.target.value })}
+            size="md"
+            required
           />
-          <NumberInput
-            label="Estimated Effort"
-            size="sm"
-            onChange={(e) =>
-              setValues({ ...values, estimatedEffort: e as number })
-            }
+
+          <Textarea
+            label="Description"
+            value={values.description}
+            placeholder="As a user I would like a feature to do a task"
+            onChange={(e) => setValues({ ...values, description: e.target.value })}
+            minRows={3}
+            size="md"
+            required
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <NumberInput
+              label="Story Points"
+              size="md"
+              value={values.points}
+              onChange={(e) => setValues({ ...values, points: e as number })}
+              min={0}
+            />
+            <NumberInput
+              label="Estimated Effort (hours)"
+              size="md"
+              value={values.estimatedEffort}
+              onChange={(e) => setValues({ ...values, estimatedEffort: e as number })}
+              min={0}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Select
+              label="Priority"
+              data={["High", "Medium", "Low"]}
+              value={values.priority}
+              onChange={(e) => setValues({ ...values, priority: e as Priority })}
+              size="md"
+            />
+            <Select
+              label="Status"
+              data={["To Do", "In Progress", "Done", "Review"]}
+              value={values.status}
+              onChange={(e) => setValues({ ...values, status: e as Status })}
+              size="md"
+            />
+            <Select
+              label="Type"
+              data={["Feature", "Bug", "Technical Debt", "Improvement", "Spike"]}
+              value={values.type}
+              onChange={(e) => setValues({ ...values, type: e as Type })}
+              size="md"
+            />
+          </div>
+
+          <Textarea
+            label="Acceptance Criteria"
+            value={values.acceptanceCriteria}
+            placeholder="Define the conditions that must be met for this item to be considered complete"
+            onChange={(e) => setValues({ ...values, acceptanceCriteria: e.target.value })}
+            minRows={3}
+            size="md"
+          />
+
+          <MultiSelect
+            label="Assignee"
+            data={dataForMultiSelect}
+            value={values.assignee}
+            onChange={(e) => setValues({ ...values, assignee: e })}
+            renderOption={renderMultiSelectOption}
+            searchable
+            size="md"
           />
         </div>
-        <Select
-          label="Priority"
-          data={["High", "Medium", "Low"]}
-          defaultValue="Medium"
-          onChange={(e) => setValues({ ...values, priority: e as Priority })}
-        />
-        <Select
-          label="Status"
-          data={["To Do", "In Progress", "Done", "Review"]}
-          defaultValue="To Do"
-          onChange={(e) => setValues({ ...values, status: e as Status })}
-        />
-        <Select
-          label="Type"
-          data={["Feature", "Bug", "Technical Debt", "Improvement", "Spike"]}
-          defaultValue="Feature"
-          onChange={(e) => setValues({ ...values, type: e as Type })}
-        />
-        <Textarea
-          label="Acceptance Criteria"
-          placeholder="As a user I would like a feature to do a task"
-          onChange={(e) =>
-            setValues({ ...values, acceptanceCriteria: e.target.value })
-          }
-        />
-        <MultiSelect
-          label="Assignee"
-          data={dataForMultiSelect} // Use team member IDs
-          onChange={(e) => setValues({ ...values, assignee: e })}
-          renderOption={renderMultiSelectOption}
-        />
-      </div>
-      <Button type="submit">Create</Button>
-    </form>
+
+        <Divider my="lg" />
+
+        <Group justify="flex-end" mt="xl">
+          <Button 
+            variant="outline" 
+            onClick={close}
+            size="md"
+          >
+            Cancel
+          </Button>
+          <Button 
+            type="submit"
+            variant="filled"
+            className="bg-gray-800 hover:bg-gray-900"
+            size="md"
+          >
+            {initialValues ? 'Update Item' : 'Create Item'}
+          </Button>
+        </Group>
+      </form>
+    </Paper>
   );
 };
 

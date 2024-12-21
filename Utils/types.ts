@@ -142,7 +142,7 @@ export type BackLogItemDto = {
     title : string,
     description : string,
     type : 'Feature' | 'Bug' | 'Technical Debt' | 'Improvement' | 'Spike',
-    priority : number,
+    priority : 'Low' | 'Medium' | 'High',
     status : 'To Do' | 'In Progress' | 'Done',
     estimatedEffort : number,
     acceptanceCriteria : string,

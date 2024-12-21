@@ -11,21 +11,25 @@ const ProductBackLogHeader = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const { setSelectedBackLog, selectedBackLog: backlog } = useBackLogContext();
   const [opened, { open, close }] = useDisclosure();
+
   if (!backlog) return <FullScreenLoading />;
   else
     return (
-      <div className="flex justify-between gap-4 p-4 px-14 items-center">
+      <div className="flex flex-col lg:flex-row justify-between gap-4 p-4 px-4 lg:px-14 items-start lg:items-center">
         <CreateBackLogItemModal opened={opened} close={close} />
-        <button onClick={() => setSelectedBackLog(null)}>
-          <IoArrowBackOutline size={30} />
-        </button>
-        <div className="flex justify-between items-center ">
-          <h1 className="text-2xl font-bold">{backlog.name}</h1>
+        
+        <div className="flex items-center gap-4 w-full lg:w-auto">
+          <button onClick={() => setSelectedBackLog(null)}>
+            <IoArrowBackOutline size={30} />
+          </button>
+          <div className="flex justify-between items-center">
+            <h1 className="text-xl lg:text-2xl font-bold">{backlog.name}</h1>
+          </div>
         </div>
 
         {/* Search and Filter Bar */}
-        <div className="flex gap-4 items-center">
-          <div className="flex-1 relative">
+        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center w-full lg:w-auto">
+          <div className="relative w-full sm:w-64 lg:w-auto">
             <FiSearch
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
               size={20}
@@ -38,21 +42,23 @@ const ProductBackLogHeader = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-          <button className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-50">
-            <FiFilter size={20} />
-            Filter
-          </button>
-          <button className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-50">
-            <FiArrowDown size={20} />
-            Sort
-          </button>
-          <button
-            className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-            onClick={open}
-          >
-            <FiPlus size={20} />
-            Add Item
-          </button>
+          <div className="flex gap-2 w-full sm:w-auto">
+            <button className="flex items-center gap-2 px-3 lg:px-4 py-2 border rounded-lg hover:bg-gray-50 text-sm lg:text-base">
+              <FiFilter size={20} />
+              <span className="hidden sm:inline">Filter</span>
+            </button>
+            <button className="flex items-center gap-2 px-3 lg:px-4 py-2 border rounded-lg hover:bg-gray-50 text-sm lg:text-base">
+              <FiArrowDown size={20} />
+              <span className="hidden sm:inline">Sort</span>
+            </button>
+            <button
+              className="flex items-center gap-2 bg-blue-600 text-white px-3 lg:px-4 py-2 rounded-lg hover:bg-blue-700 text-sm lg:text-base"
+              onClick={open}
+            >
+              <FiPlus size={20} />
+              <span className="hidden sm:inline">Add Item</span>
+            </button>
+          </div>
         </div>
       </div>
     );

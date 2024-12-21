@@ -16,7 +16,7 @@ import {
 } from "@/lib/actions/ProductBackLogActions";
 import { useWorkSpaceContext } from "./WorkSpaceContext";
 import { notifications } from "@mantine/notifications";
-import { CreateProductBackLogItem } from "@/lib/actions/ProductBackLogItemActions";
+import { CreateProductBackLogItem, UpdateProductBackLogItem } from "@/lib/actions/ProductBackLogItemActions";
 import { get } from "http";
 
 type createBackLogItem = {
@@ -30,6 +30,10 @@ type createBackLogItem = {
   status: "To Do" | "In Progress" | "Done" | "Review";
   assignee: string[];
   close?: () => void;
+};
+
+type updateBackLogItem = createBackLogItem & {
+  backlogItemId: string;
 };
 
 export type BackLogContextType = {
@@ -56,6 +60,19 @@ export type BackLogContextType = {
     assignee,
     close,
   }: createBackLogItem) => Promise<void>;
+  handleUpdateBackLogItem: ({
+    e,
+    title,
+    description,
+    type,
+    estimatedEffort,
+    acceptanceCriteria,
+    priority,
+    status,
+    assignee,
+    close,
+    backlogItemId,
+  }: updateBackLogItem) => Promise<void>;
   rearrangeBacklogItems: (items: BackLogItemDto[]) => Promise<void>;
 };
 
@@ -180,6 +197,61 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const handleUpdateBackLogItem = async ({
+    e,
+    title,
+    description,
+    type,
+    estimatedEffort,
+    acceptanceCriteria,
+    priority,
+    status,
+    assignee,
+    close,
+    backlogItemId,
+  }: updateBackLogItem) => {
+    setLoading(true);
+    e.preventDefault();
+    const selectedTeamMembers = getSelectedTeamMembers(team, assignee);
+    try {
+      const updatedBacklogItem = await UpdateProductBackLogItem({
+        itemId: backlogItemId,
+        backlogId: selectedBackLog?._id as string,
+        title,
+        description,
+        type,
+        estimatedEffort,
+        acceptanceCriteria,
+        priority,
+        status,
+        assignee,
+      });
+
+      if (updatedBacklogItem) {
+        setSelectedBackLog((prevBackLog) => {
+          if (prevBackLog) {
+            const updatedBackLog = {
+              ...prevBackLog,
+              backlogItems: prevBackLog.backlogItems?.map((item) =>
+                item._id === backlogItemId
+                  ? { ...updatedBacklogItem.item, assignee: selectedTeamMembers }
+                  : item
+              ),
+            };
+            return updatedBackLog;
+          }
+          return prevBackLog;
+        });
+      }
+      notifications.show({ message: `${title} updated`, color: "green" });
+    } catch (error) {
+      console.error("Failed to update backlogItem", error);
+    } finally {
+      setLoading(false);
+      close ? close() : null;
+    }
+  };
+
   const rearrangeBacklogItems = async (items: BackLogItemDto[]) => {
     try {
       setLoading(true);
@@ -213,6 +285,7 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
       handleCreateBackLog,
       loading,
       handleCreateBackLogItem,
+      handleUpdateBackLogItem,
       rearrangeBacklogItems,
     }),
     [
@@ -223,6 +296,7 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
       handleCreateBackLog,
       loading,
       handleCreateBackLogItem,
+      handleUpdateBackLogItem,
       rearrangeBacklogItems,
     ]
   );
