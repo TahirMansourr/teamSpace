@@ -1,7 +1,6 @@
 "use client";
 import { ScrollArea } from "@mantine/core";
-import React from "react";
-
+import React, { useState } from "react";
 import {
   closestCenter,
   DndContext,
@@ -9,6 +8,7 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
+  DragEndEvent,
 } from "@dnd-kit/core";
 import {
   rectSortingStrategy,
@@ -26,6 +26,10 @@ const ProductBackLogTable = () => {
     loading,
   } = useBackLogContext();
 
+  const [groups, setGroups] = useState<{
+    [key: string]: { name: string; items: string[] };
+  }>({});
+
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -33,10 +37,61 @@ const ProductBackLogTable = () => {
     })
   );
 
-  const handleDragEnd = (event: any) => {
+  const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
+    if (!active || !over || !backLog?.backlogItems) return;
 
-    if (active.id !== over.id && backLog?.backlogItems) {
+    // Find which groups the items belong to (if any)
+    const sourceGroupId = Object.entries(groups).find(([_, group]) =>
+      group.items.includes(active.id as string)
+    )?.[0];
+
+    const targetGroupId = Object.entries(groups).find(([_, group]) =>
+      group.items.includes(over.id as string)
+    )?.[0];
+
+    // If either item is in a group, handle group-related movement
+    if (sourceGroupId || targetGroupId) {
+      setGroups(prevGroups => {
+        const newGroups = { ...prevGroups };
+
+        // Remove item from source group
+        if (sourceGroupId) {
+          newGroups[sourceGroupId] = {
+            ...newGroups[sourceGroupId],
+            items: newGroups[sourceGroupId].items.filter(id => id !== active.id)
+          };
+        }
+
+        // Add item to target group
+        if (targetGroupId) {
+          const overItemIndex = newGroups[targetGroupId].items.indexOf(over.id as string);
+          newGroups[targetGroupId] = {
+            ...newGroups[targetGroupId],
+            items: [
+              ...newGroups[targetGroupId].items.slice(0, overItemIndex + 1),
+              active.id as string,
+              ...newGroups[targetGroupId].items.slice(overItemIndex + 1)
+            ]
+          };
+        }
+
+        // Clean up empty groups
+        Object.entries(newGroups).forEach(([groupId, group]) => {
+          if (group.items.length === 0) {
+            delete newGroups[groupId];
+          }
+        });
+
+        return newGroups;
+      });
+
+      // Don't proceed with regular reordering if we handled group movement
+      return;
+    }
+
+    // Handle regular reordering (outside of groups)
+    if (active.id !== over.id) {
       const oldIndex = backLog.backlogItems.findIndex(
         (project) => project._id === active.id
       );
@@ -50,10 +105,11 @@ const ProductBackLogTable = () => {
       rearrangeBacklogItems(newProjects);
     }
   };
+
   return (
-    <ScrollArea className="flex-1 overflow-auto mx-auto  bg-white dark:bg-gray-900 rounded-md w-[90%]">
+    <ScrollArea className="flex-1 overflow-auto mx-auto bg-white dark:bg-gray-900 rounded-md w-[90%]">
       <table className="w-full border-collapse">
-        <ProductBacklogTableHead />
+        <ProductBacklogTableHead isGrouping={false} />
         {backLog?.backlogItems && (
           <DndContext
             sensors={sensors}
@@ -64,7 +120,12 @@ const ProductBackLogTable = () => {
               items={backLog?.backlogItems.map((p) => p._id)}
               strategy={rectSortingStrategy}
             >
-              <BackLogItemTableBody backLog={backLog} loading={loading} />
+              <BackLogItemTableBody 
+                backLog={backLog} 
+                loading={loading}
+                groups={groups}
+                setGroups={setGroups}
+              />
             </SortableContext>
           </DndContext>
         )}

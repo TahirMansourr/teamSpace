@@ -16,7 +16,7 @@ import {
 } from "@/lib/actions/ProductBackLogActions";
 import { useWorkSpaceContext } from "./WorkSpaceContext";
 import { notifications } from "@mantine/notifications";
-import { CreateProductBackLogItem, UpdateProductBackLogItem } from "@/lib/actions/ProductBackLogItemActions";
+import { CreateProductBackLogItem, UpdateProductBackLogItem, UpdateProductBackLogItemGroups, CreateProductBackLogItemGroup } from "@/lib/actions/ProductBackLogItemActions";
 import { get } from "http";
 
 type createBackLogItem = {
@@ -74,6 +74,8 @@ export type BackLogContextType = {
     backlogItemId,
   }: updateBackLogItem) => Promise<void>;
   rearrangeBacklogItems: (items: BackLogItemDto[]) => Promise<void>;
+  updateGroups: (groups: { [key: string]: { name: string; items: string[] } }) => Promise<void>;
+  createGroup: (groupName: string, items: string[]) => Promise<void>;
 };
 
 const BackLogContext = createContext<BackLogContextType>(
@@ -276,6 +278,106 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
       setLoading(false);
     }
   };
+
+  const updateGroups = async (groups: { [key: string]: { name: string; items: string[] } }) => {
+    try {
+      setLoading(true);
+      await UpdateProductBackLogItemGroups({
+        backlogId: selectedBackLog?._id as string,
+        groups
+      });
+      
+      // Update local state
+      setSelectedBackLog((prevBackLog) => {
+        if (!prevBackLog) return null;
+        
+        const updatedItems = prevBackLog.backlogItems?.map(item => {
+          // Find if item belongs to any group
+          const group = Object.entries(groups).find(([_, g]) => 
+            g.items.includes(item._id)
+          );
+          
+          if (group) {
+            return {
+              ...item,
+              groupId: group[0],
+              groupName: group[1].name
+            };
+          }
+          
+          return {
+            ...item,
+            groupId: null,
+            groupName: null
+          };
+        });
+
+        return {
+          ...prevBackLog,
+          backlogItems: updatedItems
+        };
+      });
+    } catch (error) {
+      console.error("Failed to update groups:", error);
+      notifications.show({ 
+        message: "Failed to update groups", 
+        color: "red" 
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const createGroup = async (groupName: string, items: string[]) => {
+    try {
+      setLoading(true);
+      const groupId = `group-${Date.now()}`;
+      
+      const result = await CreateProductBackLogItemGroup({
+        backlogId: selectedBackLog?._id as string,
+        groupId,
+        name: groupName,
+        items
+      });
+
+      if (result.success) {
+        // Update local state
+        setSelectedBackLog((prevBackLog) => {
+          if (!prevBackLog) return null;
+          
+          const updatedItems = prevBackLog.backlogItems?.map(item => {
+            if (items.includes(item._id)) {
+              return {
+                ...item,
+                groupId,
+                groupName
+              };
+            }
+            return item;
+          });
+
+          return {
+            ...prevBackLog,
+            backlogItems: updatedItems
+          };
+        });
+
+        notifications.show({ 
+          message: `Group "${groupName}" created successfully`, 
+          color: "green" 
+        });
+      }
+    } catch (error) {
+      console.error("Failed to create group:", error);
+      notifications.show({ 
+        message: "Failed to create group", 
+        color: "red" 
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const value = useMemo(
     () => ({
       myBackLogs,
@@ -287,6 +389,8 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
       handleCreateBackLogItem,
       handleUpdateBackLogItem,
       rearrangeBacklogItems,
+      updateGroups,
+      createGroup,
     }),
     [
       myBackLogs,
@@ -298,6 +402,8 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
       handleCreateBackLogItem,
       handleUpdateBackLogItem,
       rearrangeBacklogItems,
+      updateGroups,
+      createGroup,
     ]
   );
 

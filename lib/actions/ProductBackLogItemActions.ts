@@ -20,6 +20,23 @@ type UpdateProductBackLogItem = ProductBackLogItem & {
   itemId: string;
 }
 
+type GroupUpdate = {
+  backlogId: string;
+  groups: {
+    [key: string]: {
+      name: string;
+      items: string[];
+    };
+  };
+};
+
+type GroupCreate = {
+  backlogId: string;
+  groupId: string;
+  name: string;
+  items: string[];
+};
+
 export async function CreateProductBackLogItem(productBackLogItem: ProductBackLogItem) {
   try {
     await connectToDB();
@@ -76,5 +93,97 @@ export async function UpdateProductBackLogItem(productBackLogItem: UpdateProduct
 
   } catch (error) {
     throw new Error(`Failed to update product backlog item: ${error}`);
+  }
+}
+
+export async function UpdateProductBackLogItemGroups({ backlogId, groups }: GroupUpdate) {
+  try {
+    await connectToDB();
+
+    // First, clear all existing group assignments
+    await ProductBacklogItem.updateMany(
+      { productBacklogId: backlogId },
+      { $set: { groupId: null, groupName: null } }
+    );
+
+    // Then update items with their new group assignments
+    for (const [groupId, group] of Object.entries(groups)) {
+      await ProductBacklogItem.updateMany(
+        {
+          _id: { $in: group.items },
+          productBacklogId: backlogId
+        },
+        {
+          $set: {
+            groupId,
+            groupName: group.name
+          }
+        }
+      );
+    }
+
+    return { success: true };
+  } catch (error) {
+    throw new Error(`Failed to update product backlog item groups: ${error}`);
+  }
+}
+
+export async function CreateProductBackLogItemGroup({ backlogId, groupId, name, items }: GroupCreate) {
+  try {
+    await connectToDB();
+
+    console.log("Attempting to create group with:", {
+      backlogId,
+      groupId,
+      name,
+      itemCount: items.length
+    });
+
+    // Update all items in the group
+    const updateResult = await ProductBacklogItem.updateMany(
+      {
+        _id: { $in: items }
+      },
+      {
+        $set: {
+          groupId,
+          groupName: name,
+          productBacklogId: backlogId
+        }
+      }
+    );
+
+    console.log("Update result:", updateResult);
+
+    // Find all updated items
+    const updatedItems = await ProductBacklogItem.find({
+      _id: { $in: items }
+    });
+
+    console.log("Found items:", {
+      expected: items.length,
+      found: updatedItems.length,
+      items: updatedItems.map(item => ({
+        id: item._id,
+        groupId: item.groupId,
+        groupName: item.groupName,
+        productBacklogId: item.productBacklogId
+      }))
+    });
+
+    // Verify the items exist (relaxed verification)
+    if (updatedItems.length === 0) {
+      throw new Error('No items were found to group');
+    }
+
+    return { 
+      success: true,
+      groupId,
+      name,
+      items: updatedItems
+    };
+  } catch (error) {
+    console.error("Group creation error:", error);
+    throw new Error(`Failed to create product backlog item group: ${error}`);
   }
 }

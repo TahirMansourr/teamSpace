@@ -10,15 +10,25 @@ import { FaPlay } from "react-icons/fa6";
 import { FaEdit } from "react-icons/fa";
 import CreateBackLogItemModal from "./createBackLogItemModal";
 
+interface BackLogItemTableRowProps {
+  item: BackLogItemDto;
+  index: number;
+  id: string;
+  isGrouped?: boolean;
+  isSelectable?: boolean;
+  isSelected?: boolean;
+  onSelect?: () => void;
+}
+
 const BackLogItemTableRow = ({
   item,
   index,
   id,
-}: {
-  item: BackLogItemDto;
-  index: number;
-  id: string;
-}) => {
+  isGrouped = false,
+  isSelectable = false,
+  isSelected = false,
+  onSelect,
+}: BackLogItemTableRowProps) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
 
@@ -31,11 +41,25 @@ const BackLogItemTableRow = ({
   };
   return (
     <tr
-      className="hover:bg-gray-50 cursor-pointer"
+      className={`
+        hover:bg-gray-50 cursor-pointer
+        ${isGrouped ? 'pl-8 border-l-2 border-blue-200' : ''}
+        ${isSelected ? 'bg-blue-50' : ''}
+      `}
       key={item._id}
       ref={setNodeRef}
       style={style}
     >
+      {isSelectable && (
+        <td className="w-8">
+          <input
+            type="checkbox"
+            checked={isSelected}
+            onChange={onSelect}
+            className="w-4 h-4"
+          />
+        </td>
+      )}
       <td className="w-8">
         <button
           {...attributes}                     

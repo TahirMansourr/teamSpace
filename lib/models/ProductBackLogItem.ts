@@ -45,6 +45,14 @@ const productBacklogItemSchema = new Schema(
       type: Date,
       default: Date.now,
     },
+    groupId: {
+      type: String,
+      default: null,
+    },
+    groupName: {
+      type: String,
+      default: null,
+    },
   },
   {
     timestamps: true,
