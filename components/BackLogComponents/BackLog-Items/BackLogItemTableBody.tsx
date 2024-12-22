@@ -7,6 +7,7 @@ import { useDisclosure } from "@mantine/hooks";
 import BackLogItemTableRow from "./backLogItemTableRow";
 import CreateBackLogItemModal from "./createBackLogItemModal";
 import { useBackLogContext } from "@/components/Contexts/BackLogContext";
+import { GroupActions } from "./GroupActions";
 
 interface BackLogItemTableBodyProps {
   backLog: BackLogDto;
@@ -19,9 +20,8 @@ const BackLogItemTableBody = ({
   backLog,
   loading,
   groups,
-  setGroups,
 }: BackLogItemTableBodyProps) => {
-  const { updateGroups, createGroup , isGrouping, setIsGrouping, selectedItems, setSelectedItems, groupName, setGroupName } = useBackLogContext();
+  const {  isGrouping,  selectedItems, setSelectedItems } = useBackLogContext();
   const [opened, { open, close }] = useDisclosure();
   
 
@@ -44,11 +44,17 @@ const BackLogItemTableBody = ({
       {/* Grouped Items */}
       {Object.entries(groups).map(([groupId, group]) => (
         <React.Fragment key={groupId}>
-          <tr className="bg-gray-100">
-            <td colSpan={10} className="px-6 py-2 font-medium">
-              {group.name}
-            </td>
+          <tr>
+            <td> {group.name}</td>
+              <td className="flex">           
+                   <GroupActions backlogId={backLog._id} groupId={groupId} groupName={group.name} />
+              </td>
+              
+            
           </tr>
+             
+
+          
           {backLog?.backlogItems
             ?.filter(item => group.items.includes(item._id))
             .map((item: BackLogItemDto, index) => (

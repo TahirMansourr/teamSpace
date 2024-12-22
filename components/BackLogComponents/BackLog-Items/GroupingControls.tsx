@@ -1,3 +1,4 @@
+"use client";
 import { Button, TextInput, Text } from "@mantine/core";
 import { useBackLogContext } from "@/components/Contexts/BackLogContext";
 
@@ -23,7 +24,7 @@ export const GroupingControls = () => {
   return (
     <div className="flex items-center gap-4">
       <Button
-        onClick={() => setIsGrouping(!isGrouping)}
+        onClick={() => {setIsGrouping(!isGrouping); setSelectedItems([]) ;setGroupName("") }}
         color={isGrouping ? "red" : "blue"}
       >
         {isGrouping ? "Cancel Grouping" : "Create Group"}

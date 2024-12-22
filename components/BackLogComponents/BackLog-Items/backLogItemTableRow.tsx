@@ -43,7 +43,7 @@ const BackLogItemTableRow = ({
     <tr
       className={`
         hover:bg-gray-50 cursor-pointer
-        ${isGrouped ? 'pl-8 border-l-2 border-blue-200' : ''}
+        ${isGrouped ? 'pl-8 border-l-2 border-blue-200' : 'mt-2'}
         ${isSelected ? 'bg-blue-50' : ''}
       `}
       key={item._id}

@@ -3,7 +3,7 @@ import { closestCenter, DndContext, DragEndEvent, KeyboardSensor, PointerSensor,
 import { rectSortingStrategy, SortableContext, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import BackLogItemTableBody from "./BackLogItemTableBody";
 
-export const DragAndDropWrapper = () => {
+export const ProductBackLogTableRows = () => {
 
     const {
         selectedBackLog: backLog,

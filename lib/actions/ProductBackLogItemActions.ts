@@ -37,6 +37,13 @@ type GroupCreate = {
   items: string[];
 };
 
+type GroupAction = {
+  backlogId: string;
+  groupId: string;
+  name?: string;
+  itemId?: string;
+};
+
 export async function CreateProductBackLogItem(productBackLogItem: ProductBackLogItem) {
   try {
     await connectToDB();
@@ -185,5 +192,135 @@ export async function CreateProductBackLogItemGroup({ backlogId, groupId, name, 
   } catch (error) {
     console.error("Group creation error:", error);
     throw new Error(`Failed to create product backlog item group: ${error}`);
+  }
+}
+
+export async function RenameProductBackLogItemGroup({ backlogId, groupId, name }: GroupAction) {
+  try {
+    await connectToDB();
+    console.log("🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱 Renaming group:", { backlogId, groupId, name });
+    // Update all items in the group with the new name
+    const updateResult = await ProductBacklogItem.updateMany(
+      {
+        groupId: groupId
+      },
+      {
+        $set: {
+          groupName: name
+        }
+      }
+    );
+
+    if (updateResult.matchedCount === 0) {
+      throw new Error('No items found in this group');
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error("Group rename error:", error);
+    throw new Error(`Failed to rename product backlog item group: ${error}`);
+  }
+}
+
+export async function RemoveItemFromGroup({ backlogId, groupId, itemId }: GroupAction) {
+  try {
+    await connectToDB();
+
+    const updateResult = await ProductBacklogItem.updateOne(
+      {
+        _id: itemId,
+        groupId: groupId
+      },
+      {
+        $set: {
+          groupId: null,
+          groupName: null
+        }
+      }
+    );
+
+    if (!updateResult.matchedCount) {
+      throw new Error('Item not found in group');
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error("Remove item from group error:", error);
+    throw new Error(`Failed to remove item from group: ${error}`);
+  }
+}
+
+export async function DeleteProductBackLogItemGroup({ backlogId, groupId }: GroupAction) {
+  try {
+    await connectToDB();
+
+    // Delete all items in the group
+    const deleteResult = await ProductBacklogItem.deleteMany({
+      groupId: groupId
+    });
+
+    if (deleteResult.deletedCount === 0) {
+      throw new Error('No items found in this group');
+    }
+
+    return { success: true, deletedCount: deleteResult.deletedCount };
+  } catch (error) {
+    console.error("Group deletion error:", error);
+    throw new Error(`Failed to delete product backlog item group: ${error}`);
+  }
+}
+
+export async function ClearProductBackLogItemGroup({ backlogId, groupId }: GroupAction) {
+  try {
+    await connectToDB();
+
+    // Remove all items from the group but keep the group structure
+    const updateResult = await ProductBacklogItem.updateMany(
+      {
+        groupId: groupId
+      },
+      {
+        $set: {
+          groupId: null,
+          groupName: null
+        }
+      }
+    );
+
+    if (updateResult.matchedCount === 0) {
+      throw new Error('No items found in this group');
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error("Group clear error:", error);
+    throw new Error(`Failed to clear product backlog item group: ${error}`);
+  }
+}
+
+export async function DeleteProductBackLogItem(itemId: string, backlogId: string) {
+  try {
+    await connectToDB();
+
+    // Delete the backlog item
+    const deletedItem = await ProductBacklogItem.findByIdAndDelete(itemId);
+
+    if (!deletedItem) {
+      throw new Error('Backlog item not found');
+    }
+
+    // Remove the item reference from the backlog
+    await ProductBacklog.findByIdAndUpdate(
+      backlogId,
+      {
+        $pull: { backlogItems: itemId },
+        updatedAt: new Date()
+      }
+    );
+
+    return { success: true };
+  } catch (error) {
+    console.error("Delete item error:", error);
+    throw new Error(`Failed to delete product backlog item: ${error}`);
   }
 }

@@ -17,7 +17,7 @@ import {
 } from "@/lib/actions/ProductBackLogActions";
 import { useWorkSpaceContext } from "./WorkSpaceContext";
 import { notifications } from "@mantine/notifications";
-import { CreateProductBackLogItem, UpdateProductBackLogItem, UpdateProductBackLogItemGroups, CreateProductBackLogItemGroup } from "@/lib/actions/ProductBackLogItemActions";
+import { CreateProductBackLogItem, UpdateProductBackLogItem, UpdateProductBackLogItemGroups, CreateProductBackLogItemGroup, RenameProductBackLogItemGroup, DeleteProductBackLogItemGroup, ClearProductBackLogItemGroup } from "@/lib/actions/ProductBackLogItemActions";
 import { get } from "http";
 
 type createBackLogItem = {
@@ -85,6 +85,9 @@ export type BackLogContextType = {
   setSelectedItems: Dispatch<SetStateAction<string[]>>;
   groupName: string;
   setGroupName: (name: string) => void;
+  handleRenameGroup: (groupId: string, newName: string) => Promise<void>;
+  handleDeleteGroup: (groupId: string) => Promise<void>;
+  handleClearGroup: (groupId: string) => Promise<void>;
 };
 
 const BackLogContext = createContext<BackLogContextType>(
@@ -413,6 +416,141 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const handleRenameGroup = async (groupId: string, newName: string) => {
+    try {
+      setLoading(true);
+      await RenameProductBackLogItemGroup({ 
+        backlogId: selectedBackLog?._id as string, 
+        groupId, 
+        name: newName 
+      });
+
+      // Update local state
+      setSelectedBackLog((prevBackLog) => {
+        if (!prevBackLog) return null;
+        
+        const updatedItems = prevBackLog.backlogItems?.map(item => {
+          if (item.groupId === groupId) {
+            return {
+              ...item,
+              groupName: newName
+            };
+          }
+          return item;
+        });
+
+        return {
+          ...prevBackLog,
+          backlogItems: updatedItems
+        };
+      });
+
+      setGroups((prevGroups) => ({
+        ...prevGroups,
+        [groupId]: {
+          ...prevGroups[groupId],
+          name: newName
+        }
+      }));
+
+      notifications.show({ message: "Group renamed successfully", color: "green" });
+    } catch (error) {
+      console.error("Failed to rename group:", error);
+      notifications.show({ message: "Failed to rename group", color: "red" });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteGroup = async (groupId: string) => {
+    try {
+      setLoading(true);
+      await DeleteProductBackLogItemGroup({ 
+        backlogId: selectedBackLog?._id as string, 
+        groupId 
+      });
+
+      // Update local state
+      setSelectedBackLog((prevBackLog) => {
+        if (!prevBackLog) return null;
+        
+        const updatedItems = prevBackLog.backlogItems?.map(item => {
+          if (item.groupId === groupId) {
+            return {
+              ...item,
+              groupId: null,
+              groupName: null
+            };
+          }
+          return item;
+        });
+
+        return {
+          ...prevBackLog,
+          backlogItems: updatedItems
+        };
+      });
+
+      setGroups((prevGroups) => {
+        const { [groupId]: removed, ...rest } = prevGroups;
+        return rest;
+      });
+
+      notifications.show({ message: "Group deleted successfully", color: "green" });
+    } catch (error) {
+      console.error("Failed to delete group:", error);
+      notifications.show({ message: "Failed to delete group", color: "red" });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleClearGroup = async (groupId: string) => {
+    try {
+      setLoading(true);
+      await ClearProductBackLogItemGroup({ 
+        backlogId: selectedBackLog?._id as string, 
+        groupId 
+      });
+
+      // Update local state
+      setSelectedBackLog((prevBackLog) => {
+        if (!prevBackLog) return null;
+        
+        const updatedItems = prevBackLog.backlogItems?.map(item => {
+          if (item.groupId === groupId) {
+            return {
+              ...item,
+              groupId: null,
+              groupName: null
+            };
+          }
+          return item;
+        });
+
+        return {
+          ...prevBackLog,
+          backlogItems: updatedItems
+        };
+      });
+
+      setGroups((prevGroups) => ({
+        ...prevGroups,
+        [groupId]: {
+          ...prevGroups[groupId],
+          items: []
+        }
+      }));
+
+      notifications.show({ message: "Group cleared successfully", color: "green" });
+    } catch (error) {
+      console.error("Failed to clear group:", error);
+      notifications.show({ message: "Failed to clear group", color: "red" });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const value = useMemo(
     () => ({
       myBackLogs,
@@ -434,6 +572,9 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
       setSelectedItems,
       groupName,
       setGroupName,
+      handleRenameGroup,
+      handleDeleteGroup,
+      handleClearGroup,
     }),
     [
       myBackLogs,
@@ -455,6 +596,9 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
       setSelectedItems,
       groupName,
       setGroupName,
+      handleRenameGroup,
+      handleDeleteGroup,
+      handleClearGroup,
     ]
   );
 

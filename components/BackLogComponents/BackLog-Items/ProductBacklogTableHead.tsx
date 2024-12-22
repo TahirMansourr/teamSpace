@@ -1,11 +1,13 @@
+import { useBackLogContext } from "@/components/Contexts/BackLogContext";
 import React from "react";
 
-const ProductBacklogTableHead = ({ isGrouping = false }) => {
+const ProductBacklogTableHead = () => {
+  const { isGrouping } = useBackLogContext();
   return (
     <thead className="bg-gray-50 mb-2">
       <tr>
         {isGrouping && (
-          <th className="p-0 m-0 w-8 hover:cursor-pointer">Select</th>
+         <th className="p-0 m-0 w-12 min-w-[3rem] hover:cursor-pointer">Select</th>
         )}
         <th className="p-0 m-0 w-8"></th>
         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
