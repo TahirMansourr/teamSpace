@@ -78,7 +78,7 @@ const PreviewBackLogItem: React.FC<PreviewBackLogItemProps> = ({
             <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
               <IconCalendar size={18} />
               <span className="text-sm">
-                Created: {new Date(backlogItem.createdAt).toLocaleDateString()}
+                {/* Created: {new Date(backlogItem.).toLocaleDateString()} */}
               </span>
             </div>
 
