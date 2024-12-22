@@ -8,6 +8,7 @@ import {
   useContext,
   useMemo,
   useState,
+  useEffect,
 } from "react";
 import { useGetMyProductBackLogs } from "../BackLogComponents/hooks";
 import {
@@ -76,6 +77,8 @@ export type BackLogContextType = {
   rearrangeBacklogItems: (items: BackLogItemDto[]) => Promise<void>;
   updateGroups: (groups: { [key: string]: { name: string; items: string[] } }) => Promise<void>;
   createGroup: (groupName: string, items: string[]) => Promise<void>;
+  groups: { [key: string]: { name: string; items: string[] } };
+  setGroups: Dispatch<SetStateAction<{ [key: string]: { name: string; items: string[] } }>>;
 };
 
 const BackLogContext = createContext<BackLogContextType>(
@@ -110,6 +113,29 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
   ): UserDto[] => {
     return team.filter((member) => assignee.includes(member._id));
   };
+  const [groups, setGroups] = useState<{
+    [key: string]: { name: string; items: string[] };
+  }>({});
+
+  useEffect(() => {
+    if (selectedBackLog?.backlogItems) {
+      const groupedItems: { [key: string]: { name: string; items: string[] } } = {};
+      
+      selectedBackLog.backlogItems.forEach(item => {
+        if (item.groupId && item.groupName) {
+          if (!groupedItems[item.groupId]) {
+            groupedItems[item.groupId] = {
+              name: item.groupName,
+              items: []
+            };
+          }
+          groupedItems[item.groupId].items.push(item._id);
+        }
+      });
+      
+      setGroups(groupedItems);
+    }
+  }, [selectedBackLog]);
 
   const handleCreateBackLog = async (
     e: React.FormEvent,
@@ -175,15 +201,15 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
       if (newBacklogItem) {
         setSelectedBackLog((prevBackLog) => {
           if (prevBackLog) {
+            const newItem = {
+              ...newBacklogItem.item,
+              assignee: selectedTeamMembers,
+              groupId: null,
+              groupName: null
+            };
             const updatedBackLog = {
               ...prevBackLog,
-              backlogItems: [
-                ...(prevBackLog.backlogItems || []),
-                {
-                  ...newBacklogItem.item,
-                  assignee: selectedTeamMembers,
-                },
-              ],
+              backlogItems: [...(prevBackLog.backlogItems || []), newItem],
             };
             return updatedBackLog;
           }
@@ -391,6 +417,8 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
       rearrangeBacklogItems,
       updateGroups,
       createGroup,
+      groups,
+      setGroups,
     }),
     [
       myBackLogs,
@@ -404,6 +432,8 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
       rearrangeBacklogItems,
       updateGroups,
       createGroup,
+      groups,
+      setGroups,
     ]
   );
 

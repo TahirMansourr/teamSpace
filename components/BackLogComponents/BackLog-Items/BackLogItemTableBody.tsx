@@ -28,7 +28,7 @@ const BackLogItemTableBody = ({
   const [groupName, setGroupName] = useState("");
 
   const handleCreateGroup = async () => {
-    if (selectedItems.length < 2 || !groupName.trim()) return;
+    if (selectedItems.length < 1 || !groupName.trim()) return;
 
     await createGroup(groupName, selectedItems);
     

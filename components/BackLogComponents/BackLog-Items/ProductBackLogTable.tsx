@@ -24,11 +24,11 @@ const ProductBackLogTable = () => {
     selectedBackLog: backLog,
     rearrangeBacklogItems,
     loading,
+    groups,
+    setGroups,
   } = useBackLogContext();
 
-  const [groups, setGroups] = useState<{
-    [key: string]: { name: string; items: string[] };
-  }>({});
+ 
 
   const sensors = useSensors(
     useSensor(PointerSensor),

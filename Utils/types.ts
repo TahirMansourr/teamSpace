@@ -138,15 +138,14 @@ export type BackLogDto = {
 
 export type BackLogItemDto = {
     _id : string,
-    productBacklogId : string,
     title : string,
     description : string,
     type : 'Feature' | 'Bug' | 'Technical Debt' | 'Improvement' | 'Spike',
-    priority : 'Low' | 'Medium' | 'High',
-    status : 'To Do' | 'In Progress' | 'Done',
     estimatedEffort : number,
     acceptanceCriteria : string,
+    priority : 'Low' | 'Medium' | 'High',
+    status : 'To Do' | 'In Progress' | 'Done' | 'Review',
     assignee : UserDto[],
-    createdAt : Date,
-    updatedAt : Date | null
+    groupId : string | null,
+    groupName : string | null,
 }
