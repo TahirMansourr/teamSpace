@@ -79,6 +79,12 @@ export type BackLogContextType = {
   createGroup: (groupName: string, items: string[]) => Promise<void>;
   groups: { [key: string]: { name: string; items: string[] } };
   setGroups: Dispatch<SetStateAction<{ [key: string]: { name: string; items: string[] } }>>;
+  isGrouping: boolean;
+  setIsGrouping: (value: boolean) => void;
+  selectedItems: string[];
+  setSelectedItems: Dispatch<SetStateAction<string[]>>;
+  groupName: string;
+  setGroupName: (name: string) => void;
 };
 
 const BackLogContext = createContext<BackLogContextType>(
@@ -116,6 +122,9 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
   const [groups, setGroups] = useState<{
     [key: string]: { name: string; items: string[] };
   }>({});
+  const [isGrouping, setIsGrouping] = useState(false);
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [groupName, setGroupName] = useState("");
 
   useEffect(() => {
     if (selectedBackLog?.backlogItems) {
@@ -419,6 +428,12 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
       createGroup,
       groups,
       setGroups,
+      isGrouping,
+      setIsGrouping,
+      selectedItems,
+      setSelectedItems,
+      groupName,
+      setGroupName,
     }),
     [
       myBackLogs,
@@ -434,6 +449,12 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
       createGroup,
       groups,
       setGroups,
+      isGrouping,
+      setIsGrouping,
+      selectedItems,
+      setSelectedItems,
+      groupName,
+      setGroupName,
     ]
   );
 

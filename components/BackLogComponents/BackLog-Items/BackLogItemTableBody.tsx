@@ -21,34 +21,14 @@ const BackLogItemTableBody = ({
   groups,
   setGroups,
 }: BackLogItemTableBodyProps) => {
-  const { updateGroups, createGroup } = useBackLogContext();
+  const { updateGroups, createGroup , isGrouping, setIsGrouping, selectedItems, setSelectedItems, groupName, setGroupName } = useBackLogContext();
   const [opened, { open, close }] = useDisclosure();
-  const [isGrouping, setIsGrouping] = useState(false);
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  const [groupName, setGroupName] = useState("");
+  
 
-  const handleCreateGroup = async () => {
-    if (selectedItems.length < 1 || !groupName.trim()) return;
-
-    await createGroup(groupName, selectedItems);
-    
-    const groupId = `group-${Date.now()}`;
-    const newGroups = {
-      ...groups,
-      [groupId]: {
-        name: groupName,
-        items: selectedItems
-      }
-    };
-
-    setGroups(newGroups);
-    setSelectedItems([]);
-    setGroupName("");
-    setIsGrouping(false);
-  };
+ 
 
   const toggleItemSelection = (itemId: string) => {
-    setSelectedItems(prev => 
+    setSelectedItems((prev : string[]) => 
       prev.includes(itemId) 
         ? prev.filter(id => id !== itemId)
         : [...prev, itemId]
@@ -59,38 +39,7 @@ const BackLogItemTableBody = ({
     <tbody className="bg-white divide-y divide-gray-200 block md:table-row-group">
       <LoadingOverlay visible={loading} />
       
-      {/* Grouping Controls */}
-      <tr className="block md:table-row">
-        <td colSpan={10} className="p-4">
-          <div className="flex items-center gap-4">
-            <Button
-              onClick={() => setIsGrouping(!isGrouping)}
-              color={isGrouping ? "red" : "blue"}
-            >
-              {isGrouping ? "Cancel Grouping" : "Create Group"}
-            </Button>
-            
-            {isGrouping && (
-              <div className="flex items-center gap-4">
-                <TextInput
-                  placeholder="Enter group name"
-                  value={groupName}
-                  onChange={(e) => setGroupName(e.currentTarget.value)}
-                />
-                <Button
-                  disabled={selectedItems.length < 2 || !groupName.trim()}
-                  onClick={handleCreateGroup}
-                >
-                  Create Group
-                </Button>
-                <Text size="sm" color="dimmed">
-                  {selectedItems.length} items selected
-                </Text>
-              </div>
-            )}
-          </div>
-        </td>
-      </tr>
+     
 
       {/* Grouped Items */}
       {Object.entries(groups).map(([groupId, group]) => (
