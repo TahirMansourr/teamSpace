@@ -4,6 +4,9 @@ import { useState } from 'react';
 import { TextInput, Button, Modal, Menu, ActionIcon, Group } from '@mantine/core';
 import { IconDots, IconEdit, IconTrash, IconClearAll } from '@tabler/icons-react';
 import { useBackLogContext } from '@/components/Contexts/BackLogContext';
+import { FaEdit } from 'react-icons/fa';
+import { MdCancel } from 'react-icons/md';
+import { BiSave } from 'react-icons/bi';
 
 interface GroupActionsProps {
   backlogId: string;
@@ -49,23 +52,23 @@ export function GroupActions({ backlogId, groupId, groupName }: GroupActionsProp
   return (
     <div className="inline-flex items-center">
       {isRenaming ? (
-        <div className="flex gap-2">
+        <div className="flex gap-2 w-full m-3">
           <TextInput
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
             className="w-40"
             placeholder="New group name"
           />
-          <Button size="sm" onClick={onRename}>Save</Button>
-          <Button size="sm" variant="subtle" onClick={() => setIsRenaming(false)}>
-            Cancel
+          <Button size="sm" onClick={onRename} variant='subtle' p={2}><BiSave size={20} /></Button>
+          <Button size="sm" variant="subtle" onClick={() => setIsRenaming(false)} p={2}>
+           <MdCancel size={20} />
           </Button>
         </div>
       ) : (
         <Menu position="bottom-start" withArrow>
           <Menu.Target>
             <ActionIcon variant="subtle" size="sm">
-              <IconDots size={16} />
+              <FaEdit size={16} />
             </ActionIcon>
           </Menu.Target>
 
