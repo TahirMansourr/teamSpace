@@ -324,3 +324,53 @@ export async function DeleteProductBackLogItem(itemId: string, backlogId: string
     throw new Error(`Failed to delete product backlog item: ${error}`);
   }
 }
+
+export async function CreateManyProductBackLogItems(productBackLogItems: ProductBackLogItem[]) {
+  try {
+    await connectToDB();
+
+    if (!productBackLogItems.length) {
+      throw new Error('No items provided for creation');
+    }
+
+    const backlogId = productBackLogItems[0].backlogId;
+    
+    // Prepare items for bulk creation
+    const itemsToCreate = productBackLogItems.map(item => ({
+      ...item,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      backlogId: undefined // Remove backlogId as it's not part of the item schema
+    }));
+
+    // Bulk create all items
+    const createdItems = await ProductBacklogItem.insertMany(itemsToCreate);
+
+    // Update the backlog with all new item IDs
+    const updatedBacklog = await ProductBacklog.findByIdAndUpdate(
+      backlogId,
+      {
+        $push: { 
+          backlogItems: { 
+            $each: createdItems.map(item => item._id) 
+          }
+        },
+        updatedAt: new Date()
+      },
+      { new: true }
+    );
+
+    const itemsRes = JSON.parse(JSON.stringify(createdItems));
+    const backlogRes = JSON.parse(JSON.stringify(updatedBacklog));
+
+    return { 
+      success: true, 
+      items: itemsRes, 
+      backlog: backlogRes,
+      count: createdItems.length 
+    };
+
+  } catch (error) {
+    throw new Error(`Failed to create multiple product backlog items: ${error}`);
+  }
+}

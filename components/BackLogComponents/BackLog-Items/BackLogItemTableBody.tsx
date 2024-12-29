@@ -14,12 +14,14 @@ interface BackLogItemTableBodyProps {
   loading: boolean;
   groups: { [key: string]: { name: string; items: string[] } };
   setGroups: (groups: { [key: string]: { name: string; items: string[] } }) => void;
+  aiGeneratedBackLogs? : BackLogItemDto[];
 }
 
 const BackLogItemTableBody = ({
   backLog,
   loading,
   groups,
+  aiGeneratedBackLogs
 }: BackLogItemTableBodyProps) => {
   const {  isGrouping,  selectedItems, setSelectedItems } = useBackLogContext();
   const [opened, { open, close }] = useDisclosure();
@@ -49,8 +51,6 @@ const BackLogItemTableBody = ({
               <td className="flex">           
                    <GroupActions backlogId={backLog._id} groupId={groupId} groupName={group.name} />
               </td>
-              
-            
           </tr>
              
 
@@ -73,6 +73,22 @@ const BackLogItemTableBody = ({
       ))}
 
       {/* Ungrouped Items */}
+      {
+       aiGeneratedBackLogs
+        ?.filter(item => !Object.values(groups)
+          .some(group => group.items.includes(item._id)))
+        .map((item: BackLogItemDto, index) => (
+          <BackLogItemTableRow
+            key={item._id}
+            item={item}
+            index={index}
+            id={item._id}
+            isSelectable={isGrouping}
+            isSelected={selectedItems.includes(item._id)}
+            onSelect={() => toggleItemSelection(item._id)}
+          />
+        ))
+      }
       {backLog?.backlogItems
         ?.filter(item => !Object.values(groups)
           .some(group => group.items.includes(item._id)))

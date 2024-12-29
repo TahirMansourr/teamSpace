@@ -2,7 +2,6 @@ import React from "react";
 import { useBackLogContext } from "../Contexts/BackLogContext";
 import FirstBackLog from "./FirstBackLog";
 import AllBackLogs from "./AllBackLogs";
-import { Loader } from "@mantine/core";
 import { SingleBackLogComponent } from "./SingleBackLogComponent";
 import FullScreenLoading from "@/Utils/FullScreenLoading";
 

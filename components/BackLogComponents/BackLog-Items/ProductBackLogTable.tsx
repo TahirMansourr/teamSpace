@@ -3,8 +3,9 @@ import React, { useState } from "react";
 import ProductBacklogTableHead from "./ProductBacklogTableHead";
 import { ProductBackLogTableRows } from "./ProductBackLogTableRows";
 import { GroupingControls } from "./GroupingControls";
+import { BackLogItemDto } from "@/Utils/types";
 
-const ProductBackLogTable = () => {
+const ProductBackLogTable = ({aiGeneratedBackLogs} : {aiGeneratedBackLogs? : BackLogItemDto[]}) => {
  
   return (
     <ScrollArea className="  mx-auto bg-white dark:bg-gray-900 rounded-md w-[95%] overflow-hidden">
@@ -13,7 +14,7 @@ const ProductBackLogTable = () => {
       </div>
       <table className="w-full border-collapse overflow-hidden">
         <ProductBacklogTableHead />
-        <ProductBackLogTableRows />
+        <ProductBackLogTableRows aiGeneratedBackLogs={aiGeneratedBackLogs}/>
       </table>
     </ScrollArea>
   );

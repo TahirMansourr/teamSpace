@@ -2,8 +2,9 @@ import { useBackLogContext } from "@/components/Contexts/BackLogContext";
 import { closestCenter, DndContext, DragEndEvent, KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core"
 import { rectSortingStrategy, SortableContext, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import BackLogItemTableBody from "./BackLogItemTableBody";
+import { BackLogItemDto } from "@/Utils/types";
 
-export const ProductBackLogTableRows = () => {
+export const ProductBackLogTableRows = ({aiGeneratedBackLogs} : {aiGeneratedBackLogs? : BackLogItemDto[]}) => {
 
     const {
         selectedBackLog: backLog,
@@ -104,6 +105,7 @@ export const ProductBackLogTableRows = () => {
               loading={loading}
               groups={groups}
               setGroups={setGroups}
+              aiGeneratedBackLogs={aiGeneratedBackLogs}
             />
           </SortableContext>
         </DndContext>
