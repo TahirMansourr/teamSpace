@@ -25,13 +25,17 @@ import { getInitialBacklogPrompt } from './utils';
      setError(null)
      setIsBacklogVisible(true)
 
-     const response = await fetch("/api/generate", {
-         method: "POST",
-         headers: {
-         "Content-Type": "application/json",
-         },
-         body: JSON.stringify({ body: getInitialBacklogPrompt(projectDescription) }),
-     });
+     const baseUrl = process.env.NODE_ENV === 'production' 
+            ? window.location.origin  // Uses the current domain in production
+            : 'http://localhost:3000' // Uses localhost in development
+
+        const response = await fetch(`${baseUrl}/api/generate`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ body: getInitialBacklogPrompt(projectDescription) }),
+        });
 
      const data = await response.json();
          console.log("Response:", data);
