@@ -1,7 +1,7 @@
 import { useBackLogContext } from "@/components/Contexts/BackLogContext";
 import React from "react";
 
-const ProductBacklogTableHead = () => {
+const ProductBacklogTableHead = ({aiGeneratedBackLogs} : {aiGeneratedBackLogs? : boolean}) => {
   const { isGrouping } = useBackLogContext();
   return (
     <thead className="bg-gray-50 mb-2">
@@ -9,7 +9,7 @@ const ProductBacklogTableHead = () => {
         {isGrouping && (
          <th className="p-0 m-0 w-12 min-w-[3rem] hover:cursor-pointer">Select</th>
         )}
-        <th className="p-0 m-0 w-8"></th>
+        {!aiGeneratedBackLogs && <th className="p-0 m-0 w-8"></th>}
         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
           Rank
         </th>
@@ -31,9 +31,9 @@ const ProductBacklogTableHead = () => {
         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
           Acceptance Criteria
         </th>
-        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+        {!aiGeneratedBackLogs && <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
           Assignee(s)
-        </th>
+        </th>}
         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
           Actions
         </th>

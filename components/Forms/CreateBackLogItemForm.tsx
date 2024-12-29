@@ -30,7 +30,7 @@ const CreateBackLogItemForm = ({
   close: () => void;
   initialValues?: BackLogItemDto;
 }) => {
-  const { handleCreateBackLogItem, handleUpdateBackLogItem } = useBackLogContext();
+  const { handleCreateBackLogItem, handleUpdateBackLogItem, handleDeleteBackLogItem } = useBackLogContext();
   const { projectInfo } = useWorkSpaceContext();
 
   const dataForMultiSelect = projectInfo.project.team.map((user) => ({
@@ -111,6 +111,13 @@ const CreateBackLogItemForm = ({
       });
     } else {
       await handleCreateBackLogItem(submitData);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (initialValues?._id) {
+      await handleDeleteBackLogItem(initialValues._id);
+      close();
     }
   };
 
@@ -205,6 +212,17 @@ const CreateBackLogItemForm = ({
         <Divider my="lg" />
 
         <Group justify="flex-end" mt="xl">
+          {initialValues && (
+            <Button 
+              variant="filled" 
+              color="red" 
+              onClick={handleDelete}
+              size="md"
+              className="mr-auto"
+            >
+              Delete Item
+            </Button>
+          )}
           <Button 
             variant="outline" 
             onClick={close}

@@ -9,11 +9,11 @@ const ProductBackLogTable = ({aiGeneratedBackLogs} : {aiGeneratedBackLogs? : Bac
  
   return (
     <ScrollArea className="  mx-auto bg-white dark:bg-gray-900 rounded-md w-[95%] overflow-hidden">
-      <div className="flex w-full justify-end mb-2">
+      <div className="flex w-full justify-end pr-4 py-2">
         <GroupingControls />
       </div>
       <table className="w-full border-collapse overflow-hidden">
-        <ProductBacklogTableHead />
+        <ProductBacklogTableHead  aiGeneratedBackLogs={aiGeneratedBackLogs ? true : false}/>
         <ProductBackLogTableRows aiGeneratedBackLogs={aiGeneratedBackLogs}/>
       </table>
     </ScrollArea>

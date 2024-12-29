@@ -90,14 +90,15 @@ export const ProductBackLogTableRows = ({aiGeneratedBackLogs} : {aiGeneratedBack
         }
       };
     
-      return backLog?.backlogItems && (
+      return backLog?.backlogItems &&  (
+
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
           onDragEnd={handleDragEnd}
         >
           <SortableContext
-            items={backLog?.backlogItems.map((p) => p._id)}
+            items={aiGeneratedBackLogs ? aiGeneratedBackLogs.map((p , index) => index) : backLog?.backlogItems.map((p) => p._id)}
             strategy={rectSortingStrategy}
           >
             <BackLogItemTableBody 

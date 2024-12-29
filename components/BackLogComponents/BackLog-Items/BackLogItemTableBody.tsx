@@ -35,26 +35,21 @@ const BackLogItemTableBody = ({
         ? prev.filter(id => id !== itemId)
         : [...prev, itemId]
     );
+    //if the item is in the group remove it from the group else add it to the group
   };
 
   return (
     <tbody className="bg-white divide-y divide-gray-200 block md:table-row-group">
       <LoadingOverlay visible={loading} />
-      
-     
-
       {/* Grouped Items */}
       {Object.entries(groups).map(([groupId, group]) => (
         <React.Fragment key={groupId}>
           <tr className=" flex items-center">
             <td> <Text __size="md" p={4} fw={500}>{group.name}</Text></td>
-              <td className="flex">           
+              <td className="flex p-4">           
                    <GroupActions backlogId={backLog._id} groupId={groupId} groupName={group.name} />
               </td>
-          </tr>
-             
-
-          
+           </tr>
           {backLog?.backlogItems
             ?.filter(item => group.items.includes(item._id))
             .map((item: BackLogItemDto, index) => (
@@ -69,6 +64,21 @@ const BackLogItemTableBody = ({
                 onSelect={() => toggleItemSelection(item._id)}
               />
             ))}
+            {aiGeneratedBackLogs
+            ?.filter(item => group.items.includes(item._id))
+            .map((item: BackLogItemDto, index) => (
+              <BackLogItemTableRow
+                key={item._id}
+                item={item}
+                index={index}
+                id={item._id}
+                isGrouped={true}
+                isSelectable={isGrouping}
+                isSelected={selectedItems.includes(item._id)}
+                onSelect={() => toggleItemSelection(item._id)}
+                isGenerated={true}
+              />
+            ))}
         </React.Fragment>
       ))}
 
@@ -77,7 +87,7 @@ const BackLogItemTableBody = ({
        aiGeneratedBackLogs
         ?.filter(item => !Object.values(groups)
           .some(group => group.items.includes(item._id)))
-        .map((item: BackLogItemDto, index) => (
+          .map((item: BackLogItemDto, index) => (
           <BackLogItemTableRow
             key={item._id}
             item={item}
@@ -86,12 +96,12 @@ const BackLogItemTableBody = ({
             isSelectable={isGrouping}
             isSelected={selectedItems.includes(item._id)}
             onSelect={() => toggleItemSelection(item._id)}
+            isGenerated={true}
           />
         ))
       }
-      {backLog?.backlogItems
-        ?.filter(item => !Object.values(groups)
-          .some(group => group.items.includes(item._id)))
+     {backLog?.backlogItems
+        ?.filter(item => !item.groupId)  
         .map((item: BackLogItemDto, index) => (
           <BackLogItemTableRow
             key={item._id}

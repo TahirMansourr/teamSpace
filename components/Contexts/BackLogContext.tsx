@@ -17,11 +17,11 @@ import {
 } from "@/lib/actions/ProductBackLogActions";
 import { useWorkSpaceContext } from "./WorkSpaceContext";
 import { notifications } from "@mantine/notifications";
-import { CreateProductBackLogItem, UpdateProductBackLogItem, UpdateProductBackLogItemGroups, CreateProductBackLogItemGroup, RenameProductBackLogItemGroup, DeleteProductBackLogItemGroup, ClearProductBackLogItemGroup } from "@/lib/actions/ProductBackLogItemActions";
+import { CreateProductBackLogItem, UpdateProductBackLogItem, UpdateProductBackLogItemGroups, CreateProductBackLogItemGroup, RenameProductBackLogItemGroup, DeleteProductBackLogItemGroup, ClearProductBackLogItemGroup, DeleteProductBackLogItem } from "@/lib/actions/ProductBackLogItemActions";
 import { get } from "http";
 
 type createBackLogItem = {
-  e: React.FormEvent;
+  e?: React.FormEvent;
   title: string;
   description: string;
   type: "Feature" | "Bug" | "Technical Debt" | "Improvement" | "Spike";
@@ -88,6 +88,7 @@ export type BackLogContextType = {
   handleRenameGroup: (groupId: string, newName: string) => Promise<void>;
   handleDeleteGroup: (groupId: string) => Promise<void>;
   handleClearGroup: (groupId: string) => Promise<void>;
+  handleDeleteBackLogItem: (itemId: string) => Promise<void>;
 };
 
 const BackLogContext = createContext<BackLogContextType>(
@@ -191,7 +192,7 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
     close,
   }: createBackLogItem) => {
     setLoading(true);
-    e.preventDefault();
+    e ? e.preventDefault() : null;
     const selectedTeamMembers = getSelectedTeamMembers(team, assignee);
     try {
       const newBacklogItem = await CreateProductBackLogItem({
@@ -251,7 +252,7 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
     backlogItemId,
   }: updateBackLogItem) => {
     setLoading(true);
-    e.preventDefault();
+    e ? e.preventDefault() : null;
     const selectedTeamMembers = getSelectedTeamMembers(team, assignee);
     try {
       const updatedBacklogItem = await UpdateProductBackLogItem({
@@ -551,6 +552,38 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const handleDeleteBackLogItem = async (itemId: string) => {
+    try {
+      setLoading(true);
+      await DeleteProductBackLogItem(itemId, selectedBackLog?._id as string);
+
+      // Update local state
+      setSelectedBackLog((prevBackLog) => {
+        if (!prevBackLog) return null;
+        
+        return {
+          ...prevBackLog,
+          backlogItems: prevBackLog.backlogItems?.filter(
+            item => item._id !== itemId
+          )
+        };
+      });
+
+      notifications.show({ 
+        message: "Item deleted successfully", 
+        color: "green" 
+      });
+    } catch (error) {
+      console.error("Failed to delete item:", error);
+      notifications.show({ 
+        message: "Failed to delete item", 
+        color: "red" 
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const value = useMemo(
     () => ({
       myBackLogs,
@@ -575,6 +608,7 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
       handleRenameGroup,
       handleDeleteGroup,
       handleClearGroup,
+      handleDeleteBackLogItem,
     }),
     [
       myBackLogs,
@@ -599,6 +633,7 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
       handleRenameGroup,
       handleDeleteGroup,
       handleClearGroup,
+      handleDeleteBackLogItem,
     ]
   );
 

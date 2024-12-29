@@ -64,6 +64,7 @@ const productBacklogItemSchema = new Schema(
  }
 );
 The backlog should be in the following JSON format that has an array of objects with the following fields: title, description, type, priority, status, estimatedEffort, acceptanceCriteria, assignee, createdAt, updatedAt, groupId, groupName. without the createdAt and updatedAt fields.
- and the updatedAt field should be the current date and time but don't give them back in the response. make sure the output you give is in JSON format.
+ and the updatedAt field should be the current date and time but don't give them back in the response. make sure the output you give is in JSON format and i just want the array of objects , nothing else don't give me any other text or comments.
+  don't give me anything else except the JSON format and again at the begginning don't write Json or anything else just the array of objects.
 The user's description is as follows: '${projectDescription}'. Prioritize user-centric stories and actionable tasks. Generate at least 5 backlog items.`
 }

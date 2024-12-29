@@ -6,9 +6,12 @@ import React from "react";
 import { MdDragIndicator } from "react-icons/md";
 import PreviewBackLogItem from "./PrieviewBackLogItem";
 import { useDisclosure } from "@mantine/hooks";
-import { FaPlay } from "react-icons/fa6";
+import { FaCheck, FaPlay, FaTrash } from "react-icons/fa6";
 import { FaEdit } from "react-icons/fa";
 import CreateBackLogItemModal from "./createBackLogItemModal";
+import { CreateProductBackLogItem } from "@/lib/actions/ProductBackLogItemActions";
+import { useBackLogContext } from "@/components/Contexts/BackLogContext";
+import { LoadingOverlay } from "@mantine/core";
 
 interface BackLogItemTableRowProps {
   item: BackLogItemDto;
@@ -18,6 +21,7 @@ interface BackLogItemTableRowProps {
   isSelectable?: boolean;
   isSelected?: boolean;
   onSelect?: () => void;
+  isGenerated?: boolean;
 }
 
 const BackLogItemTableRow = ({
@@ -28,12 +32,14 @@ const BackLogItemTableRow = ({
   isSelectable = false,
   isSelected = false,
   onSelect,
+  isGenerated 
 }: BackLogItemTableRowProps) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
 
   const [opened, { open, close }] = useDisclosure();
   const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure();
+  const {selectedBackLog , handleCreateBackLogItem , loading} = useBackLogContext() 
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -50,6 +56,7 @@ const BackLogItemTableRow = ({
       ref={setNodeRef}
       style={style}
     >
+      <LoadingOverlay visible={loading} />
       {isSelectable && (
         <td className="w-8">
           <input
@@ -60,7 +67,7 @@ const BackLogItemTableRow = ({
           />
         </td>
       )}
-      <td className="w-8">
+      {!isGenerated ?<td className="w-8">
         <button
           {...attributes}                     
           {...listeners}
@@ -68,7 +75,7 @@ const BackLogItemTableRow = ({
         >
           <MdDragIndicator className="text-gray-400 hover:text-gray-600" />
         </button>
-      </td>
+      </td> : null}
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
         {index + 1}
       </td>
@@ -100,7 +107,7 @@ const BackLogItemTableRow = ({
           ? `${item.acceptanceCriteria.slice(0, 20)} ...`
           : item.acceptanceCriteria}
       </td>
-      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+      {!isGenerated ?<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
         {item.assignee.map((assignee) => (
           <span
             key={assignee._id}
@@ -109,7 +116,7 @@ const BackLogItemTableRow = ({
             {assignee.username}
           </span>
         ))}
-      </td>
+      </td> : null}
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
         <PreviewBackLogItem backlogItem={item}
         opened={opened}
@@ -117,6 +124,12 @@ const BackLogItemTableRow = ({
         <div className="flex gap-2">
           <FaPlay onClick={open} className="text-gray-500 hover:text-gray-600 cursor-pointer" />
           <FaEdit onClick={openEdit} className="text-gray-500 hover:text-gray-600 cursor-pointer" />
+          {selectedBackLog && isGenerated &&
+            <>
+            <FaCheck onClick={ async()=>{ await handleCreateBackLogItem({...item , assignee : [] })}} className="text-gray-500 hover:text-gray-600 cursor-pointer" />
+            <FaTrash onClick={openEdit} className="text-gray-500 hover:text-gray-600 cursor-pointer" />
+            </>
+            }
         </div>
         <CreateBackLogItemModal opened={editOpened} close={closeEdit} initialValues={item} />
       </td>
