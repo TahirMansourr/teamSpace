@@ -22,6 +22,8 @@ interface BackLogItemTableRowProps {
   isSelected?: boolean;
   onSelect?: () => void;
   isGenerated?: boolean;
+  isAccepted?: boolean;
+  setAiGeneratedBacklog?: React.Dispatch<React.SetStateAction<BackLogItemDto[]>>;
 }
 
 const BackLogItemTableRow = ({
@@ -32,7 +34,9 @@ const BackLogItemTableRow = ({
   isSelectable = false,
   isSelected = false,
   onSelect,
-  isGenerated 
+  isGenerated ,
+  isAccepted ,
+  setAiGeneratedBacklog
 }: BackLogItemTableRowProps) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
@@ -51,6 +55,7 @@ const BackLogItemTableRow = ({
         hover:bg-gray-50 cursor-pointer w-[90%]
         ${isGrouped ? 'pl-8 border-l-2 border-blue-200' : 'mt-2'}
         ${isSelected ? 'bg-blue-50' : ''}
+        ${isAccepted ? 'bg-green-50' : ''}
       `}
       key={item._id}
       ref={setNodeRef}
@@ -129,16 +134,33 @@ const BackLogItemTableRow = ({
         <CreateBackLogItemModal opened={editOpened} close={closeEdit} initialValues={item} />
       </td>
       <td>
-      {selectedBackLog && isGenerated &&
-            <div className="flex gap-4 items-center">
+      {selectedBackLog && isGenerated && !isAccepted &&
+            <div className="flex gap-4 items-center pl-3">
               <div className="group relative">
-                <FaCheck color="green" onClick={async()=>{ await handleCreateBackLogItem({...item , assignee : [] })}} className="text-gray-500 hover:text-gray-600 cursor-pointer" />
+                <FaCheck 
+                  color="green" 
+                  onClick={async()=>{ 
+                    await handleCreateBackLogItem({...item , assignee : []})
+                    setAiGeneratedBacklog && setAiGeneratedBacklog(prev => 
+                      prev.filter(p => p.title !== item.title) as BackLogItemDto[]
+                    )
+                  }} 
+                  className="text-gray-500 hover:text-gray-600 cursor-pointer" 
+                />
                 <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-2 py-1 rounded text-sm opacity-0 group-hover:opacity-100 transition-opacity">
                   Accept
                 </span>
               </div>
               <div className="group relative">
-                <FaX color="red" onClick={openEdit} className="text-gray-500 hover:text-gray-600 cursor-pointer" />
+                <FaX 
+                  color="red" 
+                  onClick={() => {
+                    setAiGeneratedBacklog && setAiGeneratedBacklog(prev => 
+                      prev.filter(p => p.title !== item.title) as BackLogItemDto[]
+                    )
+                  }} 
+                  className="text-gray-500 hover:text-gray-600 cursor-pointer" 
+                />
                 <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-2 py-1 rounded text-sm opacity-0 group-hover:opacity-100 transition-opacity">
                   Reject
                 </span>

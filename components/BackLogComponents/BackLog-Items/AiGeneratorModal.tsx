@@ -88,7 +88,9 @@ import { getInitialBacklogPrompt } from './utils';
         output={output} 
         backlog={backlog} 
         isBacklogVisible={isBacklogVisible} 
-        error={error} />
+        error={error} 
+        setAiGeneratedBacklog={setBacklog}
+        />
      );
  };
 

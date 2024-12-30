@@ -4,7 +4,7 @@ import { rectSortingStrategy, SortableContext, sortableKeyboardCoordinates } fro
 import BackLogItemTableBody from "./BackLogItemTableBody";
 import { BackLogItemDto } from "@/Utils/types";
 
-export const ProductBackLogTableRows = ({aiGeneratedBackLogs} : {aiGeneratedBackLogs? : BackLogItemDto[]}) => {
+export const ProductBackLogTableRows = ({aiGeneratedBackLogs , setAiGeneratedBacklog} : {aiGeneratedBackLogs? : BackLogItemDto[] , setAiGeneratedBacklog? : React.Dispatch<React.SetStateAction<BackLogItemDto[]>>}) => {
 
     const {
         selectedBackLog: backLog,
@@ -107,6 +107,7 @@ export const ProductBackLogTableRows = ({aiGeneratedBackLogs} : {aiGeneratedBack
               groups={groups}
               setGroups={setGroups}
               aiGeneratedBackLogs={aiGeneratedBackLogs}
+              setAiGeneratedBacklog={setAiGeneratedBacklog}
             />
           </SortableContext>
         </DndContext>

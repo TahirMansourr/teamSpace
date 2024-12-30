@@ -15,13 +15,15 @@ interface BackLogItemTableBodyProps {
   groups: { [key: string]: { name: string; items: string[] } };
   setGroups: (groups: { [key: string]: { name: string; items: string[] } }) => void;
   aiGeneratedBackLogs? : BackLogItemDto[];
+  setAiGeneratedBacklog? : React.Dispatch<React.SetStateAction<BackLogItemDto[]>>;
 }
 
 const BackLogItemTableBody = ({
   backLog,
   loading,
   groups,
-  aiGeneratedBackLogs
+  aiGeneratedBackLogs ,
+  setAiGeneratedBacklog
 }: BackLogItemTableBodyProps) => {
   const {  isGrouping,  selectedItems, setSelectedItems } = useBackLogContext();
   const [opened, { open, close }] = useDisclosure();
@@ -97,10 +99,11 @@ const BackLogItemTableBody = ({
             isSelected={selectedItems.includes(item._id)}
             onSelect={() => toggleItemSelection(item._id)}
             isGenerated={true}
+            setAiGeneratedBacklog={setAiGeneratedBacklog}
           />
         ))
       }
-     {backLog?.backlogItems
+     {!aiGeneratedBackLogs && backLog?.backlogItems
         ?.filter(item => !item.groupId)  
         .map((item: BackLogItemDto, index) => (
           <BackLogItemTableRow
@@ -113,6 +116,30 @@ const BackLogItemTableBody = ({
             onSelect={() => toggleItemSelection(item._id)}
           />
         ))}
+        {aiGeneratedBackLogs && backLog && (
+          <>
+            <tr>
+              <td colSpan={5}>
+                <Text size="md" p={4} fw={500}>Accepted Backlogs</Text>
+              </td>
+            </tr>
+            {backLog.backlogItems
+              ?.filter(item => !item.groupId)
+              .map((item: BackLogItemDto, index) => (
+                <BackLogItemTableRow
+                  key={item._id}
+                  item={item}
+                  index={index}
+                  id={item._id}
+                  isSelectable={isGrouping}
+                  isSelected={selectedItems.includes(item._id)}
+                  onSelect={() => toggleItemSelection(item._id)}
+                  isGenerated={true}
+                  isAccepted={true}
+                />
+              ))}
+          </>
+        )}
 
       {/* Add Item Button */}
       <tr className="block md:table-row">

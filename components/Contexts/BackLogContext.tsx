@@ -131,6 +131,7 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
   const [isGrouping, setIsGrouping] = useState(false);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [groupName, setGroupName] = useState("");
+  const [acceptedBackLogs, setAcceptedBackLogs] = useState<BackLogItemDto[]>([]);
 
   useEffect(() => {
     if (selectedBackLog?.backlogItems) {

@@ -16,6 +16,7 @@ export default function GenerateWithAIModal({
   backlog,
   isBacklogVisible,
   error,
+  setAiGeneratedBacklog
 }: {
   opened: boolean;
   close: () => void;
@@ -27,6 +28,7 @@ export default function GenerateWithAIModal({
   backlog: BackLogItemDto[];
   isBacklogVisible: boolean;
   error: string | null;
+  setAiGeneratedBacklog: (value: BackLogItemDto[]) => void;
 }) {
   return (
     <Modal
@@ -69,7 +71,7 @@ export default function GenerateWithAIModal({
             <h3 className="font-bold text-lg mb-4 text-gray-800">
               Generated Backlog Items:
             </h3>
-            <ProductBackLogTable aiGeneratedBackLogs={backlog} />
+            <ProductBackLogTable aiGeneratedBackLogs={backlog} setAiGeneratedBacklog={setAiGeneratedBacklog}/>
           </div>
         )}
         {error && (
