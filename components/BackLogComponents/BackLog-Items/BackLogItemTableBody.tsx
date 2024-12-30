@@ -44,8 +44,8 @@ const BackLogItemTableBody = ({
       {/* Grouped Items */}
       {Object.entries(groups).map(([groupId, group]) => (
         <React.Fragment key={groupId}>
-          <tr className=" flex items-center">
-            <td> <Text __size="md" p={4} fw={500}>{group.name}</Text></td>
+          <tr className=" flex items-center" >
+            <td colSpan={3}> <Text __size="md" p={4} fw={500} aria-colspan={2} >{group.name}</Text></td>
               <td className="flex p-4">           
                    <GroupActions backlogId={backLog._id} groupId={groupId} groupName={group.name} />
               </td>

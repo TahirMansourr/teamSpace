@@ -13,6 +13,7 @@ import {
 import { useGetMyProductBackLogs } from "../BackLogComponents/hooks";
 import {
   CreateProductBackLog,
+  DeleteBackLog,
   RearrangeProductBackLogItem,
 } from "@/lib/actions/ProductBackLogActions";
 import { useWorkSpaceContext } from "./WorkSpaceContext";
@@ -89,6 +90,7 @@ export type BackLogContextType = {
   handleDeleteGroup: (groupId: string) => Promise<void>;
   handleClearGroup: (groupId: string) => Promise<void>;
   handleDeleteBackLogItem: (itemId: string) => Promise<void>;
+  handleDeleteBackLog: (backlogId: string) => Promise<void>;
 };
 
 const BackLogContext = createContext<BackLogContextType>(
@@ -584,6 +586,43 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const handleDeleteBackLog = async (backlogId: string) => {
+    try {
+      setLoading(true);
+      const response = await DeleteBackLog(backlogId);
+      
+      if (response.status === 'success') {
+        // Update local state
+        setMyBackLogs((prevBackLogs) => 
+          prevBackLogs?.filter(backlog => backlog._id !== backlogId) || null
+        );
+
+        // If the deleted backlog was selected, clear the selection
+        if (selectedBackLog?._id === backlogId) {
+          setSelectedBackLog(null);
+        }
+
+        notifications.show({ 
+          message: response.message, 
+          color: "green" 
+        });
+      } else {
+        notifications.show({ 
+          message: response.message, 
+          color: "red" 
+        });
+      }
+    } catch (error) {
+      console.error("Failed to delete backlog:", error);
+      notifications.show({ 
+        message: "Failed to delete backlog", 
+        color: "red" 
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const value = useMemo(
     () => ({
       myBackLogs,
@@ -609,6 +648,7 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
       handleDeleteGroup,
       handleClearGroup,
       handleDeleteBackLogItem,
+      handleDeleteBackLog,
     }),
     [
       myBackLogs,
@@ -634,6 +674,7 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
       handleDeleteGroup,
       handleClearGroup,
       handleDeleteBackLogItem,
+      handleDeleteBackLog,
     ]
   );
 

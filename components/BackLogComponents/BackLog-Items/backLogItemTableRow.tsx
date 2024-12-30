@@ -6,7 +6,7 @@ import React from "react";
 import { MdDragIndicator } from "react-icons/md";
 import PreviewBackLogItem from "./PrieviewBackLogItem";
 import { useDisclosure } from "@mantine/hooks";
-import { FaCheck, FaPlay, FaTrash } from "react-icons/fa6";
+import { FaCheck, FaCross, FaPlay, FaTrash, FaX } from "react-icons/fa6";
 import { FaEdit } from "react-icons/fa";
 import CreateBackLogItemModal from "./createBackLogItemModal";
 import { CreateProductBackLogItem } from "@/lib/actions/ProductBackLogItemActions";
@@ -124,14 +124,27 @@ const BackLogItemTableRow = ({
         <div className="flex gap-2">
           <FaPlay onClick={open} className="text-gray-500 hover:text-gray-600 cursor-pointer" />
           <FaEdit onClick={openEdit} className="text-gray-500 hover:text-gray-600 cursor-pointer" />
-          {selectedBackLog && isGenerated &&
-            <>
-            <FaCheck onClick={ async()=>{ await handleCreateBackLogItem({...item , assignee : [] })}} className="text-gray-500 hover:text-gray-600 cursor-pointer" />
-            <FaTrash onClick={openEdit} className="text-gray-500 hover:text-gray-600 cursor-pointer" />
-            </>
-            }
+          
         </div>
         <CreateBackLogItemModal opened={editOpened} close={closeEdit} initialValues={item} />
+      </td>
+      <td>
+      {selectedBackLog && isGenerated &&
+            <div className="flex gap-4 items-center">
+              <div className="group relative">
+                <FaCheck color="green" onClick={async()=>{ await handleCreateBackLogItem({...item , assignee : [] })}} className="text-gray-500 hover:text-gray-600 cursor-pointer" />
+                <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-2 py-1 rounded text-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                  Accept
+                </span>
+              </div>
+              <div className="group relative">
+                <FaX color="red" onClick={openEdit} className="text-gray-500 hover:text-gray-600 cursor-pointer" />
+                <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-2 py-1 rounded text-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                  Reject
+                </span>
+              </div>
+            </div>
+            }
       </td>
     </tr>
   );

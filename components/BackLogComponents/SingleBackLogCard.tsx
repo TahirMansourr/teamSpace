@@ -1,11 +1,11 @@
 "use client";
 import { BackLogDto } from "@/Utils/types";
 import React from "react";
-import { MdOpenInBrowser } from "react-icons/md";
+import { MdOpenInBrowser, MdDelete } from "react-icons/md";
 import { useBackLogContext } from "../Contexts/BackLogContext";
 
 const SingleBackLogCard = ({ backlog }: { backlog: BackLogDto }) => {
-  const { setSelectedBackLog } = useBackLogContext();
+  const { setSelectedBackLog , handleDeleteBackLog } = useBackLogContext();
   return (
     <div
       key={backlog._id}
@@ -15,12 +15,20 @@ const SingleBackLogCard = ({ backlog }: { backlog: BackLogDto }) => {
         <h2 className="text-lg font-semibold text-indigo-600">
           {backlog.name}
         </h2>
-        <button
-          className=" hover:bg-gray-100 rounded-md hover:scale-110"
-          onClick={() => setSelectedBackLog(backlog)}
-        >
-          <MdOpenInBrowser size={25} className="text-blue-600" />
-        </button>
+        <div className="flex gap-2">
+          <button
+            className="hover:bg-gray-100 rounded-md hover:scale-110"
+            onClick={() => setSelectedBackLog(backlog)}
+          >
+            <MdOpenInBrowser size={25} className="text-blue-600" />
+          </button>
+          <button
+            className="hover:bg-gray-100 rounded-md hover:scale-110"
+            onClick={() => handleDeleteBackLog(backlog._id)}
+          >
+            <MdDelete size={25} className="text-red-600" />
+          </button>
+        </div>
       </div>
 
       <p className="text-gray-600 text-sm mb-4 line-clamp-2">

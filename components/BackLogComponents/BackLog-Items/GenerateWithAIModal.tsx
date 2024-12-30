@@ -57,6 +57,7 @@ export default function GenerateWithAIModal({
       }}
     >
       <div className="flex flex-col gap-4  mx-auto">
+        {isLoading && <div className="flex justify-center items-center transition-all duration-300 ease-in-out "> <Loader type="bars" size="lg"  /> </div>}
         {output && !backlog.length && (
           <div className="p-6 bg-gray-50 rounded-xl border border-gray-200">
             <p className="whitespace-pre-wrap text-gray-700">{output}</p>

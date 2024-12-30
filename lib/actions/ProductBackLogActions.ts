@@ -71,3 +71,16 @@ export async function RearrangeProductBackLogItem(backlogId: string, backLogs : 
   }catch (error) {
     throw new Error (`Failed to rearrange product backlog item: ${error}`);
   }}
+
+  export async function DeleteBackLog(backLogId : string) {
+    try {
+      await connectToDB()
+      const backLogItem = await ProductBacklog.findById(backLogId)
+      if(!backLogItem) return ({status: 'Fail', message: 'Sorry this user does not exist anymore', backLog: {}})
+
+      await ProductBacklog.findByIdAndDelete(backLogId)
+      return ({status: 'success', message: 'Backlog item deleted successfully', backLog: {}})
+    } catch (error) {
+      throw new Error (`Failed to delete product backlog item: ${error}`);
+    }
+  }
