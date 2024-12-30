@@ -28,7 +28,7 @@ export default function GenerateWithAIModal({
   backlog: BackLogItemDto[];
   isBacklogVisible: boolean;
   error: string | null;
-  setAiGeneratedBacklog: (value: BackLogItemDto[]) => void;
+  setAiGeneratedBacklog: React.Dispatch<React.SetStateAction<BackLogItemDto[]>>;
 }) {
   return (
     <Modal
