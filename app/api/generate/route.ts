@@ -2,10 +2,17 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req : NextRequest, res : NextResponse) {
+    // Validate API key exists
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+        return NextResponse.json(
+            { error: "GEMINI_API_KEY is not configured" },
+            { status: 500 }
+        );
+    }
 
     try {
-        
-        const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY !)
+        const genAI = new GoogleGenerativeAI(apiKey);
 
         const model = genAI.getGenerativeModel({ model: "gemini-pro" })
 
@@ -20,9 +27,21 @@ export async function POST(req : NextRequest, res : NextResponse) {
         const response =  result.response;
         const output =  response.text();
 
+        // Add error handling for the response
+        if (!response || !output) {
+            return NextResponse.json(
+                { error: "Failed to generate content" },
+                { status: 500 }
+            );
+        }
+
         // Send the llm output as a server response object
         return NextResponse.json({ output })
     } catch (error) {
-        console.error(error)
+        console.error('Gemini API Error:', error);
+        return NextResponse.json(
+            { error: "Failed to process request" },
+            { status: 500 }
+        );
     }
 }
