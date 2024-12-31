@@ -18,7 +18,16 @@ import {
 } from "@/lib/actions/ProductBackLogActions";
 import { useWorkSpaceContext } from "./WorkSpaceContext";
 import { notifications } from "@mantine/notifications";
-import { CreateProductBackLogItem, UpdateProductBackLogItem, UpdateProductBackLogItemGroups, CreateProductBackLogItemGroup, RenameProductBackLogItemGroup, DeleteProductBackLogItemGroup, ClearProductBackLogItemGroup, DeleteProductBackLogItem } from "@/lib/actions/ProductBackLogItemActions";
+import {
+  CreateProductBackLogItem,
+  UpdateProductBackLogItem,
+  UpdateProductBackLogItemGroups,
+  CreateProductBackLogItemGroup,
+  RenameProductBackLogItemGroup,
+  DeleteProductBackLogItemGroup,
+  ClearProductBackLogItemGroup,
+  DeleteProductBackLogItem,
+} from "@/lib/actions/ProductBackLogItemActions";
 import { get } from "http";
 
 type createBackLogItem = {
@@ -76,10 +85,14 @@ export type BackLogContextType = {
     backlogItemId,
   }: updateBackLogItem) => Promise<void>;
   rearrangeBacklogItems: (items: BackLogItemDto[]) => Promise<void>;
-  updateGroups: (groups: { [key: string]: { name: string; items: string[] } }) => Promise<void>;
+  updateGroups: (groups: {
+    [key: string]: { name: string; items: string[] };
+  }) => Promise<void>;
   createGroup: (groupName: string, items: string[]) => Promise<void>;
   groups: { [key: string]: { name: string; items: string[] } };
-  setGroups: Dispatch<SetStateAction<{ [key: string]: { name: string; items: string[] } }>>;
+  setGroups: Dispatch<
+    SetStateAction<{ [key: string]: { name: string; items: string[] } }>
+  >;
   isGrouping: boolean;
   setIsGrouping: (value: boolean) => void;
   selectedItems: string[];
@@ -91,6 +104,8 @@ export type BackLogContextType = {
   handleClearGroup: (groupId: string) => Promise<void>;
   handleDeleteBackLogItem: (itemId: string) => Promise<void>;
   handleDeleteBackLog: (backlogId: string) => Promise<void>;
+  acceptedBacklogs: BackLogItemDto[];
+  setAcceptedBacklogs: Dispatch<SetStateAction<BackLogItemDto[]>>;
 };
 
 const BackLogContext = createContext<BackLogContextType>(
@@ -131,24 +146,27 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
   const [isGrouping, setIsGrouping] = useState(false);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [groupName, setGroupName] = useState("");
-  const [acceptedBackLogs, setAcceptedBackLogs] = useState<BackLogItemDto[]>([]);
+  const [acceptedBacklogs, setAcceptedBacklogs] = useState<BackLogItemDto[]>(
+    []
+  );
 
   useEffect(() => {
     if (selectedBackLog?.backlogItems) {
-      const groupedItems: { [key: string]: { name: string; items: string[] } } = {};
-      
-      selectedBackLog.backlogItems.forEach(item => {
+      const groupedItems: { [key: string]: { name: string; items: string[] } } =
+        {};
+
+      selectedBackLog.backlogItems.forEach((item) => {
         if (item.groupId && item.groupName) {
           if (!groupedItems[item.groupId]) {
             groupedItems[item.groupId] = {
               name: item.groupName,
-              items: []
+              items: [],
             };
           }
           groupedItems[item.groupId].items.push(item._id);
         }
       });
-      
+
       setGroups(groupedItems);
     }
   }, [selectedBackLog]);
@@ -221,7 +239,7 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
               ...newBacklogItem.item,
               assignee: selectedTeamMembers,
               groupId: null,
-              groupName: null
+              groupName: null,
             };
             const updatedBackLog = {
               ...prevBackLog,
@@ -278,7 +296,10 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
               ...prevBackLog,
               backlogItems: prevBackLog.backlogItems?.map((item) =>
                 item._id === backlogItemId
-                  ? { ...updatedBacklogItem.item, assignee: selectedTeamMembers }
+                  ? {
+                      ...updatedBacklogItem.item,
+                      assignee: selectedTeamMembers,
+                    }
                   : item
               ),
             };
@@ -321,49 +342,51 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const updateGroups = async (groups: { [key: string]: { name: string; items: string[] } }) => {
+  const updateGroups = async (groups: {
+    [key: string]: { name: string; items: string[] };
+  }) => {
     try {
       setLoading(true);
       await UpdateProductBackLogItemGroups({
         backlogId: selectedBackLog?._id as string,
-        groups
+        groups,
       });
-      
+
       // Update local state
       setSelectedBackLog((prevBackLog) => {
         if (!prevBackLog) return null;
-        
-        const updatedItems = prevBackLog.backlogItems?.map(item => {
+
+        const updatedItems = prevBackLog.backlogItems?.map((item) => {
           // Find if item belongs to any group
-          const group = Object.entries(groups).find(([_, g]) => 
+          const group = Object.entries(groups).find(([_, g]) =>
             g.items.includes(item._id)
           );
-          
+
           if (group) {
             return {
               ...item,
               groupId: group[0],
-              groupName: group[1].name
+              groupName: group[1].name,
             };
           }
-          
+
           return {
             ...item,
             groupId: null,
-            groupName: null
+            groupName: null,
           };
         });
 
         return {
           ...prevBackLog,
-          backlogItems: updatedItems
+          backlogItems: updatedItems,
         };
       });
     } catch (error) {
       console.error("Failed to update groups:", error);
-      notifications.show({ 
-        message: "Failed to update groups", 
-        color: "red" 
+      notifications.show({
+        message: "Failed to update groups",
+        color: "red",
       });
     } finally {
       setLoading(false);
@@ -374,25 +397,25 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       setLoading(true);
       const groupId = `group-${Date.now()}`;
-      
+
       const result = await CreateProductBackLogItemGroup({
         backlogId: selectedBackLog?._id as string,
         groupId,
         name: groupName,
-        items
+        items,
       });
 
       if (result.success) {
         // Update local state
         setSelectedBackLog((prevBackLog) => {
           if (!prevBackLog) return null;
-          
-          const updatedItems = prevBackLog.backlogItems?.map(item => {
+
+          const updatedItems = prevBackLog.backlogItems?.map((item) => {
             if (items.includes(item._id)) {
               return {
                 ...item,
                 groupId,
-                groupName
+                groupName,
               };
             }
             return item;
@@ -400,20 +423,20 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
 
           return {
             ...prevBackLog,
-            backlogItems: updatedItems
+            backlogItems: updatedItems,
           };
         });
 
-        notifications.show({ 
-          message: `Group "${groupName}" created successfully`, 
-          color: "green" 
+        notifications.show({
+          message: `Group "${groupName}" created successfully`,
+          color: "green",
         });
       }
     } catch (error) {
       console.error("Failed to create group:", error);
-      notifications.show({ 
-        message: "Failed to create group", 
-        color: "red" 
+      notifications.show({
+        message: "Failed to create group",
+        color: "red",
       });
     } finally {
       setLoading(false);
@@ -423,21 +446,21 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
   const handleRenameGroup = async (groupId: string, newName: string) => {
     try {
       setLoading(true);
-      await RenameProductBackLogItemGroup({ 
-        backlogId: selectedBackLog?._id as string, 
-        groupId, 
-        name: newName 
+      await RenameProductBackLogItemGroup({
+        backlogId: selectedBackLog?._id as string,
+        groupId,
+        name: newName,
       });
 
       // Update local state
       setSelectedBackLog((prevBackLog) => {
         if (!prevBackLog) return null;
-        
-        const updatedItems = prevBackLog.backlogItems?.map(item => {
+
+        const updatedItems = prevBackLog.backlogItems?.map((item) => {
           if (item.groupId === groupId) {
             return {
               ...item,
-              groupName: newName
+              groupName: newName,
             };
           }
           return item;
@@ -445,7 +468,7 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
 
         return {
           ...prevBackLog,
-          backlogItems: updatedItems
+          backlogItems: updatedItems,
         };
       });
 
@@ -453,11 +476,14 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
         ...prevGroups,
         [groupId]: {
           ...prevGroups[groupId],
-          name: newName
-        }
+          name: newName,
+        },
       }));
 
-      notifications.show({ message: "Group renamed successfully", color: "green" });
+      notifications.show({
+        message: "Group renamed successfully",
+        color: "green",
+      });
     } catch (error) {
       console.error("Failed to rename group:", error);
       notifications.show({ message: "Failed to rename group", color: "red" });
@@ -469,21 +495,21 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
   const handleDeleteGroup = async (groupId: string) => {
     try {
       setLoading(true);
-      await DeleteProductBackLogItemGroup({ 
-        backlogId: selectedBackLog?._id as string, 
-        groupId 
+      await DeleteProductBackLogItemGroup({
+        backlogId: selectedBackLog?._id as string,
+        groupId,
       });
 
       // Update local state
       setSelectedBackLog((prevBackLog) => {
         if (!prevBackLog) return null;
-        
-        const updatedItems = prevBackLog.backlogItems?.map(item => {
+
+        const updatedItems = prevBackLog.backlogItems?.map((item) => {
           if (item.groupId === groupId) {
             return {
               ...item,
               groupId: null,
-              groupName: null
+              groupName: null,
             };
           }
           return item;
@@ -491,7 +517,7 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
 
         return {
           ...prevBackLog,
-          backlogItems: updatedItems
+          backlogItems: updatedItems,
         };
       });
 
@@ -500,7 +526,10 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
         return rest;
       });
 
-      notifications.show({ message: "Group deleted successfully", color: "green" });
+      notifications.show({
+        message: "Group deleted successfully",
+        color: "green",
+      });
     } catch (error) {
       console.error("Failed to delete group:", error);
       notifications.show({ message: "Failed to delete group", color: "red" });
@@ -512,21 +541,21 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
   const handleClearGroup = async (groupId: string) => {
     try {
       setLoading(true);
-      await ClearProductBackLogItemGroup({ 
-        backlogId: selectedBackLog?._id as string, 
-        groupId 
+      await ClearProductBackLogItemGroup({
+        backlogId: selectedBackLog?._id as string,
+        groupId,
       });
 
       // Update local state
       setSelectedBackLog((prevBackLog) => {
         if (!prevBackLog) return null;
-        
-        const updatedItems = prevBackLog.backlogItems?.map(item => {
+
+        const updatedItems = prevBackLog.backlogItems?.map((item) => {
           if (item.groupId === groupId) {
             return {
               ...item,
               groupId: null,
-              groupName: null
+              groupName: null,
             };
           }
           return item;
@@ -534,7 +563,7 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
 
         return {
           ...prevBackLog,
-          backlogItems: updatedItems
+          backlogItems: updatedItems,
         };
       });
 
@@ -542,11 +571,14 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
         ...prevGroups,
         [groupId]: {
           ...prevGroups[groupId],
-          items: []
-        }
+          items: [],
+        },
       }));
 
-      notifications.show({ message: "Group cleared successfully", color: "green" });
+      notifications.show({
+        message: "Group cleared successfully",
+        color: "green",
+      });
     } catch (error) {
       console.error("Failed to clear group:", error);
       notifications.show({ message: "Failed to clear group", color: "red" });
@@ -563,24 +595,24 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
       // Update local state
       setSelectedBackLog((prevBackLog) => {
         if (!prevBackLog) return null;
-        
+
         return {
           ...prevBackLog,
           backlogItems: prevBackLog.backlogItems?.filter(
-            item => item._id !== itemId
-          )
+            (item) => item._id !== itemId
+          ),
         };
       });
 
-      notifications.show({ 
-        message: "Item deleted successfully", 
-        color: "green" 
+      notifications.show({
+        message: "Item deleted successfully",
+        color: "green",
       });
     } catch (error) {
       console.error("Failed to delete item:", error);
-      notifications.show({ 
-        message: "Failed to delete item", 
-        color: "red" 
+      notifications.show({
+        message: "Failed to delete item",
+        color: "red",
       });
     } finally {
       setLoading(false);
@@ -591,11 +623,12 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       setLoading(true);
       const response = await DeleteBackLog(backlogId);
-      
-      if (response.status === 'success') {
+
+      if (response.status === "success") {
         // Update local state
-        setMyBackLogs((prevBackLogs) => 
-          prevBackLogs?.filter(backlog => backlog._id !== backlogId) || null
+        setMyBackLogs(
+          (prevBackLogs) =>
+            prevBackLogs?.filter((backlog) => backlog._id !== backlogId) || null
         );
 
         // If the deleted backlog was selected, clear the selection
@@ -603,21 +636,21 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
           setSelectedBackLog(null);
         }
 
-        notifications.show({ 
-          message: response.message, 
-          color: "green" 
+        notifications.show({
+          message: response.message,
+          color: "green",
         });
       } else {
-        notifications.show({ 
-          message: response.message, 
-          color: "red" 
+        notifications.show({
+          message: response.message,
+          color: "red",
         });
       }
     } catch (error) {
       console.error("Failed to delete backlog:", error);
-      notifications.show({ 
-        message: "Failed to delete backlog", 
-        color: "red" 
+      notifications.show({
+        message: "Failed to delete backlog",
+        color: "red",
       });
     } finally {
       setLoading(false);
@@ -650,6 +683,8 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
       handleClearGroup,
       handleDeleteBackLogItem,
       handleDeleteBackLog,
+      acceptedBacklogs,
+      setAcceptedBacklogs,
     }),
     [
       myBackLogs,
@@ -676,6 +711,8 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
       handleClearGroup,
       handleDeleteBackLogItem,
       handleDeleteBackLog,
+      acceptedBacklogs,
+      setAcceptedBacklogs,
     ]
   );
 
