@@ -29,8 +29,13 @@ const BackLogItemTableBody = ({
   aiGeneratedBackLogs,
   setAiGeneratedBacklog,
 }: BackLogItemTableBodyProps) => {
-  const { isGrouping, selectedItems, setSelectedItems, acceptedBacklogs } =
-    useBackLogContext();
+  const {
+    isGrouping,
+    selectedItems,
+    setSelectedItems,
+    acceptedBacklogs,
+    filteredBacklogs,
+  } = useBackLogContext();
   const [opened, { open, close }] = useDisclosure();
 
   const toggleItemSelection = (itemId: string) => {
@@ -48,7 +53,7 @@ const BackLogItemTableBody = ({
       {/* Grouped Items */}
       {Object.entries(groups).map(([groupId, group]) => (
         <React.Fragment key={groupId}>
-          {!aiGeneratedBackLogs && backLog.backlogItems && (
+          {!aiGeneratedBackLogs && filteredBacklogs && (
             <tr className=" flex items-center">
               <td colSpan={3}>
                 {" "}
@@ -66,7 +71,7 @@ const BackLogItemTableBody = ({
             </tr>
           )}
           {!aiGeneratedBackLogs &&
-            backLog?.backlogItems
+            filteredBacklogs
               ?.filter((item) => group.items.includes(item._id))
               .map((item: BackLogItemDto, index) => (
                 <BackLogItemTableRow
@@ -122,7 +127,7 @@ const BackLogItemTableBody = ({
           />
         ))}
       {!aiGeneratedBackLogs &&
-        backLog?.backlogItems
+        filteredBacklogs
           ?.filter((item) => !item.groupId)
           .map((item: BackLogItemDto, index) => (
             <BackLogItemTableRow

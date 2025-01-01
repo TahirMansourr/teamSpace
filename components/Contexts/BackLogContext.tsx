@@ -106,6 +106,8 @@ export type BackLogContextType = {
   handleDeleteBackLog: (backlogId: string) => Promise<void>;
   acceptedBacklogs: BackLogItemDto[];
   setAcceptedBacklogs: Dispatch<SetStateAction<BackLogItemDto[]>>;
+  filteredBacklogs: BackLogItemDto[];
+  setFilteredBacklogs: Dispatch<SetStateAction<BackLogItemDto[]>>;
 };
 
 const BackLogContext = createContext<BackLogContextType>(
@@ -148,6 +150,9 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
   const [groupName, setGroupName] = useState("");
   const [acceptedBacklogs, setAcceptedBacklogs] = useState<BackLogItemDto[]>(
     []
+  );
+  const [filteredBacklogs, setFilteredBacklogs] = useState<BackLogItemDto[]>(
+    selectedBackLog?.backlogItems || []
   );
 
   useEffect(() => {
@@ -685,6 +690,8 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
       handleDeleteBackLog,
       acceptedBacklogs,
       setAcceptedBacklogs,
+      filteredBacklogs,
+      setFilteredBacklogs,
     }),
     [
       myBackLogs,
@@ -713,6 +720,8 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
       handleDeleteBackLog,
       acceptedBacklogs,
       setAcceptedBacklogs,
+      filteredBacklogs,
+      setFilteredBacklogs,
     ]
   );
 

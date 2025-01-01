@@ -5,7 +5,8 @@ import { MdOpenInBrowser, MdDelete } from "react-icons/md";
 import { useBackLogContext } from "../Contexts/BackLogContext";
 
 const SingleBackLogCard = ({ backlog }: { backlog: BackLogDto }) => {
-  const { setSelectedBackLog , handleDeleteBackLog } = useBackLogContext();
+  const { setSelectedBackLog, handleDeleteBackLog, setFilteredBacklogs } =
+    useBackLogContext();
   return (
     <div
       key={backlog._id}
@@ -18,7 +19,16 @@ const SingleBackLogCard = ({ backlog }: { backlog: BackLogDto }) => {
         <div className="flex gap-2">
           <button
             className="hover:bg-gray-100 rounded-md hover:scale-110"
-            onClick={() => setSelectedBackLog(backlog)}
+            onClick={() => {
+              setSelectedBackLog(backlog);
+              setFilteredBacklogs(
+                backlog.backlogItems ? backlog.backlogItems : []
+              );
+              console.log(
+                "filteredBacklogsfromSingleBackLogCard",
+                backlog.backlogItems
+              );
+            }}
           >
             <MdOpenInBrowser size={25} className="text-blue-600" />
           </button>
