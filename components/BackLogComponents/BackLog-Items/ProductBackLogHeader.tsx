@@ -10,14 +10,11 @@ import CreateBackLogItemModal from "./createBackLogItemModal";
 import AiGeneratorModal from "./AiGeneratorModal";
 import SortButton from "./SortAndFilterButtons/SortButton";
 import FilterButton from "./SortAndFilterButtons/FilterButton";
+import SearchBar from "./SortAndFilterButtons/SearchBar";
 
 const ProductBackLogHeader = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const {
-    setSelectedBackLog,
-    selectedBackLog: backlog,
-    filteredBacklogs,
-  } = useBackLogContext();
+  const { setSelectedBackLog, selectedBackLog: backlog } = useBackLogContext();
   const [opened, { open, close }] = useDisclosure();
   const [showSortMenu, setShowSortMenu] = useState(false);
   const [showFilterMenu, setShowFilterMenu] = useState(false);
@@ -41,19 +38,7 @@ const ProductBackLogHeader = () => {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center w-full lg:w-auto">
-          <div className="relative w-full sm:w-64 lg:w-auto">
-            <FiSearch
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-              size={20}
-            />
-            <input
-              type="text"
-              placeholder="Search backlog items..."
-              className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
+          <SearchBar />
           <div className="flex gap-2 w-full sm:w-auto">
             <FilterButton
               showFilterMenu={showFilterMenu}
