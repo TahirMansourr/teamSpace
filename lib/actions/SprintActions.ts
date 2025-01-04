@@ -39,3 +39,22 @@ export const CreateSprint = async (sprint:CreateSprintType ) => {
         }
     }
 }
+
+export const GetAllSprints = async (backlogId: string) => {
+    try {
+        await connectToDB();
+        const sprints = await Sprint.find({ backlog: backlogId }).sort({ createdAt: -1 });
+        
+        return {
+            success: true,
+            message: "Sprints fetched successfully",
+            data: JSON.parse(JSON.stringify(sprints))
+        }
+    } catch (error: any) {
+        console.log(error.message);
+        return {
+            success: false,
+            message: error.message
+        }
+    }
+}
