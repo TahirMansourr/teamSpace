@@ -4,6 +4,7 @@ import { BackLogItemDto } from "@/Utils/types";
 import ProductBacklog from "../models/ProductBacklog";
 import ProductBacklogItem from "../models/ProductBackLogItem";
 import { connectToDB } from "../mongoose";
+import Project from "../models/ProjectModel";
 
 export async function GetProductBackLogAndPopulate(projectId : string) {
   try {
@@ -48,6 +49,10 @@ export async function CreateProductBackLog(projectId : string, name? : string , 
       description: backlogDescription,
     });
 
+    await Project.findByIdAndUpdate(projectId, {
+      $push: { backLogs: newBackLog._id },
+    });
+
     const backlogObject = JSON.parse(JSON.stringify(newBackLog));
 
     return { message:`${backlogName} created` , backLog: backlogObject };
@@ -72,6 +77,7 @@ export async function RearrangeProductBackLogItem(backlogId: string, backLogs : 
     throw new Error (`Failed to rearrange product backlog item: ${error}`);
   }}
 
+ 
   export async function DeleteBackLog(backLogId : string) {
     try {
       await connectToDB()

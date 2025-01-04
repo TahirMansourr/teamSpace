@@ -1,4 +1,4 @@
-import exp from "constants"
+
 
 export type ProjectDto = {
     _id : string,
@@ -15,7 +15,8 @@ export type ProjectDto = {
     docs : any[],
     files : FileDto[],
     folders : FolderDto[],
-    activity? : number
+    activity? : number,
+    backLogs? : BackLogDto[],
 
 }
 export type UserDto = {
@@ -64,7 +65,6 @@ export type MesssageDto= {
     createdAt : Date,
     project : string
 }
-
 export type NotesDto = {
     _id : string,
     body : string,
@@ -74,7 +74,6 @@ export type NotesDto = {
     updatedAt : Date | null,
     comments : string[]
 }
-
 export type FeatureDto = {
     _id : string,
     name : string,
@@ -88,13 +87,11 @@ export type FeatureDto = {
     updatedAt : Date | null,
     createdBy : UserDto,
 }
-
 export type Edits = {
     editedBy : UserDto,
     editedAt : Date,
     editedContent : string
 }
-
 export type FileDto = {
     _id : string,
     featureId? : string,
@@ -112,18 +109,17 @@ export type FolderDto = {
     featureId?: string;
     name: string;
     project: ProjectDto;
-    children: (FileDto | FolderDto) []; // Children array can hold both files and folders
+    children: (FileDto | FolderDto) []; 
     createdAt: Date;
     createdBy: UserDto;
     edits: Edits[];
     parent: FolderDto | null;
 }
-
 export type ChildrenDto = {
     _id: string;
     name: string;
-    childrenType: 'File' | 'Folder'; // Indicates if the child is a file or folder
-    child: FileDto | FolderDto;       // The actual file or folder object
+    childrenType: 'File' | 'Folder'; 
+    child: FileDto | FolderDto;       
 }
 
 export type BackLogDto = {
@@ -134,6 +130,7 @@ export type BackLogDto = {
     backlogItems? : BackLogItemDto[],
     createdAt : Date,
     updatedAt : Date | null,
+    sprints? : Sprints[],
 }
 
 export type BackLogItemDto = {
@@ -148,4 +145,17 @@ export type BackLogItemDto = {
     assignee : UserDto[],
     groupId : string | null,
     groupName : string | null,
+}
+
+export type Sprints = {
+    _id : string,
+    name : string,
+    start : Date,
+    end : Date,
+    goal : string,
+    status : 'planned'| 'active'| 'completed'| 'cancelled',
+    createdBy : UserDto,
+    backlogItems? : BackLogItemDto[],
+    createdAt : Date,
+    updatedAt : Date | null,
 }

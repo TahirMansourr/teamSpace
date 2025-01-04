@@ -30,6 +30,12 @@ const productBacklogSchema = new mongoose.Schema(
         ref: 'ProductBacklogItem', 
       },
     ],
+    sprints: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Sprint', 
+      },
+    ],
   },
   {
     timestamps: true,
