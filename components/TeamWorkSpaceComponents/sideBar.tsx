@@ -36,39 +36,39 @@ function SideBar({
     <div className="relative">
       <Burger
         size="sm"
-        c={"green"}
+        c={"blue"}
         opened={opened}
         onClick={() => toggle()}
         aria-label="Toggle navigation"
         className={`${
           opened ? "mt-2" : "absolute m-2"
-        } top-3 left-3 hover:cursor-pointer z-50`}
+        } top-2 left-2 hover:cursor-pointer z-50`}
       />
       <section
-        className={`transform transition-all duration-300 ease-in-out ${
+        className={`transform transition-all duration-200 ease-in-out rounded-md  ${
           opened
-            ? "max-w-[15rem] flex-grow min-h-[30rem] rounded-xl m-2 w-fit p-3 shadow-2xl border border-gray-200 bg-white/90 backdrop-blur-sm"
-            : "max-h-0 opacity-0 w-0 flex-grow-0 min-h-0"
+            ? "w-64 min-h-screen border-r bg-white/95 backdrop-blur-sm"
+            : "w-0 opacity-0"
         }`}
       >
-        <div className="flex flex-col rounded-lg shadow-md border border-gray-100 p-3 bg-gradient-to-br from-gray-50 to-white">
+        <div className="p-4 border-b shadow-sm">
           <UserButton />
-          <h1 className="text-xl font-semibold text-center mt-3 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400">
+          <h1 className="text-lg font-medium mt-2 text-blue-600 text-center">
             {projectName}
           </h1>
         </div>
 
-        <section className="flex h-full w-full  text-xl mt-5 hover:cursor-pointer px-8 min-w-[11rem]">
-          <div className="flex flex-col w-full space-y-2">
+        <nav className="py-4">
+          <div className="space-y-1 px-3">
             {dataForSideBar.map((item: string, index: number) => (
               <button
                 key={index + 1}
-                className={`px-2 py-2 rounded-lg transition-all duration-200 ease-in-out hover:bg-blue-50 
-                                    ${
-                                      SelectedItemInSideBar === item
-                                        ? "bg-gradient-to-r from-blue-600 to-blue-400 text-white shadow-lg shadow-blue-200 translate-x-1 scale-105"
-                                        : "text-gray-700 hover:text-blue-600"
-                                    }`}
+                className={`w-full text-left px-3 py-2 text-sm rounded-md transition-all
+                  ${
+                    SelectedItemInSideBar === item
+                      ? "bg-blue-50 text-blue-600 font-medium"
+                      : "text-gray-600 hover:bg-gray-50 hover:text-blue-600"
+                  }`}
                 onClick={() => {
                   setSelectedItemInSideBar(item);
                   setOpened(false);
@@ -78,14 +78,14 @@ function SideBar({
               </button>
             ))}
           </div>
-        </section>
+        </nav>
 
         <button
-          className="flex mx-auto items-center justify-center gap-2 mt-6 pt-4 border-t border-gray-200 hover:cursor-pointer transition-colors duration-200 text-gray-700 hover:text-blue-600"
+          className="flex items-center justify-center gap-2 px-4 py-2 mt-auto text-sm text-gray-600 hover:text-blue-600 border-t border-b shadow-sm  w-full"
           onClick={() => router.push("/myDashboard")}
         >
-          <LuLayoutDashboard className="w-5 h-5" />
-          <p className="font-semibold">Dashboard</p>
+          <LuLayoutDashboard className="w-4 h-4 text-lg font-bold" size={40} />
+          <span className="text-lg font-bold">Dashboard</span>
         </button>
       </section>
     </div>
