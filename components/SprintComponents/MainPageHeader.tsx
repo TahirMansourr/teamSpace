@@ -1,17 +1,17 @@
 import React, { useState } from "react";
-import { useBackLogContext } from "../Contexts/BackLogContext";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
-import { useSprintContext } from "../Contexts/SprintContext";
+import { CreateOrUpdateSprintModal } from "./CreateSprintModal";
+import { useBackLogContext } from "../Contexts/BackLogContext";
 
 const MainPageHeader = () => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
 
   const {
     selectedBackLog,
     setSelectedBackLog,
     myBackLogs: backlogs,
-  } = useSprintContext();
+  } = useBackLogContext();
   return (
     <div className="flex justify-between items-center mb-8">
       <div className="relative">
@@ -19,7 +19,9 @@ const MainPageHeader = () => {
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           className="flex items-center gap-2 px-4 py-2 border rounded-md hover:bg-gray-50"
         >
-          <span>Select Product Backlog</span>
+          <span>
+            {selectedBackLog ? selectedBackLog.name : "Choose Backlog"}
+          </span>
           <MdKeyboardArrowDown
             className={`transition-transform ${
               isDropdownOpen ? "rotate-180" : ""
@@ -36,7 +38,7 @@ const MainPageHeader = () => {
                   setSelectedBackLog(backlog);
                   setIsDropdownOpen(false);
                 }}
-                className="px-4 py-2 hover:bg-gray-50 cursor-pointer"
+                className="px-4 py-2 hover:bg-gray-50 cursor-pointer w-full text-center"
               >
                 {backlog.name}
               </button>
@@ -45,10 +47,7 @@ const MainPageHeader = () => {
         )}
       </div>
 
-      <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-        <IoMdAdd />
-        Create Sprint
-      </button>
+      <CreateOrUpdateSprintModal />
     </div>
   );
 };

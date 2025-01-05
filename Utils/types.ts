@@ -130,7 +130,7 @@ export type BackLogDto = {
     backlogItems? : BackLogItemDto[],
     createdAt : Date,
     updatedAt : Date | null,
-    sprints? : Sprints[],
+    sprints? : SprintDto[],
 }
 
 export type BackLogItemDto = {
@@ -147,11 +147,11 @@ export type BackLogItemDto = {
     groupName : string | null,
 }
 
-export type Sprints = {
-    _id : string,
+export type SprintDto = {
+    _id? : string,
     name : string,
-    start : Date,
-    end : Date,
+    startDate : Date,
+    endDate : Date,
     goal : string,
     status : 'planned'| 'active'| 'completed'| 'cancelled',
     createdBy : UserDto,

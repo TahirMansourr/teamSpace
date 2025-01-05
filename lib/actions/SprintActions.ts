@@ -1,3 +1,5 @@
+'use server'
+import { BackLogItemDto } from "@/Utils/types";
 import ProductBacklog from "../models/ProductBacklog";
 import Sprint from "../models/Sprint";
 import { connectToDB } from "../mongoose";
@@ -10,10 +12,10 @@ type CreateSprintType = {
     status: string;
     backlog: string;
     createdBy: string;
-    backlogItems?: string[];
+    backlogItems?: BackLogItemDto[];
 }
 
-export const CreateSprint = async (sprint:CreateSprintType ) => {
+export async function CreateSprint (sprint:CreateSprintType )  {
     try {
         await connectToDB();
         const newSprint = await Sprint.create(sprint);
@@ -40,7 +42,7 @@ export const CreateSprint = async (sprint:CreateSprintType ) => {
     }
 }
 
-export const GetAllSprints = async (backlogId: string) => {
+export async function GetAllSprints  (backlogId: string) {
     try {
         await connectToDB();
         const sprints = await Sprint.find({ backlog: backlogId }).sort({ createdAt: -1 });
