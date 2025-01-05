@@ -1,12 +1,20 @@
 "use client";
 
-import { Button, LoadingOverlay, Select, TextInput } from "@mantine/core";
+import {
+  Button,
+  LoadingOverlay,
+  ScrollArea,
+  Select,
+  TextInput,
+} from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { Textarea } from "@mantine/core";
 import { useState } from "react";
 import { useSprintContext } from "../Contexts/SprintContext";
 import { BackLogItemDto } from "@/Utils/types";
+import ProductBackLogTable from "../BackLogComponents/BackLog-Items/ProductBackLogTable";
+import { useBackLogContext } from "../Contexts/BackLogContext";
 
 type CreateSprintType = {
   _id?: string;
@@ -17,11 +25,12 @@ type CreateSprintType = {
   status: "planned" | "active" | "completed" | "cancelled";
   backlog: string;
   createdBy?: string;
-  backlogItems?: BackLogItemDto[];
+  backlogItems?: string[];
 };
 
 const CreateSprintForm = ({ close }: { close: () => void }) => {
   const [loading, setLoading] = useState(false);
+  const { selectedItems } = useBackLogContext();
   const { handleCreateSprint } = useSprintContext();
 
   const form = useForm<any>({
@@ -45,7 +54,11 @@ const CreateSprintForm = ({ close }: { close: () => void }) => {
 
   const handleSubmit = async (values: CreateSprintType) => {
     setLoading(true);
+
     try {
+      if (selectedItems.length > 0) {
+        handleCreateSprint({ ...values, backlogItems: selectedItems });
+      }
       handleCreateSprint(values);
     } catch (error) {
       console.error("Error creating sprint:", error);
@@ -125,6 +138,9 @@ const CreateSprintForm = ({ close }: { close: () => void }) => {
           }}
           {...form.getInputProps("status")}
         />
+        <ScrollArea>
+          <ProductBackLogTable isSelectingForSprint={true} />
+        </ScrollArea>
 
         <div className="flex justify-end items-center gap-3 pt-4 border-t border-gray-100">
           <Button
@@ -134,6 +150,7 @@ const CreateSprintForm = ({ close }: { close: () => void }) => {
           >
             Cancel
           </Button>
+
           <Button
             type="submit"
             className="bg-blue-600 hover:bg-blue-700 transition-colors"

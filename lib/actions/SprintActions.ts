@@ -13,7 +13,7 @@ type CreateSprintType = {
     status: "planned" | "active" | "completed" | "cancelled";
     backlog: string;
     createdBy: string;
-    backlogItems?: BackLogItemDto[];
+    backlogItems?: string[];
 }
 
 export async function CreateSprint (sprint:CreateSprintType )  {

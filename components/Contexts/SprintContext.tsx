@@ -32,7 +32,7 @@ type CreateOrUpdateSprint = {
   status: "planned" | "active" | "completed" | "cancelled";
   backlog: string;
   createdBy?: string;
-  backlogItems?: BackLogItemDto[];
+  backlogItems?: string[];
 };
 
 const SprintContext = createContext<SprintContextDTO>({} as SprintContextDTO);
@@ -63,10 +63,17 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
         });
         return;
       }
+      const selectedBackLogItemsIds = selectedBackLog?.backlogItems?.map(
+        (item) => item._id
+      );
+      const selectedBackLogItems = selectedBackLog.backlogItems?.filter(
+        (item) => selectedBackLogItemsIds?.includes(item._id)
+      );
       const newSprint = {
         ...sprint,
         backlog: selectedBackLog ? selectedBackLog._id : "",
         createdBy: userInfo?._id,
+        backlogItems: selectedBackLogItemsIds,
       };
       try {
         setLoading(true);
@@ -82,6 +89,7 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
                 createdBy: userInfo,
                 createdAt: response.data.createdAt,
                 updatedAt: response.data.updatedAt,
+                backlogItems: selectedBackLogItems,
               },
             ],
           });

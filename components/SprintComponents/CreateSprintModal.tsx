@@ -8,7 +8,12 @@ export function CreateOrUpdateSprintModal() {
 
   return (
     <>
-      <Modal opened={opened} onClose={close} title="Authentication">
+      <Modal
+        opened={opened}
+        onClose={close}
+        title="create or update sprint"
+        fullScreen
+      >
         <CreateSprintForm close={close} />
       </Modal>
 

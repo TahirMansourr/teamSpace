@@ -26,6 +26,7 @@ interface BackLogItemTableRowProps {
   setAiGeneratedBacklog?: React.Dispatch<
     React.SetStateAction<BackLogItemDto[]>
   >;
+  isSelectingForSprint?: boolean;
 }
 
 const BackLogItemTableRow = ({
@@ -39,6 +40,7 @@ const BackLogItemTableRow = ({
   isGenerated,
   isAccepted,
   setAiGeneratedBacklog,
+  isSelectingForSprint,
 }: BackLogItemTableRowProps) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
@@ -69,7 +71,7 @@ const BackLogItemTableRow = ({
       style={style}
     >
       <LoadingOverlay visible={loading} />
-      {isSelectable && (
+      {isSelectable || isSelectingForSprint ? (
         <td className="w-8">
           <input
             type="checkbox"
@@ -78,8 +80,8 @@ const BackLogItemTableRow = ({
             className="w-4 h-4"
           />
         </td>
-      )}
-      {!isGenerated ? (
+      ) : null}
+      {!isGenerated && !isSelectingForSprint ? (
         <td className="w-8">
           <button
             {...attributes}
@@ -90,9 +92,11 @@ const BackLogItemTableRow = ({
           </button>
         </td>
       ) : null}
-      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-        {index + 1}
-      </td>
+      {!isSelectingForSprint && (
+        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+          {index + 1}
+        </td>
+      )}
       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
         {item.title.length > 15 ? `${item.title.slice(0, 20)} ...` : item.title}
       </td>
@@ -138,10 +142,12 @@ const BackLogItemTableRow = ({
             onClick={open}
             className="text-gray-500 hover:text-gray-600 cursor-pointer"
           />
-          <FaEdit
-            onClick={openEdit}
-            className="text-gray-500 hover:text-gray-600 cursor-pointer"
-          />
+          {!isSelectingForSprint && (
+            <FaEdit
+              onClick={openEdit}
+              className="text-gray-500 hover:text-gray-600 cursor-pointer"
+            />
+          )}
         </div>
         <CreateBackLogItemModal
           opened={editOpened}

@@ -20,6 +20,7 @@ interface BackLogItemTableBodyProps {
   setAiGeneratedBacklog?: React.Dispatch<
     React.SetStateAction<BackLogItemDto[]>
   >;
+  isSelectingForSprint: boolean;
 }
 
 const BackLogItemTableBody = ({
@@ -28,6 +29,7 @@ const BackLogItemTableBody = ({
   groups,
   aiGeneratedBackLogs,
   setAiGeneratedBacklog,
+  isSelectingForSprint,
 }: BackLogItemTableBodyProps) => {
   const {
     isGrouping,
@@ -83,6 +85,7 @@ const BackLogItemTableBody = ({
                   isSelectable={isGrouping}
                   isSelected={selectedItems.includes(item._id)}
                   onSelect={() => toggleItemSelection(item._id)}
+                  isSelectingForSprint={isSelectingForSprint}
                 />
               ))}
           <tr>
@@ -91,22 +94,6 @@ const BackLogItemTableBody = ({
               <div className="h-5 w-full"></div>
             </td>
           </tr>
-
-          {/* {aiGeneratedBackLogs
-            ?.filter(item => group.items.includes(item._id))
-            .map((item: BackLogItemDto, index) => (
-              <BackLogItemTableRow
-                key={item._id}
-                item={item}
-                index={index}
-                id={item._id}
-                isGrouped={true}
-                isSelectable={isGrouping}
-                isSelected={selectedItems.includes(item._id)}
-                onSelect={() => toggleItemSelection(item._id)}
-                isGenerated={true}
-              />
-            ))} */}
         </React.Fragment>
       ))}
 
@@ -138,6 +125,7 @@ const BackLogItemTableBody = ({
               isSelectable={isGrouping}
               isSelected={selectedItems.includes(item._id)}
               onSelect={() => toggleItemSelection(item._id)}
+              isSelectingForSprint={isSelectingForSprint}
             />
           ))}
       {acceptedBacklogs.length > 0 && (

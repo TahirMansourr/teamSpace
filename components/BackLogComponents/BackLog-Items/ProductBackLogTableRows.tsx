@@ -19,11 +19,13 @@ import { BackLogItemDto } from "@/Utils/types";
 export const ProductBackLogTableRows = ({
   aiGeneratedBackLogs,
   setAiGeneratedBacklog,
+  isSelectingForSprint,
 }: {
   aiGeneratedBackLogs?: BackLogItemDto[];
   setAiGeneratedBacklog?: React.Dispatch<
     React.SetStateAction<BackLogItemDto[]>
   >;
+  isSelectingForSprint: boolean;
 }) => {
   const {
     selectedBackLog: backLog,
@@ -136,6 +138,7 @@ export const ProductBackLogTableRows = ({
             setGroups={setGroups}
             aiGeneratedBackLogs={aiGeneratedBackLogs}
             setAiGeneratedBacklog={setAiGeneratedBacklog}
+            isSelectingForSprint={isSelectingForSprint}
           />
         </SortableContext>
       </DndContext>
