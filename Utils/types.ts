@@ -158,4 +158,5 @@ export type SprintDto = {
     backlogItems? : BackLogItemDto[],
     createdAt : Date,
     updatedAt : Date | null,
+    assignees ?: UserDto[],
 }

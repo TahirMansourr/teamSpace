@@ -6,13 +6,12 @@ import {
   ScrollArea,
   Select,
   TextInput,
+  Textarea,
 } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
-import { Textarea } from "@mantine/core";
 import { useState } from "react";
 import { useSprintContext } from "../Contexts/SprintContext";
-import { BackLogItemDto } from "@/Utils/types";
 import ProductBackLogTable from "../BackLogComponents/BackLog-Items/ProductBackLogTable";
 import { useBackLogContext } from "../Contexts/BackLogContext";
 

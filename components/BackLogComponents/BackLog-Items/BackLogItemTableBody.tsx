@@ -1,7 +1,7 @@
 "use client";
 import { BackLogDto, BackLogItemDto } from "@/Utils/types";
-import React, { useState } from "react";
-import { Button, LoadingOverlay, Text, TextInput } from "@mantine/core";
+import React from "react";
+import { Button, LoadingOverlay, Text } from "@mantine/core";
 import { FaPlus } from "react-icons/fa6";
 import { useDisclosure } from "@mantine/hooks";
 import BackLogItemTableRow from "./backLogItemTableRow";

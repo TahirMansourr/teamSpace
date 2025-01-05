@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { MdKeyboardArrowDown } from "react-icons/md";
-import { IoMdAdd } from "react-icons/io";
 import { CreateOrUpdateSprintModal } from "./CreateSprintModal";
 import { useBackLogContext } from "../Contexts/BackLogContext";
-import { useSprintContext } from "../Contexts/SprintContext";
 import { BackLogDto } from "@/Utils/types";
 
 const MainPageHeader = () => {
@@ -17,16 +15,16 @@ const MainPageHeader = () => {
   } = useBackLogContext();
   return (
     <div className="flex justify-between items-center mb-8">
-      <div className="relative">
+      <div className="relative flex items-center gap-4">
+        <span className="text-xl font-bold">
+          {selectedBackLog ? selectedBackLog.name : "Choose Backlog"}
+        </span>
         <button
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           className="flex items-center gap-2 px-4 py-2 border rounded-md hover:bg-gray-50"
         >
-          <span>
-            {selectedBackLog ? selectedBackLog.name : "Choose Backlog"}
-          </span>
           <MdKeyboardArrowDown
-            className={`transition-transform ${
+            className={`transition-transform  duration-300 ${
               isDropdownOpen ? "rotate-180" : ""
             }`}
           />

@@ -10,7 +10,7 @@ import {
   useState,
 } from "react";
 import { useBackLogContext } from "./BackLogContext";
-import { BackLogDto, BackLogItemDto, SprintDto } from "@/Utils/types";
+import { BackLogDto } from "@/Utils/types";
 import { CreateSprint } from "@/lib/actions/SprintActions";
 import { useWorkSpaceContext } from "./WorkSpaceContext";
 import { notifications } from "@mantine/notifications";

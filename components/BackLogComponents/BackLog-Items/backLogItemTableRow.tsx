@@ -6,10 +6,9 @@ import React from "react";
 import { MdDragIndicator } from "react-icons/md";
 import PreviewBackLogItem from "./PrieviewBackLogItem";
 import { useDisclosure } from "@mantine/hooks";
-import { FaCheck, FaCross, FaPlay, FaTrash, FaX } from "react-icons/fa6";
+import { FaCheck, FaPlay, FaX } from "react-icons/fa6";
 import { FaEdit } from "react-icons/fa";
 import CreateBackLogItemModal from "./createBackLogItemModal";
-import { CreateProductBackLogItem } from "@/lib/actions/ProductBackLogItemActions";
 import { useBackLogContext } from "@/components/Contexts/BackLogContext";
 import { LoadingOverlay } from "@mantine/core";
 
