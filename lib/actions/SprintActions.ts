@@ -5,11 +5,12 @@ import Sprint from "../models/Sprint";
 import { connectToDB } from "../mongoose";
 
 type CreateSprintType = {
+    _id?: string;
     name: string;
     startDate: Date;
     endDate: Date;
     goal: string;
-    status: string;
+    status: "planned" | "active" | "completed" | "cancelled";
     backlog: string;
     createdBy: string;
     backlogItems?: BackLogItemDto[];

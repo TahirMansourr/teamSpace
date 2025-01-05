@@ -5,40 +5,32 @@ import { DateInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { Textarea } from "@mantine/core";
 import { useState } from "react";
+import { useSprintContext } from "../Contexts/SprintContext";
+import { BackLogItemDto } from "@/Utils/types";
 
 type CreateSprintType = {
+  _id?: string;
   name: string;
   startDate: Date;
   endDate: Date;
   goal: string;
-  status: string;
+  status: "planned" | "active" | "completed" | "cancelled";
   backlog: string;
-  createdBy: string;
-  backlogItems?: string[];
+  createdBy?: string;
+  backlogItems?: BackLogItemDto[];
 };
 
-const CreateSprintForm = ({
-  close,
-  backlogId,
-  userId,
-  onSubmit,
-}: {
-  close: () => void;
-  backlogId: string;
-  userId: string;
-  onSubmit: (values: CreateSprintType) => void;
-}) => {
+const CreateSprintForm = ({ close }: { close: () => void }) => {
   const [loading, setLoading] = useState(false);
+  const { handleCreateSprint } = useSprintContext();
 
-  const form = useForm<CreateSprintType>({
+  const form = useForm<any>({
     initialValues: {
       name: "",
       startDate: new Date(),
       endDate: new Date(),
       goal: "",
       status: "Planning",
-      backlog: backlogId,
-      createdBy: userId,
       backlogItems: [],
     },
     validate: {
@@ -54,12 +46,12 @@ const CreateSprintForm = ({
   const handleSubmit = async (values: CreateSprintType) => {
     setLoading(true);
     try {
-      await onSubmit(values);
-      close();
+      handleCreateSprint(values);
     } catch (error) {
       console.error("Error creating sprint:", error);
     } finally {
       setLoading(false);
+      close();
     }
   };
 
@@ -120,7 +112,12 @@ const CreateSprintForm = ({
 
         <Select
           label="Status"
-          data={["Planning", "In Progress", "Completed"]}
+          data={[
+            { value: "planned", label: "Planned" },
+            { value: "active", label: "Active" },
+            { value: "completed", label: "Completed" },
+            { value: "cancelled", label: "Cancelled" },
+          ]}
           required
           classNames={{
             input: "border-gray-200 focus:border-blue-500 transition-colors",

@@ -3,6 +3,7 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
 import { CreateOrUpdateSprintModal } from "./CreateSprintModal";
 import { useBackLogContext } from "../Contexts/BackLogContext";
+import { useSprintContext } from "../Contexts/SprintContext";
 
 const MainPageHeader = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
@@ -11,7 +12,7 @@ const MainPageHeader = () => {
     selectedBackLog,
     setSelectedBackLog,
     myBackLogs: backlogs,
-  } = useBackLogContext();
+  } = useSprintContext();
   return (
     <div className="flex justify-between items-center mb-8">
       <div className="relative">

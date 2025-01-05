@@ -6,24 +6,36 @@ import {
   SetStateAction,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState,
 } from "react";
 import { useBackLogContext } from "./BackLogContext";
-import { BackLogDto, SprintDto, UserDto } from "@/Utils/types";
+import { BackLogDto, BackLogItemDto, SprintDto } from "@/Utils/types";
 import { CreateSprint } from "@/lib/actions/SprintActions";
 import { useWorkSpaceContext } from "./WorkSpaceContext";
+import { notifications } from "@mantine/notifications";
 
 type SprintContextDTO = {
-  handleCreateSprint: (sprint: SprintDto) => void;
+  selectedBackLog: BackLogDto | null;
+  setSelectedBackLog: Dispatch<SetStateAction<BackLogDto | null>>;
+  myBackLogs: BackLogDto[] | null;
+  handleCreateSprint: (sprint: CreateOrUpdateSprint) => void;
   loading: boolean;
 };
 
-const SprintContext = createContext<SprintContextDTO>({
-  handleCreateSprint: () => {},
-  loading: false,
-});
+type CreateOrUpdateSprint = {
+  _id?: string;
+  name: string;
+  startDate: Date;
+  endDate: Date;
+  goal: string;
+  status: "planned" | "active" | "completed" | "cancelled";
+  backlog: string;
+  createdBy?: string;
+  backlogItems?: BackLogItemDto[];
+};
+
+const SprintContext = createContext<SprintContextDTO>({} as SprintContextDTO);
 
 export const useSprintContext = () => {
   const context = useContext(SprintContext);
@@ -35,21 +47,22 @@ export const useSprintContext = () => {
   return context;
 };
 
-const SprintProvider = ({
-  children,
-  selectedBackLog,
-  setSelectedBackLog,
-}: {
-  children: React.ReactNode;
-  selectedBackLog: BackLogDto | null;
-  setSelectedBackLog: Dispatch<SetStateAction<BackLogDto | null>>;
-}) => {
-  // const { userInfo } = useWorkSpaceContext();
-  const userInfo = {} as UserDto;
+const SprintProvider = ({ children }: { children: React.ReactNode }) => {
+  const { selectedBackLog, setSelectedBackLog, myBackLogs } =
+    useBackLogContext();
+  const { userInfo } = useWorkSpaceContext();
   const [loading, setLoading] = useState(false);
 
   const handleCreateSprint = useCallback(
-    async (sprint: SprintDto) => {
+    async (sprint: CreateOrUpdateSprint) => {
+      if (!selectedBackLog) {
+        notifications.show({
+          title: "Error",
+          message: "Please select a backlog to create a sprint",
+          color: "red",
+        });
+        return;
+      }
       const newSprint = {
         ...sprint,
         backlog: selectedBackLog ? selectedBackLog._id : "",
@@ -63,7 +76,13 @@ const SprintProvider = ({
             ...selectedBackLog,
             sprints: [
               ...(selectedBackLog?.sprints || []),
-              { ...newSprint, _id: response.data._id, createdBy: userInfo },
+              {
+                ...newSprint,
+                _id: response.data._id,
+                createdBy: userInfo,
+                createdAt: response.data.createdAt,
+                updatedAt: response.data.updatedAt,
+              },
             ],
           });
         }
@@ -79,10 +98,13 @@ const SprintProvider = ({
 
   const value = useMemo(
     () => ({
+      selectedBackLog,
+      setSelectedBackLog,
+      myBackLogs,
       handleCreateSprint,
       loading,
     }),
-    [handleCreateSprint, loading]
+    [selectedBackLog, myBackLogs, handleCreateSprint, loading]
   );
 
   return (

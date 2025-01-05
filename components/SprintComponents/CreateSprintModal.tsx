@@ -9,12 +9,7 @@ export function CreateOrUpdateSprintModal() {
   return (
     <>
       <Modal opened={opened} onClose={close} title="Authentication">
-        <CreateSprintForm
-          close={close}
-          backlogId={""}
-          userId={""}
-          onSubmit={() => {}}
-        />
+        <CreateSprintForm close={close} />
       </Modal>
 
       <button
