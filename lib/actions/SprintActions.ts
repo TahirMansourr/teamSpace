@@ -61,3 +61,27 @@ export async function GetAllSprints  (backlogId: string) {
         }
     }
 }
+
+export async function PopulateSprints(sprints : string[]){
+    try {
+        await connectToDB();
+        const populatedSprints = await Sprint.find({ _id: { $in: sprints } }).populate({
+            path: "backlogItems",
+            populate: {
+                path: "createdBy",
+                model: "User"
+            }
+        });
+        return {
+            success: true,
+            message: "Sprints fetched successfully",
+            data: JSON.parse(JSON.stringify(populatedSprints))
+        }
+    } catch (error: any) {
+        console.log(error.message);
+        return {
+            success: false,
+            message: error.message
+        }
+    }
+}

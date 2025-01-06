@@ -6,12 +6,13 @@ import {
   SetStateAction,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from "react";
 import { useBackLogContext } from "./BackLogContext";
 import { BackLogDto } from "@/Utils/types";
-import { CreateSprint } from "@/lib/actions/SprintActions";
+import { CreateSprint, PopulateSprints } from "@/lib/actions/SprintActions";
 import { useWorkSpaceContext } from "./WorkSpaceContext";
 import { notifications } from "@mantine/notifications";
 
@@ -52,6 +53,29 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
     useBackLogContext();
   const { userInfo } = useWorkSpaceContext();
   const [loading, setLoading] = useState(false);
+
+  // useEffect(() => {
+  //   async function handlePopulateSprints(sprints: string[]) {
+  //     try {
+  //       setLoading(true);
+  //       const populatedSprints = await PopulateSprints(sprints);
+  //       setSelectedBackLog((prev: BackLogDto | null) => {
+  //         if (!prev) return null;
+  //         return {
+  //           ...prev,
+  //           sprints: populatedSprints.data,
+  //         } as BackLogDto;
+  //       });
+  //     } catch (error) {
+  //       throw new Error("Error in handlePopulateSprints: " + error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }
+  //   if (selectedBackLog && selectedBackLog.sprints) {
+  //     handlePopulateSprints(selectedBackLog?.sprints as unknown as string[]);
+  //   }
+  // }, [selectedBackLog]);
 
   const handleCreateSprint = useCallback(
     async (sprint: CreateOrUpdateSprint) => {

@@ -4,13 +4,19 @@ import { useBackLogContext } from "../Contexts/BackLogContext";
 import SingleSprintPreview from "./SingleSprintPrieview";
 import { IconCalendar, IconCheckbox } from "@tabler/icons-react";
 import { Badge, Tooltip } from "@mantine/core";
+import { SprintDto } from "@/Utils/types";
 
 const MainPageBody = () => {
   const { selectedBackLog } = useBackLogContext();
-  const [selectedSprint, setSelectedSprint] = useState(null);
+  console.log(
+    "🚀 ~ file: MainPageBody.tsx:11 ~ selectedBackLog:",
+    selectedBackLog?.sprints
+  );
+
+  const [selectedSprint, setSelectedSprint] = useState<SprintDto | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
-  const handleSprintClick = (sprint: any) => {
+  const handleSprintClick = (sprint: SprintDto) => {
     setIsTransitioning(true);
     setSelectedSprint(sprint);
     setTimeout(() => {
@@ -54,11 +60,10 @@ const MainPageBody = () => {
           : "opacity-100 translate-y-0"
       }`}
     >
-      {selectedBackLog?.sprints?.map((sprint: any) => (
+      {selectedBackLog?.sprints?.map((sprint: SprintDto) => (
         <div
           key={sprint._id}
           className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1"
-          onClick={() => handleSprintClick(sprint)}
         >
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-medium text-lg text-indigo-600">

@@ -6,20 +6,31 @@ import ProductBacklog from "../models/ProductBacklog";
 import ProductBacklogItem from "../models/ProductBackLogItem";
 import { connectToDB } from "../mongoose";
 import Project from "../models/ProjectModel";
+import Sprint from "../models/Sprint";
 
 export async function GetProductBackLogAndPopulate(projectId : string) {
   try {
     await connectToDB();
 
     const productBacklogs = await ProductBacklog.find({ projectId }) 
-      .populate({
+      .populate([
+        {
         path : 'backlogItems',
         model: ProductBacklogItem,
         populate: {
           path: 'assignee',
           model: 'User',
         }
-      }) 
+      },
+      {
+        path : 'sprints',
+        model : Sprint,
+        populate : {
+          path :  'assignedTo',
+          model : 'User',
+        }
+      }
+    ]) 
       .exec();
 
       if(!productBacklogs || Array.isArray(productBacklogs) && productBacklogs.length === 0) {
