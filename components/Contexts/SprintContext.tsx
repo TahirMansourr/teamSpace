@@ -54,29 +54,6 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
   const { userInfo } = useWorkSpaceContext();
   const [loading, setLoading] = useState(false);
 
-  // useEffect(() => {
-  //   async function handlePopulateSprints(sprints: string[]) {
-  //     try {
-  //       setLoading(true);
-  //       const populatedSprints = await PopulateSprints(sprints);
-  //       setSelectedBackLog((prev: BackLogDto | null) => {
-  //         if (!prev) return null;
-  //         return {
-  //           ...prev,
-  //           sprints: populatedSprints.data,
-  //         } as BackLogDto;
-  //       });
-  //     } catch (error) {
-  //       throw new Error("Error in handlePopulateSprints: " + error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-  //   if (selectedBackLog && selectedBackLog.sprints) {
-  //     handlePopulateSprints(selectedBackLog?.sprints as unknown as string[]);
-  //   }
-  // }, [selectedBackLog]);
-
   const handleCreateSprint = useCallback(
     async (sprint: CreateOrUpdateSprint) => {
       if (!selectedBackLog) {
