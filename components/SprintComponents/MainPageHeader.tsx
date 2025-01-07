@@ -49,7 +49,7 @@ const MainPageHeader = () => {
         )}
       </div>
 
-      <CreateOrUpdateSprintModal />
+      <CreateOrUpdateSprintModal selectedBackLog={selectedBackLog} />
     </div>
   );
 };

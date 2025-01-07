@@ -14,6 +14,8 @@ import { useState } from "react";
 import { useSprintContext } from "../Contexts/SprintContext";
 import ProductBackLogTable from "../BackLogComponents/BackLog-Items/ProductBackLogTable";
 import { useBackLogContext } from "../Contexts/BackLogContext";
+import { assign } from "nodemailer/lib/shared";
+import AssignTeamMembers from "./AssignTeamMembers";
 
 type CreateSprintType = {
   _id?: string;
@@ -25,6 +27,7 @@ type CreateSprintType = {
   backlog: string;
   createdBy?: string;
   backlogItems?: string[];
+  assignees?: string[];
 };
 
 const CreateSprintForm = ({ close }: { close: () => void }) => {
@@ -40,6 +43,7 @@ const CreateSprintForm = ({ close }: { close: () => void }) => {
       goal: "",
       status: "Planning",
       backlogItems: [],
+      assignees: [],
     },
     validate: {
       name: (value) =>
@@ -136,6 +140,11 @@ const CreateSprintForm = ({ close }: { close: () => void }) => {
             label: "text-gray-700 font-medium mb-1",
           }}
           {...form.getInputProps("status")}
+        />
+
+        <AssignTeamMembers
+          value={form.values.assignees}
+          onChange={(value) => form.setFieldValue("assignees", value)}
         />
         <ScrollArea>
           <ProductBackLogTable isSelectingForSprint={true} />

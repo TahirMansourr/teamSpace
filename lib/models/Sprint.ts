@@ -12,7 +12,7 @@ export interface ISprint extends Document {
   velocity?: number;
   createdAt: Date;
   updatedAt: Date;
-  assignedTo?: Schema.Types.ObjectId[];
+  assignees?: Schema.Types.ObjectId[];
 }
 
 const SprintSchema = new Schema<ISprint>(
@@ -57,7 +57,7 @@ const SprintSchema = new Schema<ISprint>(
       type: Number,
       default: 0,
     },
-    assignedTo: [{
+    assignees: [{
       type: Schema.Types.ObjectId,
       ref: 'User',
     }]

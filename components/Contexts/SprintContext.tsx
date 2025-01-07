@@ -11,7 +11,7 @@ import {
   useState,
 } from "react";
 import { useBackLogContext } from "./BackLogContext";
-import { BackLogDto } from "@/Utils/types";
+import { BackLogDto, UserDto } from "@/Utils/types";
 import { CreateSprint, PopulateSprints } from "@/lib/actions/SprintActions";
 import { useWorkSpaceContext } from "./WorkSpaceContext";
 import { notifications } from "@mantine/notifications";
@@ -34,6 +34,7 @@ type CreateOrUpdateSprint = {
   backlog: string;
   createdBy?: string;
   backlogItems?: string[];
+  assignees?: string[];
 };
 
 const SprintContext = createContext<SprintContextDTO>({} as SprintContextDTO);
@@ -51,7 +52,7 @@ export const useSprintContext = () => {
 const SprintProvider = ({ children }: { children: React.ReactNode }) => {
   const { selectedBackLog, setSelectedBackLog, myBackLogs } =
     useBackLogContext();
-  const { userInfo } = useWorkSpaceContext();
+  const { userInfo, projectInfo } = useWorkSpaceContext();
   const [loading, setLoading] = useState(false);
 
   const handleCreateSprint = useCallback(
@@ -69,6 +70,9 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
       );
       const selectedBackLogItems = selectedBackLog.backlogItems?.filter(
         (item) => selectedBackLogItemsIds?.includes(item._id)
+      );
+      const assignedMembers = projectInfo?.project.team.filter(
+        (member: UserDto) => sprint.assignees?.includes(member._id)
       );
       const newSprint = {
         ...sprint,
@@ -91,6 +95,7 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
                 createdAt: response.data.createdAt,
                 updatedAt: response.data.updatedAt,
                 backlogItems: selectedBackLogItems,
+                assignees: assignedMembers,
               },
             ],
           });

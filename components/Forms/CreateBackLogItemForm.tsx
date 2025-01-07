@@ -18,6 +18,7 @@ import React, { useState } from "react";
 import { useBackLogContext } from "../Contexts/BackLogContext";
 import { useWorkSpaceContext } from "../Contexts/WorkSpaceContext";
 import { BackLogItemDto, UserDto } from "@/Utils/types";
+import AssignTeamMembers from "./AssignTeamMembers";
 
 type Priority = "Low" | "Medium" | "High";
 type Status = "To Do" | "In Progress" | "Done" | "Review";
@@ -30,41 +31,11 @@ const CreateBackLogItemForm = ({
   close: () => void;
   initialValues?: BackLogItemDto;
 }) => {
-  const { handleCreateBackLogItem, handleUpdateBackLogItem, handleDeleteBackLogItem } = useBackLogContext();
-  const { projectInfo } = useWorkSpaceContext();
-
-  const dataForMultiSelect = projectInfo.project.team.map((user) => ({
-    value: user._id,
-    label: user.username,
-  }));
-
-  const userData = projectInfo.project.team.reduce(
-    (acc: Record<string, { image: string; email: string }>, user: UserDto) => {
-      acc[user._id] = {
-        image: user.image,
-        email: user.email,
-      };
-      return acc;
-    },
-    {}
-  );
-
-  const renderMultiSelectOption: MultiSelectProps["renderOption"] = ({
-    option,
-  }) => {
-    const user = userData[option.value];
-    return (
-      <Group gap="sm">
-        <Avatar src={user?.image || ""} size={36} radius="xl" />
-        <div>
-          <Text size="sm">{option.label}</Text>
-          <Text size="xs" opacity={0.5}>
-            {user?.email || ""}
-          </Text>
-        </div>
-      </Group>
-    );
-  };
+  const {
+    handleCreateBackLogItem,
+    handleUpdateBackLogItem,
+    handleDeleteBackLogItem,
+  } = useBackLogContext();
 
   const [values, setValues] = useState<{
     title: string;
@@ -83,7 +54,9 @@ const CreateBackLogItemForm = ({
     status: initialValues?.status || "To Do",
     type: initialValues?.type || "Feature",
     acceptanceCriteria: initialValues?.acceptanceCriteria || "",
-    assignee: initialValues?.assignee ? initialValues.assignee.map(user => user._id) : [],
+    assignee: initialValues?.assignee
+      ? initialValues.assignee.map((user) => user._id)
+      : [],
     estimatedEffort: initialValues?.estimatedEffort || 0,
     points: 0,
   });
@@ -125,7 +98,7 @@ const CreateBackLogItemForm = ({
     <Paper shadow="sm" radius="md" p="xl" className="max-w-3xl mx-auto">
       <form onSubmit={onSubmit} className="space-y-6">
         <Title order={2} className="text-center mb-6 text-gray-800">
-          {initialValues ? 'Update Backlog Item' : 'Create New Backlog Item'}
+          {initialValues ? "Update Backlog Item" : "Create New Backlog Item"}
         </Title>
 
         <div className="space-y-4">
@@ -142,7 +115,9 @@ const CreateBackLogItemForm = ({
             label="Description"
             value={values.description}
             placeholder="As a user I would like a feature to do a task"
-            onChange={(e) => setValues({ ...values, description: e.target.value })}
+            onChange={(e) =>
+              setValues({ ...values, description: e.target.value })
+            }
             minRows={3}
             size="md"
             required
@@ -160,7 +135,9 @@ const CreateBackLogItemForm = ({
               label="Estimated Effort (hours)"
               size="md"
               value={values.estimatedEffort}
-              onChange={(e) => setValues({ ...values, estimatedEffort: e as number })}
+              onChange={(e) =>
+                setValues({ ...values, estimatedEffort: e as number })
+              }
               min={0}
             />
           </div>
@@ -170,7 +147,9 @@ const CreateBackLogItemForm = ({
               label="Priority"
               data={["High", "Medium", "Low"]}
               value={values.priority}
-              onChange={(e) => setValues({ ...values, priority: e as Priority })}
+              onChange={(e) =>
+                setValues({ ...values, priority: e as Priority })
+              }
               size="md"
             />
             <Select
@@ -182,7 +161,13 @@ const CreateBackLogItemForm = ({
             />
             <Select
               label="Type"
-              data={["Feature", "Bug", "Technical Debt", "Improvement", "Spike"]}
+              data={[
+                "Feature",
+                "Bug",
+                "Technical Debt",
+                "Improvement",
+                "Spike",
+              ]}
               value={values.type}
               onChange={(e) => setValues({ ...values, type: e as Type })}
               size="md"
@@ -193,19 +178,16 @@ const CreateBackLogItemForm = ({
             label="Acceptance Criteria"
             value={values.acceptanceCriteria}
             placeholder="Define the conditions that must be met for this item to be considered complete"
-            onChange={(e) => setValues({ ...values, acceptanceCriteria: e.target.value })}
+            onChange={(e) =>
+              setValues({ ...values, acceptanceCriteria: e.target.value })
+            }
             minRows={3}
             size="md"
           />
 
-          <MultiSelect
-            label="Assignee"
-            data={dataForMultiSelect}
+          <AssignTeamMembers
             value={values.assignee}
             onChange={(e) => setValues({ ...values, assignee: e })}
-            renderOption={renderMultiSelectOption}
-            searchable
-            size="md"
           />
         </div>
 
@@ -213,9 +195,9 @@ const CreateBackLogItemForm = ({
 
         <Group justify="flex-end" mt="xl">
           {initialValues && (
-            <Button 
-              variant="filled" 
-              color="red" 
+            <Button
+              variant="filled"
+              color="red"
               onClick={handleDelete}
               size="md"
               className="mr-auto"
@@ -223,20 +205,16 @@ const CreateBackLogItemForm = ({
               Delete Item
             </Button>
           )}
-          <Button 
-            variant="outline" 
-            onClick={close}
-            size="md"
-          >
+          <Button variant="outline" onClick={close} size="md">
             Cancel
           </Button>
-          <Button 
+          <Button
             type="submit"
             variant="filled"
             className="bg-gray-800 hover:bg-gray-900"
             size="md"
           >
-            {initialValues ? 'Update Item' : 'Create Item'}
+            {initialValues ? "Update Item" : "Create Item"}
           </Button>
         </Group>
       </form>

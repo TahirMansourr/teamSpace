@@ -5,6 +5,7 @@ import SingleSprintPreview from "./SingleSprintPrieview";
 import { IconCalendar, IconCheckbox } from "@tabler/icons-react";
 import { Badge, Tooltip } from "@mantine/core";
 import { SprintDto } from "@/Utils/types";
+import SingleSprintCard from "./SingleSprintCard";
 
 const MainPageBody = () => {
   const { selectedBackLog } = useBackLogContext();
@@ -61,75 +62,11 @@ const MainPageBody = () => {
       }`}
     >
       {selectedBackLog?.sprints?.map((sprint: SprintDto) => (
-        <div
+        <SingleSprintCard
           key={sprint._id}
-          className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1"
-        >
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="font-medium text-lg text-indigo-600">
-              {sprint.name}
-            </h3>
-            <Badge
-              color={
-                sprint.status === "active"
-                  ? "green"
-                  : sprint.status === "planned"
-                  ? "blue"
-                  : "gray"
-              }
-              size="lg"
-            >
-              {sprint.status}
-            </Badge>
-          </div>
-
-          <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">
-            {sprint.goal}
-          </p>
-          <div className="flex items-center gap-2">
-            <Tooltip label="Start Date">
-              <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-700 p-2 rounded-lg">
-                <IconCalendar className="text-indigo-500" size={18} />
-                <p className="font-bold">Start Date</p>
-                <div className="font-bold">
-                  {new Date(sprint.startDate).toLocaleDateString()}
-                </div>
-              </div>
-            </Tooltip>
-
-            <div className="grid grid-cols-2 gap-4">
-              <Tooltip label="Sprint Duration">
-                <Badge size="lg" radius={"md"}>
-                  {Math.ceil(
-                    (new Date(sprint.endDate).getTime() -
-                      new Date(sprint.startDate).getTime()) /
-                      (1000 * 60 * 60 * 24)
-                  )}{" "}
-                  days
-                </Badge>
-              </Tooltip>
-            </div>
-          </div>
-
-          <Tooltip label="Backlog Items">
-            <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-700 p-2 rounded-lg w-fit">
-              <IconCheckbox className="text-indigo-500" size={18} />
-              <div className="font-bold">
-                {sprint.backlogItems?.length || 0} items
-              </div>
-            </div>
-          </Tooltip>
-
-          <button
-            className=" mt-4 px-4 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 rounded-lg transition-colors duration-300"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleSprintClick(sprint);
-            }}
-          >
-            View Details
-          </button>
-        </div>
+          sprint={sprint}
+          handleSprintClick={handleSprintClick}
+        />
       ))}
     </div>
   );

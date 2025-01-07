@@ -14,6 +14,7 @@ type CreateSprintType = {
     backlog: string;
     createdBy: string;
     backlogItems?: string[];
+    assignees?: string[];
 }
 
 export async function CreateSprint (sprint:CreateSprintType )  {
