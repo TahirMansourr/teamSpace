@@ -154,19 +154,21 @@ const BackLogItemTableBody = ({
       )}
 
       {/* Add Item Button */}
-      <tr className="block md:table-row">
-        <CreateBackLogItemModal opened={opened} close={close} />
-        <td className="block w-full md:table-cell md:w-auto">
-          <Button
-            className="w-full md:w-auto m-4 transition-all duration-150 hover:scale-105"
-            onClick={open}
-          >
-            <div className="flex items-center justify-center gap-3">
-              <FaPlus /> <Text ml={2}>Add Item</Text>
-            </div>
-          </Button>
-        </td>
-      </tr>
+      {!isSelectingForSprint && (
+        <tr className="block md:table-row">
+          <CreateBackLogItemModal opened={opened} close={close} />
+          <td className="block w-full md:table-cell md:w-auto">
+            <Button
+              className="w-full md:w-auto m-4 transition-all duration-150 hover:scale-105"
+              onClick={open}
+            >
+              <div className="flex items-center justify-center gap-3">
+                <FaPlus /> <Text ml={2}>Add Item</Text>
+              </div>
+            </Button>
+          </td>
+        </tr>
+      )}
     </tbody>
   );
 };

@@ -15,6 +15,9 @@ export default withUt({
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      fontSize: {
+      base: "16px", // Ensure this matches your design system
+    },
       keyframes: {
         fadeIn: {
           '0%': { opacity: '0' },

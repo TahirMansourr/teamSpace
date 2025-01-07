@@ -1,6 +1,6 @@
 "use client";
 import { SprintDto } from "@/Utils/types";
-import { Badge, Progress, Tooltip } from "@mantine/core";
+import { Avatar, Badge, Progress, Tooltip } from "@mantine/core";
 import {
   IconCalendar,
   IconFlag,
@@ -142,9 +142,10 @@ const SingleSprintPreview: React.FC<SingleSprintPreviewProps> = ({
         <div className="flex -space-x-2 mt-2">
           {sprint.assignees?.map((member, index) => (
             <Tooltip key={member._id} label={member.username}>
-              <img
+              <Avatar
                 src={member.image}
                 alt={member.username}
+                size={"md"}
                 className="w-8 h-8 rounded-full border-2 border-white dark:border-gray-800"
                 style={{ zIndex: sprint.assignees!.length - index }}
               />
