@@ -41,12 +41,14 @@ export default function RootLayout({
             <script
               dangerouslySetInnerHTML={{
                 __html: `
-              if (navigator.userAgent.includes('Windows')) {
-                document.body.style.zoom = '80%';
-              }
-            `,
+      if (navigator.userAgent.includes('Windows')) {
+        document.body.style.transform = 'scale(0.8)';
+        document.body.style.transformOrigin = 'top left';
+      }
+    `,
               }}
             />
+
             {children}
             {/* </ChannelProvider>
            </AblyProvider> */}
