@@ -42,7 +42,7 @@ export default function RootLayout({
               dangerouslySetInnerHTML={{
                 __html: `
       if (navigator.userAgent.includes('Windows')) {
-        document.body.style.transform = 'scale(0.8)';
+        document.body.style.transform = 'scale(0.95)';
         document.body.style.transformOrigin = 'top left';
       }
     `,
