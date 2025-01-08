@@ -38,6 +38,15 @@ export default function RootLayout({
               <LoadingBar />
             </Suspense>
             <Notifications position="top-right" zIndex={1} />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+              if (navigator.userAgent.includes('Windows')) {
+                document.body.style.zoom = '80%';
+              }
+            `,
+              }}
+            />
             {children}
             {/* </ChannelProvider>
            </AblyProvider> */}
