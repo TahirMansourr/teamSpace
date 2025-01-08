@@ -38,16 +38,7 @@ export default function RootLayout({
               <LoadingBar />
             </Suspense>
             <Notifications position="top-right" zIndex={1} />
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `
-      if (navigator.userAgent.includes('Windows')) {
-        document.body.style.transform = 'scale(0.95)';
-        document.body.style.transformOrigin = 'top left';
-      }
-    `,
-              }}
-            />
+           
 
             {children}
             {/* </ChannelProvider>
