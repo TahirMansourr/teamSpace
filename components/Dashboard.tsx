@@ -20,9 +20,7 @@ const Dashboard = () => {
     );
   }, []);
 
-  const scaleStyle = isWindows
-    ? { transform: "scale(0.8)", transformOrigin: "top left" }
-    : {};
+  const scaleStyle = isWindows ? { transform: "scale(0.95)" } : {};
   return (
     <main className=" flex h-screen w-screen ">
       {user && !loading && (
