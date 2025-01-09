@@ -7,10 +7,22 @@ import {
   FiTrello,
 } from "react-icons/fi";
 import "../public/styles/meshBackground.css";
-import Gemini from "@/components/Gemini/Gemini";
+import { useEffect, useState } from "react";
 const Page = () => {
+  const [isWindows, setIsWindows] = useState(false);
+  useEffect(() => {
+    setIsWindows(
+      navigator.userAgent.includes("Windows") ||
+        navigator.platform.includes("Win")
+    );
+  }, []);
+
+  const scaleStyle = isWindows ? { transform: "scale(0.98)" } : {};
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-gray-50 to-blue-50">
+    <div
+      style={scaleStyle}
+      className="min-h-screen relative overflow-hidden bg-gradient-to-br from-gray-50 to-blue-50"
+    >
       <div className="dots-background" aria-hidden="true">
         {[...Array(150)].map((_, i) => (
           <div

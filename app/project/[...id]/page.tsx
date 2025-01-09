@@ -27,9 +27,7 @@ export default function WorkSpace({
     );
   }, []);
 
-  const scaleStyle = isWindows
-    ? { transform: "scale(0.95)", transformOrigin: "top left" }
-    : {};
+  const scaleStyle = isWindows ? { transform: "scale(0.98)" } : {};
   // const client = new Ably.Realtime({key :process.env.NEXT_PUBLIC_ABLY_KEY})
   return (
     <main className={`flex w-full h-screen p-2`}>
