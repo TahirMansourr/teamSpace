@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DashBoardSideBar from "./dashBoardSideBar";
 import { SelectedItemInSideBarToRenderOnScreen } from "@/utils";
 import WorkSpaceProvider from "./Contexts/WorkSpaceContext";
@@ -12,23 +12,35 @@ const Dashboard = () => {
   const [opened, setOpened] = useState<boolean>(false);
   const { user, loading } = useGetUserInfo();
   console.log("🚀 ~ Dashboard ~ user:", user);
+  const [isWindows, setIsWindows] = useState(false);
+  useEffect(() => {
+    setIsWindows(
+      navigator.userAgent.includes("Windows") ||
+        navigator.platform.includes("Win")
+    );
+  }, []);
 
+  const scaleStyle = isWindows
+    ? { transform: "scale(0.8)", transformOrigin: "top left" }
+    : {};
   return (
     <main className=" flex h-screen w-screen ">
       {user && !loading && (
         <WorkSpaceProvider userInfo={user}>
-          <DashBoardSideBar
-            setSelectedItemInSideBar={setSelectedItemInSideBar}
-            SelectedItemInSideBar={selectedItemInSideBar}
-            setOpened={setOpened}
-          />
+          <div style={scaleStyle} className="flex w-full">
+            <DashBoardSideBar
+              setSelectedItemInSideBar={setSelectedItemInSideBar}
+              SelectedItemInSideBar={selectedItemInSideBar}
+              setOpened={setOpened}
+            />
 
-          <SelectedItemInSideBarToRenderOnScreen
-            selectedItemInSideBar={selectedItemInSideBar}
-            setOpened={setOpened}
-            opened={opened}
-            user={user}
-          />
+            <SelectedItemInSideBarToRenderOnScreen
+              selectedItemInSideBar={selectedItemInSideBar}
+              setOpened={setOpened}
+              opened={opened}
+              user={user}
+            />
+          </div>
         </WorkSpaceProvider>
       )}
     </main>
