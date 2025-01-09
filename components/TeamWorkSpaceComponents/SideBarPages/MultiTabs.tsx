@@ -1,37 +1,36 @@
-'use client'
-import React, { Dispatch, SetStateAction, useEffect} from 'react'
-import NotesComponent from '../NotesComponents/Notes'
-import TasksComponent from '../tasksComponents/Tasks'
-import IssuesComponent from '../IssuesComponents/Issues'
-import ChatSpaceComponent from '../ChatComponents/ChatSpace'
-import { Button, Modal } from '@mantine/core'
-import NotificationsBar from '../NotificationsBar'
-import { useDisclosure } from '@mantine/hooks';
-import CreateFeatureForm from '../../Forms/createFeatureForm'
-import FeatureProvider from '../../Contexts/featureContext'
-import { TransitionWrapper } from '../TransitionWrapper'
+"use client";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
+import NotesComponent from "../NotesComponents/Notes";
+import TasksComponent from "../tasksComponents/Tasks";
+import IssuesComponent from "../IssuesComponents/Issues";
+import ChatSpaceComponent from "../ChatComponents/ChatSpace";
+import { Button, Modal } from "@mantine/core";
+import NotificationsBar from "../NotificationsBar";
+import { useDisclosure } from "@mantine/hooks";
+import CreateFeatureForm from "../../Forms/createFeatureForm";
+import FeatureProvider from "../../Contexts/featureContext";
+import { TransitionWrapper } from "../TransitionWrapper";
 
 const MultiTabsComponent = ({
-    opened,
-    setOpened
-}:{
-    opened : boolean,
-    setOpened : Dispatch<SetStateAction<boolean>>
+  opened,
+  setOpened,
+}: {
+  opened: boolean;
+  setOpened: Dispatch<SetStateAction<boolean>>;
 }) => {
-   
-    useEffect(()=>{
-        setOpened(true)
-        return ()=>setOpened(false)
-      } , [])
+  useEffect(() => {
+    setOpened(true);
+    return () => setOpened(false);
+  }, []);
 
-      const [Modalopened, { open, close }] = useDisclosure(false);
+  const [Modalopened, { open, close }] = useDisclosure(false);
 
   return (
-    <TransitionWrapper opened = {opened}>
-         <section className=' flex flex-col w-full  gap-2 rounded-xl   items-center justify-center p-3 pt-9'>
-              <div className='flex w-full items-center'>
-              <NotificationsBar/>
-              <Modal opened={Modalopened} onClose={close} title="New Feature !!"  overlayProps={{
+    <TransitionWrapper opened={opened}>
+      <section className=" flex flex-col w-full  gap-2 rounded-xl   items-center justify-center p-3 pt-9">
+        <div className="flex w-full items-center">
+          <NotificationsBar />
+          {/* <Modal opened={Modalopened} onClose={close} title="New Feature !!"  overlayProps={{
                 backgroundOpacity: 0.55,
                 blur: 3,
               }}>
@@ -39,19 +38,21 @@ const MultiTabsComponent = ({
                   <CreateFeatureForm/>
                 </FeatureProvider>
                 
-              </Modal>
-              <Button className='mr-0' onClick={open}> + new Feature</Button>
-              </div>  
-                <section className=" flex w-full h-full  gap-2  items-center" >
-                  <NotesComponent/> 
-                  <TasksComponent/> 
-                  <IssuesComponent/>
-                  <ChatSpaceComponent />
-                </section>
-            </section>
+              </Modal> */}
+          {/* <Button className="mr-0" onClick={open}>
+            {" "}
+            + new Feature
+          </Button> */}
+        </div>
+        <section className=" flex w-full h-full  gap-2  items-center">
+          <NotesComponent />
+          <TasksComponent />
+          <IssuesComponent />
+          <ChatSpaceComponent />
+        </section>
+      </section>
     </TransitionWrapper>
-    
-  )
-}
+  );
+};
 
-export default MultiTabsComponent
+export default MultiTabsComponent;

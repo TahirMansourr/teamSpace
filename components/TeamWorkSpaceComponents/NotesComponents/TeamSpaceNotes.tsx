@@ -6,8 +6,8 @@ import NotesCard from "./NotesCard";
 const TeamSpaceNotes = () => {
   const { allNotes } = useNotesContext();
   return (
-    <section>
-      {allNotes ? (
+    <section className="flex flex-col w-full">
+      {allNotes.length > 0 ? (
         allNotes.map((note: NotesDto) => (
           <NotesCard key={note._id} Note={note} />
         ))

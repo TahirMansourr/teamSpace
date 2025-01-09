@@ -26,7 +26,7 @@ export async function GetProductBackLogAndPopulate(projectId : string) {
         path : 'sprints',
         model : Sprint,
         populate : {
-          path :  'assignedTo',
+          path :  'assignees',
           model : 'User',
         }
       }
