@@ -1,14 +1,8 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import {
-  Button,
-  LoadingOverlay,
-  PasswordInput,
-  TextInput,
-  Transition,
-} from "@mantine/core";
+import { Button, PasswordInput, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import LinkToSignUpPage from "@/components/LinkToSignUpPage";
 import { FiLock, FiMail } from "react-icons/fi";
@@ -16,17 +10,13 @@ import { FiLock, FiMail } from "react-icons/fi";
 export default function SignInPage() {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
-  const [opened, setOpened] = useState(false);
-
-  useEffect(() => {
-    setOpened(true);
-  }, []);
 
   const onSignIn = async (values: { email: string; password: string }) => {
     try {
       setLoading(true);
       await axios.post("api/users/signIn", values);
       router.push("/myDashboard");
+      router.refresh();
     } catch (error: any) {
       if (error.response.data.error == "This email does not exist") {
         form.setFieldError("email", error.response.data.error);
