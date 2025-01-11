@@ -1,24 +1,11 @@
 "use client";
 import React from "react";
-import { useBackLogContext } from "../Contexts/BackLogContext";
 import SingleSprintPreview from "./SingleSprintPrieview";
 import SprintFeed from "./SprintFeed";
 import { useSprintContext } from "../Contexts/SprintContext";
 
 const MainPageBody = () => {
-  // const { selectedBackLog } = useBackLogContext();
-  // console.log(
-  //   "🚀 ~ file: MainPageBody.tsx:11 ~ selectedBackLog:",
-  //   selectedBackLog?.sprints
-  // );
-
-  const {
-    isTransitioning,
-    handleBack,
-    selectedSprint,
-    selectedBackLog,
-    sprintsByStatus,
-  } = useSprintContext();
+  const { isTransitioning, handleBack, selectedSprint } = useSprintContext();
 
   if (selectedSprint) {
     return (
