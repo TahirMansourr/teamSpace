@@ -6,13 +6,19 @@ import SprintFeed from "./SprintFeed";
 import { useSprintContext } from "../Contexts/SprintContext";
 
 const MainPageBody = () => {
-  const { selectedBackLog } = useBackLogContext();
-  console.log(
-    "🚀 ~ file: MainPageBody.tsx:11 ~ selectedBackLog:",
-    selectedBackLog?.sprints
-  );
+  // const { selectedBackLog } = useBackLogContext();
+  // console.log(
+  //   "🚀 ~ file: MainPageBody.tsx:11 ~ selectedBackLog:",
+  //   selectedBackLog?.sprints
+  // );
 
-  const { isTransitioning, handleBack, selectedSprint } = useSprintContext();
+  const {
+    isTransitioning,
+    handleBack,
+    selectedSprint,
+    selectedBackLog,
+    sprintsByStatus,
+  } = useSprintContext();
 
   if (selectedSprint) {
     return (
