@@ -1,11 +1,14 @@
 import MainPageHeader from "./MainPageHeader";
 import MainPageBody from "./MainPageBody";
+import { ScrollArea } from "@mantine/core";
 
 const MainPage = () => {
   return (
-    <div className="container mx-auto p-6">
+    <div className="flex flex-col w-full mx-auto p-6">
       <MainPageHeader />
-      <MainPageBody />
+      <ScrollArea w={"100%"}>
+        <MainPageBody />
+      </ScrollArea>
     </div>
   );
 };

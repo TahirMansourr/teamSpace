@@ -11,10 +11,23 @@ import {
   useState,
 } from "react";
 import { useBackLogContext } from "./BackLogContext";
-import { BackLogDto, UserDto } from "@/Utils/types";
-import { CreateSprint, PopulateSprints } from "@/lib/actions/SprintActions";
+import { BackLogDto, SprintDto, UserDto } from "@/Utils/types";
+import { CreateSprint } from "@/lib/actions/SprintActions";
 import { useWorkSpaceContext } from "./WorkSpaceContext";
 import { notifications } from "@mantine/notifications";
+
+type SprintsByStatus = {
+  active: SprintDto[];
+  completed: SprintDto[];
+  cancelled: SprintDto[];
+  planned: SprintDto[];
+};
+type AllSprints = {
+  active: SprintDto[];
+  completed: SprintDto[];
+  cancelled: SprintDto[];
+  planned: SprintDto[];
+};
 
 type SprintContextDTO = {
   selectedBackLog: BackLogDto | null;
@@ -22,6 +35,14 @@ type SprintContextDTO = {
   myBackLogs: BackLogDto[] | null;
   handleCreateSprint: (sprint: CreateOrUpdateSprint) => void;
   loading: boolean;
+  sprintsByStatus:
+    | { name: string; _id: string; sprints: SprintsByStatus }[]
+    | null;
+  allSprints: AllSprints | null;
+  selectedSprint: SprintDto | null;
+  isTransitioning: boolean;
+  handleSprintClick: (sprint: SprintDto) => void;
+  handleBack: () => void;
 };
 
 type CreateOrUpdateSprint = {
@@ -54,6 +75,133 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
     useBackLogContext();
   const { userInfo, projectInfo } = useWorkSpaceContext();
   const [loading, setLoading] = useState(false);
+  const [sprintsByStatus, setSprintsByStatus] = useState<
+    { name: string; _id: string; sprints: SprintsByStatus }[] | null
+  >([]);
+  const [allSprints, setAllSprints] = useState<AllSprints>({
+    active: [],
+    completed: [],
+    cancelled: [],
+    planned: [],
+  });
+
+  // function GetActiveSprintsFromBacklogss() {
+  //   let activeSprint: { name: string; sprints: SprintDto[] }[] = [];
+
+  //   myBackLogs?.forEach((item: BackLogDto) => {
+  //     let currentActiveSprint: { name: string; sprints: SprintDto[] } = {
+  //       name: item.name,
+  //       sprints: [],
+  //     };
+  //     item.sprints?.forEach((sprint) => {
+  //       if (sprint.status === "active") {
+  //         currentActiveSprint.sprints.push(sprint);
+  //       }
+  //     });
+  //     if (currentActiveSprint.sprints.length > 0) {
+  //       activeSprint.push(currentActiveSprint);
+  //     }
+  //   });
+  //   return activeSprint;
+  // } here using for each instead of map it better because map creates a new array and foreach performs operation on the same array
+
+  useEffect(() => {
+    if (myBackLogs) {
+      try {
+        setLoading(true);
+        const result = GetSprintsByStatus();
+        const allSprints = getAllSprintsByStatus();
+        setSprintsByStatus(result);
+        setAllSprints(allSprints);
+        if (selectedBackLog) {
+          if (sprintsByStatus) {
+            const requiredBacklogSprint = sprintsByStatus.find(
+              (sprint) => sprint._id === selectedBackLog._id
+            );
+
+            requiredBacklogSprint?.sprints &&
+              setAllSprints(requiredBacklogSprint?.sprints);
+          }
+        }
+      } catch (error) {
+        const errorMessage = `error fetching sprints: ${error}`;
+        notifications.show({
+          message: errorMessage,
+          color: "red",
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
+  }, [myBackLogs, selectedBackLog]);
+
+  const [selectedSprint, setSelectedSprint] = useState<SprintDto | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
+
+  const handleSprintClick = (sprint: SprintDto) => {
+    setIsTransitioning(true);
+    setSelectedSprint(sprint);
+    setTimeout(() => {
+      setSelectedSprint(sprint);
+    }, 300);
+  };
+
+  const handleBack = () => {
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setSelectedSprint(null);
+      setIsTransitioning(false);
+    }, 300);
+  };
+
+  const getAllSprintsByStatus = useCallback(() => {
+    const allSprintsByStatus: AllSprints = {
+      active: [],
+      completed: [],
+      cancelled: [],
+      planned: [],
+    };
+
+    myBackLogs?.forEach((backlog) => {
+      backlog.sprints?.forEach((sprint) => {
+        allSprintsByStatus[sprint.status].push(sprint);
+      });
+    });
+
+    return allSprintsByStatus;
+  }, [myBackLogs]);
+
+  const GetSprintsByStatus = useCallback(() => {
+    return (
+      myBackLogs?.reduce((acc, backlog) => {
+        const sprintsByStatus = backlog.sprints?.reduce(
+          (statusAcc, sprint) => {
+            statusAcc[sprint.status].push(sprint);
+            return statusAcc;
+          },
+          {
+            active: [],
+            completed: [],
+            cancelled: [],
+            planned: [],
+          } as SprintsByStatus
+        ) || {
+          active: [],
+          completed: [],
+          cancelled: [],
+          planned: [],
+        };
+
+        acc.push({
+          name: backlog.name,
+          _id: backlog._id,
+          sprints: sprintsByStatus,
+        });
+
+        return acc;
+      }, [] as { name: string; _id: string; sprints: SprintsByStatus }[]) || []
+    );
+  }, [myBackLogs]);
 
   const handleCreateSprint = useCallback(
     async (sprint: CreateOrUpdateSprint) => {
@@ -117,8 +265,25 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
       myBackLogs,
       handleCreateSprint,
       loading,
+      sprintsByStatus,
+      allSprints,
+      selectedSprint,
+      isTransitioning,
+      handleSprintClick,
+      handleBack,
     }),
-    [selectedBackLog, myBackLogs, handleCreateSprint, loading]
+    [
+      selectedBackLog,
+      myBackLogs,
+      handleCreateSprint,
+      loading,
+      sprintsByStatus,
+      allSprints,
+      selectedSprint,
+      isTransitioning,
+      handleSprintClick,
+      handleBack,
+    ]
   );
 
   return (

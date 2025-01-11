@@ -1,34 +1,32 @@
 import { SprintDto } from "@/Utils/types";
-import { Avatar, Badge, Group, Tooltip } from "@mantine/core";
+import { Avatar, Badge, Tooltip } from "@mantine/core";
 import { IconCalendar, IconCheckbox, IconUsers } from "@tabler/icons-react";
 import React from "react";
+import { useSprintContext } from "../Contexts/SprintContext";
 
-const SingleSprintCard = ({
-  sprint,
-  handleSprintClick,
-}: {
-  sprint: SprintDto;
-  handleSprintClick: (sprint: SprintDto) => void;
-}) => {
+const SingleSprintCard = ({ sprint }: { sprint: SprintDto }) => {
+  const { handleSprintClick } = useSprintContext();
   return (
     <div
       key={sprint._id}
-      className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1"
+      className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 m-2 min-w-fit hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1 relative"
     >
-      <div className="flex justify-between items-center mb-4">
+      <Badge
+        className="absolute -top-2 -right-2"
+        color={
+          sprint.status === "active"
+            ? "green"
+            : sprint.status === "planned"
+            ? "blue"
+            : "gray"
+        }
+        size="lg"
+      >
+        {sprint.status}
+      </Badge>
+
+      <div className="flex items-center mb-4">
         <h3 className="font-medium text-lg text-indigo-600">{sprint.name}</h3>
-        <Badge
-          color={
-            sprint.status === "active"
-              ? "green"
-              : sprint.status === "planned"
-              ? "blue"
-              : "gray"
-          }
-          size="lg"
-        >
-          {sprint.status}
-        </Badge>
       </div>
 
       <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">

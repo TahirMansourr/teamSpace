@@ -32,6 +32,17 @@ const MainPageHeader = () => {
 
         {isDropdownOpen && (
           <div className="absolute top-full mt-1 w-full bg-white border rounded-md shadow-lg z-10">
+            <button
+              onClick={() => {
+                setSelectedBackLog(null);
+                setFilteredBacklogs([]);
+                setIsDropdownOpen(false);
+              }}
+              className="px-4 py-2 hover:bg-gray-50 cursor-pointer w-full text-center"
+            >
+              Show All Sprints
+            </button>
+
             {backlogs?.map((backlog: BackLogDto) => (
               <button
                 key={backlog._id}
