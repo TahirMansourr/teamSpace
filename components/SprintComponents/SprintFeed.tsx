@@ -6,17 +6,7 @@ import { SprintDto } from "@/Utils/types";
 
 const SprintFeed = () => {
   const { allSprints, selectedBackLog, sprintsByStatus } = useSprintContext();
-  // if (selectedBackLog) {
-  //   if (sprintsByStatus) {
-  //     const requiredBacklogSprint = sprintsByStatus.find(
-  //       (sprint) => sprint._id === selectedBackLog._id
-  //     );
-  //     if (requiredBacklogSprint?.sprints) {
-  //       return <SprintFeed />;
-  //     }
-  //     return <div className="flex flex-col w-full">Oops! No Sprints Found</div>;
-  //   }
-  // }
+  
   return (
     <div className="flex flex-col gap-2 w-full">
       {allSprints && allSprints.planned.length > 0 ? (
