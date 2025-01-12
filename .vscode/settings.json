@@ -23,5 +23,15 @@
     "mantine",
     "Modalopened",
     "teamspace"
-  ]
+  ],
+  "files.watcherExclude": {
+  "**/node_modules/*": true,
+  "**/build/*": true,
+  "**/.git/*": true
+},
+"search.followSymlinks": false,
+"editor.cursorBlinking": "solid",
+"editor.smoothScrolling": false
+
 }
+

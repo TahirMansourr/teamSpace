@@ -12,6 +12,7 @@ import {
   rectSortingStrategy,
   SortableContext,
   sortableKeyboardCoordinates,
+  arrayMove,
 } from "@dnd-kit/sortable";
 import BackLogItemTableBody from "./BackLogItemTableBody";
 import { BackLogItemDto } from "@/Utils/types";
@@ -34,6 +35,7 @@ export const ProductBackLogTableRows = ({
     loading,
     groups,
     setGroups,
+    setFilteredBacklogs,
   } = useBackLogContext();
 
   const sensors = useSensors(
@@ -47,6 +49,14 @@ export const ProductBackLogTableRows = ({
     const { active, over } = event;
     if (!active || !over || !backLog?.backlogItems) return;
 
+    if (active.id !== over.id) {
+      setFilteredBacklogs((items) => {
+        const oldIndex = items.findIndex((item) => item._id === active.id);
+        const newIndex = items.findIndex((item) => item._id === over.id);
+
+        return arrayMove(items, oldIndex, newIndex);
+      });
+    }
     // Find which groups the items belong to (if any)
     const sourceGroupId = Object.entries(groups).find(([_, group]) =>
       group.items.includes(active.id as string)
@@ -124,11 +134,7 @@ export const ProductBackLogTableRows = ({
         onDragEnd={handleDragEnd}
       >
         <SortableContext
-          items={
-            aiGeneratedBackLogs
-              ? aiGeneratedBackLogs.map((p, index) => index)
-              : filteredBacklogs.map((p) => p._id)
-          }
+          items={filteredBacklogs.map((p) => p._id)}
           strategy={rectSortingStrategy}
         >
           <BackLogItemTableBody

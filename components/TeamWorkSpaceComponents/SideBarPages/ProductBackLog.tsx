@@ -3,6 +3,7 @@ import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { TransitionWrapper } from "../TransitionWrapper";
 import MainPage from "@/components/BackLogComponents/MainPage";
 import BackLogProvider from "@/components/Contexts/BackLogContext";
+import SprintProvider from "@/components/Contexts/SprintContext";
 
 const ProductBackLog = ({
   opened,
@@ -19,7 +20,9 @@ const ProductBackLog = ({
   return (
     <TransitionWrapper opened={opened}>
       <BackLogProvider>
-        <MainPage />
+        <SprintProvider>
+          <MainPage />
+        </SprintProvider>
       </BackLogProvider>
     </TransitionWrapper>
   );
