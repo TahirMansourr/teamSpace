@@ -34,12 +34,17 @@ const AiGeneratorModal = ({ opened, close }: AiGeneratorModalProps) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          body: getInitialBacklogPrompt(projectDescription),
+          body: JSON.stringify({
+            body: getInitialBacklogPrompt(projectDescription),
+          }),
         }),
       });
 
       const data = await response.json();
       console.log("Response:", data);
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to generate content");
+      }
       if (response.ok) {
         try {
           const parsedOutput = JSON.parse(data.output);
@@ -66,7 +71,7 @@ const AiGeneratorModal = ({ opened, close }: AiGeneratorModalProps) => {
     } catch (error: any) {
       console.error("Error:", error);
       setBacklog([]);
-      setError(`An error occurred: ${error.message}`);
+      setError(` ${error.message}`);
     } finally {
       setIsLoading(false);
     }

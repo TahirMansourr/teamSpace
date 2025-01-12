@@ -42,7 +42,12 @@ export async function POST(req : NextRequest, res : NextResponse) {
         // Send the llm output as a server response object
         return NextResponse.json({ output })
     } catch (error : any) {
-        console.error('Gemini API Error:', error);
-         return NextResponse.json({ error: `Failed to process request: ${error.message}` }, { status: 500 });
-    }
+    console.error('Gemini API Error:', error);
+    return NextResponse.json({ 
+        error: true,
+        message: error.message || 'Failed to process request'
+    }, { 
+        status: 500 
+    });
+}
 }
