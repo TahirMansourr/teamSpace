@@ -1,53 +1,39 @@
 'use server'
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GenerateContentResult, GoogleGenerativeAI } from "@google/generative-ai";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req : NextRequest, res : NextResponse) {
-    // Validate API key exists
+export async function POST(req: NextRequest) {
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-        return NextResponse.json(
-            { error: "GEMINI_API_KEY is not configured" },
-            { status: 500 }
-        );
+        return NextResponse.json({ error: "GEMINI_API_KEY not configured" }, { status: 400 });
     }
 
     try {
         const genAI = new GoogleGenerativeAI(apiKey);
-
-        const model = genAI.getGenerativeModel({ model: "gemini-pro" })
-
-        // Retrieve the data we receive as part of the request body
-        const data = await req.json()
-
-        // Define a prompt varibale
-        const prompt = data.body
-
-        // Pass the prompt to the model and retrieve the output
-        const result = await model.generateContent(prompt)
-        const response =  result.response;
-        console.log("🚀 ~ file: route.ts:29 ~ response:", response)
-        const output =  response.text();
-        console.log("🚀 ~ file: route.ts:30 ~ output:", output)
+        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+        const data = await req.json();
         
+        // Add timeout promise
+        const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Request timed out')), 30000)
+        );
 
-        // Add error handling for the response
-        if (!response || !output) {
-            return NextResponse.json(
-                { error: "Failed to generate content" },    
-                { status: 500 }
-            );
-        }
+        // Race between API call and timeout
+        const result = await Promise.race([
+            model.generateContent(data.body),
+            timeoutPromise
+        ]) as GenerateContentResult;
 
-        // Send the llm output as a server response object
-        return NextResponse.json({ output })
-    } catch (error : any) {
-    console.error('Gemini API Error:', error);
-    return NextResponse.json({ 
-        error: true,
-        message: error.message || 'Failed to process request'
-    }, { 
-        status: 500 
-    });
-}
+        const response = result.response;
+        const output = response.text();
+
+        return NextResponse.json({ output }, { status: 200 });
+    } catch (error: any) {
+        return NextResponse.json({ 
+            error: true,
+            message: error.message || 'Request failed'
+        }, { 
+            status: error.message === 'Request timed out' ? 504 : 500 
+        });
+    }
 }
