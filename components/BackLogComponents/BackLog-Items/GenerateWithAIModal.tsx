@@ -18,7 +18,7 @@ export default function GenerateWithAIModal({
   isBacklogVisible,
   error,
   setAiGeneratedBacklog,
-}: {
+}: Readonly<{
   opened: boolean;
   close: () => void;
   projectDescription: string;
@@ -30,7 +30,7 @@ export default function GenerateWithAIModal({
   isBacklogVisible: boolean;
   error: string | null;
   setAiGeneratedBacklog: React.Dispatch<React.SetStateAction<BackLogItemDto[]>>;
-}) {
+}>) {
   const { setAcceptedBacklogs } = useBackLogContext();
   return (
     <Modal
