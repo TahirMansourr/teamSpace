@@ -5,6 +5,7 @@ import ProductBacklogItem from "../models/ProductBackLogItem";
 import { connectToDB } from "../mongoose";
 import Project from "../models/ProjectModel";
 import Sprint from "../models/Sprint";
+import User from "../models/UserModel";
 
 export async function GetProductBackLogAndPopulate(projectId : string) {
   try {
@@ -17,7 +18,7 @@ export async function GetProductBackLogAndPopulate(projectId : string) {
         model: ProductBacklogItem,
         populate: {
           path: 'assignee',
-          model: 'User',
+          model: User,
         }
       },
       {
@@ -25,7 +26,7 @@ export async function GetProductBackLogAndPopulate(projectId : string) {
         model : Sprint,
         populate : {
           path :  'assignees',
-          model : 'User',
+          model : User,
         }
       }
     ]) 
