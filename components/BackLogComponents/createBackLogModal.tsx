@@ -10,7 +10,7 @@ const CreateBackLogModal = ({
   close: () => void;
 }) => {
   return (
-    <Modal opened={opened} onClose={close} title="Authentication">
+    <Modal opened={opened} onClose={close} title="Create a new Backlog">
       <CreateBackLogForm close={close} />
     </Modal>
   );
