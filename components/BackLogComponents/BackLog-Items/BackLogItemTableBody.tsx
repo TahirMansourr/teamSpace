@@ -51,7 +51,7 @@ const BackLogItemTableBody = ({
 
   return (
     <tbody className="bg-white divide-y divide-gray-200 block md:table-row-group">
-      <LoadingOverlay visible={loading} />
+      {/* <LoadingOverlay visible={loading} /> */}
       {/* Grouped Items */}
       {Object.entries(groups).map(([groupId, group]) => (
         <React.Fragment key={groupId}>

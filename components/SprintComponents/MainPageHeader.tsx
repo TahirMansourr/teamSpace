@@ -14,7 +14,7 @@ const MainPageHeader = () => {
     setFilteredBacklogs,
   } = useBackLogContext();
   return (
-    <div className="flex justify-between items-center mb-8">
+    <div className="flex justify-between items-center mb-8 mx-11">
       <div className="relative flex items-center gap-4">
         <span className="text-xl font-bold">
           {selectedBackLog ? selectedBackLog.name : "Choose Backlog"}

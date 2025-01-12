@@ -6,7 +6,7 @@ export const useGetProjectPopulated = ({
   projectId,
 }: Readonly<{ projectId: string }>) => {
   const [selectedItemInSideBar, setSelectedItemInSideBar] =
-    useState<string>("projects");
+    useState<string>("Product Backlogs");
   const [opened, setOpened] = useState<boolean>(false);
   const [projectInfo, setProjectInfo] = useState<any>();
   const [loading, setLoading] = useState<boolean>(false);

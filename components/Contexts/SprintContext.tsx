@@ -106,9 +106,9 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
   // } here using for each instead of map it better because map creates a new array and foreach performs operation on the same array
 
   useEffect(() => {
+    setLoading(true);
     if (myBackLogs) {
       try {
-        setLoading(true);
         const result = GetSprintsByStatus();
         const allSprints = getAllSprintsByStatus();
         setSprintsByStatus(result);

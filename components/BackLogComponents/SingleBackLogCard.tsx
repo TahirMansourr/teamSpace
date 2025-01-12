@@ -10,7 +10,7 @@ const SingleBackLogCard = ({ backlog }: { backlog: BackLogDto }) => {
   return (
     <div
       key={backlog._id}
-      className="border rounded-lg p-6 hover:shadow-lg transition-shadow duration-200"
+      className="border rounded-lg p-6 hover:shadow-lg transition-shadow duration-200 bg-white"
     >
       <div className="flex justify-between items-start mb-3">
         <h2 className="text-lg font-semibold text-indigo-600">

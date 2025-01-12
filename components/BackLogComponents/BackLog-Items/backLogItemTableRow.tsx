@@ -10,7 +10,7 @@ import { FaCheck, FaPlay, FaX } from "react-icons/fa6";
 import { FaEdit } from "react-icons/fa";
 import CreateBackLogItemModal from "./createBackLogItemModal";
 import { useBackLogContext } from "@/components/Contexts/BackLogContext";
-import { LoadingOverlay } from "@mantine/core";
+import { Loader, LoadingOverlay } from "@mantine/core";
 
 interface BackLogItemTableRowProps {
   item: BackLogItemDto;
@@ -51,6 +51,7 @@ const BackLogItemTableRow = ({
     handleCreateBackLogItem,
     loading,
     setAcceptedBacklogs,
+    setFilteredBacklogs,
   } = useBackLogContext();
 
   const style = {
@@ -63,13 +64,17 @@ const BackLogItemTableRow = ({
         hover:bg-gray-50 cursor-pointer w-[90%]
         ${isGrouped ? "pl-8 border-l-4 border-blue-200" : "mt-10"}
         ${isSelected ? "bg-blue-50" : ""}
-        ${isAccepted ? "bg-green-50" : ""}
+        ${
+          isAccepted
+            ? "bg-green-50 animate-fade-in-down duration-300 transition-all"
+            : ""
+        }
       `}
       key={item._id}
       ref={setNodeRef}
       style={style}
     >
-      <LoadingOverlay visible={loading} />
+      {/* <LoadingOverlay visible={loading} /> */}
       {isSelectable || isSelectingForSprint ? (
         <td className="w-8">
           <input
@@ -169,6 +174,7 @@ const BackLogItemTableRow = ({
                           (p) => p.title !== item.title
                         ) as BackLogItemDto[]
                     );
+                  setFilteredBacklogs((prev) => [...prev, item]);
                   setAcceptedBacklogs((prev) => [...prev, item]);
                 }}
                 className="text-gray-500 hover:text-gray-600 cursor-pointer"
@@ -195,6 +201,11 @@ const BackLogItemTableRow = ({
                 Reject
               </span>
             </div>
+            {loading && (
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                <Loader />
+              </div>
+            )}
           </div>
         )}
       </td>

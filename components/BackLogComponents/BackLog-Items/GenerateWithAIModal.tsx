@@ -39,7 +39,7 @@ export default function GenerateWithAIModal({
         close();
         setAcceptedBacklogs([]);
       }}
-      title="AI Backlog Generator"
+      title="Backlog-Item Generator"
       fullScreen
       overlayProps={{
         blur: 8,
@@ -75,15 +75,15 @@ export default function GenerateWithAIModal({
             <p className="whitespace-pre-wrap text-gray-700">{output}</p>
           </div>
         )}
-        {isBacklogVisible &&
-          backlog.length > 0 &&
-          (isLoading ? (
-            <div className="flex justify-center items-center ">
-              {" "}
-              <Loader type="bars" size="lg" />{" "}
-            </div>
-          ) : (
-            <div className="p-6 bg-gray-50 rounded-xl border border-gray-200">
+        {
+          isBacklogVisible && backlog.length > 0 && (
+            // (isLoading ? (
+            //   <div className="flex justify-center items-center ">
+            //     {" "}
+            //     <Loader type="bars" size="lg" />{" "}
+            //   </div>
+            // ) : (
+            <div className="p-6 bg-gray-50 rounded-xl border border-gray-200 animate-fadeIn duration-200 transition-all">
               <h3 className="font-bold text-lg mb-4 text-gray-800">
                 Generated Backlog Items:
               </h3>
@@ -92,7 +92,10 @@ export default function GenerateWithAIModal({
                 setAiGeneratedBacklog={setAiGeneratedBacklog}
               />
             </div>
-          ))}
+          )
+          // )
+          // )
+        }
         {error && (
           <div className="p-6 bg-red-50 rounded-xl border border-red-200">
             <p className="text-red-600">{error}</p>

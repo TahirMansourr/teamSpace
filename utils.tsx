@@ -66,11 +66,11 @@ export const SelectedItemToRenderOnScreen = ({
       return <Activity opened={opened} setOpened={setOpened} />;
     case "Settings":
       return <Settings opened={opened} setOpened={setOpened} />;
-    case "Scrum":
+    case "Sprints":
       return <Scrum opened={opened} setOpened={setOpened} />;
-    case "Product Backlog":
+    case "Product Backlogs":
       return <ProductBackLog opened={opened} setOpened={setOpened} />;
     default:
-      return <MultiTabsComponent opened={opened} setOpened={setOpened} />;
+      return <ProductBackLog opened={opened} setOpened={setOpened} />;
   }
 };

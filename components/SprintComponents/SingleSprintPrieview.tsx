@@ -8,6 +8,8 @@ import {
   IconCheckbox,
 } from "@tabler/icons-react";
 import React, { useEffect, useState } from "react";
+import { IoMdArrowRoundBack } from "react-icons/io";
+import { useSprintContext } from "../Contexts/SprintContext";
 
 interface SingleSprintPreviewProps {
   sprint: SprintDto;
@@ -17,7 +19,7 @@ const SingleSprintPreview: React.FC<SingleSprintPreviewProps> = ({
   sprint,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
-
+  const { handleBack } = useSprintContext();
   useEffect(() => {
     setIsVisible(true);
   }, []);
@@ -38,10 +40,16 @@ const SingleSprintPreview: React.FC<SingleSprintPreviewProps> = ({
 
   return (
     <div
-      className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-500 transform ${
+      className={`bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 hover:shadow-xl transition-all duration-500 transform w-[50%] backdrop-blur-lg m-5 mx-auto  ${
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
       }`}
     >
+      <button
+        onClick={handleBack}
+        className="mb-3 px-4 py-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors duration-300 flex items-center gap-2  font-bold"
+      >
+        <IoMdArrowRoundBack size={20} />
+      </button>
       {/* Header */}
       <div
         className={`flex justify-between items-center mb-6 transition-all duration-500 delay-100 ${

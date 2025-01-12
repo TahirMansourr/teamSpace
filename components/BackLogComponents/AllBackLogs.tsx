@@ -14,7 +14,7 @@ const AllBackLogs: React.FC<BacklogProps> = ({ backlogs }) => {
   const [opened, { open, close }] = useDisclosure(false);
 
   return (
-    <div className="w-full h-screen flex flex-col bg-white dark:bg-gray-900  rounded-md px-10">
+    <div className="w-full h-screen flex flex-col rounded-md px-10">
       <CreateBackLogModal opened={opened} close={close} />
       <div className="flex justify-around items-center mb-6 mt-4">
         <h1 className="text-2xl font-bold text-indigo-600">Product Backlogs</h1>
