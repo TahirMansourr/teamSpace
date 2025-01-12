@@ -19,6 +19,14 @@ const SprintFeed = () => {
         ) : (
           <div>No Active Sprints</div>
         )}
+        {allSprints && allSprints.planned.length > 0 ? (
+          <SprintHorizantalScroll
+            sprints={allSprints?.planned}
+            status="Planned"
+          />
+        ) : (
+          <div>No Sprints Planned</div>
+        )}
         {allSprints && allSprints.cancelled.length > 0 ? (
           <SprintHorizantalScroll
             sprints={allSprints?.cancelled}
@@ -34,14 +42,6 @@ const SprintFeed = () => {
           />
         ) : (
           <div>No Sprints Completed Yet</div>
-        )}
-        {allSprints && allSprints.planned.length > 0 ? (
-          <SprintHorizantalScroll
-            sprints={allSprints?.planned}
-            status="Planned"
-          />
-        ) : (
-          <div>No Sprints Planned</div>
         )}
       </div>
     );

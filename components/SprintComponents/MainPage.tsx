@@ -8,9 +8,8 @@ const MainPage = () => {
   return (
     <div className="flex flex-col w-full mx-auto p-6">
       {!selectedSprint && !loading ? <MainPageHeader /> : null}
-      <ScrollArea w={"100%"}>
-        <MainPageBody />
-      </ScrollArea>
+
+      <MainPageBody />
     </div>
   );
 };
