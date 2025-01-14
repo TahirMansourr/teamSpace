@@ -19,6 +19,7 @@ function SideBar({
 }>) {
   const [opened, { toggle }] = useDisclosure();
   const dataForSideBar = [
+    "Proposal",
     "Product Backlogs",
     "Sprints",
     "TeamSpace",

@@ -13,6 +13,7 @@ import Activity from "./components/TeamWorkSpaceComponents/SideBarPages/Activity
 import Settings from "./components/TeamWorkSpaceComponents/SideBarPages/Settings";
 import Scrum from "./components/TeamWorkSpaceComponents/SideBarPages/Scrum";
 import ProductBackLog from "./components/TeamWorkSpaceComponents/SideBarPages/ProductBackLog";
+import Proposal from "./components/TeamWorkSpaceComponents/SideBarPages/Proposal";
 
 export const SelectedItemInSideBarToRenderOnScreen = ({
   selectedItemInSideBar,
@@ -70,6 +71,8 @@ export const SelectedItemToRenderOnScreen = ({
       return <Scrum opened={opened} setOpened={setOpened} />;
     case "Product Backlogs":
       return <ProductBackLog opened={opened} setOpened={setOpened} />;
+    case "Proposal":
+      return <Proposal opened={opened} setOpened={setOpened} />;
     default:
       return <ProductBackLog opened={opened} setOpened={setOpened} />;
   }

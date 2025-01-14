@@ -1,9 +1,9 @@
 "use client";
 import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { TransitionWrapper } from "../TransitionWrapper";
-import MainPage from "@/components/SprintComponents/MainPage";
 import BackLogProvider from "@/components/Contexts/BackLogContext";
 import SprintProvider from "@/components/Contexts/SprintContext";
+import MainPage from "@/components/ProposalComponents/MainPage";
 
 const Proposal = ({
   opened,
@@ -24,7 +24,7 @@ const Proposal = ({
           <section className="w-full h-full px-8">
             <BackLogProvider>
               <SprintProvider>
-                <div className="w-full h-full"></div>
+                <MainPage />
               </SprintProvider>
             </BackLogProvider>
           </section>
