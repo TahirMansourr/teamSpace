@@ -16,7 +16,7 @@ const ProductBackLogTable = ({
   isSelectingForSprint?: boolean;
 }) => {
   return (
-    <div className="w-full bg-white dark:bg-gray-900 rounded-md">
+    <div className="w-full bg-white  rounded-md">
       {!isSelectingForSprint && (
         <div className="flex w-full justify-end pr-4 py-2">
           <GroupingControls />

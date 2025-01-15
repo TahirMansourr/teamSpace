@@ -6,7 +6,7 @@ import CreateBackLogForm from "../Forms/createBackLog";
 
 const FirstBackLog = () => {
   return (
-    <div className="w-full h-screen flex  bg-white dark:bg-gray-900 justify-center  items-center rounded-md gap-12">
+    <div className="w-full h-screen flex  bg-white  justify-center  items-center rounded-md gap-12">
       <div className="flex flex-col items-center justify-center">
         <Image
           src={emptybacklog}
