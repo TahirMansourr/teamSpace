@@ -54,7 +54,7 @@ const CreateProjectForm = ({
         image: values.image,
         content: values.content,
         admins: [userId],
-        team: TeamMembersIds,
+        team: [...TeamMembersIds , userId],
       }).then((res: any) => {
         const newProjectId = res.project._id;
         console.log(
@@ -62,7 +62,7 @@ const CreateProjectForm = ({
           newProjectId
         );
         setResponse(res);
-        GetUsersByIds(TeamMembersIds).then((res) => {
+        GetUsersByIds([...TeamMembersIds , userId]).then((res) => {
           setUserProjects((prev: any) => [
             ...prev,
             {
