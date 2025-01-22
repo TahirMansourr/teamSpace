@@ -14,10 +14,10 @@ import {
   sortableKeyboardCoordinates,
   arrayMove,
 } from "@dnd-kit/sortable";
-import BackLogItemTableBody from "./BackLogItemTableBody";
+import BackLogTableBody from "./BackLogItemTableBody";
 import { BackLogItemDto } from "@/Utils/types";
 
-export const ProductBackLogTableRows = ({
+export const BackLogTableBodyContainer = ({
   aiGeneratedBackLogs,
   setAiGeneratedBacklog,
   isSelectingForSprint,
@@ -137,7 +137,7 @@ export const ProductBackLogTableRows = ({
           items={filteredBacklogs.map((p) => p._id)}
           strategy={rectSortingStrategy}
         >
-          <BackLogItemTableBody
+          <BackLogTableBody
             backLog={backLog}
             loading={loading}
             groups={groups}

@@ -27,18 +27,18 @@ export const GroupingControls = () => {
         onClick={() => {setIsGrouping(!isGrouping); setSelectedItems([]) ;setGroupName("") }}
         color={isGrouping ? "red" : "blue"}
       >
-        {isGrouping ? "Cancel Grouping" : "Create Group"}
+        {isGrouping ? "Cancel " : "Create Sprint"}
       </Button>
       
       {isGrouping && (
         <div className="flex items-center gap-4">
           <TextInput
-            placeholder="Enter group name"
+            placeholder="Enter sprint name"
             value={groupName}
             onChange={(e) => setGroupName(e.currentTarget.value)}
           />
           <Button
-            disabled={selectedItems.length < 2 || !groupName.trim()}
+            disabled={selectedItems.length < 1 || !groupName.trim()}
             onClick={handleCreateGroup}
           >
             Create Group

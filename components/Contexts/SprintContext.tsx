@@ -43,6 +43,8 @@ type SprintContextDTO = {
   isTransitioning: boolean;
   handleSprintClick: (sprint: SprintDto) => void;
   handleBack: () => void;
+  showSprintsOnBackLogPage: boolean;
+  setShowSprintsOnBackLogPage: Dispatch<SetStateAction<boolean>>;
 };
 
 type CreateOrUpdateSprint = {
@@ -137,6 +139,7 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
 
   const [selectedSprint, setSelectedSprint] = useState<SprintDto | null>(null);
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
+  const [showSprintsOnBackLogPage , setShowSprintsOnBackLogPage] = useState<boolean>(false);
 
   const handleSprintClick = (sprint: SprintDto) => {
     setIsTransitioning(true);
@@ -271,6 +274,8 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
       isTransitioning,
       handleSprintClick,
       handleBack,
+      showSprintsOnBackLogPage,
+      setShowSprintsOnBackLogPage
     }),
     [
       selectedBackLog,
@@ -283,6 +288,8 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
       isTransitioning,
       handleSprintClick,
       handleBack,
+      showSprintsOnBackLogPage,
+      setShowSprintsOnBackLogPage
     ]
   );
 

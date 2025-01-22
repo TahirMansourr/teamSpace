@@ -8,6 +8,7 @@ import BackLogItemTableRow from "./backLogItemTableRow";
 import CreateBackLogItemModal from "./createBackLogItemModal";
 import { useBackLogContext } from "@/components/Contexts/BackLogContext";
 import { GroupActions } from "./GroupActions";
+import { useSprintContext } from "@/components/Contexts/SprintContext";
 
 interface BackLogItemTableBodyProps {
   backLog: BackLogDto;
@@ -23,7 +24,7 @@ interface BackLogItemTableBodyProps {
   isSelectingForSprint: boolean;
 }
 
-const BackLogItemTableBody = ({
+const BackLogTableBody = ({
   backLog,
   loading,
   groups,
@@ -38,6 +39,7 @@ const BackLogItemTableBody = ({
     acceptedBacklogs,
     filteredBacklogs,
   } = useBackLogContext();
+  const {showSprintsOnBackLogPage} = useSprintContext();
   const [opened, { open, close }] = useDisclosure();
 
   const toggleItemSelection = (itemId: string) => {
@@ -52,6 +54,7 @@ const BackLogItemTableBody = ({
   return (
     <tbody className="bg-white divide-y divide-gray-200 block md:table-row-group">
       {/* <LoadingOverlay visible={loading} /> */}
+     
       {/* Grouped Items */}
       {Object.entries(groups).map(([groupId, group]) => (
         <React.Fragment key={groupId}>
@@ -72,6 +75,8 @@ const BackLogItemTableBody = ({
               </td>
             </tr>
           )}
+        
+        
           {!aiGeneratedBackLogs &&
             filteredBacklogs
               ?.filter((item) => group.items.includes(item._id))
@@ -96,6 +101,43 @@ const BackLogItemTableBody = ({
           </tr>
         </React.Fragment>
       ))}
+
+      {/* WithSprintsShown */}
+      { showSprintsOnBackLogPage ? 
+      backLog.sprints?.map((sprint) => (
+        <React.Fragment key={sprint._id}>
+          <tr>
+            <td colSpan={3}>
+              {" "}
+              <Text __size="md" p={4} fw={500} aria-colspan={2}>
+                {sprint.name}
+              </Text>
+            </td>
+           
+          </tr>
+          {sprint.backlogItems?.map((item: BackLogItemDto, index) => (
+            <BackLogItemTableRow
+              key={item._id}
+              item={item}
+              index={index}
+              id={item._id}
+              isGrouped={true}
+              isSelectable={isGrouping}
+              isSelected={selectedItems.includes(item._id)}
+              onSelect={() => toggleItemSelection(item._id)}
+              isSelectingForSprint={isSelectingForSprint}
+            />
+          ))}
+          <tr>
+            {" "}
+            <td colSpan={3}>
+              <div className="h-5 w-full"></div>
+            </td>
+          </tr>
+        </React.Fragment>
+      )
+      ) : null
+      }
 
       {/* Ungrouped Items */}
       {aiGeneratedBackLogs
@@ -128,6 +170,8 @@ const BackLogItemTableBody = ({
               isSelectingForSprint={isSelectingForSprint}
             />
           ))}
+
+      {/* Accepted Backlogs */}
       {acceptedBacklogs.length > 0 && (
         <>
           <tr>
@@ -173,4 +217,4 @@ const BackLogItemTableBody = ({
   );
 };
 
-export default BackLogItemTableBody;
+export default BackLogTableBody;

@@ -1,7 +1,7 @@
 import { useBackLogContext } from "@/components/Contexts/BackLogContext";
 import React from "react";
 
-const ProductBacklogTableHead = ({
+const BackLogTableHead = ({
   aiGeneratedBackLogs,
   isSelectingForSprint,
 }: {
@@ -14,12 +14,12 @@ const ProductBacklogTableHead = ({
       <tr>
         {isGrouping ||
           (isSelectingForSprint && (
-            <th className="p-0 m-0 w-12 min-w-[3rem] hover:cursor-pointer">
+            <th className="p-0 m-0 w-8 min-w-[2rem] hover:cursor-pointer">
               Select
             </th>
           ))}
         {!aiGeneratedBackLogs && !isSelectingForSprint && (
-          <th className="p-0 m-0 w-8"></th>
+          <th className="p-0 m-0 w-4"></th>
         )}
         {!isSelectingForSprint && (
           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -57,4 +57,4 @@ const ProductBacklogTableHead = ({
   );
 };
 
-export default ProductBacklogTableHead;
+export default BackLogTableHead;

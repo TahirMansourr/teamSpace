@@ -41,6 +41,7 @@ const BackLogItemTableRow = ({
   setAiGeneratedBacklog,
   isSelectingForSprint,
 }: BackLogItemTableRowProps) => {
+  console.log("🚀 ~ file: backLogItemTableRow.tsx ~ line 10 ~ item", item);
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
 

@@ -24,10 +24,15 @@ export async function GetProductBackLogAndPopulate(projectId : string) {
       {
         path : 'sprints',
         model : Sprint,
-        populate : {
+        populate : [{
           path :  'assignees',
           model : User,
-        }
+        },
+      {
+        path : 'backlogItems',
+        model : ProductBacklogItem,
+      }
+      ]
       }
     ]) 
       .exec();

@@ -3,7 +3,7 @@
 import { BackLogItemDto } from "@/Utils/types";
 import { Button, Loader, Modal, Textarea } from "@mantine/core";
 import { RiRobot2Line } from "react-icons/ri";
-import ProductBackLogTable from "./ProductBackLogTable";
+import BackLogTable from "./ProductBackLogTable";
 import { useBackLogContext } from "@/components/Contexts/BackLogContext";
 
 export default function GenerateWithAIModal({
@@ -87,7 +87,7 @@ export default function GenerateWithAIModal({
               <h3 className="font-bold text-lg mb-4 text-gray-800">
                 Generated Backlog Items:
               </h3>
-              <ProductBackLogTable
+              <BackLogTable
                 aiGeneratedBackLogs={backlog}
                 setAiGeneratedBacklog={setAiGeneratedBacklog}
               />

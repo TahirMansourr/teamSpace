@@ -12,7 +12,7 @@ import SortButton from "./SortAndFilterButtons/SortButton";
 import FilterButton from "./SortAndFilterButtons/FilterButton";
 import SearchBar from "./SortAndFilterButtons/SearchBar";
 
-const ProductBackLogHeader = () => {
+const BackLogHeader = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const { setSelectedBackLog, selectedBackLog: backlog } = useBackLogContext();
   const [opened, { open, close }] = useDisclosure();
@@ -68,4 +68,4 @@ const ProductBackLogHeader = () => {
     );
 };
 
-export default ProductBackLogHeader;
+export default BackLogHeader;

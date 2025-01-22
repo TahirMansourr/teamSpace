@@ -1,10 +1,10 @@
 import React from "react";
-import ProductBacklogTableHead from "./ProductBacklogTableHead";
-import { ProductBackLogTableRows } from "./ProductBackLogTableRows";
-import { GroupingControls } from "./GroupingControls";
+import BackLogTableHead from "./ProductBacklogTableHead";
+import { BackLogTableBodyContainer } from "./ProductBackLogTableRows";
 import { BackLogItemDto } from "@/Utils/types";
+import ShowSprintsButton from "../ShowSprintsButton";
 
-const ProductBackLogTable = ({
+const BackLogTable = ({
   aiGeneratedBackLogs,
   setAiGeneratedBacklog,
   isSelectingForSprint,
@@ -18,16 +18,17 @@ const ProductBackLogTable = ({
   return (
     <div className="w-full bg-white  rounded-md">
       {!isSelectingForSprint && (
-        <div className="flex w-full justify-end pr-4 py-2">
-          <GroupingControls />
+        <div className="flex w-full justify-end pr-4 py-2 gap-2">
+          {/* <GroupingControls /> */}
+          <ShowSprintsButton/>
         </div>
       )}
       <table className="w-full ">
-        <ProductBacklogTableHead
+        <BackLogTableHead
           aiGeneratedBackLogs={aiGeneratedBackLogs ? true : false}
           isSelectingForSprint={isSelectingForSprint ? true : false}
         />
-        <ProductBackLogTableRows
+        <BackLogTableBodyContainer
           aiGeneratedBackLogs={aiGeneratedBackLogs}
           setAiGeneratedBacklog={setAiGeneratedBacklog}
           isSelectingForSprint={isSelectingForSprint ? true : false}
@@ -37,4 +38,4 @@ const ProductBackLogTable = ({
   );
 };
 
-export default ProductBackLogTable;
+export default BackLogTable;

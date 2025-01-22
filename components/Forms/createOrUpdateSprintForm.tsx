@@ -12,7 +12,7 @@ import { DateInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { useState } from "react";
 import { useSprintContext } from "../Contexts/SprintContext";
-import ProductBackLogTable from "../BackLogComponents/BackLog-Items/ProductBackLogTable";
+import BackLogTable from "../BackLogComponents/BackLog-Items/ProductBackLogTable";
 import { useBackLogContext } from "../Contexts/BackLogContext";
 import { assign } from "nodemailer/lib/shared";
 import AssignTeamMembers from "./AssignTeamMembers";
@@ -147,7 +147,7 @@ const CreateSprintForm = ({ close }: { close: () => void }) => {
           onChange={(value) => form.setFieldValue("assignees", value)}
         />
         <ScrollArea>
-          <ProductBackLogTable isSelectingForSprint={true} />
+          <BackLogTable isSelectingForSprint={true} />
         </ScrollArea>
 
         <div className="flex justify-end items-center gap-3 pt-4 border-t border-gray-100">
