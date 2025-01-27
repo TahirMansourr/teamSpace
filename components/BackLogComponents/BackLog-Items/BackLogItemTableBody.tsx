@@ -155,8 +155,8 @@ const BackLogTableBody = ({
             setAiGeneratedBacklog={setAiGeneratedBacklog}
           />
         ))}
-      {!aiGeneratedBackLogs &&
-        filteredBacklogs
+      {!aiGeneratedBackLogs && !showSprintsOnBackLogPage &&
+        filteredBacklogs 
           ?.filter((item) => !item.groupId)
           .map((item: BackLogItemDto, index) => (
             <BackLogItemTableRow
