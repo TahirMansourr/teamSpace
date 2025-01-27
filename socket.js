@@ -2,7 +2,7 @@
 
  const io = require("socket.io-client")
 
-export const socket = io(process.env.CLOUD_RUN_SOCKET_SERVER_URL); 
+export const socket = io(process.env.NEXT_PUBLIC_CLOUD_RUN_SOCKET_SERVER_URL); 
 
 socket.on("connect", () => {
   console.log("Server up and running");
