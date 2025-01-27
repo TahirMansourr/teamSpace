@@ -10,11 +10,10 @@ socket.on("connect", () => {
 
 export const JoinRoom = (roomName, username) => {
   socket.emit("joinRoom", { roomName, username }, (ack) => {
-    console.log('🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱 ' , roomName);
-    if (ack.success) {
-      console.log(`${username} joined room: ${roomName}`);
+    if (ack?.success) {
+      console.log(`${username} successfully joined room: ${roomName}`);
     } else {
-      console.log(`Failed to join room: ${roomName}`);
+      console.error(`Failed to join room: ${roomName}`, ack?.message);
     }
   });
 };
