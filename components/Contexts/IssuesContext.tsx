@@ -125,10 +125,10 @@ const IssuesProvider = ({
         //uncomment me to use ably{
         // channel.publish('create-issue' ,{ newIssue ,  featureId : values.featureId});}
          socket.emit('createIssue' , newIssue)
-        // setIssuesInfo((prev: IssueDto[]) => [newIssue, ...prev]);
-        // if (values.featureId) {
-        //   setAllFeatureIssues((prev: IssueDto[]) => [newIssue, ...prev]);
-        // }
+        setIssuesInfo((prev: IssueDto[]) => [newIssue, ...prev]);
+        if (values.featureId) {
+          setAllFeatureIssues((prev: IssueDto[]) => [newIssue, ...prev]);
+        }
       });
     } catch (error) {
       throw new Error(`error at handleCreateIssue : ${error}`);
@@ -179,17 +179,17 @@ const IssuesProvider = ({
         };
         //uncomment me to use ably{
         //  channel.publish('update-issue', newIssue);}
-        // socket.emit('updateIssue' , newIssue)
-        setIssuesInfo((prev: IssueDto[]) =>
-          prev.map((prevIssue: IssueDto) =>
-            prevIssue._id === newIssue._id ? newIssue : prevIssue
-          )
-        );
-        setAllFeatureIssues((prev: IssueDto[]) =>
-          prev.map((prevIssue: IssueDto) =>
-            prevIssue._id === newIssue._id ? newIssue : prevIssue
-          )
-        );
+         socket.emit('updateIssue' , newIssue)
+        // setIssuesInfo((prev: IssueDto[]) =>
+        //   prev.map((prevIssue: IssueDto) =>
+        //     prevIssue._id === newIssue._id ? newIssue : prevIssue
+        //   )
+        // );
+        // setAllFeatureIssues((prev: IssueDto[]) =>
+        //   prev.map((prevIssue: IssueDto) =>
+        //     prevIssue._id === newIssue._id ? newIssue : prevIssue
+        //   )
+        // );
         // setIssuesInfo(((prev : IssueDto[] )=> prev.map((prevIssue : IssueDto) => prevIssue._id === newIssue._id ? newIssue : prevIssue)))
       });
     } catch (error) {
@@ -234,12 +234,27 @@ const IssuesProvider = ({
   }
   useEffect(()=>{
       socket.on('createIssue' ,(issue : IssueDto) => {
-          setIssuesInfo((prev : IssueDto[]) => [issue , ...prev])
+        setIssuesInfo((prev: IssueDto[]) => [issue, ...prev]);
+        
       })
       socket.on('updateIssue' , (newIssue : IssueDto) => {
-          setIssuesInfo(((prev : IssueDto[] )=> prev.map((prevIssue : IssueDto) => prevIssue._id === newIssue._id ? newIssue : prevIssue)))
+        setIssuesInfo((prev: IssueDto[]) =>
+          prev.map((prevIssue: IssueDto) =>
+            prevIssue._id === newIssue._id ? newIssue : prevIssue
+          )
+        );
+        setAllFeatureIssues((prev: IssueDto[]) =>
+          prev.map((prevIssue: IssueDto) =>
+            prevIssue._id === newIssue._id ? newIssue : prevIssue
+          )
+        );
 
       })
+      return () => {
+        socket.off('createIssue');
+        socket.off('updateIssue');
+        socket.off('deleteIssue');
+      };
   } , [])
 
   const value = {
