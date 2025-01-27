@@ -125,10 +125,6 @@ const IssuesProvider = ({
         //uncomment me to use ably{
         // channel.publish('create-issue' ,{ newIssue ,  featureId : values.featureId});}
          socket.emit('createIssue' , newIssue)
-        setIssuesInfo((prev: IssueDto[]) => [newIssue, ...prev]);
-        if (values.featureId) {
-          setAllFeatureIssues((prev: IssueDto[]) => [newIssue, ...prev]);
-        }
       });
     } catch (error) {
       throw new Error(`error at handleCreateIssue : ${error}`);
@@ -234,6 +230,7 @@ const IssuesProvider = ({
   }
   useEffect(()=>{
       socket.on('createIssue' ,(issue : IssueDto) => {
+        console.log('🎁🎁🎁🎁🎁🎁🎁 i am here  ' , issue)
         setIssuesInfo((prev: IssueDto[]) => [issue, ...prev]);
         
       })
