@@ -1,13 +1,13 @@
 "use client";
 import { IssueDto, ProjectDto, UserDto } from "@/Utils/types";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { createOrUpdateIssueForm } from "../Forms/createOrUpdateIssue";
 import {
   CreateIssue,
   DeleteIssue,
   UpdateIssue,
 } from "@/lib/actions/IssueActions";
-// import { socket } from "@/socket";
+ import { socket } from "@/socket";
 // import { useChannel } from "ably/react";
 
 type IssuesContextDto = {
@@ -124,11 +124,11 @@ const IssuesProvider = ({
         };
         //uncomment me to use ably{
         // channel.publish('create-issue' ,{ newIssue ,  featureId : values.featureId});}
-        // socket.emit('createIssue' , newIssue)
-        setIssuesInfo((prev: IssueDto[]) => [newIssue, ...prev]);
-        if (values.featureId) {
-          setAllFeatureIssues((prev: IssueDto[]) => [newIssue, ...prev]);
-        }
+         socket.emit('createIssue' , newIssue)
+        // setIssuesInfo((prev: IssueDto[]) => [newIssue, ...prev]);
+        // if (values.featureId) {
+        //   setAllFeatureIssues((prev: IssueDto[]) => [newIssue, ...prev]);
+        // }
       });
     } catch (error) {
       throw new Error(`error at handleCreateIssue : ${error}`);
@@ -232,15 +232,15 @@ const IssuesProvider = ({
       close;
     }
   }
-  // useEffect(()=>{
-  //     socket.on('createIssue' ,(issue : IssueDto) => {
-  //         setIssuesInfo((prev : IssueDto[]) => [issue , ...prev])
-  //     })
-  //     socket.on('updateIssue' , (newIssue : IssueDto) => {
-  //         setIssuesInfo(((prev : IssueDto[] )=> prev.map((prevIssue : IssueDto) => prevIssue._id === newIssue._id ? newIssue : prevIssue)))
+  useEffect(()=>{
+      socket.on('createIssue' ,(issue : IssueDto) => {
+          setIssuesInfo((prev : IssueDto[]) => [issue , ...prev])
+      })
+      socket.on('updateIssue' , (newIssue : IssueDto) => {
+          setIssuesInfo(((prev : IssueDto[] )=> prev.map((prevIssue : IssueDto) => prevIssue._id === newIssue._id ? newIssue : prevIssue)))
 
-  //     })
-  // } , [])
+      })
+  } , [])
 
   const value = {
     allIssues: issuesInfo,

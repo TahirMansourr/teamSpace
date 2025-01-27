@@ -1,6 +1,7 @@
 "use client";
 import WorkSpaceProvider from "@/components/Contexts/WorkSpaceContext";
 import SideBar from "@/components/TeamWorkSpaceComponents/sideBar";
+import { JoinRoom } from "@/socket";
 import { SelectedItemToRenderOnScreen } from "@/utils";
 import { useGetProjectPopulated } from "@/Utils/Hooks/GetUserAndPopulate";
 import useGetUserInfo from "@/Utils/Hooks/GetUserInfo";
@@ -25,6 +26,8 @@ export default function WorkSpace({
       navigator.userAgent.includes("Windows") ||
         navigator.platform.includes("Win")
     );
+    JoinRoom(params.id[0] , user?._id || "ttahir") ;
+    console.log("🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱Joining Room");
   }, []);
 
   const scaleStyle = isWindows ? { transform: "scale(0.98)" } : {};
