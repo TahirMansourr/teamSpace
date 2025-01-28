@@ -46,7 +46,7 @@ const [formLoading, setFormLoading] = useState<boolean>(false);
           createdBy: userInfo,
         };
         
-         socket.emit('createIssue' , newIssue)
+         socket.emit('createIssue' , {room : project._id , value : newIssue})
          notifications.show({message : `${newIssue.name} Created` , color : "green"})
       });
     } catch (error) {
@@ -99,7 +99,7 @@ const [formLoading, setFormLoading] = useState<boolean>(false);
           createdBy,
         };
         
-         socket.emit('updateIssue' , newIssue)
+         socket.emit('updateIssue' , {room : project._id , value : newIssue})
          notifications.show({message : `${newIssue.name} Updated` , color : "green"})
       });
     } catch (error) {
@@ -130,7 +130,7 @@ const [formLoading, setFormLoading] = useState<boolean>(false);
     //   setAllFeatureIssues((prev: IssueDto[]) =>
     //     prev.filter((issue) => issue._id !== issueId)
     //   );
-       socket.emit('deleteIssue', issueId)
+       socket.emit('deleteIssue', {room : project._id , value : issueId})
          notifications.show({message : `Issue Deleted` , color : "green"})
     } catch (error) {
       notifications.show({message : `"Error at handleDeleteIssue" ${error}` , color : "red"})

@@ -22,7 +22,7 @@ export const useNotesActions = ({projectInfo , userInfo}:NotesActionsTypes)=>{
                     creator : userInfo._id
                 })
                 if(new_note.status === 'success'){
-                    socket.emit('newNote' , new_note.note)
+                    socket.emit('newNote' , { room : projectInfo._id , note : new_note.note})
                 }else{
                   notifications.show({ message : 'Error creating note' , color : 'red'})
                 }         
@@ -46,7 +46,7 @@ export const useNotesActions = ({projectInfo , userInfo}:NotesActionsTypes)=>{
                   createdAt : existingNote.createdAt,
                   _id: existingNote._id
                 })
-                   socket.emit('updateNote', {...new_note.note , creator : existingNote.creator});
+                   socket.emit('updateNote', {room : projectInfo._id , note : {...new_note.note , creator : existingNote.creator}});
                 notifications.show({ message: 'Updated Note successfully', color: 'blue' });
               } catch (error) {
                 throw new Error(`error at handleUpdateNote : ${error}`);
@@ -62,7 +62,7 @@ export const useNotesActions = ({projectInfo , userInfo}:NotesActionsTypes)=>{
                   try {
                     const res = await DeleteNote({noteId});
                     if (res.status === 'success') {
-                        socket.emit('deleteNote' , noteId)
+                        socket.emit('deleteNote' , {room : projectInfo._id , noteId})
                     //   setNotes((prev : NotesDto[]) => prev.filter((note : NotesDto) => note._id !== noteId));
                     //   notifications.show({ message: 'Deleted Note successfully', color: 'blue' });
                     }

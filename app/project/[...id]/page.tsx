@@ -1,10 +1,11 @@
 "use client";
 import WorkSpaceProvider from "@/components/Contexts/WorkSpaceContext";
 import SideBar from "@/components/TeamWorkSpaceComponents/sideBar";
-import { JoinRoom } from "@/socket";
+import { JoinRoom, socket } from "@/socket";
 import { SelectedItemToRenderOnScreen } from "@/utils";
 import { useGetProjectPopulated } from "@/Utils/Hooks/GetUserAndPopulate";
 import useGetUserInfo from "@/Utils/Hooks/GetUserInfo";
+import { notifications } from "@mantine/notifications";
 import { useEffect, useState } from "react";
 
 export default function WorkSpace({
@@ -26,8 +27,16 @@ export default function WorkSpace({
       navigator.userAgent.includes("Windows") ||
         navigator.platform.includes("Win")
     );
-    JoinRoom(params.id[0] , user?._id || "ttahir") ;
-    console.log("🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱Joining Room");
+    if (user) {
+      JoinRoom(params.id[0], user.username  );
+      console.log("🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱Joining Room");
+      socket.emit("messageToRoom", {
+        room: params.id[0],
+        message: `${user.username} has joined the room`,
+      });
+    }else{
+      notifications.show({message : "Unable to join Room , please check you connection" , color : "red"})
+    }
   }, []);
 
   const scaleStyle = isWindows ? { transform: "scale(0.98)" } : {};

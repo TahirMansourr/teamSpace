@@ -23,21 +23,8 @@ const ChatProvider = ({children } : {children : React.ReactNode })=>{
     const [isConnected, setIsConnected] = useState(false);
     const [transport, setTransport] = useState("N/A");
     const [messages , setMessages] = useState<MesssageDto[]>(projectInfo.project.chatSpace)
-    // console.log("🚀 ~ ChatProvider ~ projectInfo:", projectInfo)
-    // console.log("🚀 ~ ChatProvider ~ messages:", messages)
-    const didMountRef = useRef(false);
-
-    // @ uncomment me to use Ably {
-    // const { channel } = useChannel('get-started', 'first', (message) => {
-    //   console.log("🚀 ~ const{channel}=useChannel ~ message:", message)
-    //   console.log(message);
-      
-    //   setMessages((prev: any) => [...prev, message.data]);
-    // });
-    // useConnectionStateListener('connected', () => {
-    //   console.log('Connected to Ably!');
-    // });}
    
+    const didMountRef = useRef(false);
 
     useEffect(() => {
       console.log('Chat Context Rerendered');
@@ -108,12 +95,12 @@ const ChatProvider = ({children } : {children : React.ReactNode })=>{
         console.log("🚀 ~ handleSendMessage ~ body:", body)
         
         const newMessage = await CreateMessage({body , userId : userInfo._id , projectId : projectInfo.project._id})
-        console.log("🚀 ~ handleSendMessage ~ newMessage:", newMessage)
-        setMessages((prev: any) => [...prev, newMessage.response]);
+        // console.log("🚀 ~ handleSendMessage ~ newMessage:", newMessage)
+        // setMessages((prev: any) => [...prev, newMessage.response]);
         //uncomment me to use Ably{
         // channel.publish('first' , { ...newMessage.response , author : userInfo});}
-        // socket.emit('Groupmessage' , newMessage.response)
-        console.log("🚀 ~ handleSendMessage ~ newMessage:",{ ...newMessage.response , author : userInfo})
+         socket.emit('Groupmessage' , {room : projectInfo.project._id , message : newMessage.response})
+        // console.log("🚀 ~ handleSendMessage ~ newMessage:",{ ...newMessage.response , author : userInfo})
       }
       const value ={
         trial,

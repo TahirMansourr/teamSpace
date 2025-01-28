@@ -115,7 +115,7 @@ const TaskProvider = ({
             createdBy: userInfo,
           };
           console.log("🚀 ~ file: TasksContext.tsx:97 ~ newTask:", newTask);
-          socket.emit("createTask", newTask);
+          socket.emit("createTask", { room: projectInfo._id, value: newTask });
         });
       } catch (error) {
         throw new Error(`error at handleCreateTask : ${error}`);
@@ -157,7 +157,7 @@ const TaskProvider = ({
             createdBy: userInfo,
           };
 
-          socket.emit("updateTask", newTask);
+          socket.emit("updateTask", {room : projectInfo._id , value : newTask});
         });
       } catch (error) {
         throw new Error(`error at handleCreateTask : ${error}`);
@@ -175,7 +175,7 @@ const TaskProvider = ({
       try {
         const response = await DeleteTask(taskId);
         if (response.status === "success") {
-          socket.emit("deleteTask", taskId);
+          socket.emit("deleteTask", { room: projectInfo._id, value : taskId });
         }
       } catch (error) {
         notifications.show({ message: "Error deleting task", color: "red" });
