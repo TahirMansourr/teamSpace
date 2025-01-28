@@ -11,7 +11,8 @@ const DashBoardSideBar = ({
   SelectedItemInSideBar: string;
   setOpened: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const dataForSideBar = ["projects", "meetings", "notifications", "messages"];
+  const dataForSideBar = ["projects"];
+  //, "meetings", "notifications", "messages"
 
   return (
     <div className="flex flex-col h-full bg-white min-w-[280px]">

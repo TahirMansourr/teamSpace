@@ -31,13 +31,10 @@ export default function WorkSpace({
   }, []);
 
   const scaleStyle = isWindows ? { transform: "scale(0.98)" } : {};
-  // const client = new Ably.Realtime({key :process.env.NEXT_PUBLIC_ABLY_KEY})
   return (
     <main className={`flex w-full h-screen p-2`}>
       {user && projectInfo && (
         <WorkSpaceProvider projectInfo={projectInfo} userInfo={user}>
-          {/* <AblyProvider client={client}> */}
-          {/* <ChannelProvider channelName="get-started"> */}
           <div style={scaleStyle} className="flex w-full">
             <SideBar
               SelectedItemInSideBar={selectedItemInSideBar}
@@ -51,8 +48,6 @@ export default function WorkSpace({
               opened={opened}
             />
           </div>
-          {/* </ChannelProvider> */}
-          {/* </AblyProvider> */}
         </WorkSpaceProvider>
       )}
     </main>

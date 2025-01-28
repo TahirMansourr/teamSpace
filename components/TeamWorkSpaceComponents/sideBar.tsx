@@ -23,11 +23,11 @@ function SideBar({
     "Sprints",
     "TeamSpace",
     "Docs",
-    "NotesPage",
+     "NotesPage",
     "IssuesPage",
     "TasksPage",
-    "Features",
-    "Activity",
+    // "Features",
+    // "Activity",
     "Settings",
   ];
   const router = useRouter();
