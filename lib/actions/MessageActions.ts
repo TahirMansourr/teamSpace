@@ -24,7 +24,8 @@ export async function CreateMessage({body , userId , projectId} : {body : string
             return { status: 'Fail', message: 'Project not found' };
         }
        const response = newMessage.toObject()
-       return({status : 'success' , response})
+       const withjson  = JSON.parse(JSON.stringify(response))
+       return({status : 'success' , response : withjson})
 
     } catch (error : any) {
         throw new Error(`error at createMessage : ${error}`);

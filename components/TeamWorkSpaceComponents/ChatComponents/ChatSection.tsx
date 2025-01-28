@@ -30,7 +30,7 @@ const ChatSection = () => {
       {messages && messages.length > 0 ? (
         messages.map((message, index) => {
           const date = new Date(message.createdAt);
-          const isSentByUser = message.author._id === user;
+          const isSentByUser = message.author?._id === user || 'undefined';
           const previousMessage = index > 0 ? messages[index - 1] : null;
           const showSender =
             !previousMessage ||

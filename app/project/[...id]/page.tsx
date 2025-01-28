@@ -5,8 +5,11 @@ import { JoinRoom, socket } from "@/socket";
 import { SelectedItemToRenderOnScreen } from "@/utils";
 import { useGetProjectPopulated } from "@/Utils/Hooks/GetUserAndPopulate";
 import useGetUserInfo from "@/Utils/Hooks/GetUserInfo";
+import LoadingBar from "@/Utils/NextProgressBar";
+import { Loader } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { useEffect, useState } from "react";
+import { FaSpinner } from "react-icons/fa6";
 
 export default function WorkSpace({
   params,
@@ -27,17 +30,28 @@ export default function WorkSpace({
       navigator.userAgent.includes("Windows") ||
         navigator.platform.includes("Win")
     );
-    if (user) {
-      JoinRoom(params.id[0], user.username  );
-      console.log("🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱Joining Room");
-      socket.emit("messageToRoom", {
-        room: params.id[0],
-        message: `${user.username} has joined the room`,
-      });
+    if (user.username) {
+      try{
+
+        JoinRoom(params.id[0], user.username  );
+        console.log("🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱Joining Room");
+        socket.emit("messageToRoom", {
+          room: params.id[0],
+          message: `${user.username} has joined the room`,
+        });
+        socket.on("messageToRoom", (message : any) => {
+          notifications.show({ message: message.message, color: "blue" });})
+      }catch(e){
+        notifications.show({message : ` Oops unable to connect to your room please check you connection` , color : "red"})
+      }
     }else{
-      notifications.show({message : "Unable to join Room , please check you connection" , color : "red"})
+      notifications.show({message : ` Connecting to your room ` , color : "red"})
     }
-  }, []);
+
+    return () => {
+      socket.off("messageToRoom");
+    }
+  }, [user]);
 
   const scaleStyle = isWindows ? { transform: "scale(0.98)" } : {};
   return (
