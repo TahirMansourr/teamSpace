@@ -45,7 +45,8 @@ const NotesCard = ({ Note }: { Note: NotesDto }) => {
           maxHeight={150}
           showLabel="Read more"
           hideLabel="Show less"
-          className="prose prose-sm max-w-md"
+          className="prose prose-sm max-w-sm"
+          
         >
           {isLoading ? (
             <div className="animate-pulse h-20 bg-gray-100 rounded" />

@@ -23,7 +23,7 @@ const IssueCard = ({ Issue }: { Issue: IssueDto }) => {
 
   return (
     <section
-      className={`w-[95%] rounded-xl p-4 transition-all duration-300 hover:shadow-lg mb-3
+      className={`w-[95%] rounded-xl p-2 transition-all duration-300 hover:shadow-lg mb-3 
         ${
           Issue.priority === "HIGH"
             ? "bg-gradient-to-br from-red-600 to-red-700 text-white shadow-red-200"
