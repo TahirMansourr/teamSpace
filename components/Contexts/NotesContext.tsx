@@ -67,9 +67,9 @@ const NotesContext = createContext<NotesContextDto>({} as NotesContextDto)
                 creator : userInfo._id
             })
             if(new_note.status === 'success'){
-              console.log("🚀 ~ file: NotesContext.tsx:69 ~ new_note:", new_note.note)
-              setNotes((prev : NotesDto[]) => [{...new_note.note , creator : userInfo} , ...prev])
-                // socket.emit('newNote' , res.note)
+              // console.log("🚀 ~ file: NotesContext.tsx:69 ~ new_note:", new_note.note)
+              // setNotes((prev : NotesDto[]) => [{...new_note.note , creator : userInfo} , ...prev])
+                socket.emit('newNote' , new_note.note)
                 // console.log('emmitted');
             }else{
               notifications.show({ message : 'Error creating note' , color : 'red'})
@@ -96,12 +96,12 @@ const NotesContext = createContext<NotesContextDto>({} as NotesContextDto)
           createdAt : existingNote.createdAt,
           _id: existingNote._id
         })
-        console.log("🚀 ~ new-note ~ UpdatedNote:", {newNote :new_note , existingNote})
-        setNotes(((prev : NotesDto[])=> prev.map((prevNote : NotesDto) => {return prevNote._id === existingNote._id? {...new_note.note , creator : user} : prevNote})))
+        // console.log("🚀 ~ new-note ~ UpdatedNote:", {newNote :new_note , existingNote})
+        // setNotes(((prev : NotesDto[])=> prev.map((prevNote : NotesDto) => {return prevNote._id === existingNote._id? {...new_note.note , creator : user} : prevNote})))
         //ucomment me to use ably{
         //  channel.publish('update-note', {newNote :new_note, existingNote})}
           // socket.emit('updateNote', res.note);
-          // socket.emit('updateNote', {...res.note , creator : existingNote.creator});
+           socket.emit('updateNote', {...new_note.note , creator : existingNote.creator});
         
     
          // Emit the updated note
@@ -131,6 +131,23 @@ const NotesContext = createContext<NotesContextDto>({} as NotesContextDto)
         mainModalClose();
       }
     }
+
+
+    useEffect(() => { 
+      socket.on('newNote', (note : NotesDto) => {
+                if(note){
+                    setNotes((prev : NotesDto[]) => [{...note , creator : userInfo} , ...prev])
+                    console.log('i was triggered');
+                    
+                }else{
+                    console.error('Recieved Note is undefined or has not response property' , note)
+                }
+              })
+              socket.on('updateNote' , (note : NotesDto) => {
+                console.log('triggered');
+                setNotes(((prev : NotesDto[])=> prev.map((prevNote : NotesDto) => {return prevNote._id === note._id ? note : prevNote})))
+              })
+      }, [])
 
     // useEffect(() => {
         // console.log("🚀 ~ handleUpdateNote ~ new_note:", new_note)
