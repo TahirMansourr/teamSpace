@@ -45,9 +45,9 @@ function SideBar({
         } top-2 left-2 hover:cursor-pointer z-50`}
       />
       <section
-        className={`transform transition-all duration-200 ease-in-out rounded-md  ${
+        className={`transform transition-all duration-200 ease-in-out rounded-md   ${
           opened
-            ? "w-64 min-h-screen border-r bg-white/95 backdrop-blur-sm"
+            ? "w-64  border-r bg-white/95 backdrop-blur-sm"
             : "w-0 opacity-0"
         }`}
       >

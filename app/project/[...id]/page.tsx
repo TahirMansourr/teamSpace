@@ -32,12 +32,11 @@ export default function WorkSpace({
     );
     if (user.username) {
       try{
-
-        JoinRoom(params.id[0], user.username  );
+        JoinRoom(params.id[0], user.username);
         console.log("🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱Joining Room");
         socket.emit("messageToRoom", {
           room: params.id[0],
-          message: `${user.username} has joined the room`,
+          message: `${user._id} has joined the room`,
         });
         socket.on("messageToRoom", (message : any) => {
           notifications.show({ message: message.message, color: "blue" });})
@@ -55,7 +54,7 @@ export default function WorkSpace({
 
   const scaleStyle = isWindows ? { transform: "scale(0.98)" } : {};
   return (
-    <main className={`flex w-full h-screen p-2`}>
+    <main className={`flex w-full h-screen p-4`}>
       {user && projectInfo && (
         <WorkSpaceProvider projectInfo={projectInfo} userInfo={user}>
           <div style={scaleStyle} className="flex w-full">

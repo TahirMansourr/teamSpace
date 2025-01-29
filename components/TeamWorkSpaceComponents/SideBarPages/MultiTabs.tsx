@@ -27,8 +27,8 @@ const MultiTabsComponent = ({
 
   return (
     <TransitionWrapper opened={opened}>
-      <section className=" flex flex-col w-full  gap-2 rounded-xl   items-center justify-center p-3 pt-9">
-        <div className="flex w-full items-center">
+      <section className=" flex flex-col w-full justify-center p-3 ">
+        <div className="flex w-full">
           <NotificationsBar />
           {/* <Modal opened={Modalopened} onClose={close} title="New Feature !!"  overlayProps={{
                 backgroundOpacity: 0.55,
