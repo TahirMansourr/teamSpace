@@ -57,6 +57,10 @@ const productBacklogItemSchema = new Schema(
       type : mongoose.Schema.Types.ObjectId,
       ref : 'Sprint',
   },
+    tasks : [{
+      type : mongoose.Schema.Types.ObjectId,
+      ref : 'Task'
+    }],
 },{
     timestamps: true,
   }

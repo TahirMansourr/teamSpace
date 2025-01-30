@@ -13,6 +13,9 @@ export interface ISprint extends Document {
   createdAt: Date;
   updatedAt: Date;
   assignees?: Schema.Types.ObjectId[];
+  notes?: Schema.Types.ObjectId[];
+  issues?: Schema.Types.ObjectId[];
+  messages?: Schema.Types.ObjectId[];
 }
 
 const SprintSchema = new Schema<ISprint>(
@@ -60,7 +63,19 @@ const SprintSchema = new Schema<ISprint>(
     assignees: [{
       type: Schema.Types.ObjectId,
       ref: 'User',
-    }]
+    }],
+    notes: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Note',
+    }],
+    issues: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Issue',
+    }],
+    messages: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Message',
+    }],
   },
   {
     timestamps: true,

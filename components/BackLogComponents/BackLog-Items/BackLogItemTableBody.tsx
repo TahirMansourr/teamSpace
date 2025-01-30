@@ -103,7 +103,7 @@ const BackLogTableBody = ({
       ))}
 
       {/* WithSprintsShown */}
-      { showSprintsOnBackLogPage ? 
+      { showSprintsOnBackLogPage && !isSelectingForSprint? 
       backLog.sprints?.map((sprint) => (
         <React.Fragment key={sprint._id}>
           <tr>
@@ -140,8 +140,8 @@ const BackLogTableBody = ({
       }
 
       {/* Ungrouped Items */}
-      {aiGeneratedBackLogs
-        ?.filter((item) => !item.groupId)
+      {aiGeneratedBackLogs && !isSelectingForSprint ?
+        aiGeneratedBackLogs?.filter((item) => !item.groupId)
         .map((item: BackLogItemDto, index) => (
           <BackLogItemTableRow
             key={item._id}
@@ -154,8 +154,8 @@ const BackLogTableBody = ({
             isGenerated={true}
             setAiGeneratedBacklog={setAiGeneratedBacklog}
           />
-        ))}
-      {!aiGeneratedBackLogs && !showSprintsOnBackLogPage &&
+        )) : null}
+      {!aiGeneratedBackLogs && !showSprintsOnBackLogPage && !isSelectingForSprint &&
         filteredBacklogs 
           ?.filter((item) => !item.groupId)
           .map((item: BackLogItemDto, index) => (
@@ -172,7 +172,7 @@ const BackLogTableBody = ({
           ))}
 
       {/* Accepted Backlogs */}
-      {acceptedBacklogs.length > 0 && (
+      {acceptedBacklogs.length > 0 && !isSelectingForSprint && (
         <>
           <tr>
             <td colSpan={5}>
@@ -212,6 +212,21 @@ const BackLogTableBody = ({
             </Button>
           </td>
         </tr>
+      )}
+      {isSelectingForSprint && !aiGeneratedBackLogs && !showSprintsOnBackLogPage && (
+        backLog.backlogItems?.map((item: BackLogItemDto, index) => (
+          <BackLogItemTableRow
+            key={item._id}
+            item={item}
+            index={index}
+            id={item._id}
+            isGrouped={true}
+            isSelectable={isGrouping}
+            isSelected={selectedItems.includes(item._id)}
+            onSelect={() => toggleItemSelection(item._id)}
+            isSelectingForSprint={isSelectingForSprint}
+          />
+        ))
       )}
     </tbody>
   );

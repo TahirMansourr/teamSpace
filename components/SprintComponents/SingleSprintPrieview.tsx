@@ -10,6 +10,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { useSprintContext } from "../Contexts/SprintContext";
+import { useBackLogContext } from "../Contexts/BackLogContext";
 
 interface SingleSprintPreviewProps {
   sprint: SprintDto;
@@ -20,6 +21,8 @@ const SingleSprintPreview: React.FC<SingleSprintPreviewProps> = ({
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const { handleBack } = useSprintContext();
+  const { myBackLogs } = useBackLogContext();
+
   useEffect(() => {
     setIsVisible(true);
   }, []);
@@ -38,9 +41,13 @@ const SingleSprintPreview: React.FC<SingleSprintPreviewProps> = ({
     return Math.ceil(diff / (1000 * 60 * 60 * 24));
   };
 
+  const backlogName = myBackLogs?.find(
+    (backlog) => backlog._id === sprint.backlog
+  )?.name;
+
   return (
     <div
-      className={`bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 hover:shadow-xl transition-all duration-500 transform w-[50%] backdrop-blur-lg m-5 mx-auto  ${
+      className={`  bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 hover:shadow-xl transition-all duration-500 transform w-[50%] backdrop-blur-lg m-5 mx-auto  ${
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
       }`}
     >
@@ -57,7 +64,7 @@ const SingleSprintPreview: React.FC<SingleSprintPreviewProps> = ({
         }`}
       >
         <h2 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
-          {sprint.name}
+          {backlogName} &gt; {sprint.name}
         </h2>
         <Badge
           color={
@@ -67,7 +74,8 @@ const SingleSprintPreview: React.FC<SingleSprintPreviewProps> = ({
               ? "blue"
               : "gray"
           }
-          size="lg"
+          size="xl"
+          className="abosulte -top-2 -right-2" 
         >
           {sprint.status}
         </Badge>

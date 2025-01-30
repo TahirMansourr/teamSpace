@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import Sprint from "./Sprint";
 
 const noteSchema = new Schema({
     project : {
@@ -15,7 +16,12 @@ const noteSchema = new Schema({
     comments : [{
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Comment'
-    }]
+    }],
+    sprintId : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'Sprint'
+    },
+    isGlobal : Boolean
 })
 
 

@@ -16,6 +16,7 @@ import {
 } from "@dnd-kit/sortable";
 import BackLogTableBody from "./BackLogItemTableBody";
 import { BackLogItemDto } from "@/Utils/types";
+import { useSprintContext } from "@/components/Contexts/SprintContext";
 
 export const BackLogTableBodyContainer = ({
   aiGeneratedBackLogs,
@@ -37,6 +38,7 @@ export const BackLogTableBodyContainer = ({
     setGroups,
     setFilteredBacklogs,
   } = useBackLogContext();
+  const {selectedBackLogWhenCreatingASprint} = useSprintContext();
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -138,7 +140,7 @@ export const BackLogTableBodyContainer = ({
           strategy={rectSortingStrategy}
         >
           <BackLogTableBody
-            backLog={backLog}
+            backLog={isSelectingForSprint ? selectedBackLogWhenCreatingASprint! : backLog}
             loading={loading}
             groups={groups}
             setGroups={setGroups}

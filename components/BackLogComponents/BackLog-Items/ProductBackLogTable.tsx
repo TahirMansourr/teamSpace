@@ -20,7 +20,7 @@ const BackLogTable = ({
       {!isSelectingForSprint && (
         <div className="flex w-full justify-end pr-4 py-2 gap-2">
           {/* <GroupingControls /> */}
-          <ShowSprintsButton/>
+          {/* <ShowSprintsButton/> */}
         </div>
       )}
       <table className="w-full ">

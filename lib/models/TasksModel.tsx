@@ -34,7 +34,16 @@ const taskSchema = new mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Task'
     }],
-    featureId : String
+    featureId : String,
+    sprintId : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'Sprint'
+    },
+    backlogItemId : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'ProductBacklogItem'
+    },
+    isGlobal : Boolean
 })
 
 const Task = mongoose.models.Task || mongoose.model('Task' , taskSchema)

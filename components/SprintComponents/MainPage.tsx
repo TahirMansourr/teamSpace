@@ -8,7 +8,6 @@ const MainPage = () => {
   return (
     <div className="flex flex-col w-full mx-auto p-6">
       {!selectedSprint && !loading ? <MainPageHeader /> : null}
-
       <MainPageBody />
     </div>
   );

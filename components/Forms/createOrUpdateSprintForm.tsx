@@ -61,8 +61,8 @@ const CreateSprintForm = ({ close }: { close: () => void }) => {
     try {
       if (selectedItems.length > 0) {
         handleCreateSprint({ ...values, backlogItems: selectedItems });
-      }
-      handleCreateSprint(values);
+      }else{
+      handleCreateSprint(values)}
     } catch (error) {
       console.error("Error creating sprint:", error);
     } finally {

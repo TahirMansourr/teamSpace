@@ -5,11 +5,8 @@ import { JoinRoom, socket } from "@/socket";
 import { SelectedItemToRenderOnScreen } from "@/utils";
 import { useGetProjectPopulated } from "@/Utils/Hooks/GetUserAndPopulate";
 import useGetUserInfo from "@/Utils/Hooks/GetUserInfo";
-import LoadingBar from "@/Utils/NextProgressBar";
-import { Loader } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { useEffect, useState } from "react";
-import { FaSpinner } from "react-icons/fa6";
 
 export default function WorkSpace({
   params,
@@ -39,7 +36,8 @@ export default function WorkSpace({
           message: `${user._id} has joined the room`,
         });
         socket.on("messageToRoom", (message : any) => {
-          notifications.show({ message: message.message, color: "blue" });})
+          // notifications.show({ message: message.message, color: "blue" })
+          ;})
       }catch(e){
         notifications.show({message : ` Oops unable to connect to your room please check you connection` , color : "red"})
       }

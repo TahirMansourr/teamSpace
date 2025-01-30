@@ -5,19 +5,19 @@ import SprintHorizantalScroll from "./SprintHorizantalScroll";
 import FullScreenLoading from "@/Utils/FullScreenLoading";
 
 const SprintFeed = () => {
-  const { allSprints, loading } = useSprintContext();
+  const { allSprints, loading , sprintsByStatus } = useSprintContext();
   if (loading) {
     return <FullScreenLoading />;
   } else
     return (
       <div className="flex flex-col gap-2 w-full">
-        {allSprints && allSprints.planned.length > 0 ? (
+        {allSprints && allSprints.active.length > 0 ? (
           <SprintHorizantalScroll
             sprints={allSprints?.active}
             status="Active"
           />
         ) : (
-          <div>No Active Sprints</div>
+          null
         )}
         {allSprints && allSprints.planned.length > 0 ? (
           <SprintHorizantalScroll
@@ -25,7 +25,7 @@ const SprintFeed = () => {
             status="Planned"
           />
         ) : (
-          <div>No Sprints Planned</div>
+         null
         )}
         {allSprints && allSprints.cancelled.length > 0 ? (
           <SprintHorizantalScroll
@@ -33,7 +33,7 @@ const SprintFeed = () => {
             status="Cancelled"
           />
         ) : (
-          <div>No Cancelled Sprints</div>
+          null
         )}
         {allSprints && allSprints.completed.length > 0 ? (
           <SprintHorizantalScroll
@@ -41,7 +41,7 @@ const SprintFeed = () => {
             status="Completed"
           />
         ) : (
-          <div>No Sprints Completed Yet</div>
+          null
         )}
       </div>
     );

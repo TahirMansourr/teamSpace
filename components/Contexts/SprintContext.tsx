@@ -45,6 +45,7 @@ type SprintContextDTO = {
   handleBack: () => void;
   showSprintsOnBackLogPage: boolean;
   setShowSprintsOnBackLogPage: Dispatch<SetStateAction<boolean>>;
+  selectedBackLogWhenCreatingASprint: BackLogDto | null;
 };
 
 type CreateOrUpdateSprint = {
@@ -86,6 +87,9 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
     cancelled: [],
     planned: [],
   });
+  const [selectedBackLogWhenCreatingASprint, setSelectedBackLogWhenCreatingASprint] = useState<BackLogDto | null>(null);
+
+  console.log('🎁🎁🎁🎁🎁🎁🎁🎁🎁' , selectedBackLogWhenCreatingASprint)
 
   // function GetActiveSprintsFromBacklogss() {
   //   let activeSprint: { name: string; sprints: SprintDto[] }[] = [];
@@ -109,8 +113,10 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     setLoading(true);
+    getAvailableBacklogItems();
     if (myBackLogs) {
       try {
+        // setSelectedBackLogWhenCreatingASprint(selectedBackLog);
         const result = GetSprintsByStatus();
         const allSprints = getAllSprintsByStatus();
         setSprintsByStatus(result);
@@ -157,6 +163,22 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
     }, 300);
   };
 
+  const getAvailableBacklogItems = () => {
+    if (!selectedBackLog) return [];
+    const assignedBacklogItems = new Set<string>();
+    selectedBackLog.sprints?.forEach((sprint) => {
+      sprint.backlogItems?.forEach((item) => assignedBacklogItems.add(item._id));
+    });
+    const availableBacklogItems = selectedBackLog.backlogItems?.filter(
+      (item) => !assignedBacklogItems.has(item._id)
+    ) || [];
+    setSelectedBackLogWhenCreatingASprint({
+      ...selectedBackLog,
+      backlogItems: availableBacklogItems,
+    });
+  };
+
+  //This one sets organizes all the sprints in my project according to their status
   const getAllSprintsByStatus = useCallback(() => {
     const allSprintsByStatus: AllSprints = {
       active: [],
@@ -174,6 +196,7 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
     return allSprintsByStatus;
   }, [myBackLogs]);
 
+  //this one goes through each backlog and returns the backlog with its sprints organized by status
   const GetSprintsByStatus = useCallback(() => {
     return (
       myBackLogs?.reduce((acc, backlog) => {
@@ -208,6 +231,7 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
 
   const handleCreateSprint = useCallback(
     async (sprint: CreateOrUpdateSprint) => {
+      getAvailableBacklogItems();
       if (!selectedBackLog) {
         notifications.show({
           title: "Error",
@@ -220,7 +244,7 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
         (item) => item._id
       );
       const selectedBackLogItems = selectedBackLog.backlogItems?.filter(
-        (item) => selectedBackLogItemsIds?.includes(item._id)
+        (item) => sprint.backlogItems?.includes(item._id)
       );
       const assignedMembers = projectInfo?.project.team.filter(
         (member: UserDto) => sprint.assignees?.includes(member._id)
@@ -229,13 +253,13 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
         ...sprint,
         backlog: selectedBackLog ? selectedBackLog._id : "",
         createdBy: userInfo?._id,
-        backlogItems: selectedBackLogItemsIds,
+        // backlogItems: selectedBackLogItemsIds,
       };
       try {
         setLoading(true);
         const response = await CreateSprint(newSprint);
         if (response.success && selectedBackLog) {
-          setSelectedBackLog({
+          const updatedBacklog = {
             ...selectedBackLog,
             sprints: [
               ...(selectedBackLog?.sprints || []),
@@ -249,8 +273,41 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
                 assignees: assignedMembers,
               },
             ],
+          };
+          setSelectedBackLog(updatedBacklog);
+          setSelectedBackLogWhenCreatingASprint({
+            ...selectedBackLog,
+            backlogItems: selectedBackLog.backlogItems?.filter(
+              (item) => !selectedBackLogItemsIds?.includes(item._id)
+            ),
           });
+          setAllSprints((prevAllSprints) => ({
+            ...prevAllSprints,
+            [newSprint.status]: [...prevAllSprints[newSprint.status], newSprint],
+          }));
         }
+        //   setSelectedBackLog({
+        //     ...selectedBackLog,
+        //     sprints: [
+        //       ...(selectedBackLog?.sprints || []),
+        //       {
+        //         ...newSprint,
+        //         _id: response.data._id,
+        //         createdBy: userInfo,
+        //         createdAt: response.data.createdAt,
+        //         updatedAt: response.data.updatedAt,
+        //         backlogItems: selectedBackLogItems,
+        //         assignees: assignedMembers,
+        //       },
+        //     ],
+        //   });
+        //   setSelectedBackLogWhenCreatingASprint({
+        //     ...selectedBackLog,
+        //     backlogItems: selectedBackLog.backlogItems?.filter(
+        //       (item) => !selectedBackLogItemsIds?.includes(item._id)
+        //     ),
+        //   });
+        // }
       } catch (error: any) {
         console.error("Failed to create sprint", error);
         throw new Error("Failed to create sprint");
@@ -275,7 +332,8 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
       handleSprintClick,
       handleBack,
       showSprintsOnBackLogPage,
-      setShowSprintsOnBackLogPage
+      setShowSprintsOnBackLogPage,
+      selectedBackLogWhenCreatingASprint
     }),
     [
       selectedBackLog,
@@ -289,7 +347,8 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
       handleSprintClick,
       handleBack,
       showSprintsOnBackLogPage,
-      setShowSprintsOnBackLogPage
+      setShowSprintsOnBackLogPage,
+      selectedBackLogWhenCreatingASprint
     ]
   );
 
