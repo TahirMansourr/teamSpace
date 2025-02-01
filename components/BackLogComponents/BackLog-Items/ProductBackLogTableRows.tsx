@@ -22,12 +22,14 @@ export const BackLogTableBodyContainer = ({
   aiGeneratedBackLogs,
   setAiGeneratedBacklog,
   isSelectingForSprint,
+  existingSprint
 }: {
   aiGeneratedBackLogs?: BackLogItemDto[];
   setAiGeneratedBacklog?: React.Dispatch<
     React.SetStateAction<BackLogItemDto[]>
   >;
   isSelectingForSprint: boolean;
+  existingSprint?: boolean;
 }) => {
   const {
     selectedBackLog: backLog,
@@ -140,7 +142,7 @@ export const BackLogTableBodyContainer = ({
           strategy={rectSortingStrategy}
         >
           <BackLogTableBody
-            backLog={isSelectingForSprint ? selectedBackLogWhenCreatingASprint! : backLog}
+            backLog={isSelectingForSprint && !existingSprint ? selectedBackLogWhenCreatingASprint! : backLog}
             loading={loading}
             groups={groups}
             setGroups={setGroups}

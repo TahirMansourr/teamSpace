@@ -10,7 +10,7 @@ import {
 } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSprintContext } from "../Contexts/SprintContext";
 import BackLogTable from "../BackLogComponents/BackLog-Items/ProductBackLogTable";
 import { useBackLogContext } from "../Contexts/BackLogContext";
@@ -31,20 +31,38 @@ type CreateSprintType = {
   assignees?: string[];
 };
 
-const CreateSprintForm = ({ close , existingSprint }: { close: () => void , existingSprint? : SprintDto }) => {
+const CreateSprintForm = ({
+  close,
+  existingSprint,
+}: {
+  close: () => void;
+  existingSprint?: SprintDto;
+}) => {
   const [loading, setLoading] = useState(false);
-  const { selectedItems } = useBackLogContext();
-  const { handleCreateSprint } = useSprintContext();
+  const { selectedItems , setSelectedItems } = useBackLogContext();
+  const { handleCreateSprint, handleUpdateSprint } = useSprintContext();
+  const selectedItemsIds = existingSprint?.backlogItems?.map((item) => item._id);
+
+  useEffect(() => {
+    if(existingSprint && selectedItemsIds){
+      setSelectedItems(selectedItemsIds);
+    }
+  } , [])
 
   const form = useForm<any>({
     initialValues: {
+      _id: existingSprint?._id || undefined,
       name: existingSprint?.name || "",
-      startDate: existingSprint ? new Date(existingSprint.startDate) : new Date(),
+      startDate: existingSprint
+        ? new Date(existingSprint.startDate)
+        : new Date(),
       endDate: existingSprint ? new Date(existingSprint.endDate) : new Date(),
       goal: existingSprint?.goal || "",
       status: existingSprint?.status || "planned",
       backlogItems: existingSprint?.backlogItems || [],
-      assignees: existingSprint? existingSprint.assignees?.map((user) => user._id) : [],
+      assignees: existingSprint
+        ? existingSprint.assignees?.map((user) => user._id)
+        : [],
     },
     validate: {
       name: (value) =>
@@ -60,10 +78,13 @@ const CreateSprintForm = ({ close , existingSprint }: { close: () => void , exis
     setLoading(true);
 
     try {
-      if (selectedItems.length > 0) {
+      if (selectedItems.length > 0 && !existingSprint) {
         handleCreateSprint({ ...values, backlogItems: selectedItems });
-      }else{
-      handleCreateSprint(values)}
+      } else if (existingSprint) {
+        handleUpdateSprint({ ...values, backlogItems: selectedItems });
+      } else {
+        handleCreateSprint(values);
+      }
     } catch (error) {
       console.error("Error creating sprint:", error);
     } finally {
@@ -148,7 +169,7 @@ const CreateSprintForm = ({ close , existingSprint }: { close: () => void , exis
           onChange={(value) => form.setFieldValue("assignees", value)}
         />
         <ScrollArea>
-          <BackLogTable isSelectingForSprint={true} />
+          <BackLogTable isSelectingForSprint={true} existingSprint = {true}/>
         </ScrollArea>
 
         <div className="flex justify-end items-center gap-3 pt-4 border-t border-gray-100">
@@ -164,7 +185,7 @@ const CreateSprintForm = ({ close , existingSprint }: { close: () => void , exis
             type="submit"
             className="bg-blue-600 hover:bg-blue-700 transition-colors"
           >
-            Create Sprint
+           { !existingSprint ? 'Create Sprint' : 'Update Sprint'}
           </Button>
         </div>
       </div>

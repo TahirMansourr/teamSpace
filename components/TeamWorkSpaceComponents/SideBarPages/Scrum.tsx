@@ -23,9 +23,8 @@ const Scrum = ({
 
   return (
     <TransitionWrapper opened={opened}>
-      <section className=" w-full h-screen">
-        <div className="  flex flex-col h-full w-full  gap-2 rounded-xl   items-center p-3">
-          <section className="w-full h-full px-8">
+      <section className=" w-full h-screen p-10">
+        
             <BackLogProvider>
               <SprintProvider>
                 <TaskProvider user={userInfo} project={projectInfo}>
@@ -33,8 +32,7 @@ const Scrum = ({
                 </TaskProvider>
               </SprintProvider>
             </BackLogProvider>
-          </section>
-        </div>
+         
       </section>
     </TransitionWrapper>
   );

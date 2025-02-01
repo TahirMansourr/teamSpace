@@ -6,7 +6,7 @@ import { useSprintContext } from "../Contexts/SprintContext";
 const MainPage = () => {
   const { selectedSprint, loading } = useSprintContext();
   return (
-    <div className="flex flex-col w-full mx-auto p-6">
+    <div className="flex flex-col w-full mx-auto ">
       {!selectedSprint && !loading ? <MainPageHeader /> : null}
       <MainPageBody />
     </div>

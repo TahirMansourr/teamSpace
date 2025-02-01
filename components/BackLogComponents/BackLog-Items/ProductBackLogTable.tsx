@@ -8,12 +8,14 @@ const BackLogTable = ({
   aiGeneratedBackLogs,
   setAiGeneratedBacklog,
   isSelectingForSprint,
+  existingSprint
 }: {
   aiGeneratedBackLogs?: BackLogItemDto[];
   setAiGeneratedBacklog?: React.Dispatch<
     React.SetStateAction<BackLogItemDto[]>
   >;
   isSelectingForSprint?: boolean;
+  existingSprint?: boolean;
 }) => {
   return (
     <div className="w-full bg-white  rounded-md">
@@ -32,6 +34,7 @@ const BackLogTable = ({
           aiGeneratedBackLogs={aiGeneratedBackLogs}
           setAiGeneratedBacklog={setAiGeneratedBacklog}
           isSelectingForSprint={isSelectingForSprint ? true : false}
+          existingSprint={existingSprint}
         />
       </table>
     </div>

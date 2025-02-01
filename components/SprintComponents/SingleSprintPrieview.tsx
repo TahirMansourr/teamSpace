@@ -1,7 +1,7 @@
 "use client";
 
 import { SprintDto, BackLogItemDto } from "@/Utils/types";
-import { Avatar, Badge, Progress, Tooltip } from "@mantine/core";
+import { Avatar, Badge, Progress, ScrollArea, Tooltip } from "@mantine/core";
 import {
   IconCalendar,
   IconFlag,
@@ -50,9 +50,8 @@ const SingleSprintPreview: React.FC<SingleSprintPreviewProps> = ({
   )?.name;
 
   return (
-    <div className="flex w-full h-full">
+    <div className="flex w-full ">
       {/* Left Section */}
-      <CreateOrUpdateSprintModal existingSprint={sprint}/>
       <div className="w-1/4 bg-white dark:bg-gray-800 rounded-xl shadow-sm m-1 hover:shadow-md p-6 ">
         <button
           onClick={handleBack}
@@ -130,20 +129,27 @@ const SingleSprintPreview: React.FC<SingleSprintPreviewProps> = ({
               </Tooltip>
             ))}
           </div>
+          <div className="ml-0">
+
+          <CreateOrUpdateSprintModal existingSprint={sprint}/>
+          </div>
+
         </div>
       </div>
 
       {/* Middle Section */}
-      <div className="w-1/2 bg-white dark:bg-gray-800 rounded-xl shadow-sm m-1 hover:shadow-md p-6  grid grid-cols-2 gap-4">
-        {sprint.backlogItems?.map((item) => (
-          <div key={item._id} onClick={() => setSelectedBacklogItem(item)}>
-            <BackLogItemInsideSprintcard backLogItem={item} />
-          </div>
-        ))}
-      </div>
+      <ScrollArea className="w-1/2 h-[calc(100vh-6rem)] bg-white dark:bg-gray-800 rounded-xl shadow-sm m-1 hover:shadow-md p-6">
+        <div className="grid grid-cols-2 gap-4 m-2">
+          {sprint.backlogItems?.map((item) => (
+            <div key={item._id} onClick={() => setSelectedBacklogItem(item)}>
+              <BackLogItemInsideSprintcard backLogItem={item} />
+            </div>
+          ))}
+        </div>
+      </ScrollArea>
 
       {/* Right Section */}
-      <div className="w-1/4 bg-white dark:bg-gray-800 rounded-xl shadow-sm m-1 hover:shadow-md p-6 ">
+      <ScrollArea className="w-1/4 bg-white h-[calc(100vh-6rem)] dark:bg-gray-800 rounded-xl shadow-sm m-1 hover:shadow-md p-6">
         {selectedBacklogItem ? (
           <div>
             <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
@@ -167,7 +173,7 @@ const SingleSprintPreview: React.FC<SingleSprintPreviewProps> = ({
             Select a backlog item to view its tasks.
           </div>
         )}
-      </div>
+      </ScrollArea>
     </div>
   );
 };

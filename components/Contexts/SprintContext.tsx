@@ -259,21 +259,21 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
         setLoading(true);
         const response = await CreateSprint(newSprint);
         if (response.success && selectedBackLog) {
-          const updatedBacklog = {
-            ...selectedBackLog,
-            sprints: [
-              ...(selectedBackLog?.sprints || []),
-              {
-                ...newSprint,
-                _id: response.data._id,
-                createdBy: userInfo,
-                createdAt: response.data.createdAt,
-                updatedAt: response.data.updatedAt,
-                backlogItems: selectedBackLogItems,
-                assignees: assignedMembers,
-              },
-            ],
-          };
+          // const updatedBacklog = {
+          //   ...selectedBackLog,
+          //   sprints: [
+          //     ...(selectedBackLog?.sprints || []),
+          //     {
+          //       ...newSprint,
+          //       _id: response.data._id,
+          //       createdBy: userInfo,
+          //       createdAt: response.data.createdAt,
+          //       updatedAt: response.data.updatedAt,
+          //       backlogItems: selectedBackLogItems,
+          //       assignees: assignedMembers,
+          //     },
+          //   ],
+          // };
           // setSelectedBackLog(updatedBacklog);
           setSelectedBackLogWhenCreatingASprint({
             ...selectedBackLog,
@@ -318,7 +318,7 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
     }
     
 
-  const handleUpdateSprint = useCallback(
+  const handleUpdateSprint = 
     async (sprint: CreateOrUpdateSprint ) => {
       getAvailableBacklogItems();
       if (!selectedBackLog) {
@@ -353,7 +353,8 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
               s._id === sprint._id ? { ...updatedSprint, ...response.data } : s
             ),
           };
-          setSelectedBackLog(updatedBacklog);
+          // setSelectedBackLog(updatedBacklog);
+          
           setSelectedBackLogWhenCreatingASprint({
             ...selectedBackLog,
             backlogItems: selectedBackLog.backlogItems?.filter(
@@ -363,9 +364,11 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
           setAllSprints((prevAllSprints) => ({
             ...prevAllSprints,
             [updatedSprint.status]: prevAllSprints[updatedSprint.status].map((s) =>
-              s._id === sprint._id ? { ...updatedSprint, ...response.data } : s
+              s._id === sprint._id ? { ...updatedSprint , assignees: assignedMembers, backlogItems : selectedBackLogItems } : s
             ),
           }));
+          setSelectedSprint({...updatedSprint , assignees: assignedMembers , backlogItems : selectedBackLogItems , createdAt : response.data.createdAt , updatedAt : response.data.updatedAt , createdBy : userInfo});
+          notifications.show({message : `${sprint.name} has been updated`})
         }
       } catch (error: any) {
         console.error("Failed to update sprint", error);
@@ -373,9 +376,8 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
       } finally {
         setLoading(false);
       }
-    },
-    [selectedBackLog, userInfo, setSelectedBackLog, projectInfo, getAvailableBacklogItems]
-  );
+    }
+    
 
   const value = useMemo(
     () => ({

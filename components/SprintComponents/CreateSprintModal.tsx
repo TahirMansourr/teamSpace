@@ -5,6 +5,7 @@ import CreateSprintForm from "../Forms/createOrUpdateSprintForm";
 import { BackLogDto, SprintDto } from "@/Utils/types";
 import { notifications } from "@mantine/notifications";
 import { useBackLogContext } from "../Contexts/BackLogContext";
+import { IconEdit } from "@tabler/icons-react";
 
 export function CreateOrUpdateSprintModal({
   // selectedBackLog,
@@ -20,7 +21,7 @@ export function CreateOrUpdateSprintModal({
       <Modal
         opened={opened}
         onClose={close}
-        title="create or update sprint"
+        title={existingSprint ? 'update sprint' : "create or update sprint"}
         fullScreen
       >
         <CreateSprintForm close={close} existingSprint = {existingSprint}/>
@@ -41,8 +42,8 @@ export function CreateOrUpdateSprintModal({
           open();
         }}
       >
-        <IoMdAdd size={20} />
-        Create Sprint
+        { !existingSprint ? <IoMdAdd size={20} /> : <IconEdit size={20} />}
+       
       </button>
     </>
   );
