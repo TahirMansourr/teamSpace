@@ -142,10 +142,10 @@ const CreateOrUpdateTaskForm = ({
         />
 
           <AssignTeamMembers
-          value={form.values.assignedTo}
-          // onChange={(value) => form.setFieldValue("assignedTo", value)}
-          {...form.getInputProps("assignedTo")}
-          />
+          value={form.getInputProps("assignedTo").value}
+          onChange={form.getInputProps("assignedTo").onChange}
+         />
+          
         {/* <MultiSelect
           label="Assign Task To"
           data={projectInfo.team.map((member: any) => ({

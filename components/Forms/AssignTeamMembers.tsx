@@ -13,7 +13,7 @@ const AssignTeamMembers = ({
   onChange,
   value,
 }: {
-  onChange: (e: any) => void;
+  onChange: (e: any | string[]) => void;
   value: any;
 }) => {
   const { projectInfo } = useWorkSpaceContext();
