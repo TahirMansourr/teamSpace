@@ -5,7 +5,8 @@ import SprintHorizantalScroll from "./SprintHorizantalScroll";
 import FullScreenLoading from "@/Utils/FullScreenLoading";
 
 const SprintFeed = () => {
-  const { allSprints, loading , sprintsByStatus } = useSprintContext();
+  const { allSprints, loading  } = useSprintContext();
+  console.log("🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱" , allSprints)
   if (loading) {
     return <FullScreenLoading />;
   } else

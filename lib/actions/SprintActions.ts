@@ -30,12 +30,31 @@ export async function CreateSprint (sprint:CreateSprintType )  {
         }
         requiredBacklog.sprints.push(newSprint._id);
         await requiredBacklog.save();
+        console.log("🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱Sprint created successfully");
         return {
             success: true,
             message: "Sprint created successfully",
             data: JSON.parse(JSON.stringify(newSprint))
         }
     } catch (error : any) {
+        console.log(error.message);
+        return {
+            success: false,
+            message: error.message
+        }
+    }
+}
+
+export async function UpdateSprint(sprint: CreateSprintType & { _id: string }) {
+    try {
+        await connectToDB();
+        const updatedSprint = await Sprint.findByIdAndUpdate(sprint._id, sprint, { new: true });
+        return {
+            success: true,
+            message: "Sprint updated successfully",
+            data: JSON.parse(JSON.stringify(updatedSprint))
+        }
+    } catch (error: any) {
         console.log(error.message);
         return {
             success: false,

@@ -13,6 +13,7 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import { useSprintContext } from "../Contexts/SprintContext";
 import BackLogItemInsideSprintcard from "./BackLogItemInsideSprintcard";
 import { useBackLogContext } from "../Contexts/BackLogContext";
+import { CreateOrUpdateSprintModal } from "./CreateSprintModal";
 
 interface SingleSprintPreviewProps {
   sprint: SprintDto;
@@ -51,6 +52,7 @@ const SingleSprintPreview: React.FC<SingleSprintPreviewProps> = ({
   return (
     <div className="flex w-full h-full">
       {/* Left Section */}
+      <CreateOrUpdateSprintModal existingSprint={sprint}/>
       <div className="w-1/4 bg-white dark:bg-gray-800 rounded-xl shadow-sm m-1 hover:shadow-md p-6 ">
         <button
           onClick={handleBack}
@@ -113,7 +115,7 @@ const SingleSprintPreview: React.FC<SingleSprintPreviewProps> = ({
         <div className="mb-6">
           <div className="flex items-center gap-2">
             <IconUsers size={20} className="text-indigo-500" />
-            <span className="font-medium">Team Members</span>
+            {/* <span className="font-medium">Team Members</span> */}
           </div>
           <div className="flex -space-x-2 mt-2">
             {sprint.assignees?.map((member, index) => (

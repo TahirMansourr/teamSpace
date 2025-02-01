@@ -2,16 +2,19 @@ import { useDisclosure } from "@mantine/hooks";
 import { Modal } from "@mantine/core";
 import { IoMdAdd } from "react-icons/io";
 import CreateSprintForm from "../Forms/createOrUpdateSprintForm";
-import { BackLogDto } from "@/Utils/types";
+import { BackLogDto, SprintDto } from "@/Utils/types";
 import { notifications } from "@mantine/notifications";
+import { useBackLogContext } from "../Contexts/BackLogContext";
 
 export function CreateOrUpdateSprintModal({
-  selectedBackLog,
+  // selectedBackLog,
+  existingSprint,
 }: {
-  selectedBackLog: BackLogDto | null;
+  // selectedBackLog: BackLogDto | null;
+  existingSprint? : SprintDto
 }) {
   const [opened, { open, close }] = useDisclosure(false);
-
+  const {selectedBackLog} = useBackLogContext()
   return (
     <>
       <Modal
@@ -20,7 +23,7 @@ export function CreateOrUpdateSprintModal({
         title="create or update sprint"
         fullScreen
       >
-        <CreateSprintForm close={close} />
+        <CreateSprintForm close={close} existingSprint = {existingSprint}/>
       </Modal>
 
       <button

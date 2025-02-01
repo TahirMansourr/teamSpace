@@ -16,6 +16,7 @@ import BackLogTable from "../BackLogComponents/BackLog-Items/ProductBackLogTable
 import { useBackLogContext } from "../Contexts/BackLogContext";
 import { assign } from "nodemailer/lib/shared";
 import AssignTeamMembers from "./AssignTeamMembers";
+import { SprintDto } from "@/Utils/types";
 
 type CreateSprintType = {
   _id?: string;
@@ -30,20 +31,20 @@ type CreateSprintType = {
   assignees?: string[];
 };
 
-const CreateSprintForm = ({ close }: { close: () => void }) => {
+const CreateSprintForm = ({ close , existingSprint }: { close: () => void , existingSprint? : SprintDto }) => {
   const [loading, setLoading] = useState(false);
   const { selectedItems } = useBackLogContext();
   const { handleCreateSprint } = useSprintContext();
 
   const form = useForm<any>({
     initialValues: {
-      name: "",
-      startDate: new Date(),
-      endDate: new Date(),
-      goal: "",
-      status: "Planning",
-      backlogItems: [],
-      assignees: [],
+      name: existingSprint?.name || "",
+      startDate: existingSprint ? new Date(existingSprint.startDate) : new Date(),
+      endDate: existingSprint ? new Date(existingSprint.endDate) : new Date(),
+      goal: existingSprint?.goal || "",
+      status: existingSprint?.status || "planned",
+      backlogItems: existingSprint?.backlogItems || [],
+      assignees: existingSprint? existingSprint.assignees?.map((user) => user._id) : [],
     },
     validate: {
       name: (value) =>

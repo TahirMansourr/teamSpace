@@ -12,7 +12,7 @@ import {
 } from "react";
 import { useBackLogContext } from "./BackLogContext";
 import { BackLogDto, SprintDto, UserDto } from "@/Utils/types";
-import { CreateSprint } from "@/lib/actions/SprintActions";
+import { CreateSprint, UpdateSprint } from "@/lib/actions/SprintActions";
 import { useWorkSpaceContext } from "./WorkSpaceContext";
 import { notifications } from "@mantine/notifications";
 
@@ -46,6 +46,7 @@ type SprintContextDTO = {
   showSprintsOnBackLogPage: boolean;
   setShowSprintsOnBackLogPage: Dispatch<SetStateAction<boolean>>;
   selectedBackLogWhenCreatingASprint: BackLogDto | null;
+  handleUpdateSprint: (sprint: CreateOrUpdateSprint ) => void;
 };
 
 type CreateOrUpdateSprint = {
@@ -229,8 +230,7 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
     );
   }, [myBackLogs]);
 
-  const handleCreateSprint = useCallback(
-    async (sprint: CreateOrUpdateSprint) => {
+  const handleCreateSprint = async (sprint: CreateOrUpdateSprint) => {
       getAvailableBacklogItems();
       if (!selectedBackLog) {
         notifications.show({
@@ -274,16 +274,17 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
               },
             ],
           };
-          setSelectedBackLog(updatedBacklog);
+          // setSelectedBackLog(updatedBacklog);
           setSelectedBackLogWhenCreatingASprint({
             ...selectedBackLog,
             backlogItems: selectedBackLog.backlogItems?.filter(
               (item) => !selectedBackLogItemsIds?.includes(item._id)
             ),
           });
+          notifications.show({ message : `${sprint.name} created successfully` , color : "green"});
           setAllSprints((prevAllSprints) => ({
             ...prevAllSprints,
-            [newSprint.status]: [...prevAllSprints[newSprint.status], newSprint],
+            [newSprint.status]: [...prevAllSprints[newSprint.status], {...newSprint , backlogItems : selectedBackLogItems}],
           }));
         }
         //   setSelectedBackLog({
@@ -314,8 +315,66 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
       } finally {
         setLoading(false);
       }
+    }
+    
+
+  const handleUpdateSprint = useCallback(
+    async (sprint: CreateOrUpdateSprint ) => {
+      getAvailableBacklogItems();
+      if (!selectedBackLog) {
+        notifications.show({
+          title: "Error",
+          message: "Please select a backlog to update the sprint",
+          color: "red",
+        });
+        return;
+      }
+      const selectedBackLogItemsIds = selectedBackLog?.backlogItems?.map(
+        (item) => item._id
+      );
+      const selectedBackLogItems = selectedBackLog.backlogItems?.filter(
+        (item) => sprint.backlogItems?.includes(item._id)
+      );
+      const assignedMembers = projectInfo?.project.team.filter(
+        (member: UserDto) => sprint.assignees?.includes(member._id)
+      );
+      const updatedSprint = {
+        ...sprint,
+        backlog: selectedBackLog ? selectedBackLog._id : "",
+        createdBy: userInfo?._id,
+      };
+      try {
+        setLoading(true);
+        const response = await UpdateSprint({...updatedSprint , _id : sprint._id!});
+        if (response.success && selectedBackLog) {
+          const updatedBacklog = {
+            ...selectedBackLog,
+            sprints: selectedBackLog.sprints?.map((s) =>
+              s._id === sprint._id ? { ...updatedSprint, ...response.data } : s
+            ),
+          };
+          setSelectedBackLog(updatedBacklog);
+          setSelectedBackLogWhenCreatingASprint({
+            ...selectedBackLog,
+            backlogItems: selectedBackLog.backlogItems?.filter(
+              (item) => !selectedBackLogItemsIds?.includes(item._id)
+            ),
+          });
+          setAllSprints((prevAllSprints) => ({
+            ...prevAllSprints,
+            [updatedSprint.status]: prevAllSprints[updatedSprint.status].map((s) =>
+              s._id === sprint._id ? { ...updatedSprint, ...response.data } : s
+            ),
+          }));
+        }
+      } catch (error: any) {
+        console.error("Failed to update sprint", error);
+        throw new Error("Failed to update sprint");
+      } finally {
+        setLoading(false);
+      }
     },
-    [selectedBackLog, userInfo, setSelectedBackLog]
+    [selectedBackLog, userInfo, setSelectedBackLog, projectInfo, getAvailableBacklogItems]
   );
 
   const value = useMemo(
@@ -333,7 +392,8 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
       handleBack,
       showSprintsOnBackLogPage,
       setShowSprintsOnBackLogPage,
-      selectedBackLogWhenCreatingASprint
+      selectedBackLogWhenCreatingASprint,
+      handleUpdateSprint
     }),
     [
       selectedBackLog,
@@ -348,7 +408,8 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
       handleBack,
       showSprintsOnBackLogPage,
       setShowSprintsOnBackLogPage,
-      selectedBackLogWhenCreatingASprint
+      selectedBackLogWhenCreatingASprint,
+      handleUpdateSprint
     ]
   );
 
