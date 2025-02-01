@@ -10,11 +10,15 @@ const CreateOrUpdateTaskModal = ({
   closeModal,
   initialValues,
   featureId,
+  backlogItemId,
+  backlogtitle
 }: {
   modalOpened: boolean;
   closeModal: () => void;
   initialValues?: TaskDto;
   featureId?: string;
+  backlogItemId?: string;
+  backlogtitle?: string;
 }) => {
   return (
     <Modal
@@ -36,6 +40,8 @@ const CreateOrUpdateTaskModal = ({
         close={closeModal}
         updateFormInput={initialValues as unknown as createTaskFormDto}
         featureId={featureId}
+        backlogItemId={backlogItemId}
+        backlogtitle={backlogtitle}
       />
     </Modal>
   );

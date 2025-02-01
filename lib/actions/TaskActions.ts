@@ -1,6 +1,7 @@
 'use server'
 
 import Feature from "../models/FeatureModel"
+import ProductBacklogItem from "../models/ProductBackLogItem"
 import Project from "../models/ProjectModel"
 import Task from "../models/TasksModel"
 import { connectToDB } from "../mongoose"
@@ -15,35 +16,84 @@ type createTaskFormDto = {
     tags : string[],
     status : 'To Do' | 'In Progress' | "Done" | 'Review'
     featureId? : string,
+    backlogItemId? : string,
+    backlogtitle? : string,
+    sprintId? : string,
+    isGlobal? : boolean
 }
-export async function CreateTask(params : createTaskFormDto) {
+// export async function CreateTask(params : createTaskFormDto) {
+//     try {
+//         await connectToDB()
+
+//         const newTask = await Task.create({
+//             name : params.name,
+//             description : params.description,
+//             priority : params.priority,
+//             dueDate : params.dueDate,
+//             assignedTo : params.assignedTo,
+//             createdAt : new Date(),
+//             project : params.projectId,
+//             createdBy : params.userId,
+//             tags : params.tags,
+//             status : params.status,
+//             featureId : params.featureId,
+
+//         })
+
+//         if(params.featureId && params.featureId !== ''){
+//            await Feature.findOneAndUpdate({_id : params.featureId}, {$push : { tasks : newTask._id}}).exec()
+//         }
+//         await Project.findOneAndUpdate({_id : params.projectId} , {$push : { Tasks : newTask._id}}).exec()
+
+//         const response = JSON.parse(JSON.stringify(newTask))
+//         return {status : 'success' , task : response}
+        
+//     } catch (error: any) {
+//         throw new Error(`Error at CreateTask : ${error}`);
+//     }
+// }
+
+export async function CreateTask(params: createTaskFormDto) {
     try {
         await connectToDB()
 
         const newTask = await Task.create({
-            name : params.name,
-            description : params.description,
-            priority : params.priority,
-            dueDate : params.dueDate,
-            assignedTo : params.assignedTo,
-            createdAt : new Date(),
-            project : params.projectId,
-            createdBy : params.userId,
-            tags : params.tags,
-            status : params.status,
-            featureId : params.featureId,
+            name: params.name,
+            description: params.description,
+            priority: params.priority,
+            dueDate: params.dueDate,
+            assignedTo: params.assignedTo,
+            createdAt: new Date(),
+            project: params.projectId,
+            createdBy: params.userId,
+            tags: params.tags,
+            status: params.status,
+            featureId: params.featureId,
+            backlogItemId: params.backlogItemId,
+            sprintId: params.sprintId,
+            isGlobal: params.isGlobal,
+            backlogtitle: params.backlogtitle
         })
 
-        if(params.featureId && params.featureId !== ''){
-           await Feature.findOneAndUpdate({_id : params.featureId}, {$push : { tasks : newTask._id}}).exec()
+        if (params.featureId && params.featureId !== '') {
+            await Feature.findOneAndUpdate({ _id: params.featureId }, { $push: { tasks: newTask._id } }).exec()
         }
-        await Project.findOneAndUpdate({_id : params.projectId} , {$push : { Tasks : newTask._id}}).exec()
+
+        if (params.backlogItemId && params.backlogItemId !== '') {
+            await ProductBacklogItem.findOneAndUpdate({ _id: params.backlogItemId }, { $push: { tasks: newTask._id } }).exec()
+        }
+
+        // if (params.sprintId && params.sprintId !== '') {
+        //     await Sprint.findOneAndUpdate({ _id: params.sprintId }, { $push: { tasks: newTask._id } }).exec()
+        // }
+
+        await Project.findOneAndUpdate({ _id: params.projectId }, { $push: { Tasks: newTask._id } }).exec()
 
         const response = JSON.parse(JSON.stringify(newTask))
-        return {status : 'success' , task : response}
-        
+        return { status: 'success', task: response }
+
     } catch (error: any) {
-        throw new Error(`Error at CreateTask : ${error}`);
+        throw new Error(`Error at CreateTask: ${error}`);
     }
 }
 

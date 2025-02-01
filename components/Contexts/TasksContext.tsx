@@ -22,6 +22,8 @@ type formValuesType = {
   status: "To Do" | "In Progress" | "Done" | "Review";
   _id?: string;
   featureId?: string;
+  backlogItemId?: string;
+  backlogtitle?: string;
 };
 type TaskContextDto = {
   useHandleCreateTask: () => [
@@ -106,6 +108,8 @@ const TaskProvider = ({
           tags: values.tags,
           status: values.status,
           featureId: values.featureId,
+          backlogItemId : values.backlogItemId,
+          backlogtitle : values.backlogtitle
         }).then((res) => {
           const newTask = {
             ...values,

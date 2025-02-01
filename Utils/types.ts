@@ -145,6 +145,7 @@ export type BackLogItemDto = {
     assignee : UserDto[],
     groupId : string | null,
     groupName : string | null,
+    tasks : TaskDto[],
 }
 
 export type SprintDto = {

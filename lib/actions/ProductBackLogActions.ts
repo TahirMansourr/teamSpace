@@ -31,6 +31,18 @@ export async function GetProductBackLogAndPopulate(projectId : string) {
       {
         path : 'backlogItems',
         model : ProductBacklogItem,
+        populate : [{
+          path : 'assignee',
+          model : User,
+        },
+        {path : 'tasks', 
+         model : 'Task',
+         populate: {
+            path : 'assignedTo',
+            model : User,
+         } 
+        
+        }]
       }
       ]
       }

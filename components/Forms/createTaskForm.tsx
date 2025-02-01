@@ -18,6 +18,7 @@ import { useTaskContext } from "../Contexts/TasksContext";
 import { MdOutlineDeleteSweep } from "react-icons/md";
 import { useDisclosure } from "@mantine/hooks";
 import { UserDto } from "@/Utils/types";
+import AssignTeamMembers from "./AssignTeamMembers";
 
 export type createTaskFormDto = {
   name: string;
@@ -30,16 +31,22 @@ export type createTaskFormDto = {
   _id?: string;
   featureId?: string;
   createdBy?: UserDto;
+  backlogItemId?: string;
+  backlogtitle?: string;
 };
 
 const CreateOrUpdateTaskForm = ({
   close,
   updateFormInput,
   featureId,
+  backlogItemId,
+  backlogtitle
 }: {
   close: Function;
   updateFormInput?: createTaskFormDto;
   featureId?: string;
+  backlogItemId?: string;
+  backlogtitle?: string;
 }) => {
   const form = useForm<createTaskFormDto>({
     mode: "uncontrolled",
@@ -53,6 +60,8 @@ const CreateOrUpdateTaskForm = ({
       status: updateFormInput ? updateFormInput.status : "To Do",
       _id: updateFormInput ? updateFormInput._id : "",
       featureId: featureId ? featureId : "",
+      backlogItemId : backlogItemId ? backlogItemId : undefined,
+      backlogtitle : backlogtitle ? backlogtitle : undefined
     },
   });
 
@@ -132,7 +141,12 @@ const CreateOrUpdateTaskForm = ({
           {...form.getInputProps("tags")}
         />
 
-        <MultiSelect
+          <AssignTeamMembers
+          value={form.values.assignedTo}
+          // onChange={(value) => form.setFieldValue("assignedTo", value)}
+          {...form.getInputProps("assignedTo")}
+          />
+        {/* <MultiSelect
           label="Assign Task To"
           data={projectInfo.team.map((member: any) => ({
             label: member.username,
@@ -143,7 +157,7 @@ const CreateOrUpdateTaskForm = ({
             label: "text-gray-700 font-medium mb-1",
           }}
           {...form.getInputProps("assignedTo")}
-        />
+        /> */}
       </div>
 
       <div className="flex justify-between items-center p-4 border-t border-gray-100 bg-gray-50 rounded-b-lg">

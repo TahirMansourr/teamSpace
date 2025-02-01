@@ -4,6 +4,8 @@ import { TransitionWrapper } from "../TransitionWrapper";
 import MainPage from "@/components/SprintComponents/MainPage";
 import BackLogProvider from "@/components/Contexts/BackLogContext";
 import SprintProvider from "@/components/Contexts/SprintContext";
+import TaskProvider from "@/components/Contexts/TasksContext";
+import { useWorkSpaceContext } from "@/components/Contexts/WorkSpaceContext";
 
 const Scrum = ({
   opened,
@@ -17,6 +19,8 @@ const Scrum = ({
     return () => setOpened(false);
   });
 
+  const {userInfo , projectInfo} = useWorkSpaceContext()
+
   return (
     <TransitionWrapper opened={opened}>
       <section className=" w-full h-screen">
@@ -24,7 +28,9 @@ const Scrum = ({
           <section className="w-full h-full px-8">
             <BackLogProvider>
               <SprintProvider>
+                <TaskProvider user={userInfo} project={projectInfo}>
                 <MainPage />
+                </TaskProvider>
               </SprintProvider>
             </BackLogProvider>
           </section>

@@ -1,5 +1,6 @@
 "use client";
-import { SprintDto } from "@/Utils/types";
+
+import { SprintDto, BackLogItemDto } from "@/Utils/types";
 import { Avatar, Badge, Progress, Tooltip } from "@mantine/core";
 import {
   IconCalendar,
@@ -10,6 +11,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { useSprintContext } from "../Contexts/SprintContext";
+import BackLogItemInsideSprintcard from "./BackLogItemInsideSprintcard";
 import { useBackLogContext } from "../Contexts/BackLogContext";
 
 interface SingleSprintPreviewProps {
@@ -20,6 +22,7 @@ const SingleSprintPreview: React.FC<SingleSprintPreviewProps> = ({
   sprint,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
+  const [selectedBacklogItem, setSelectedBacklogItem] = useState<BackLogItemDto | null>(null);
   const { handleBack } = useSprintContext();
   const { myBackLogs } = useBackLogContext();
 
@@ -46,128 +49,122 @@ const SingleSprintPreview: React.FC<SingleSprintPreviewProps> = ({
   )?.name;
 
   return (
-    <div
-      className={`  bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 hover:shadow-xl transition-all duration-500 transform w-[50%] backdrop-blur-lg m-5 mx-auto  ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-      }`}
-    >
-      <button
-        onClick={handleBack}
-        className="mb-3 px-4 py-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors duration-300 flex items-center gap-2  font-bold"
-      >
-        <IoMdArrowRoundBack size={20} />
-      </button>
-      {/* Header */}
-      <div
-        className={`flex justify-between items-center mb-6 transition-all duration-500 delay-100 ${
-          isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
-        }`}
-      >
-        <h2 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
-          {backlogName} &gt; {sprint.name}
-        </h2>
-        <Badge
-          color={
-            sprint.status === "active"
-              ? "green"
-              : sprint.status === "planned"
-              ? "blue"
-              : "gray"
-          }
-          size="xl"
-          className="abosulte -top-2 -right-2" 
+    <div className="flex w-full h-full">
+      {/* Left Section */}
+      <div className="w-1/4 bg-white dark:bg-gray-800 rounded-xl shadow-sm m-1 hover:shadow-md p-6 ">
+        <button
+          onClick={handleBack}
+          className="mb-3 px-4 py-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors duration-300 flex items-center gap-2 font-bold"
         >
-          {sprint.status}
-        </Badge>
-      </div>
-
-      {/* Sprint Goal */}
-      <div
-        className={`mb-6 transition-all duration-500 delay-200 ${
-          isVisible ? "opacity-100" : "opacity-0"
-        }`}
-      >
-        <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
-          <IconFlag size={20} className="text-indigo-500" />
-          Sprint Goal
-        </h3>
-        <p className="text-gray-600 dark:text-gray-300">{sprint.goal}</p>
-      </div>
-
-      {/* Progress Section */}
-      <div
-        className={`mb-6 transition-all duration-500 delay-300 ${
-          isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
-        }`}
-      >
-        <div className="flex justify-between items-center mb-2">
-          <span className="font-medium">Sprint Progress</span>
-          <span className="text-sm text-gray-500">
-            {Math.round(calculateProgress())}%
-          </span>
+          <IoMdArrowRoundBack size={20} />
+        </button>
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+            {backlogName} &gt; {sprint.name}
+          </h2>
+          <Badge
+            color={
+              sprint.status === "active"
+                ? "green"
+                : sprint.status === "planned"
+                ? "blue"
+                : "gray"
+            }
+            size="lg"
+            className="mt-4"
+          >
+            {sprint.status}
+          </Badge>
         </div>
-        <Progress
-          value={calculateProgress()}
-          color="indigo"
-          size="lg"
-          radius="xl"
-        />
-      </div>
-
-      {/* Info Grid */}
-      <div
-        className={`grid grid-cols-2 gap-4 mb-6 transition-all duration-500 delay-400 ${
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-        }`}
-      >
-        <Tooltip label="Sprint Duration">
-          <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
-            <IconCalendar className="text-indigo-500" size={20} />
-            <div>
-              <div className="text-sm text-gray-500">Duration</div>
-              <div className="font-medium">
-                {daysRemaining()} days remaining
+        <div className="mb-6">
+          <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
+            <IconFlag size={20} className="text-indigo-500" />
+            Sprint Goal
+          </h3>
+          <p className="text-gray-600 dark:text-gray-300">{sprint.goal}</p>
+        </div>
+        <div className="mb-6">
+          <div className="flex justify-between items-center mb-2">
+            <span className="font-medium">Sprint Progress</span>
+            <span className="text-sm text-gray-500">
+              {Math.round(calculateProgress())}%
+            </span>
+          </div>
+          <Progress
+            value={calculateProgress()}
+            color="indigo"
+            size="lg"
+            radius="xl"
+          />
+        </div>
+        <div className="mb-6">
+          <Tooltip label="Sprint Duration">
+            <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
+              <IconCalendar className="text-indigo-500" size={20} />
+              <div>
+                <div className="text-sm text-gray-500">Duration</div>
+                <div className="font-medium">
+                  {daysRemaining()} days remaining
+                </div>
               </div>
             </div>
+          </Tooltip>
+        </div>
+        <div className="mb-6">
+          <div className="flex items-center gap-2">
+            <IconUsers size={20} className="text-indigo-500" />
+            <span className="font-medium">Team Members</span>
           </div>
-        </Tooltip>
-
-        <Tooltip label="Backlog Items">
-          <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
-            <IconCheckbox className="text-indigo-500" size={20} />
-            <div>
-              <div className="text-sm text-gray-500">Items</div>
-              <div className="font-medium">
-                {sprint.backlogItems?.length || 0} items
-              </div>
-            </div>
+          <div className="flex -space-x-2 mt-2">
+            {sprint.assignees?.map((member, index) => (
+              <Tooltip key={member._id} label={member.username}>
+                <Avatar
+                  src={member.image}
+                  alt={member.username}
+                  size={"md"}
+                  className="w-8 h-8 rounded-full border-2 border-white dark:border-gray-800"
+                  style={{ zIndex: sprint.assignees!.length - index }}
+                />
+              </Tooltip>
+            ))}
           </div>
-        </Tooltip>
+        </div>
       </div>
 
-      {/* Team Members */}
-      <div
-        className={`transition-all duration-500 delay-500 ${
-          isVisible ? "opacity-100" : "opacity-0"
-        }`}
-      >
-        <div className="flex items-center gap-2">
-          <IconUsers size={20} className="text-indigo-500" />
-          <span className="font-medium">Team Members</span>
-        </div>
-        <div className="flex -space-x-2 mt-2">
-          {sprint.assignees?.map((member, index) => (
-            <Tooltip key={member._id} label={member.username}>
-              <Avatar
-                src={member.image}
-                alt={member.username}
-                size={"md"}
-                className="w-8 h-8 rounded-full border-2 border-white dark:border-gray-800"
-                style={{ zIndex: sprint.assignees!.length - index }}
-              />
-            </Tooltip>
-          ))}
-        </div>
+      {/* Middle Section */}
+      <div className="w-1/2 bg-white dark:bg-gray-800 rounded-xl shadow-sm m-1 hover:shadow-md p-6  grid grid-cols-2 gap-4">
+        {sprint.backlogItems?.map((item) => (
+          <div key={item._id} onClick={() => setSelectedBacklogItem(item)}>
+            <BackLogItemInsideSprintcard backLogItem={item} />
+          </div>
+        ))}
+      </div>
+
+      {/* Right Section */}
+      <div className="w-1/4 bg-white dark:bg-gray-800 rounded-xl shadow-sm m-1 hover:shadow-md p-6 ">
+        {selectedBacklogItem ? (
+          <div>
+            <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
+              <IconCheckbox size={20} className="text-indigo-500" />
+              {selectedBacklogItem.title}
+            </h3>
+            <p className="text-gray-600 dark:text-gray-300 mb-4">
+              {selectedBacklogItem.description}
+            </p>
+            <div className="space-y-4">
+              {selectedBacklogItem.tasks?.map((task) => (
+                <div key={task._id} className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
+                  <h4 className="font-medium">{task.name}</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">{task.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="text-gray-600 dark:text-gray-300">
+            Select a backlog item to view its tasks.
+          </div>
+        )}
       </div>
     </div>
   );
