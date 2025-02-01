@@ -60,7 +60,7 @@ const MainPageHeader = () => {
         )}
       </div>
 
-      <CreateOrUpdateSprintModal selectedBackLog={selectedBackLog} />
+      <CreateOrUpdateSprintModal/>
     </div>
   );
 };
