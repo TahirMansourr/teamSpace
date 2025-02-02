@@ -9,8 +9,9 @@ import React, {
   useState,
 } from "react";
 import { socket } from "@/socket";
-import { ProjectDto, TaskDto, UserDto } from "@/Utils/types";
+import { ProjectDto, SprintDto, TaskDto, UserDto } from "@/Utils/types";
 import { notifications } from "@mantine/notifications";
+import { useSprintContext } from "./SprintContext";
 
 type formValuesType = {
   name: string;
@@ -70,6 +71,8 @@ const TaskProvider = ({
     featureTasks ? featureTasks : []
   );
   const [formLoading, setFormLoading] = useState<boolean>(false);
+  const { setSelectedSprint, setSelectedBacklogItemForSingleSprint } =
+    useSprintContext();
 
   const useHandleCreateTask = (): [
     boolean,
@@ -108,8 +111,8 @@ const TaskProvider = ({
           tags: values.tags,
           status: values.status,
           featureId: values.featureId,
-          backlogItemId : values.backlogItemId,
-          backlogtitle : values.backlogtitle
+          backlogItemId: values.backlogItemId,
+          backlogtitle: values.backlogtitle,
         }).then((res) => {
           const newTask = {
             ...values,
@@ -161,7 +164,7 @@ const TaskProvider = ({
             createdBy: userInfo,
           };
 
-          socket.emit("updateTask", {room : projectInfo._id , value : newTask});
+          socket.emit("updateTask", { room: projectInfo._id, value: newTask });
         });
       } catch (error) {
         throw new Error(`error at handleCreateTask : ${error}`);
@@ -179,7 +182,7 @@ const TaskProvider = ({
       try {
         const response = await DeleteTask(taskId);
         if (response.status === "success") {
-          socket.emit("deleteTask", { room: projectInfo._id, value : taskId });
+          socket.emit("deleteTask", { room: projectInfo._id, value: taskId });
         }
       } catch (error) {
         notifications.show({ message: "Error deleting task", color: "red" });
@@ -198,6 +201,30 @@ const TaskProvider = ({
       setAllTasks((prev: TaskDto[] | undefined) =>
         prev ? [task, ...prev] : [task]
       );
+      setSelectedBacklogItemForSingleSprint((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          tasks: prev.tasks ? [...prev.tasks, task] : [task],
+        };
+      });
+      // setSelectedSprint((prev: SprintDto | null) => {
+      //   if (!prev) return prev;
+      //   const updatedBacklogItems = prev.backlogItems?.map((backlogItem) => {
+      //     if (backlogItem._id === task.backlogItemId) {
+      //       return {
+      //         ...backlogItem,
+      //         tasks: backlogItem.tasks ? [...backlogItem.tasks, task] : [task],
+      //       };
+      //     }
+      //     return backlogItem;
+      //   });
+      //   return {
+      //     ...prev,
+      //     backlogItems: updatedBacklogItems,
+      //   };
+      // });
+      notifications.show({ message: `${task.name} created` });
       if (task.featureId) {
         setAllFeatureTasks((prev: TaskDto[] | undefined) =>
           prev ? [task, ...prev] : []
@@ -211,6 +238,31 @@ const TaskProvider = ({
           prevTask._id === task._id ? task : prevTask
         )
       );
+      setSelectedBacklogItemForSingleSprint((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          tasks: prev.tasks?.map((t) => (t._id === task._id ? task : t)) || [],
+        };
+      });
+      notifications.show({ message: `${task.name} updated`, color: "green" });
+      // setSelectedSprint((prev) => {
+      //   if (!prev) return prev;
+
+      //   return {
+      //     ...prev,
+      //     backlogItems: prev.backlogItems?.map((item) =>
+      //       item._id === task.backlogItemId
+      //         ? {
+      //             ...item,
+      //             tasks:
+      //               item.tasks?.map((t) => (t._id === task._id ? task : t)) ||
+      //               [],
+      //           }
+      //         : item
+      //     ),
+      //   };
+      // });
       setAllFeatureTasks((prev: TaskDto[]) =>
         prev.map((prevTask: TaskDto) =>
           prevTask._id === task._id ? task : prevTask

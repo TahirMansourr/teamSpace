@@ -23,8 +23,11 @@ const SingleSprintPreview: React.FC<SingleSprintPreviewProps> = ({
   sprint,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [selectedBacklogItem, setSelectedBacklogItem] = useState<BackLogItemDto | null>(null);
-  const { handleBack } = useSprintContext();
+  const {
+    handleBack,
+    selectedBacklogItemForSingleSprint,
+    setSelectedBacklogItemForSingleSprint,
+  } = useSprintContext();
   const { myBackLogs } = useBackLogContext();
 
   useEffect(() => {
@@ -130,10 +133,8 @@ const SingleSprintPreview: React.FC<SingleSprintPreviewProps> = ({
             ))}
           </div>
           <div className="ml-0">
-
-          <CreateOrUpdateSprintModal existingSprint={sprint}/>
+            <CreateOrUpdateSprintModal existingSprint={sprint} />
           </div>
-
         </div>
       </div>
 
@@ -141,7 +142,10 @@ const SingleSprintPreview: React.FC<SingleSprintPreviewProps> = ({
       <ScrollArea className="w-1/2 h-[calc(100vh-6rem)] bg-white dark:bg-gray-800 rounded-xl shadow-sm m-1 hover:shadow-md p-6">
         <div className="grid grid-cols-2 gap-4 m-2">
           {sprint.backlogItems?.map((item) => (
-            <div key={item._id} onClick={() => setSelectedBacklogItem(item)}>
+            <div
+              key={item._id}
+              onClick={() => setSelectedBacklogItemForSingleSprint(item)}
+            >
               <BackLogItemInsideSprintcard backLogItem={item} />
             </div>
           ))}
@@ -150,20 +154,25 @@ const SingleSprintPreview: React.FC<SingleSprintPreviewProps> = ({
 
       {/* Right Section */}
       <ScrollArea className="w-1/4 bg-white h-[calc(100vh-6rem)] dark:bg-gray-800 rounded-xl shadow-sm m-1 hover:shadow-md p-6">
-        {selectedBacklogItem ? (
+        {selectedBacklogItemForSingleSprint ? (
           <div>
             <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
               <IconCheckbox size={20} className="text-indigo-500" />
-              {selectedBacklogItem.title}
+              {selectedBacklogItemForSingleSprint.title}
             </h3>
             <p className="text-gray-600 dark:text-gray-300 mb-4">
-              {selectedBacklogItem.description}
+              {selectedBacklogItemForSingleSprint.description}
             </p>
             <div className="space-y-4">
-              {selectedBacklogItem.tasks?.map((task) => (
-                <div key={task._id} className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
+              {selectedBacklogItemForSingleSprint.tasks?.map((task) => (
+                <div
+                  key={task._id}
+                  className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg"
+                >
                   <h4 className="font-medium">{task.name}</h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">{task.description}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    {task.description}
+                  </p>
                 </div>
               ))}
             </div>

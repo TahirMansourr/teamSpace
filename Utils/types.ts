@@ -44,7 +44,9 @@ export type TaskDto = {
     _id : string,
     creationDate : string,
     featureId? : string,
-    createdBy : UserDto
+    createdBy : UserDto,
+    backlogItemId? : string,
+    isGlobal? : boolean,
 }
 export type IssueDto = {
     name : string,
