@@ -40,7 +40,7 @@ const CreateOrUpdateTaskForm = ({
   updateFormInput,
   featureId,
   backlogItemId,
-  backlogtitle
+  backlogtitle,
 }: {
   close: Function;
   updateFormInput?: createTaskFormDto;
@@ -54,14 +54,14 @@ const CreateOrUpdateTaskForm = ({
       name: updateFormInput ? updateFormInput.name : "",
       description: updateFormInput ? updateFormInput.description : "",
       priority: updateFormInput ? updateFormInput.priority : "HIGH",
-      dueDate: updateFormInput ? updateFormInput.dueDate : new Date(),
+      dueDate: updateFormInput ? new Date(updateFormInput.dueDate) : new Date(),
       assignedTo: updateFormInput ? updateFormInput.assignedTo : [],
       tags: updateFormInput ? updateFormInput.tags : [],
       status: updateFormInput ? updateFormInput.status : "To Do",
       _id: updateFormInput ? updateFormInput._id : "",
       featureId: featureId ? featureId : "",
-      backlogItemId : backlogItemId ? backlogItemId : undefined,
-      backlogtitle : backlogtitle ? backlogtitle : undefined
+      backlogItemId: backlogItemId ? backlogItemId : undefined,
+      backlogtitle: backlogtitle ? backlogtitle : undefined,
     },
   });
 
@@ -141,11 +141,11 @@ const CreateOrUpdateTaskForm = ({
           {...form.getInputProps("tags")}
         />
 
-          <AssignTeamMembers
+        <AssignTeamMembers
           value={form.getInputProps("assignedTo").value}
           onChange={form.getInputProps("assignedTo").onChange}
-         />
-          
+        />
+
         {/* <MultiSelect
           label="Assign Task To"
           data={projectInfo.team.map((member: any) => ({

@@ -6,6 +6,8 @@ import { connectToDB } from "../mongoose";
 import Project from "../models/ProjectModel";
 import Sprint from "../models/Sprint";
 import User from "../models/UserModel";
+import Task from "../models/TasksModel";
+import path from "path";
 
 export async function GetProductBackLogAndPopulate(projectId : string) {
   try {
@@ -16,10 +18,21 @@ export async function GetProductBackLogAndPopulate(projectId : string) {
         {
         path : 'backlogItems',
         model: ProductBacklogItem,
-        populate: {
+        populate: [{
           path: 'assignee',
           model: User,
-        }
+        },
+        {path : 'tasks',
+           model : Task ,
+           populate: [{
+            path : 'assignedTo',
+            model : User,
+           } , 
+          {
+            path : 'createdBy',
+            model : User,
+          }]}
+          ]
       },
       {
         path : 'sprints',
@@ -36,11 +49,16 @@ export async function GetProductBackLogAndPopulate(projectId : string) {
           model : User,
         },
         {path : 'tasks', 
-         model : 'Task',
-         populate: {
+         model : Task,
+         populate: [{
             path : 'assignedTo',
             model : User,
-         } 
+         },
+        {
+          path : 'createdBy',
+          model : User,
+        }
+        ]
         
         }]
       }

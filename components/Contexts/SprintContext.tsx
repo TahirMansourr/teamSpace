@@ -80,8 +80,12 @@ export const useSprintContext = () => {
 };
 
 const SprintProvider = ({ children }: { children: React.ReactNode }) => {
-  const { selectedBackLog, setSelectedBackLog, myBackLogs } =
-    useBackLogContext();
+  const {
+    selectedBackLog,
+    setSelectedBackLog,
+    myBackLogs,
+    handleUpdateBackLogItem,
+  } = useBackLogContext();
   const { userInfo, projectInfo } = useWorkSpaceContext();
   const [loading, setLoading] = useState(false);
   const [sprintsByStatus, setSprintsByStatus] = useState<
@@ -104,7 +108,12 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
     setSelectedBacklogItemForSingleSprint,
   ] = useState<BackLogItemDto | null>(null);
 
-  console.log("🎁🎁🎁🎁🎁🎁🎁🎁🎁", selectedBackLogWhenCreatingASprint);
+  console.log(
+    "🎁🎁🎁🎁🎁🎁🎁🎁🎁",
+    selectedBackLogWhenCreatingASprint,
+    "🐱🐱🐱🐱🐱",
+    selectedBackLog
+  );
 
   // function GetActiveSprintsFromBacklogss() {
   //   let activeSprint: { name: string; sprints: SprintDto[] }[] = [];
@@ -125,6 +134,22 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
   //   });
   //   return activeSprint;
   // } here using for each instead of map it better because map creates a new array and foreach performs operation on the same array
+
+  useEffect(() => {
+    if (selectedBackLog) {
+      setSelectedSprint((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          backlogItems: selectedBackLog.backlogItems?.filter((item) =>
+            prev.backlogItems?.some((prevItem) => prevItem._id === item._id)
+          ),
+        };
+      });
+    } else {
+      return;
+    }
+  }, [handleUpdateBackLogItem]);
 
   useEffect(() => {
     setLoading(true);
@@ -356,6 +381,10 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
     );
     const selectedBackLogItems = selectedBackLog.backlogItems?.filter((item) =>
       sprint.backlogItems?.includes(item._id)
+    );
+    console.log(
+      "🚀 ~ file: SprintContext.tsx ~ line 292 ~ handleUpdateSprint ~ selectedBackLogItems",
+      selectedBackLogItems
     );
     const assignedMembers = projectInfo?.project.team.filter(
       (member: UserDto) => sprint.assignees?.includes(member._id)

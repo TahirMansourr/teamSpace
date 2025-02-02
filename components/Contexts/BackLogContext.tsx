@@ -303,6 +303,7 @@ const BackLogProvider = ({ children }: { children: React.ReactNode }) => {
                   ? {
                       ...updatedBacklogItem.item,
                       assignee: selectedTeamMembers,
+                      tasks: item.tasks,
                     }
                   : item
               ),

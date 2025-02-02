@@ -1,6 +1,6 @@
 "use client";
 
-import { SprintDto, BackLogItemDto } from "@/Utils/types";
+import { SprintDto, BackLogItemDto, TaskDto } from "@/Utils/types";
 import { Avatar, Badge, Progress, ScrollArea, Tooltip } from "@mantine/core";
 import {
   IconCalendar,
@@ -14,6 +14,11 @@ import { useSprintContext } from "../Contexts/SprintContext";
 import BackLogItemInsideSprintcard from "./BackLogItemInsideSprintcard";
 import { useBackLogContext } from "../Contexts/BackLogContext";
 import { CreateOrUpdateSprintModal } from "./CreateSprintModal";
+import SingleTaskPreview from "../TeamWorkSpaceComponents/tasksComponents/SingleTaskPreview";
+import PreviewTaskModal from "../TeamWorkSpaceComponents/tasksComponents/PriviewTaskModal";
+import CreateOrUpdateTaskModal from "../TeamWorkSpaceComponents/tasksComponents/CreateTaskModal";
+import { useDisclosure } from "@mantine/hooks";
+import { FaEdit } from "react-icons/fa";
 
 interface SingleSprintPreviewProps {
   sprint: SprintDto;
@@ -51,6 +56,9 @@ const SingleSprintPreview: React.FC<SingleSprintPreviewProps> = ({
   const backlogName = myBackLogs?.find(
     (backlog) => backlog._id === sprint.backlog
   )?.name;
+
+  const [opened, { open, close }] = useDisclosure();
+  const [selectedTask, setSelectedTask] = useState<TaskDto | null>(null);
 
   return (
     <div className="flex w-full ">
@@ -118,21 +126,21 @@ const SingleSprintPreview: React.FC<SingleSprintPreviewProps> = ({
           <div className="flex items-center gap-2">
             <IconUsers size={20} className="text-indigo-500" />
             {/* <span className="font-medium">Team Members</span> */}
+            <div className="flex -space-x-2 mt-2">
+              {sprint.assignees?.map((member, index) => (
+                <Tooltip key={member._id} label={member.username}>
+                  <Avatar
+                    src={member.image}
+                    alt={member.username}
+                    size={"md"}
+                    className="w-8 h-8 rounded-full border-2 border-white dark:border-gray-800"
+                    style={{ zIndex: sprint.assignees!.length - index }}
+                  />
+                </Tooltip>
+              ))}
+            </div>
           </div>
-          <div className="flex -space-x-2 mt-2">
-            {sprint.assignees?.map((member, index) => (
-              <Tooltip key={member._id} label={member.username}>
-                <Avatar
-                  src={member.image}
-                  alt={member.username}
-                  size={"md"}
-                  className="w-8 h-8 rounded-full border-2 border-white dark:border-gray-800"
-                  style={{ zIndex: sprint.assignees!.length - index }}
-                />
-              </Tooltip>
-            ))}
-          </div>
-          <div className="ml-0">
+          <div className="flex w-full justify-end mt-4">
             <CreateOrUpdateSprintModal existingSprint={sprint} />
           </div>
         </div>
@@ -163,18 +171,44 @@ const SingleSprintPreview: React.FC<SingleSprintPreviewProps> = ({
             <p className="text-gray-600 dark:text-gray-300 mb-4">
               {selectedBacklogItemForSingleSprint.description}
             </p>
+            <p>
+              {selectedBacklogItemForSingleSprint.tasks.length + "" + "Tasks"}
+            </p>
             <div className="space-y-4">
-              {selectedBacklogItemForSingleSprint.tasks?.map((task) => (
-                <div
-                  key={task._id}
-                  className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg"
-                >
-                  <h4 className="font-medium">{task.name}</h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
-                    {task.description}
-                  </p>
-                </div>
-              ))}
+              {selectedBacklogItemForSingleSprint.tasks?.map(
+                (task: TaskDto) => (
+                  <div
+                    key={task._id}
+                    className="border hover:shadow-md p-3 rounded-lg"
+                  >
+                    {selectedTask && (
+                      <CreateOrUpdateTaskModal
+                        backlogItemId={selectedBacklogItemForSingleSprint._id}
+                        backlogtitle={selectedBacklogItemForSingleSprint.title}
+                        initialValues={selectedTask}
+                        closeModal={close}
+                        modalOpened={opened}
+                      />
+                    )}
+                    <h4 className="font-medium">{task.name}</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                      {task.description}
+                    </p>
+                    <div className="flex w-full justify-end gap-2 items-center">
+                      <PreviewTaskModal task={task} />
+                      <FaEdit
+                        onClick={() => {
+                          setSelectedTask(task);
+                          open();
+                        }}
+                        size={15}
+                        color="blue"
+                        className="hover:cursor-pointer"
+                      />
+                    </div>
+                  </div>
+                )
+              )}
             </div>
           </div>
         ) : (
