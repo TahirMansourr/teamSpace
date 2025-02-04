@@ -19,6 +19,7 @@ import PreviewTaskModal from "../TeamWorkSpaceComponents/tasksComponents/Priview
 import CreateOrUpdateTaskModal from "../TeamWorkSpaceComponents/tasksComponents/CreateTaskModal";
 import { useDisclosure } from "@mantine/hooks";
 import { FaEdit } from "react-icons/fa";
+import FullScreenLoading from "@/Utils/FullScreenLoading";
 
 interface SingleSprintPreviewProps {
   sprint: SprintDto;
@@ -32,6 +33,7 @@ const SingleSprintPreview: React.FC<SingleSprintPreviewProps> = ({
     handleBack,
     selectedBacklogItemForSingleSprint,
     setSelectedBacklogItemForSingleSprint,
+    loading,
   } = useSprintContext();
   const { myBackLogs } = useBackLogContext();
 
@@ -62,6 +64,7 @@ const SingleSprintPreview: React.FC<SingleSprintPreviewProps> = ({
 
   return (
     <div className="flex w-full ">
+      {loading ? <FullScreenLoading /> : null}
       {/* Left Section */}
       <div className="w-1/4 bg-white dark:bg-gray-800 rounded-xl shadow-sm m-1 hover:shadow-md p-6 ">
         <button
@@ -172,7 +175,7 @@ const SingleSprintPreview: React.FC<SingleSprintPreviewProps> = ({
               {selectedBacklogItemForSingleSprint.description}
             </p>
             <p>
-              {selectedBacklogItemForSingleSprint.tasks.length + "" + "Tasks"}
+              {selectedBacklogItemForSingleSprint.tasks.length + " " + "Tasks"}
             </p>
             <div className="space-y-4">
               {selectedBacklogItemForSingleSprint.tasks?.map(

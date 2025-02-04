@@ -12,7 +12,11 @@ import {
 } from "react";
 import { useBackLogContext } from "./BackLogContext";
 import { BackLogDto, BackLogItemDto, SprintDto, UserDto } from "@/Utils/types";
-import { CreateSprint, UpdateSprint } from "@/lib/actions/SprintActions";
+import {
+  CreateSprint,
+  GetSprintById,
+  UpdateSprint,
+} from "@/lib/actions/SprintActions";
 import { useWorkSpaceContext } from "./WorkSpaceContext";
 import { notifications } from "@mantine/notifications";
 
@@ -188,12 +192,28 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
   const [showSprintsOnBackLogPage, setShowSprintsOnBackLogPage] =
     useState<boolean>(false);
 
-  const handleSprintClick = (sprint: SprintDto) => {
-    setIsTransitioning(true);
-    setSelectedSprint(sprint);
-    setTimeout(() => {
-      setSelectedSprint(sprint);
-    }, 300);
+  const handleSprintClick = async (sprint: SprintDto) => {
+    setLoading(true);
+    try {
+      setIsTransitioning(true);
+      const fetchedSprint = await GetSprintById(sprint._id!);
+      console.log(
+        "🚀 ~ file: SprintContext.tsx ~ line 158 ~ handleSprintClick ~ fetchedSprint",
+        sprint._id,
+        fetchedSprint.data
+      );
+      setSelectedSprint(fetchedSprint.data);
+      // setTimeout(() => {
+      //   setSelectedSprint(sprint);
+      // }, 300);
+    } catch (error) {
+      notifications.show({
+        message: `Failed to fetch sprint ${error}`,
+        color: "red",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleBack = () => {

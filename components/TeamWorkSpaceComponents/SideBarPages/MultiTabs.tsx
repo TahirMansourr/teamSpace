@@ -30,19 +30,6 @@ const MultiTabsComponent = ({
       <section className=" flex flex-col w-full justify-center p-3 ">
         <div className="flex w-full">
           <NotificationsBar />
-          {/* <Modal opened={Modalopened} onClose={close} title="New Feature !!"  overlayProps={{
-                backgroundOpacity: 0.55,
-                blur: 3,
-              }}>
-                <FeatureProvider>
-                  <CreateFeatureForm/>
-                </FeatureProvider>
-                
-              </Modal> */}
-          {/* <Button className="mr-0" onClick={open}>
-            {" "}
-            + new Feature
-          </Button> */}
         </div>
         <section className=" flex w-full h-full  gap-2  items-center">
           <NotesComponent />
@@ -56,3 +43,21 @@ const MultiTabsComponent = ({
 };
 
 export default MultiTabsComponent;
+
+{
+  /* <Modal opened={Modalopened} onClose={close} title="New Feature !!"  overlayProps={{
+                backgroundOpacity: 0.55,
+                blur: 3,
+              }}>
+                <FeatureProvider>
+                  <CreateFeatureForm/>
+                </FeatureProvider>
+                
+              </Modal> */
+}
+{
+  /* <Button className="mr-0" onClick={open}>
+            {" "}
+            + new Feature
+          </Button> */
+}

@@ -17,7 +17,7 @@ import { DateInput } from "@mantine/dates";
 import { useTaskContext } from "../Contexts/TasksContext";
 import { MdOutlineDeleteSweep } from "react-icons/md";
 import { useDisclosure } from "@mantine/hooks";
-import { UserDto } from "@/Utils/types";
+import { TaskDto, UserDto } from "@/Utils/types";
 import AssignTeamMembers from "./AssignTeamMembers";
 
 export type createTaskFormDto = {
@@ -35,6 +35,19 @@ export type createTaskFormDto = {
   backlogtitle?: string;
 };
 
+// name : string,
+// description : string,
+// priority : 'HIGH' | 'MEDIUM' | 'LOW',
+// dueDate : Date,
+// assignedTo : UserDto[],
+// tags : string[],
+// status : 'To Do' | 'In Progress' | "Done" | 'Review'
+// _id : string,
+// creationDate : string,
+// featureId? : string,
+// createdBy : UserDto,
+// backlogItemId? : string,
+// isGlobal? : boolean,
 const CreateOrUpdateTaskForm = ({
   close,
   updateFormInput,
@@ -43,7 +56,7 @@ const CreateOrUpdateTaskForm = ({
   backlogtitle,
 }: {
   close: Function;
-  updateFormInput?: createTaskFormDto;
+  updateFormInput?: TaskDto;
   featureId?: string;
   backlogItemId?: string;
   backlogtitle?: string;
@@ -55,7 +68,9 @@ const CreateOrUpdateTaskForm = ({
       description: updateFormInput ? updateFormInput.description : "",
       priority: updateFormInput ? updateFormInput.priority : "HIGH",
       dueDate: updateFormInput ? new Date(updateFormInput.dueDate) : new Date(),
-      assignedTo: updateFormInput ? updateFormInput.assignedTo : [],
+      assignedTo: updateFormInput
+        ? updateFormInput.assignedTo.map((user) => user._id)
+        : [],
       tags: updateFormInput ? updateFormInput.tags : [],
       status: updateFormInput ? updateFormInput.status : "To Do",
       _id: updateFormInput ? updateFormInput._id : "",
@@ -142,6 +157,8 @@ const CreateOrUpdateTaskForm = ({
         />
 
         <AssignTeamMembers
+          defaultvalue={updateFormInput?.assignedTo.map((user) => user._id)}
+          key={form.key("assignedTo")}
           value={form.getInputProps("assignedTo").value}
           onChange={form.getInputProps("assignedTo").onChange}
         />

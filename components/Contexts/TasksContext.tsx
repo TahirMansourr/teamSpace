@@ -90,7 +90,7 @@ const TaskProvider = ({
       const assignedToMembers = values.assignedTo
         .map((name) => {
           const assignedToMember = projectInfo.team.find(
-            (member: UserDto) => name === member.username
+            (member: UserDto) => name === member._id
           );
           return assignedToMember;
         })
@@ -136,7 +136,7 @@ const TaskProvider = ({
       const assignedToMembers = values.assignedTo
         .map((name) => {
           const assignedToMember = projectInfo.team.find(
-            (member: UserDto) => name === member.username
+            (member: UserDto) => name === member._id
           );
           return assignedToMember;
         })

@@ -10,11 +10,13 @@ import {
 } from "@mantine/core";
 
 const AssignTeamMembers = ({
+  defaultvalue,
   onChange,
   value,
 }: {
   onChange: (e: any | string[]) => void;
   value: any;
+  defaultvalue?: string[];
 }) => {
   const { projectInfo } = useWorkSpaceContext();
   const dataForMultiSelect = projectInfo.project.team.map((user) => ({
@@ -61,6 +63,7 @@ const AssignTeamMembers = ({
       renderOption={renderMultiSelectOption}
       searchable
       size="md"
+      defaultValue={defaultvalue}
     />
   );
 };

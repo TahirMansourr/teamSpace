@@ -93,7 +93,7 @@ const BackLogItemInsideSprintcard = ({
   };
 
   return (
-    <div className=" relative bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-4 transition-transform transform hover:scale-105 hover:cursor-pointer">
+    <div className=" relative bg-white dark:bg-gray-800 rounded-lg border p-4 mb-4 transition-transform transform hover:shadow-md hover:cursor-pointer">
       <div className=" absolute -top-2 -right-2">
         {getStatusBadge(backLogItem.status)}
       </div>
@@ -110,16 +110,15 @@ const BackLogItemInsideSprintcard = ({
         {truncateText(backLogItem.acceptanceCriteria, 50)}
       </div>
       <div className="flex items-center justify-around gap-2 mb-2 ">
-      <Tooltip label="Feature Type">
+        <Tooltip label="Feature Type">
           <div className="flex items-center gap-2">
-            
-        {getTypeIcon(backLogItem.type)}
-        <span className="text-sm text-gray-500 dark:text-gray-400">
-          {backLogItem.type}
-        </span>
+            {getTypeIcon(backLogItem.type)}
+            <span className="text-sm text-gray-500 dark:text-gray-400">
+              {backLogItem.type}
+            </span>
           </div>
         </Tooltip>
-          <Tooltip label="Estimated Effort">
+        <Tooltip label="Estimated Effort">
           <div className="flex items-center gap-2">
             <IconClock size={20} className="text-gray-500" />
             <span>{backLogItem.estimatedEffort}h</span>
@@ -135,7 +134,7 @@ const BackLogItemInsideSprintcard = ({
       {/* <div className="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400 mb-2">
         
       </div> */}
-     
+
       <div className="flex items-center justify-between rounded-lg p-2 ">
         <div className="flex gap-2 items-center">
           <AiOutlineTeam size={35} color="blue" className="text-gray-500 " />

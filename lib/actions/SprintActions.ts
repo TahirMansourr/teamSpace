@@ -3,6 +3,9 @@ import { BackLogItemDto } from "@/Utils/types";
 import ProductBacklog from "../models/ProductBacklog";
 import Sprint from "../models/Sprint";
 import { connectToDB } from "../mongoose";
+import ProductBacklogItem from "../models/ProductBackLogItem";
+import Task from "../models/TasksModel";
+import User from "../models/UserModel";
 
 type CreateSprintType = {
     _id?: string;
@@ -103,5 +106,64 @@ export async function PopulateSprints(sprints : string[]){
             success: false,
             message: error.message
         }
+    }
+}
+
+export async function GetSprintById(sprintId: string) {
+    try {
+        await connectToDB();
+        const sprint = await Sprint.findById(sprintId).populate([{
+            path: "backlogItems",
+            model : ProductBacklogItem,
+            populate:[ 
+            {
+                path : 'assignee',
+                model : User
+            },
+        {
+            path : 'tasks',
+            model : Task,
+            populate : [{
+                path : 'assignedTo',
+                model : User
+            },
+        {
+            path : 'createdBy',
+            model : User
+        }
+        ]
+        }
+        ]
+        },
+    {
+        path : 'assignees',
+        model : User
+    },
+{
+    path : 'createdBy',
+    model : User
+},
+// {
+//     path : 'backlog',
+//     model : ProductBacklog
+// }
+]);
+        if (!sprint) {
+            return {
+                success: false,
+                message: "Sprint not found"
+            };
+        }
+        return {
+            success: true,
+            message: "Sprint fetched successfully",
+            data: JSON.parse(JSON.stringify(sprint))
+        };
+    } catch (error: any) {
+        console.log(error.message);
+        return {
+            success: false,
+            message: error.message
+        };
     }
 }

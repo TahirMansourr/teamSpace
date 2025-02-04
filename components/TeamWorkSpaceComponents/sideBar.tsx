@@ -23,7 +23,7 @@ function SideBar({
     "Sprints",
     "TeamSpace",
     "Docs",
-     "NotesPage",
+    "NotesPage",
     "IssuesPage",
     "TasksPage",
     // "Features",
@@ -42,7 +42,7 @@ function SideBar({
         aria-label="Toggle navigation"
         className={`${
           opened ? "mt-2" : "absolute m-2"
-        } top-2 left-2 hover:cursor-pointer z-50`}
+        } top-0 left-0 hover:cursor-pointer z-50`}
       />
       <section
         className={`transform transition-all duration-200 ease-in-out rounded-md   ${

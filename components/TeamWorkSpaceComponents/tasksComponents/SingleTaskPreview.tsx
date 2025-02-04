@@ -12,6 +12,7 @@ import {
 } from "@tabler/icons-react";
 
 const SingleTaskPreview = ({ task }: { task: TaskDto }) => {
+  console.log("🐱🐱task", task);
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "Done":
