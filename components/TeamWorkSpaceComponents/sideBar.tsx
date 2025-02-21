@@ -33,16 +33,16 @@ function SideBar({
   const router = useRouter();
 
   return (
-    <div className="relative">
+    <div className="fixed top-2 left-2 z-50">
       <Burger
         size="sm"
         c={"blue"}
         opened={opened}
         onClick={() => toggle()}
         aria-label="Toggle navigation"
-        className={`${
-          opened ? "mt-2" : "absolute m-2"
-        } top-0 left-0 hover:cursor-pointer z-50`}
+        // className={`${
+        //   opened ? "mt-2" : "absolute m-2"
+        // } top-0 left-0 hover:cursor-pointer z-50`}
       />
       <section
         className={`transform transition-all duration-200 ease-in-out rounded-md   ${

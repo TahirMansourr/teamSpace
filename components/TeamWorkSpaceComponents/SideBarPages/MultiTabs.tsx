@@ -4,12 +4,9 @@ import NotesComponent from "../NotesComponents/Notes";
 import TasksComponent from "../tasksComponents/Tasks";
 import IssuesComponent from "../IssuesComponents/Issues";
 import ChatSpaceComponent from "../ChatComponents/ChatSpace";
-import { Button, Modal } from "@mantine/core";
 import NotificationsBar from "../NotificationsBar";
-import { useDisclosure } from "@mantine/hooks";
-import CreateFeatureForm from "../../Forms/createFeatureForm";
-import FeatureProvider from "../../Contexts/featureContext";
 import { TransitionWrapper } from "../TransitionWrapper";
+import FilterComponent from "../FilterComponent";
 
 const MultiTabsComponent = ({
   opened,
@@ -23,12 +20,11 @@ const MultiTabsComponent = ({
     return () => setOpened(false);
   }, []);
 
-  const [Modalopened, { open, close }] = useDisclosure(false);
-
   return (
     <TransitionWrapper opened={opened}>
-      <section className=" flex flex-col w-full justify-center p-3 ">
-        <div className="flex w-full">
+      <section className=" flex flex-col w-full justify-center pt-16 px-2 h-screen ">
+        <div className="flex w-full h-fit ">
+          <FilterComponent />
           <NotificationsBar />
         </div>
         <section className=" flex w-full h-full  gap-2  items-center">

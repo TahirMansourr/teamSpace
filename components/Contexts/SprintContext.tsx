@@ -203,6 +203,7 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
         fetchedSprint.data
       );
       setSelectedSprint(fetchedSprint.data);
+      setSelectedBacklogItemForSingleSprint(null);
       // setTimeout(() => {
       //   setSelectedSprint(sprint);
       // }, 300);
