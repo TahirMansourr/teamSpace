@@ -30,16 +30,22 @@ export type createOrUpdateIssueForm = {
   status: "To Do" | "In Progress" | "Done" | "Review";
   _id?: string;
   featureId?: string;
+  backlogItemId?: string;
+  backlogtitle?: string;
 };
 
 const CreateOrUpdateIssueForm = ({
   close,
   updateFormInput,
   featureId,
+  backlogItemId,
+  backlogtitle,
 }: {
   close: Function;
   updateFormInput?: createOrUpdateIssueForm;
   featureId?: string;
+  backlogItemId?: string;
+  backlogtitle?: string;
 }) => {
   const form = useForm<createOrUpdateIssueForm>({
     mode: "uncontrolled",
@@ -53,6 +59,8 @@ const CreateOrUpdateIssueForm = ({
       status: updateFormInput ? updateFormInput.status : "To Do",
       _id: updateFormInput ? updateFormInput._id : "",
       featureId: featureId ? featureId : "",
+      backlogItemId: backlogItemId ? backlogItemId : undefined,
+      backlogtitle: backlogtitle ? backlogtitle : undefined,
     },
   });
 

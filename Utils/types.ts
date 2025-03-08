@@ -150,6 +150,8 @@ export type BackLogItemDto = {
     groupId : string | null,
     groupName : string | null,
     tasks : TaskDto[],
+    issues? : IssueDto[],
+    notes? : NotesDto[],
 }
 
 export type SprintDto = {

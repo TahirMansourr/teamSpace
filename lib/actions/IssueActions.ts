@@ -16,7 +16,9 @@ type createIssueFormDto = {
     projectId : string,
     tags : string[],
     status : 'To Do' | 'In Progress' | "Done" | 'Review',
-    featureId? : string
+    featureId? : string,
+    backlogItemId? : string,
+    backlogtitle? : string
 }
 
 export async function CreateIssue(params : createIssueFormDto) {
@@ -37,7 +39,9 @@ export async function CreateIssue(params : createIssueFormDto) {
             createdBy : params.userId,
             tags : params.tags,
             status : params.status,
-            featureId : params.featureId
+            featureId : params.featureId,
+            backlogItemId : params.backlogItemId,
+            backlogtitle : params.backlogtitle
         })
         await newIssue.save()
         if(params.featureId && params.featureId !== ''){

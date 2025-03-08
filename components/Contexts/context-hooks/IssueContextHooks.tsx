@@ -1,16 +1,20 @@
 import { createOrUpdateIssueForm } from "@/components/Forms/createOrUpdateIssue";
-import { CreateIssue, DeleteIssue, UpdateIssue } from "@/lib/actions/IssueActions";
+import {
+  CreateIssue,
+  DeleteIssue,
+  UpdateIssue,
+} from "@/lib/actions/IssueActions";
 import { socket } from "@/socket";
 import { ProjectDto, UserDto } from "@/Utils/types";
 import { notifications } from "@mantine/notifications";
 import { useState } from "react";
 
 type IssuesActions = {
-    project: ProjectDto;
-    userInfo : UserDto;
-}
-export const useIssuesActions = ({project , userInfo} : IssuesActions) => {
-const [formLoading, setFormLoading] = useState<boolean>(false);
+  project: ProjectDto;
+  userInfo: UserDto;
+};
+export const useIssuesActions = ({ project, userInfo }: IssuesActions) => {
+  const [formLoading, setFormLoading] = useState<boolean>(false);
 
   async function handleCreateIssue(
     values: createOrUpdateIssueForm,
@@ -37,6 +41,8 @@ const [formLoading, setFormLoading] = useState<boolean>(false);
         status: values.status,
         tags: values.tags,
         userId: userInfo._id,
+        backlogItemId: values.backlogItemId,
+        backlogtitle: values.backlogtitle,
       }).then((res) => {
         const newIssue = {
           ...values,
@@ -45,14 +51,19 @@ const [formLoading, setFormLoading] = useState<boolean>(false);
           creationDate: res.issue.creationDate,
           createdBy: userInfo,
         };
-        
-         socket.emit('createIssue' , {room : project._id , value : newIssue})
-         notifications.show({message : `${newIssue.name} Created` , color : "green"})
+
+        socket.emit("createIssue", { room: project._id, value: newIssue });
+        notifications.show({
+          message: `${newIssue.name} Created`,
+          color: "green",
+        });
       });
     } catch (error) {
-        notifications.show({message : `"Error at handleCreateIssue" ${error}` , color : "red"})
+      notifications.show({
+        message: `"Error at handleCreateIssue" ${error}`,
+        color: "red",
+      });
       throw new Error(`error at handleCreateIssue : ${error}`);
-      
     } finally {
       setFormLoading(false);
       close;
@@ -98,12 +109,18 @@ const [formLoading, setFormLoading] = useState<boolean>(false);
           lastModified: res.task.lastModified,
           createdBy,
         };
-        
-         socket.emit('updateIssue' , {room : project._id , value : newIssue})
-         notifications.show({message : `${newIssue.name} Updated` , color : "green"})
+
+        socket.emit("updateIssue", { room: project._id, value: newIssue });
+        notifications.show({
+          message: `${newIssue.name} Updated`,
+          color: "green",
+        });
       });
     } catch (error) {
-      notifications.show({message : `"Error at handleCreateIssue" ${error}` , color : "red"})
+      notifications.show({
+        message: `"Error at handleCreateIssue" ${error}`,
+        color: "red",
+      });
       throw new Error(`error at handleCreateIssue : ${error}`);
     } finally {
       setFormLoading(false);
@@ -124,21 +141,29 @@ const [formLoading, setFormLoading] = useState<boolean>(false);
       });
 
       // Update both issue lists by filtering out the deleted issue
-    //   setIssuesInfo((prev: IssueDto[]) =>
-    //     prev.filter((issue) => issue._id !== issueId)
-    //   );
-    //   setAllFeatureIssues((prev: IssueDto[]) =>
-    //     prev.filter((issue) => issue._id !== issueId)
-    //   );
-       socket.emit('deleteIssue', {room : project._id , value : issueId})
-         notifications.show({message : `Issue Deleted` , color : "green"})
+      //   setIssuesInfo((prev: IssueDto[]) =>
+      //     prev.filter((issue) => issue._id !== issueId)
+      //   );
+      //   setAllFeatureIssues((prev: IssueDto[]) =>
+      //     prev.filter((issue) => issue._id !== issueId)
+      //   );
+      socket.emit("deleteIssue", { room: project._id, value: issueId });
+      notifications.show({ message: `Issue Deleted`, color: "green" });
     } catch (error) {
-      notifications.show({message : `"Error at handleDeleteIssue" ${error}` , color : "red"})
+      notifications.show({
+        message: `"Error at handleDeleteIssue" ${error}`,
+        color: "red",
+      });
       throw new Error(`error at handleDeleteIssue: ${error}`);
     } finally {
       setFormLoading(false);
       close;
     }
   }
-  return {handleCreateIssue , handleUpdateIssue , handleDeleteIssue , formLoading}
-}
+  return {
+    handleCreateIssue,
+    handleUpdateIssue,
+    handleDeleteIssue,
+    formLoading,
+  };
+};

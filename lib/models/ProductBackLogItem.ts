@@ -61,6 +61,14 @@ const productBacklogItemSchema = new Schema(
       type : mongoose.Schema.Types.ObjectId,
       ref : 'Task'
     }],
+    issues : [{
+      type : mongoose.Schema.Types.ObjectId,
+      ref : 'Issue'
+    }],
+    notes : [{ 
+      type : mongoose.Schema.Types.ObjectId,
+      ref : 'Note'
+    }],
 },{
     timestamps: true,
   }
