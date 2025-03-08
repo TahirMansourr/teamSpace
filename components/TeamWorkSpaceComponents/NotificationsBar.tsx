@@ -22,7 +22,7 @@ const NotificationsBar = () => {
   } = useWorkSpaceContext();
 
   return (
-    <section className=" h-fit flex bg-gradient-to-r from-slate-100 to-slate-200 rounded-xl p-2 gap-3 items-center shadow-lg border border-slate-300 animate-fade-in-down">
+    <section className=" h-fit flex bg-gradient-to-r from-slate-100 to-slate-200 rounded-xl p-2 px-4 gap-3 items-center shadow-lg border border-slate-300 animate-fade-in-down">
       {/* <Gemini /> */}
       {notesComponentExpandState && (
         <Button

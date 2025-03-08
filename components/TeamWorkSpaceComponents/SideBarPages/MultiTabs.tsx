@@ -22,12 +22,12 @@ const MultiTabsComponent = ({
 
   return (
     <TransitionWrapper opened={opened}>
-      <section className=" flex flex-col w-full justify-center pt-16 px-2 h-screen ">
-        <div className="flex w-full h-fit ">
+      <section className=" flex flex-col w-full px-2 h-screen ">
+        <div className="flex w-full h-fit justify-between items-center px-10 py-1 m-0">
           <FilterComponent />
           <NotificationsBar />
         </div>
-        <section className=" flex w-full h-full  gap-2  items-center">
+        <section className=" flex w-full h-[95%]  gap-2  items-center m-0">
           <NotesComponent />
           <TasksComponent />
           <IssuesComponent />

@@ -16,6 +16,7 @@ import { BackLogDto, SprintDto } from "@/Utils/types";
 import { useBackLogContext } from "../Contexts/BackLogContext";
 import FullScreenLoading from "@/Utils/FullScreenLoading";
 import { IconFilter } from "@tabler/icons-react";
+import LoadingBar from "@/Utils/NextProgressBar";
 
 const FilterComponent = () => {
   const { myBackLogs: backlogs, loading } = useBackLogContext();
@@ -34,7 +35,7 @@ const FilterComponent = () => {
   if (loading || !backlogs)
     return (
       <div>
-        <FullScreenLoading />
+        <LoadingBar />
       </div>
     );
 
@@ -46,8 +47,8 @@ const FilterComponent = () => {
     ?.sprints?.find((s) => s._id === selectedSprint)?.name;
 
   return (
-    <div className="p-4 flex">
-      <div className="mb-4 flex items-center gap-3">
+    <div className=" flex">
+      <div className=" flex items-center gap-2 ">
         <Menu>
           <Menu.Target>
             <Button variant="outline">
