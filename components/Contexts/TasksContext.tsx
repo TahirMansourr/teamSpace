@@ -71,9 +71,20 @@ const TaskProvider = ({
     featureTasks ? featureTasks : []
   );
   const [formLoading, setFormLoading] = useState<boolean>(false);
-  const { setSelectedSprint, setSelectedBacklogItemForSingleSprint } =
-    useSprintContext();
+  const [filteredTasks, setFilteredTasks] = useState<TaskDto[]>([]);
+  const {
+    setSelectedSprint,
+    setSelectedBacklogItemForSingleSprint,
+    selectedSprint,
+  } = useSprintContext();
 
+  useEffect(() => {
+    if (selectedSprint) {
+      setAllTasks(
+        selectedSprint.backlogItems?.map((item) => item.tasks).flat() || []
+      );
+    }
+  }, [selectedSprint]);
   const useHandleCreateTask = (): [
     boolean,
     (values: formValuesType, close: () => void) => Promise<void>,

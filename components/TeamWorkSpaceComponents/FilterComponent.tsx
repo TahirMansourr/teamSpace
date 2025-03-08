@@ -17,19 +17,25 @@ import { useBackLogContext } from "../Contexts/BackLogContext";
 import FullScreenLoading from "@/Utils/FullScreenLoading";
 import { IconFilter } from "@tabler/icons-react";
 import LoadingBar from "@/Utils/NextProgressBar";
+import { useSprintContext } from "../Contexts/SprintContext";
+import { GetSprintById } from "@/lib/actions/SprintActions";
 
 const FilterComponent = () => {
   const { myBackLogs: backlogs, loading } = useBackLogContext();
+  const { selectedSprint, setSelectedSprint } = useSprintContext();
   const [selectedBacklog, setSelectedBacklog] = useState<string | null>(null);
-  const [selectedSprint, setSelectedSprint] = useState<string | null>(null);
+  const [sprintId, setSprintId] = useState<string | null>(null);
 
   const handleBacklogChange = (backlogId: string) => {
     setSelectedBacklog(backlogId);
     setSelectedSprint(null); // Reset selected sprint when backlog changes
+    setSprintId(null);
   };
 
-  const handleSprintChange = (sprintId: string) => {
-    setSelectedSprint(sprintId);
+  const handleSprintChange = async (sprintId: string) => {
+    setSprintId(sprintId);
+    const requiredSprint = await GetSprintById(sprintId);
+    setSelectedSprint(requiredSprint.data);
   };
 
   if (loading || !backlogs)
@@ -44,7 +50,7 @@ const FilterComponent = () => {
   )?.name;
   const selectedSprintName = backlogs
     .find((b) => b._id === selectedBacklog)
-    ?.sprints?.find((s) => s._id === selectedSprint)?.name;
+    ?.sprints?.find((s) => s._id === sprintId)?.name;
 
   return (
     <div className=" flex">
@@ -71,7 +77,7 @@ const FilterComponent = () => {
                           key={sprint._id}
                           onClick={() => handleSprintChange(sprint._id!)}
                           className={`cursor-pointer ${
-                            selectedSprint === sprint._id
+                            sprintId === sprint._id
                               ? "bg-blue-100"
                               : "hover:bg-gray-100"
                           } p-2 rounded`}
