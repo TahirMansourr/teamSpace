@@ -6,6 +6,7 @@ import { connectToDB } from "../mongoose";
 import ProductBacklogItem from "../models/ProductBackLogItem";
 import Task from "../models/TasksModel";
 import User from "../models/UserModel";
+import Issue from "../models/IssuesModel";
 
 type CreateSprintType = {
     _id?: string;
@@ -132,7 +133,22 @@ export async function GetSprintById(sprintId: string) {
             model : User
         }
         ]
+        },
+        {
+            path : 'issues',
+            model : Issue,
+            populate : [{
+                path : 'assignedTo',
+                model : User
+            },
+        {
+            path : 'createdBy',
+            model : User
         }
+        ]
+        },
+        
+
         ]
         },
     {

@@ -1,12 +1,22 @@
 "use client";
 
-import { SprintDto, BackLogItemDto, TaskDto } from "@/Utils/types";
-import { Avatar, Badge, Progress, ScrollArea, Tooltip } from "@mantine/core";
+import { SprintDto, BackLogItemDto, TaskDto, IssueDto } from "@/Utils/types";
+import {
+  Avatar,
+  Badge,
+  Progress,
+  ScrollArea,
+  Tabs,
+  Tooltip,
+} from "@mantine/core";
 import {
   IconCalendar,
   IconFlag,
   IconUsers,
   IconCheckbox,
+  IconPhoto,
+  IconMessageCircle,
+  IconSettings,
 } from "@tabler/icons-react";
 import React, { useEffect, useState } from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
@@ -20,6 +30,8 @@ import CreateOrUpdateTaskModal from "../TeamWorkSpaceComponents/tasksComponents/
 import { useDisclosure } from "@mantine/hooks";
 import { FaEdit } from "react-icons/fa";
 import FullScreenLoading from "@/Utils/FullScreenLoading";
+import CreateOrUpdateIssuesModal from "../TeamWorkSpaceComponents/IssuesComponents/CreateOrUpdateIssueModal";
+import PreviewIssueModal from "../TeamWorkSpaceComponents/IssuesComponents/PriviewIssuesModal";
 
 interface SingleSprintPreviewProps {
   sprint: SprintDto;
@@ -60,7 +72,12 @@ const SingleSprintPreview: React.FC<SingleSprintPreviewProps> = ({
   )?.name;
 
   const [opened, { open, close }] = useDisclosure();
+  const [IssuesOpened, { open: openIssues, close: closeIssues }] =
+    useDisclosure();
   const [selectedTask, setSelectedTask] = useState<TaskDto | null>(null);
+  const [selectedIssue, setSelectedIssue] = useState<IssueDto | undefined>(
+    undefined
+  );
 
   return (
     <div className="flex w-full ">
@@ -174,45 +191,113 @@ const SingleSprintPreview: React.FC<SingleSprintPreviewProps> = ({
             <p className="text-gray-600 dark:text-gray-300 mb-4">
               {selectedBacklogItemForSingleSprint.description}
             </p>
-            <p>
-              {selectedBacklogItemForSingleSprint.tasks.length + " " + "Tasks"}
-            </p>
-            <div className="space-y-4">
-              {selectedBacklogItemForSingleSprint.tasks?.map(
-                (task: TaskDto) => (
-                  <div
-                    key={task._id}
-                    className="border hover:shadow-md p-3 rounded-lg"
-                  >
-                    {selectedTask && (
-                      <CreateOrUpdateTaskModal
-                        backlogItemId={selectedBacklogItemForSingleSprint._id}
-                        backlogtitle={selectedBacklogItemForSingleSprint.title}
-                        initialValues={selectedTask}
-                        closeModal={close}
-                        modalOpened={opened}
-                      />
-                    )}
-                    <h4 className="font-medium">{task.name}</h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">
-                      {task.description}
-                    </p>
-                    <div className="flex w-full justify-end gap-2 items-center">
-                      <PreviewTaskModal task={task} />
-                      <FaEdit
-                        onClick={() => {
-                          setSelectedTask(task);
-                          open();
-                        }}
-                        size={15}
-                        color="blue"
-                        className="hover:cursor-pointer"
-                      />
-                    </div>
-                  </div>
-                )
-              )}
-            </div>
+            <Tabs defaultValue="Tasks" variant="outline" radius="lg" mb={4}>
+              <Tabs.List>
+                <Tabs.Tab value="Tasks" leftSection={<IconPhoto size={12} />}>
+                  {selectedBacklogItemForSingleSprint.tasks?.length} Tasks
+                </Tabs.Tab>
+                <Tabs.Tab
+                  value="Issues"
+                  leftSection={<IconMessageCircle size={12} />}
+                >
+                  {selectedBacklogItemForSingleSprint.issues?.length} Issues
+                </Tabs.Tab>
+                <Tabs.Tab
+                  value="Notes"
+                  leftSection={<IconSettings size={12} />}
+                >
+                  Notes
+                </Tabs.Tab>
+              </Tabs.List>
+
+              <Tabs.Panel value="Tasks" mt={8}>
+                <div className="space-y-4">
+                  {selectedBacklogItemForSingleSprint.tasks?.map(
+                    (task: TaskDto) => (
+                      <div
+                        key={task._id}
+                        className="border hover:shadow-md p-3 rounded-lg"
+                      >
+                        {selectedTask && (
+                          <CreateOrUpdateTaskModal
+                            backlogItemId={
+                              selectedBacklogItemForSingleSprint._id
+                            }
+                            backlogtitle={
+                              selectedBacklogItemForSingleSprint.title
+                            }
+                            initialValues={selectedTask}
+                            closeModal={close}
+                            modalOpened={opened}
+                          />
+                        )}
+                        <h4 className="font-medium">{task.name}</h4>
+                        <p className="text-sm text-gray-600 dark:text-gray-300">
+                          {task.description}
+                        </p>
+                        <div className="flex w-full justify-end gap-2 items-center">
+                          <PreviewTaskModal task={task} />
+                          <FaEdit
+                            onClick={() => {
+                              setSelectedTask(task);
+                              open();
+                            }}
+                            size={15}
+                            color="blue"
+                            className="hover:cursor-pointer"
+                          />
+                        </div>
+                      </div>
+                    )
+                  )}
+                </div>
+              </Tabs.Panel>
+
+              <Tabs.Panel value="Issues" mt={8}>
+                <div className="space-y-4">
+                  {selectedBacklogItemForSingleSprint.issues?.map(
+                    (issue: IssueDto) => (
+                      <div
+                        key={issue._id}
+                        className="border hover:shadow-md p-3 rounded-lg"
+                      >
+                        {selectedTask && (
+                          <CreateOrUpdateIssuesModal
+                            backlogItemId={
+                              selectedBacklogItemForSingleSprint._id
+                            }
+                            backlogtitle={
+                              selectedBacklogItemForSingleSprint.title
+                            }
+                            initialValues={selectedIssue}
+                            closeModal={closeIssues}
+                            modalOpened={IssuesOpened}
+                          />
+                        )}
+                        <h4 className="font-medium">{issue.name}</h4>
+                        <p className="text-sm text-gray-600 dark:text-gray-300">
+                          {issue.description}
+                        </p>
+                        <div className="flex w-full justify-end gap-2 items-center">
+                          <PreviewIssueModal issue={issue} />
+                          <FaEdit
+                            onClick={() => {
+                              setSelectedIssue(issue);
+                              open();
+                            }}
+                            size={15}
+                            color="blue"
+                            className="hover:cursor-pointer"
+                          />
+                        </div>
+                      </div>
+                    )
+                  )}
+                </div>
+              </Tabs.Panel>
+
+              <Tabs.Panel value="Notes">Settings tab content</Tabs.Panel>
+            </Tabs>
           </div>
         ) : (
           <div className="text-gray-600 dark:text-gray-300">

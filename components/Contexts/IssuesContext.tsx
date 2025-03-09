@@ -1,15 +1,10 @@
 "use client";
 import { IssueDto, ProjectDto, UserDto } from "@/Utils/types";
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { createOrUpdateIssueForm } from "../Forms/createOrUpdateIssue";
 import { socket } from "@/socket";
 import { useIssuesActions } from "./context-hooks/IssueContextHooks";
+import { useSprintContext } from "./SprintContext";
 
 type IssuesContextDto = {
   allIssues: IssueDto[];
@@ -70,11 +65,19 @@ const IssuesProvider = ({
     userInfo,
   });
 
- 
+  const { setSelectedBacklogItemForSingleSprint } = useSprintContext();
+
   useEffect(() => {
     socket.on("createIssue", (issue: IssueDto) => {
       console.log("🎁🎁🎁🎁🎁🎁🎁 i am here  ", issue);
       setIssuesInfo((prev: IssueDto[]) => [issue, ...prev]);
+      setSelectedBacklogItemForSingleSprint((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          issues: prev.issues ? [...prev.issues, issue] : [issue],
+        };
+      });
     });
     socket.on("updateIssue", (newIssue: IssueDto) => {
       setIssuesInfo((prev: IssueDto[]) =>

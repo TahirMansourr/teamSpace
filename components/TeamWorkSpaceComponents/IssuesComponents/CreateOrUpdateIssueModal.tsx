@@ -2,7 +2,7 @@ import CreateOrUpdateIssueForm from "@/components/Forms/createOrUpdateIssue";
 import CreateOrUpdateTaskForm, {
   createTaskFormDto,
 } from "@/components/Forms/createTaskForm";
-import { TaskDto } from "@/Utils/types";
+import { IssueDto, TaskDto } from "@/Utils/types";
 import { Modal } from "@mantine/core";
 import React from "react";
 
@@ -16,7 +16,7 @@ const CreateOrUpdateIssuesModal = ({
 }: {
   modalOpened: boolean;
   closeModal: () => void;
-  initialValues?: TaskDto;
+  initialValues?: IssueDto;
   FeatureId?: string;
   backlogItemId?: string;
   backlogtitle?: string;
