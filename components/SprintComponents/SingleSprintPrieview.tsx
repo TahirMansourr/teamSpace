@@ -1,6 +1,12 @@
 "use client";
 
-import { SprintDto, BackLogItemDto, TaskDto, IssueDto } from "@/Utils/types";
+import {
+  SprintDto,
+  BackLogItemDto,
+  TaskDto,
+  IssueDto,
+  NotesDto,
+} from "@/Utils/types";
 import {
   Avatar,
   Badge,
@@ -32,6 +38,7 @@ import { FaEdit } from "react-icons/fa";
 import FullScreenLoading from "@/Utils/FullScreenLoading";
 import CreateOrUpdateIssuesModal from "../TeamWorkSpaceComponents/IssuesComponents/CreateOrUpdateIssueModal";
 import PreviewIssueModal from "../TeamWorkSpaceComponents/IssuesComponents/PriviewIssuesModal";
+import NotesModal from "../TeamWorkSpaceComponents/NotesComponents/NotesModal";
 
 interface SingleSprintPreviewProps {
   sprint: SprintDto;
@@ -296,7 +303,46 @@ const SingleSprintPreview: React.FC<SingleSprintPreviewProps> = ({
                 </div>
               </Tabs.Panel>
 
-              <Tabs.Panel value="Notes">Settings tab content</Tabs.Panel>
+              <Tabs.Panel value="Notes">
+                <div className="space-y-4">
+                  {selectedBacklogItemForSingleSprint.notes?.map(
+                    (note: NotesDto) => (
+                      <div
+                        key={note._id}
+                        className="border hover:shadow-md p-3 rounded-lg"
+                      >
+                        {selectedTask && (
+                          <CreateOrUpdateIssuesModal
+                            backlogItemId={
+                              selectedBacklogItemForSingleSprint._id
+                            }
+                            backlogtitle={
+                              selectedBacklogItemForSingleSprint.title
+                            }
+                            initialValues={selectedIssue}
+                            closeModal={closeIssues}
+                            modalOpened={IssuesOpened}
+                          />
+                        )}
+                        <h4 className="font-medium">{note.creator.username}</h4>
+
+                        <div className="flex w-full justify-end gap-2 items-center">
+                          {/* <NotesModal note={note} closeFirsModal={clos} /> */}
+                          {/* <FaEdit
+                            onClick={() => {
+                              setSelectedIssue(issue);
+                              open();
+                            }}
+                            size={15}
+                            color="blue"
+                            className="hover:cursor-pointer"
+                          /> */}
+                        </div>
+                      </div>
+                    )
+                  )}
+                </div>
+              </Tabs.Panel>
             </Tabs>
           </div>
         ) : (

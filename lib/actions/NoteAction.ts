@@ -1,6 +1,7 @@
 'use server'
 
 import Note from "../models/NotesModel"
+import ProductBacklogItem from "../models/ProductBackLogItem"
 import Project from "../models/ProjectModel"
 import { connectToDB } from "../mongoose"
 
@@ -9,7 +10,9 @@ type CreateNoteDto = {
     body : string, 
     creator : string,
     createdAt? : Date,
-    _id? : string
+    _id? : string,
+    backlogItemId? : string,
+    backlogtitle? : string
 }
 
 export async function CreateNote(params: CreateNoteDto) {
@@ -21,7 +24,9 @@ export async function CreateNote(params: CreateNoteDto) {
             body: params.body,
             createdAt: new Date(),
             creator: params.creator,
-            comments: []
+            comments: [],
+            backlogItemId: params.backlogItemId,
+            backlogtitle: params.backlogtitle
         })
 
         // Update project in background
@@ -31,6 +36,9 @@ export async function CreateNote(params: CreateNoteDto) {
         ).exec()
 
         const formattedNote = JSON.parse(JSON.stringify(newNote.toObject()))
+        if (params.backlogItemId && params.backlogItemId !== '') {
+            await ProductBacklogItem.findOneAndUpdate({ _id: params.backlogItemId }, { $push: { issues: formattedNote._id } }).exec()
+        }
         console.log("🚀 ~ file: NoteAction.ts:34 ~ formattedNote:", formattedNote)
 
         return {

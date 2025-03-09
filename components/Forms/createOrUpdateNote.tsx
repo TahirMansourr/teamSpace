@@ -10,9 +10,13 @@ import { useDisclosure } from "@mantine/hooks";
 const CreateOrUpdateNote = ({
   existingNoteContent,
   close,
+  backlogItemId,
+  backlogtitle,
 }: {
   existingNoteContent?: NotesDto;
   close: () => void;
+  backlogItemId?: string;
+  backlogtitle?: string;
 }) => {
   const { formLoading, handleCreateNote, handleUpdateNote, handleDeleteNote } =
     useNotesContext();
@@ -39,7 +43,7 @@ const CreateOrUpdateNote = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     if (!existingNoteContent) {
-      handleCreateNote(content, close, e);
+      handleCreateNote(content, close, e, backlogItemId, backlogtitle);
     } else {
       handleUpdateNote({ ...existingNoteContent, body: content }, close, e);
     }

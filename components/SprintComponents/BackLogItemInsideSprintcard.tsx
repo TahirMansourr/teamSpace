@@ -22,6 +22,7 @@ import { FaEdit } from "react-icons/fa";
 import { AiOutlineTeam } from "react-icons/ai";
 import React from "react";
 import CreateOrUpdateIssuesModal from "../TeamWorkSpaceComponents/IssuesComponents/CreateOrUpdateIssueModal";
+import CreateOrUpdateNotesModal from "../TeamWorkSpaceComponents/NotesComponents/CreateOrUpdateNotesModal";
 
 const BackLogItemInsideSprintcard = ({
   backLogItem,
@@ -31,6 +32,7 @@ const BackLogItemInsideSprintcard = ({
   const [opened, { open, close }] = useDisclosure();
   const [IssuesOpened, { open: openIssues, close: closeIssues }] =
     useDisclosure();
+  const [NotesOpened, { open: openNOtes, close: CloseNotes }] = useDisclosure();
   const [
     previewModalOpened,
     { open: openPreviewModal, close: closePreviewModal },
@@ -171,6 +173,14 @@ const BackLogItemInsideSprintcard = ({
               className=" hover:shadow-md hover:scale-105 hover:cursor-pointer"
             />
           </Tooltip>
+          <Tooltip label="Add Issue to Backlog Item">
+            <IoAdd
+              size={25}
+              onClick={openNOtes}
+              color="blue"
+              className=" hover:shadow-md hover:scale-105 hover:cursor-pointer"
+            />
+          </Tooltip>
           <Tooltip label="Preview Backlog Item">
             <VscPreview
               size={25}
@@ -201,6 +211,12 @@ const BackLogItemInsideSprintcard = ({
       <CreateOrUpdateIssuesModal
         modalOpened={IssuesOpened}
         closeModal={closeIssues}
+        backlogItemId={backLogItem._id}
+        backlogtitle={backLogItem.title}
+      />
+      <CreateOrUpdateNotesModal
+        modalOpened={NotesOpened}
+        closeModal={CloseNotes}
         backlogItemId={backLogItem._id}
         backlogtitle={backLogItem.title}
       />

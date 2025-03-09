@@ -7,10 +7,14 @@ const CreateOrUpdateNotesModal = ({
   modalOpened,
   closeModal,
   initialValues,
+  backlogItemId,
+  backlogtitle,
 }: {
   modalOpened: boolean;
   closeModal: () => void;
   initialValues?: NotesDto;
+  backlogItemId?: string;
+  backlogtitle?: string;
 }) => {
   return (
     <Modal
@@ -32,6 +36,8 @@ const CreateOrUpdateNotesModal = ({
       <CreateOrUpdateNote
         existingNoteContent={initialValues}
         close={closeModal}
+        backlogItemId={backlogItemId}
+        backlogtitle={backlogtitle}
       />
     </Modal>
   );

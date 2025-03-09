@@ -1,14 +1,9 @@
 "use client";
 import { socket } from "@/socket";
 import { NotesDto, ProjectDto, UserDto } from "@/Utils/types";
-import {
-  useContext,
-  useState,
-  createContext,
-  useEffect,
-  useMemo,
-} from "react";
+import { useContext, useState, createContext, useEffect, useMemo } from "react";
 import { useNotesActions } from "./context-hooks/NoteContextHooks";
+import { useSprintContext } from "./SprintContext";
 
 type NotesContextDto = {
   allNotes: NotesDto[];
@@ -16,7 +11,9 @@ type NotesContextDto = {
   handleCreateNote: (
     body: string,
     close: () => void,
-    e: React.FormEvent
+    e: React.FormEvent,
+    backlogItemId?: string,
+    backlogtitle?: string
   ) => void;
   handleUpdateNote: (
     existingNote: NotesDto,
@@ -58,6 +55,7 @@ const NotesProvider = ({
 
   const { handleCreateNote, handleUpdateNote, handleDeleteNote, formLoading } =
     useNotesActions({ projectInfo, userInfo });
+  const { setSelectedBacklogItemForSingleSprint } = useSprintContext();
 
   useEffect(() => {
     socket.on("newNote", (note: NotesDto) => {
@@ -66,6 +64,13 @@ const NotesProvider = ({
           { ...note, creator: userInfo },
           ...prev,
         ]);
+        setSelectedBacklogItemForSingleSprint((prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            notes: prev.notes ? [...prev.notes, note] : [note],
+          };
+        });
         console.log("i was triggered");
       } else {
         console.error(
