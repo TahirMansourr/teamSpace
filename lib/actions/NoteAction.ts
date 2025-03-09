@@ -37,7 +37,7 @@ export async function CreateNote(params: CreateNoteDto) {
 
         const formattedNote = JSON.parse(JSON.stringify(newNote.toObject()))
         if (params.backlogItemId && params.backlogItemId !== '') {
-            await ProductBacklogItem.findOneAndUpdate({ _id: params.backlogItemId }, { $push: { issues: formattedNote._id } }).exec()
+            await ProductBacklogItem.findOneAndUpdate({ _id: params.backlogItemId }, { $push: { notes: formattedNote._id } }).exec()
         }
         console.log("🚀 ~ file: NoteAction.ts:34 ~ formattedNote:", formattedNote)
 

@@ -7,6 +7,7 @@ import ProductBacklogItem from "../models/ProductBackLogItem";
 import Task from "../models/TasksModel";
 import User from "../models/UserModel";
 import Issue from "../models/IssuesModel";
+import Note from "../models/NotesModel";
 
 type CreateSprintType = {
     _id?: string;
@@ -145,6 +146,16 @@ export async function GetSprintById(sprintId: string) {
             path : 'createdBy',
             model : User
         }
+        ]
+        },
+        {
+            path : 'notes',
+            model : Note,
+            populate : [{
+                path : 'creator',
+                model : User
+            },
+        
         ]
         },
         
