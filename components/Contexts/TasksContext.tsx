@@ -99,9 +99,9 @@ const TaskProvider = ({
       console.log("🚀 ~ handleCreateTask ~ values:", values);
       setFormLoading(true);
       const assignedToMembers = values.assignedTo
-        .map((name) => {
+        .map((id) => {
           const assignedToMember = projectInfo.team.find(
-            (member: UserDto) => name === member._id
+            (member: UserDto) => id === member._id
           );
           return assignedToMember;
         })

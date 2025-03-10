@@ -125,14 +125,15 @@ export async function GetSprintById(sprintId: string) {
         {
             path : 'tasks',
             model : Task,
-            populate : [{
+            populate : [
+                {
                 path : 'assignedTo',
                 model : User
+               },
+               {
+                path : 'createdBy',
+                model : User
             },
-        {
-            path : 'createdBy',
-            model : User
-        }
         ]
         },
         {

@@ -35,19 +35,6 @@ export type createTaskFormDto = {
   backlogtitle?: string;
 };
 
-// name : string,
-// description : string,
-// priority : 'HIGH' | 'MEDIUM' | 'LOW',
-// dueDate : Date,
-// assignedTo : UserDto[],
-// tags : string[],
-// status : 'To Do' | 'In Progress' | "Done" | 'Review'
-// _id : string,
-// creationDate : string,
-// featureId? : string,
-// createdBy : UserDto,
-// backlogItemId? : string,
-// isGlobal? : boolean,
 const CreateOrUpdateTaskForm = ({
   close,
   updateFormInput,

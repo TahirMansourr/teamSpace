@@ -21,9 +21,9 @@ export const useIssuesActions = ({ project, userInfo }: IssuesActions) => {
     close: () => void
   ) {
     const assignedToMembers = values.assignedTo
-      .map((id) => {
+      .map((name) => {
         const assignedToMember = project.team.find(
-          (member: UserDto) => id === member._id
+          (member: UserDto) => name === member._id
         );
         return assignedToMember;
       })
@@ -76,7 +76,7 @@ export const useIssuesActions = ({ project, userInfo }: IssuesActions) => {
     const assignedToMembers = values.assignedTo
       .map((name) => {
         const assignedToMember = project.team.find(
-          (member: UserDto) => name === member.username
+          (member: UserDto) => name === member._id
         );
         return assignedToMember;
       })

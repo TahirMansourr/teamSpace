@@ -86,6 +86,13 @@ const NotesProvider = ({
           return prevNote._id === note._id ? note : prevNote;
         })
       );
+      setSelectedBacklogItemForSingleSprint((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          notes: prev.notes?.map((t) => (t._id === note._id ? note : t)) || [],
+        };
+      });
     });
     socket.on("deleteNote", (noteId: string) => {
       setNotes((prev: NotesDto[]) =>

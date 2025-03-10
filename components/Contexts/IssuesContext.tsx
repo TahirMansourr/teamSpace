@@ -85,6 +85,15 @@ const IssuesProvider = ({
           prevIssue._id === newIssue._id ? newIssue : prevIssue
         )
       );
+      setSelectedBacklogItemForSingleSprint((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          issues:
+            prev.issues?.map((t) => (t._id === newIssue._id ? newIssue : t)) ||
+            [],
+        };
+      });
       setAllFeatureIssues((prev: IssueDto[]) =>
         prev.map((prevIssue: IssueDto) =>
           prevIssue._id === newIssue._id ? newIssue : prevIssue

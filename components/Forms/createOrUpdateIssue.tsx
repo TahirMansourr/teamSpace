@@ -14,11 +14,12 @@ import { useForm } from "@mantine/form";
 import React, { useState } from "react";
 import { DateInput } from "@mantine/dates";
 import { useTaskContext } from "../Contexts/TasksContext";
-import { UserDto } from "@/Utils/types";
+import { IssueDto, UserDto } from "@/Utils/types";
 import { useIssuesContext } from "../Contexts/IssuesContext";
 import { useWorkSpaceContext } from "../Contexts/WorkSpaceContext";
 import { useDisclosure } from "@mantine/hooks";
 import { MdOutlineDeleteSweep } from "react-icons/md";
+import AssignTeamMembers from "./AssignTeamMembers";
 
 export type createOrUpdateIssueForm = {
   name: string;
@@ -42,7 +43,7 @@ const CreateOrUpdateIssueForm = ({
   backlogtitle,
 }: {
   close: Function;
-  updateFormInput?: createOrUpdateIssueForm;
+  updateFormInput?: IssueDto;
   featureId?: string;
   backlogItemId?: string;
   backlogtitle?: string;
@@ -53,8 +54,10 @@ const CreateOrUpdateIssueForm = ({
       name: updateFormInput ? updateFormInput.name : "",
       description: updateFormInput ? updateFormInput.description : "",
       priority: updateFormInput ? updateFormInput.priority : "HIGH",
-      dueDate: updateFormInput ? updateFormInput.dueDate : new Date(),
-      assignedTo: updateFormInput ? updateFormInput.assignedTo : [],
+      dueDate: updateFormInput ? new Date(updateFormInput.dueDate) : new Date(),
+      assignedTo: updateFormInput
+        ? updateFormInput.assignedTo.map((user) => user._id)
+        : [],
       tags: updateFormInput ? updateFormInput.tags : [],
       status: updateFormInput ? updateFormInput.status : "To Do",
       _id: updateFormInput ? updateFormInput._id : "",
@@ -147,7 +150,7 @@ const CreateOrUpdateIssueForm = ({
           {...form.getInputProps("tags")}
         />
 
-        <MultiSelect
+        {/* <MultiSelect
           label="Assign Task To"
           data={projectInfo.project.team.map((member: UserDto) => ({
             label: member.username,
@@ -159,6 +162,12 @@ const CreateOrUpdateIssueForm = ({
             // item: "hover:bg-blue-50"
           }}
           {...form.getInputProps("assignedTo")}
+        /> */}
+        <AssignTeamMembers
+          defaultvalue={updateFormInput?.assignedTo.map((user) => user._id)}
+          key={form.key("assignedTo")}
+          value={form.getInputProps("assignedTo").value}
+          onChange={form.getInputProps("assignedTo").onChange}
         />
 
         <div className="flex justify-end items-center gap-3 pt-4 border-t border-gray-100">
