@@ -65,7 +65,20 @@ const IssuesProvider = ({
     userInfo,
   });
 
-  const { setSelectedBacklogItemForSingleSprint } = useSprintContext();
+  const {
+    setSelectedSprint,
+    setSelectedBacklogItemForSingleSprint,
+    selectedSprint,
+  } = useSprintContext();
+
+  useEffect(() => {
+    if (selectedSprint) {
+      setIssuesInfo(
+        selectedSprint.backlogItems?.map((item) => item.issues || []).flat() ||
+          []
+      );
+    }
+  }, [selectedSprint]);
 
   useEffect(() => {
     socket.on("createIssue", (issue: IssueDto) => {

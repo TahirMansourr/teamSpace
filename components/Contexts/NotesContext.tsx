@@ -55,7 +55,20 @@ const NotesProvider = ({
 
   const { handleCreateNote, handleUpdateNote, handleDeleteNote, formLoading } =
     useNotesActions({ projectInfo, userInfo });
-  const { setSelectedBacklogItemForSingleSprint } = useSprintContext();
+  const {
+    setSelectedSprint,
+    setSelectedBacklogItemForSingleSprint,
+    selectedSprint,
+  } = useSprintContext();
+
+  useEffect(() => {
+    if (selectedSprint) {
+      setNotes(
+        selectedSprint.backlogItems?.map((item) => item.notes || []).flat() ||
+          []
+      );
+    }
+  }, [selectedSprint]);
 
   useEffect(() => {
     socket.on("newNote", (note: NotesDto) => {

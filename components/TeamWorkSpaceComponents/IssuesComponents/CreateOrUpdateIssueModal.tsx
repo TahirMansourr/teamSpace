@@ -40,7 +40,7 @@ const CreateOrUpdateIssuesModal = ({
       <div className="h-full w-full">
         <CreateOrUpdateIssueForm
           close={closeModal}
-          updateFormInput={initialValues as unknown as createTaskFormDto}
+          updateFormInput={initialValues}
           featureId={FeatureId}
           backlogItemId={backlogItemId}
           backlogtitle={backlogtitle}
