@@ -104,7 +104,7 @@ const TaskCard = ({ task }: { task: TaskDto }) => {
         initialValues={{
           ...task,
           dueDate: date,
-          assignedTo: task.assignedTo.map((user: any) => user.username),
+          // assignedTo: task.assignedTo.map((user: any) => user.username),
         }}
       />
     </div>

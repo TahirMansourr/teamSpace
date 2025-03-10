@@ -120,7 +120,7 @@ const IssueCard = ({ Issue }: { Issue: IssueDto }) => {
           ...Issue,
           createdBy: user,
           dueDate: date,
-          assignedTo: Issue.assignedTo.map((user: any) => user.username),
+          // assignedTo: Issue.assignedTo.map((user: any) => user.username),
         }}
       />
     </section>
