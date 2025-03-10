@@ -20,7 +20,7 @@ import { IoAdd } from "react-icons/io5";
 import CreateBackLogItemModal from "../BackLogComponents/BackLog-Items/createBackLogItemModal";
 import { FaEdit } from "react-icons/fa";
 import { AiOutlineTeam } from "react-icons/ai";
-import React from "react";
+import React, { useState } from "react";
 import CreateOrUpdateIssuesModal from "../TeamWorkSpaceComponents/IssuesComponents/CreateOrUpdateIssueModal";
 import CreateOrUpdateNotesModal from "../TeamWorkSpaceComponents/NotesComponents/CreateOrUpdateNotesModal";
 
@@ -41,6 +41,7 @@ const BackLogItemInsideSprintcard = ({
     updateModalOpened,
     { open: openUpdateModal, close: closeUpdateModal },
   ] = useDisclosure();
+  const [isActionsOpen, setIsActionsOpen] = useState(false);
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -156,50 +157,75 @@ const BackLogItemInsideSprintcard = ({
             ))}
           </div>
         </div>
-        <div className="flex gap-2">
-          <Tooltip label="Add Task to Backlog Item">
-            <IoAdd
-              size={25}
-              onClick={open}
-              color="blue"
-              className=" hover:shadow-md hover:scale-105 hover:cursor-pointer"
-            />
-          </Tooltip>
-          <Tooltip label="Add Issue to Backlog Item">
-            <IoAdd
-              size={25}
-              onClick={openIssues}
-              color="blue"
-              className=" hover:shadow-md hover:scale-105 hover:cursor-pointer"
-            />
-          </Tooltip>
-          <Tooltip label="Add Issue to Backlog Item">
-            <IoAdd
-              size={25}
-              onClick={openNOtes}
-              color="blue"
-              className=" hover:shadow-md hover:scale-105 hover:cursor-pointer"
-            />
-          </Tooltip>
-          <Tooltip label="Preview Backlog Item">
-            <VscPreview
-              size={25}
-              onClick={openPreviewModal}
-              color="blue"
-              className=" hover:shadow-md hover:scale-105 hover:cursor-pointer"
-            />
-          </Tooltip>
-          <Tooltip label="Preview Backlog Item">
-            <FaEdit
-              size={25}
-              onClick={openUpdateModal}
-              color="blue"
-              className=" hover:shadow-md hover:scale-105 hover:cursor-pointer"
-            />
-          </Tooltip>
-          {/* <Button  className="mt-4 bg-indigo-500 text-white px-4 py-2 rounded-lg"  variant="outline" size="sm" ></Button> */}
-          {/* <VscPreview size={25} onClick={openPreviewModal} color="blue" className=" hover:shadow-md hover:scale-105 hover:cursor-pointer"/> */}
-          {/* <Button  className="mt-4 bg-indigo-500 text-white px-4 py-2 rounded-lg" variant="outline" size="sm"></Button> */}
+        <div className="flex items-center gap-2">
+          <div className="relative">
+            <button
+              onClick={() => setIsActionsOpen(!isActionsOpen)}
+              className="p-2 rounded-full bg-blue-50 hover:bg-blue-100 transition-all duration-300"
+            >
+              <IconTools
+                size={25}
+                className="text-blue-600 transform transition-transform duration-300"
+                style={{
+                  transform: isActionsOpen ? "rotate(45deg)" : "rotate(0)",
+                }}
+              />
+            </button>
+
+            <div
+              className={`absolute right-12 -top-0 flex gap-2 transition-all duration-300 origin-right ${
+                isActionsOpen
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 -translate-x-8 pointer-events-none"
+              }`}
+            >
+              <Tooltip label="Add Task">
+                <button
+                  onClick={open}
+                  className="p-2 rounded-full bg-emerald-50 hover:bg-emerald-100 transition-all duration-200 hover:scale-110"
+                >
+                  <IconCheck size={20} className="text-emerald-600" />
+                </button>
+              </Tooltip>
+
+              <Tooltip label="Add Issue">
+                <button
+                  onClick={openIssues}
+                  className="p-2 rounded-full bg-rose-50 hover:bg-rose-100 transition-all duration-200 hover:scale-110"
+                >
+                  <IconBug size={20} className="text-rose-600" />
+                </button>
+              </Tooltip>
+
+              <Tooltip label="Add Note">
+                <button
+                  onClick={openNOtes}
+                  className="p-2 rounded-full bg-amber-50 hover:bg-amber-100 transition-all duration-200 hover:scale-110"
+                >
+                  <IconStar size={20} className="text-amber-600" />
+                </button>
+              </Tooltip>
+            </div>
+          </div>
+
+          <div className="flex gap-2">
+            <Tooltip label="Preview Backlog Item">
+              <VscPreview
+                size={25}
+                onClick={openPreviewModal}
+                color="blue"
+                className="hover:shadow-md hover:scale-105 hover:cursor-pointer"
+              />
+            </Tooltip>
+            <Tooltip label="Edit Backlog Item">
+              <FaEdit
+                size={25}
+                onClick={openUpdateModal}
+                color="blue"
+                className="hover:shadow-md hover:scale-105 hover:cursor-pointer"
+              />
+            </Tooltip>
+          </div>
         </div>
       </div>
       <CreateOrUpdateTaskModal

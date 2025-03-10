@@ -64,8 +64,9 @@ const NotesProvider = ({
   useEffect(() => {
     if (selectedSprint) {
       setNotes(
-        selectedSprint.backlogItems?.map((item) => item.notes || []).flat() ||
-          []
+        selectedSprint.backlogItems
+          ?.map((item) => (item.notes ? item.notes : []))
+          .flat() || []
       );
     }
   }, [selectedSprint]);

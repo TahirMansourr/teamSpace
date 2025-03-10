@@ -1,0 +1,119 @@
+import { BackLogDto, SprintDto } from "@/Utils/types";
+import { Avatar, Badge, Progress, Tooltip } from "@mantine/core";
+import { IconCalendar, IconFlag, IconUsers } from "@tabler/icons-react";
+import { IoMdArrowRoundBack } from "react-icons/io";
+import { CreateOrUpdateSprintModal } from "./CreateSprintModal";
+
+const LeftSection = ({
+  sprint,
+  myBackLogs,
+  handleBack,
+}: {
+  sprint: SprintDto;
+  myBackLogs: BackLogDto[] | null;
+  handleBack: () => void;
+}) => {
+  const calculateProgress = () => {
+    const completedItems =
+      sprint.backlogItems?.filter((item) => item.status === "Done").length || 0;
+    const totalItems = sprint.backlogItems?.length || 0;
+    return totalItems > 0 ? (completedItems / totalItems) * 100 : 0;
+  };
+
+  const daysRemaining = () => {
+    const end = new Date(sprint.endDate);
+    const now = new Date();
+    const diff = end.getTime() - now.getTime();
+    return Math.ceil(diff / (1000 * 60 * 60 * 24));
+  };
+
+  const backlogName = myBackLogs?.find(
+    (backlog) => backlog._id === sprint.backlog
+  )?.name;
+
+  return (
+    <div className="w-1/4 bg-white dark:bg-gray-800 rounded-xl shadow-sm m-1 hover:shadow-md p-6 ">
+      <button
+        onClick={handleBack}
+        className="mb-3 px-4 py-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors duration-300 flex items-center gap-2 font-bold"
+      >
+        <IoMdArrowRoundBack size={20} />
+      </button>
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+          {backlogName} &gt; {sprint.name}
+        </h2>
+        <Badge
+          color={
+            sprint.status === "active"
+              ? "green"
+              : sprint.status === "planned"
+              ? "blue"
+              : "gray"
+          }
+          size="lg"
+          className="mt-4"
+        >
+          {sprint.status}
+        </Badge>
+      </div>
+      <div className="mb-6">
+        <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
+          <IconFlag size={20} className="text-indigo-500" />
+          Sprint Goal
+        </h3>
+        <p className="text-gray-600 dark:text-gray-300">{sprint.goal}</p>
+      </div>
+      <div className="mb-6">
+        <div className="flex justify-between items-center mb-2">
+          <span className="font-medium">Sprint Progress</span>
+          <span className="text-sm text-gray-500">
+            {Math.round(calculateProgress())}%
+          </span>
+        </div>
+        <Progress
+          value={calculateProgress()}
+          color="indigo"
+          size="lg"
+          radius="xl"
+        />
+      </div>
+      <div className="mb-6">
+        <Tooltip label="Sprint Duration">
+          <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
+            <IconCalendar className="text-indigo-500" size={20} />
+            <div>
+              <div className="text-sm text-gray-500">Duration</div>
+              <div className="font-medium">
+                {daysRemaining()} days remaining
+              </div>
+            </div>
+          </div>
+        </Tooltip>
+      </div>
+      <div className="mb-6">
+        <div className="flex items-center gap-2">
+          <IconUsers size={20} className="text-indigo-500" />
+          {/* <span className="font-medium">Team Members</span> */}
+          <div className="flex -space-x-2 mt-2">
+            {sprint.assignees?.map((member, index) => (
+              <Tooltip key={member._id} label={member.username}>
+                <Avatar
+                  src={member.image}
+                  alt={member.username}
+                  size={"md"}
+                  className="w-8 h-8 rounded-full border-2 border-white dark:border-gray-800"
+                  style={{ zIndex: sprint.assignees!.length - index }}
+                />
+              </Tooltip>
+            ))}
+          </div>
+        </div>
+        <div className="flex w-full justify-end mt-4">
+          <CreateOrUpdateSprintModal existingSprint={sprint} />
+        </div>
+      </div>
+    </div>
+  );
+};
+export default LeftSection;
