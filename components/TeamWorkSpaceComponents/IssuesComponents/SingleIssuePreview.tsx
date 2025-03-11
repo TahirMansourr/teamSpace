@@ -47,17 +47,17 @@ const SingleIssuePreview = ({ issue }: { issue: IssueDto }) => {
   return (
     <div className="bg-white p-6 mb-4 rounded-lg">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+        <h3 className="text-2xl font-semibold text-gray-900">
           {issue.name || "No Name"}
         </h3>
         {getStatusBadge(issue.status)}
       </div>
-      <p className="text-gray-600 dark:text-gray-300 mb-4">
+      <p className="text-gray-600  mb-4">
         {issue.description || "No Description"}
       </p>
       <div className="flex items-center gap-2 mb-4">
         <IconCalendar size={20} className="text-red-500" />
-        <span className="text-sm text-gray-500 dark:text-gray-400">
+        <span className="text-sm text-gray-500 ">
           Due Date:{" "}
           {issue.dueDate
             ? new Date(issue.dueDate).toLocaleDateString()
@@ -66,15 +66,13 @@ const SingleIssuePreview = ({ issue }: { issue: IssueDto }) => {
       </div>
       <div className="flex items-center gap-2 mb-4">
         <IconFlag size={20} className="text-red-500" />
-        <span className="text-sm text-gray-500 dark:text-gray-400">
+        <span className="text-sm text-gray-500 ">
           Priority: {issue.priority || "No Priority"}
         </span>
       </div>
       <div className="flex items-center gap-2 mb-4">
         <IconUser size={20} className="text-red-500" />
-        <span className="text-sm text-gray-500 dark:text-gray-400">
-          Assigned To:
-        </span>
+        <span className="text-sm text-gray-500 ">Assigned To:</span>
         <div className="flex -space-x-2">
           {issue.assignedTo?.length ? (
             issue.assignedTo.map((user) => (
@@ -83,20 +81,18 @@ const SingleIssuePreview = ({ issue }: { issue: IssueDto }) => {
                   src={user.image}
                   alt={user.username}
                   size={"md"}
-                  className="w-8 h-8 rounded-full border-2 border-white dark:border-gray-800"
+                  className="w-8 h-8 rounded-full border-2 border-white "
                 />
               </Tooltip>
             ))
           ) : (
-            <span className="text-sm text-gray-500 dark:text-gray-400">
-              No Assignees
-            </span>
+            <span className="text-sm text-gray-500 ">No Assignees</span>
           )}
         </div>
       </div>
       <div className="flex items-center gap-2 mb-4">
         <IconTag size={20} className="text-red-500" />
-        <span className="text-sm text-gray-500 dark:text-gray-400">Tags:</span>
+        <span className="text-sm text-gray-500 ">Tags:</span>
         <div className="flex flex-wrap gap-2">
           {issue.tags?.length ? (
             issue.tags.map((tag, index) => (
@@ -105,36 +101,30 @@ const SingleIssuePreview = ({ issue }: { issue: IssueDto }) => {
               </Badge>
             ))
           ) : (
-            <span className="text-sm text-gray-500 dark:text-gray-400">
-              No Tags
-            </span>
+            <span className="text-sm text-gray-500 ">No Tags</span>
           )}
         </div>
       </div>
       <div className="flex items-center gap-2 mb-4">
         <IconUser size={20} className="text-red-500" />
-        <span className="text-sm text-gray-500 dark:text-gray-400">
-          Created By:
-        </span>
+        <span className="text-sm text-gray-500 ">Created By:</span>
         {issue.createdBy ? (
           <Tooltip label={issue.createdBy.username}>
             <Avatar
               src={issue.createdBy.image}
               alt={issue.createdBy.username}
               size={"md"}
-              className="w-8 h-8 rounded-full border-2 border-white dark:border-gray-800"
+              className="w-8 h-8 rounded-full border-2 border-white "
             />
           </Tooltip>
         ) : (
-          <span className="text-sm text-gray-500 dark:text-gray-400">
-            Unknown
-          </span>
+          <span className="text-sm text-gray-500 ">Unknown</span>
         )}
       </div>
       {issue.lastModified && (
         <div className="flex items-center gap-2 mb-4">
           <IconHistory size={20} className="text-red-500" />
-          <span className="text-sm text-gray-500 dark:text-gray-400">
+          <span className="text-sm text-gray-500 ">
             Last Modified: {new Date(issue.lastModified).toLocaleString()}
           </span>
         </div>

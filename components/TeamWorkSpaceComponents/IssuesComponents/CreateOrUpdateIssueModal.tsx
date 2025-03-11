@@ -25,7 +25,7 @@ const CreateOrUpdateIssuesModal = ({
     <Modal
       opened={modalOpened}
       onClose={closeModal}
-      title="Create New Task"
+      title="Create New Issue"
       withCloseButton={true}
       overlayProps={{
         backgroundOpacity: 0.2,

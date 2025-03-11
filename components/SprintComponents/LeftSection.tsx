@@ -40,7 +40,7 @@ const LeftSection = ({
         <IoMdArrowRoundBack size={20} />
       </button>
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+        <h2 className="text-2xl font-bold text-indigo-600">
           {backlogName} &gt; {sprint.name}
         </h2>
         <Badge
@@ -62,7 +62,7 @@ const LeftSection = ({
           <IconFlag size={20} className="text-indigo-500" />
           Sprint Goal
         </h3>
-        <p className="text-gray-600 dark:text-gray-300">{sprint.goal}</p>
+        <p className="text-gray-600 ">{sprint.goal}</p>
       </div>
       <div className="mb-6">
         <div className="flex justify-between items-center mb-2">
@@ -80,7 +80,7 @@ const LeftSection = ({
       </div>
       <div className="mb-6">
         <Tooltip label="Sprint Duration">
-          <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
+          <div className="flex items-center gap-2 bg-gray-50  p-3 rounded-lg">
             <IconCalendar className="text-indigo-500" size={20} />
             <div>
               <div className="text-sm text-gray-500">Duration</div>
@@ -102,7 +102,7 @@ const LeftSection = ({
                   src={member.image}
                   alt={member.username}
                   size={"md"}
-                  className="w-8 h-8 rounded-full border-2 border-white dark:border-gray-800"
+                  className="w-8 h-8 rounded-full border-2 border-white "
                   style={{ zIndex: sprint.assignees!.length - index }}
                 />
               </Tooltip>

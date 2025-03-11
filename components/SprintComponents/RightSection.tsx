@@ -34,14 +34,14 @@ const RightSection = ({
   );
 
   return (
-    <ScrollArea className="w-1/4 bg-white h-[calc(100vh-6rem)] dark:bg-gray-800 rounded-xl shadow-sm m-1 hover:shadow-md p-6">
+    <ScrollArea className="w-1/4 bg-white h-[calc(100vh-6rem)]  rounded-xl shadow-sm m-1 hover:shadow-md p-6">
       {selectedBacklogItemForSingleSprint ? (
         <div>
           <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
             <IconCheckbox size={20} className="text-indigo-500" />
             {selectedBacklogItemForSingleSprint.title}
           </h3>
-          <p className="text-gray-600 dark:text-gray-300 mb-4">
+          <p className="text-gray-600  mb-4">
             {selectedBacklogItemForSingleSprint.description}
           </p>
           <div className="flex w-full items-center justify-center">
@@ -92,7 +92,7 @@ const RightSection = ({
                           />
                         )}
                         <h4 className="font-medium">{task.name}</h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-300">
+                        <p className="text-sm text-gray-600 ">
                           {task.description}
                         </p>
                         <div className="flex w-full justify-end gap-2 items-center">
@@ -135,7 +135,7 @@ const RightSection = ({
                           />
                         )}
                         <h4 className="font-medium">{issue.name}</h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-300">
+                        <p className="text-sm text-gray-600 ">
                           {issue.description}
                         </p>
                         <div className="flex w-full justify-end gap-2 items-center">
@@ -194,7 +194,7 @@ const RightSection = ({
 
                         <div
                           dangerouslySetInnerHTML={{ __html: note.body }}
-                          className="line-clamp-2 text-gray-600 dark:text-gray-300"
+                          className="line-clamp-2 text-gray-600 "
                         />
 
                         <div className="flex w-full justify-end gap-2 items-center mt-2">
@@ -222,7 +222,7 @@ const RightSection = ({
           </div>
         </div>
       ) : (
-        <div className="text-gray-600 dark:text-gray-300">
+        <div className="text-gray-600 ">
           Select a backlog item to view its tasks.
         </div>
       )}

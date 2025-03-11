@@ -13,7 +13,7 @@ const MiddleSection = ({
   >;
 }) => {
   return (
-    <ScrollArea className="w-1/2 h-[calc(100vh-6rem)] bg-white dark:bg-gray-800 rounded-xl shadow-sm m-1 hover:shadow-md p-6">
+    <ScrollArea className="w-1/2 h-[calc(100vh-6rem)] bg-white  rounded-xl shadow-sm m-1 hover:shadow-md p-6">
       <div className="grid grid-cols-2 gap-4 m-2">
         {sprint.backlogItems?.map((item) => (
           <div

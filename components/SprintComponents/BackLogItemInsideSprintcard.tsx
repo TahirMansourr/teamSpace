@@ -99,29 +99,27 @@ const BackLogItemInsideSprintcard = ({
   };
 
   return (
-    <div className=" relative bg-white dark:bg-gray-800 rounded-lg border p-4 mb-4 transition-transform transform hover:shadow-md hover:cursor-pointer">
-      <div className=" absolute -top-2 -right-2">
+    <div className="relative bg-white rounded-lg border p-4 mb-4 transition-transform transform hover:shadow-md hover:cursor-pointer">
+      <div className="absolute -top-2 -right-2">
         {getStatusBadge(backLogItem.status)}
       </div>
       <div className="flex justify-between items-center mb-2">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+        <h3 className="text-lg font-semibold text-gray-900">
           {truncateText(backLogItem.title, 20)}
         </h3>
       </div>
-      <p className="text-gray-600 dark:text-gray-300 mb-2">
+      <p className="text-gray-600 mb-2">
         - {truncateText(backLogItem.description, 60)}
       </p>
-      <div className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+      <div className="text-sm text-gray-500 mb-2">
         <strong>Acceptance Criteria:</strong>{" "}
         {truncateText(backLogItem.acceptanceCriteria, 50)}
       </div>
-      <div className="flex items-center justify-around gap-2 mb-2 ">
+      <div className="flex items-center justify-around gap-2 mb-2">
         <Tooltip label="Feature Type">
           <div className="flex items-center gap-2">
             {getTypeIcon(backLogItem.type)}
-            <span className="text-sm text-gray-500 dark:text-gray-400">
-              {backLogItem.type}
-            </span>
+            <span className="text-sm text-gray-500">{backLogItem.type}</span>
           </div>
         </Tooltip>
         <Tooltip label="Estimated Effort">
@@ -137,13 +135,10 @@ const BackLogItemInsideSprintcard = ({
           </div>
         </Tooltip>
       </div>
-      {/* <div className="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400 mb-2">
-        
-      </div> */}
 
-      <div className="flex items-center justify-between rounded-lg p-2 ">
+      <div className="flex items-center justify-between rounded-lg p-2">
         <div className="flex gap-2 items-center">
-          <AiOutlineTeam size={35} color="blue" className="text-gray-500 " />
+          <AiOutlineTeam size={35} color="blue" className="text-gray-500" />
           <div className="flex -space-x-2 mt-2">
             {backLogItem.assignee.map((user) => (
               <Tooltip key={user._id} label={user.username}>
@@ -151,7 +146,7 @@ const BackLogItemInsideSprintcard = ({
                   src={user.image}
                   alt={user.username}
                   size={"md"}
-                  className="w-8 h-8 rounded-full border-2 border-white dark:border-gray-800"
+                  className="w-8 h-8 rounded-full border-2 border-white"
                 />
               </Tooltip>
             ))}

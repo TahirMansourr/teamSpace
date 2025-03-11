@@ -9,7 +9,7 @@ const SingleSprintCard = ({ sprint }: { sprint: SprintDto }) => {
   return (
     <div
       key={sprint._id}
-      className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 m-2 min-w-fit hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1 relative"
+      className="bg-white  rounded-xl shadow-lg p-6 m-2 min-w-fit hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1 relative"
     >
       <Badge
         className="absolute -top-2 -right-2"
@@ -29,12 +29,10 @@ const SingleSprintCard = ({ sprint }: { sprint: SprintDto }) => {
         <h3 className="font-medium text-lg text-indigo-600">{sprint.name}</h3>
       </div>
 
-      <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">
-        {sprint.goal}
-      </p>
+      <p className="text-sm text-gray-600  mb-4 line-clamp-2">{sprint.goal}</p>
       <div className="flex items-center gap-2">
         <Tooltip label="Start Date">
-          <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-700 p-2 rounded-lg">
+          <div className="flex items-center gap-2 bg-gray-50  p-2 rounded-lg">
             <IconCalendar className="text-indigo-500" size={18} />
             <p className="font-bold">Start Date</p>
             <div className="font-bold">
@@ -58,7 +56,7 @@ const SingleSprintCard = ({ sprint }: { sprint: SprintDto }) => {
       </div>
 
       <Tooltip label="Backlog Items">
-        <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-700 p-2 rounded-lg w-fit">
+        <div className="flex items-center gap-2 bg-gray-50  p-2 rounded-lg w-fit">
           <IconCheckbox className="text-indigo-500" size={18} />
           <div className="font-bold">
             {sprint.backlogItems?.length || 0} items
@@ -66,7 +64,7 @@ const SingleSprintCard = ({ sprint }: { sprint: SprintDto }) => {
         </div>
       </Tooltip>
 
-      <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-700 p-2 rounded-lg mt-4">
+      <div className="flex items-center gap-2 bg-gray-50  p-2 rounded-lg mt-4">
         <IconUsers className="text-indigo-500" size={18} />
         <span className="font-bold">
           {sprint.assignees?.length || 0} members

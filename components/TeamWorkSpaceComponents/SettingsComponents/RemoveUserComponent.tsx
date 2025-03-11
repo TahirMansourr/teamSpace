@@ -69,33 +69,31 @@ const RemoveUserComponent = () => {
         padding="xl"
       >
         <div className="space-y-6">
-          <p className="text-lg text-gray-700 dark:text-gray-300">
+          <p className="text-lg text-gray-700 ">
             Are you sure you want to remove the following users?
           </p>
           <ul className="space-y-4 max-h-[50vh] overflow-y-auto pr-2">
             {selectedUserDetails.map((user, index) => (
               <li
                 key={index}
-                className="flex items-center gap-4 p-4 rounded-xl bg-gray-50 dark:bg-gray-800 transition-all duration-200 hover:shadow-md"
+                className="flex items-center gap-4 p-4 rounded-xl bg-gray-50  transition-all duration-200 hover:shadow-md"
               >
                 <Avatar
                   src={user.image}
                   radius="xl"
                   size="lg"
-                  className="border-2 border-gray-200 dark:border-gray-700"
+                  className="border-2 border-gray-200 "
                 ></Avatar>
                 <div className="flex-1">
-                  <div className="font-semibold text-gray-800 dark:text-gray-200">
+                  <div className="font-semibold text-gray-800 ">
                     {user.username}
                   </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
-                    {user.email}
-                  </div>
+                  <div className="text-sm text-gray-500 ">{user.email}</div>
                 </div>
               </li>
             ))}
           </ul>
-          <div className="flex justify-end gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="flex justify-end gap-4 pt-4 border-t border-gray-200 ">
             <Button variant="subtle" onClick={close} size="md" radius="md">
               Cancel
             </Button>
