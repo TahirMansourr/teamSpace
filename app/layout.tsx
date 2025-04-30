@@ -6,6 +6,7 @@ import "@mantine/dates/styles.css";
 import "@mantine/notifications/styles.css";
 import "@mantine/tiptap/styles.css";
 import { Notifications } from "@mantine/notifications";
+import { Analytics } from "@vercel/analytics/next";
 
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import StoreProvider from "./StoreProvider";
@@ -32,17 +33,13 @@ export default function RootLayout({
       <body className={montserrat.className}>
         <MantineProvider>
           <StoreProvider>
-            {/* <AblyProvider client={client}>
-        <ChannelProvider channelName="get-started"> */}
             <Suspense fallback={<div>Loading...</div>}>
               <LoadingBar />
             </Suspense>
             <Notifications position="top-right" zIndex={1} />
-           
 
             {children}
-            {/* </ChannelProvider>
-           </AblyProvider> */}
+            <Analytics />
           </StoreProvider>
         </MantineProvider>
       </body>
