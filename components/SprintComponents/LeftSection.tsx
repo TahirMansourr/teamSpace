@@ -32,7 +32,7 @@ const LeftSection = ({
   )?.name;
 
   return (
-    <div className="w-1/4 bg-white dark:bg-gray-800 rounded-xl shadow-sm m-1 hover:shadow-md p-6 ">
+    <div className="w-1/4 bg-white rounded-xl shadow-sm m-1 hover:shadow-md p-6 ">
       <button
         onClick={handleBack}
         className="mb-3 px-4 py-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors duration-300 flex items-center gap-2 font-bold"

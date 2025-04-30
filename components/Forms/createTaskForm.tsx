@@ -6,6 +6,7 @@ import {
   LoadingOverlay,
   Modal,
   MultiSelect,
+  NumberInput,
   Select,
   TagsInput,
   Textarea,
@@ -33,6 +34,7 @@ export type createTaskFormDto = {
   createdBy?: UserDto;
   backlogItemId?: string;
   backlogtitle?: string;
+  estimatedEffort?: number;
 };
 
 const CreateOrUpdateTaskForm = ({
@@ -64,6 +66,7 @@ const CreateOrUpdateTaskForm = ({
       featureId: featureId ? featureId : "",
       backlogItemId: backlogItemId ? backlogItemId : undefined,
       backlogtitle: backlogtitle ? backlogtitle : undefined,
+      estimatedEffort: updateFormInput ? updateFormInput.estimatedEffort : 0,
     },
   });
 
@@ -143,6 +146,17 @@ const CreateOrUpdateTaskForm = ({
           {...form.getInputProps("tags")}
         />
 
+        <NumberInput
+          label="Estimated Effort"
+          placeholder="Estimated Effort"
+          min={0}
+          classNames={{
+            input: "border-gray-200 focus:border-blue-500 transition-colors",
+            label: "text-gray-700 font-medium mb-1",
+          }}
+          {...form.getInputProps("estimatedEffort")}
+        />
+
         <AssignTeamMembers
           defaultvalue={updateFormInput?.assignedTo.map((user) => user._id)}
           key={form.key("assignedTo")}
@@ -192,6 +206,11 @@ const CreateOrUpdateTaskForm = ({
           >
             {updateFormInput ? "Update Task" : "Create Task"}
           </Button>
+          <div>
+            {updateFormInput?.backlogtitle
+              ? updateFormInput.backlogtitle
+              : null}
+          </div>
         </div>
       </div>
 

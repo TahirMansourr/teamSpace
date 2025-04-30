@@ -19,7 +19,8 @@ type createTaskFormDto = {
     backlogItemId? : string,
     backlogtitle? : string,
     sprintId? : string,
-    isGlobal? : boolean
+    isGlobal? : boolean,
+    estimatedEffort? : number
 }
 // export async function CreateTask(params : createTaskFormDto) {
 //     try {
@@ -72,7 +73,8 @@ export async function CreateTask(params: createTaskFormDto) {
             backlogItemId: params.backlogItemId,
             sprintId: params.sprintId,
             isGlobal: params.isGlobal,
-            backlogtitle: params.backlogtitle
+            backlogtitle: params.backlogtitle,
+            estimatedEffort: params.estimatedEffort
         })
 
         if (params.featureId && params.featureId !== '') {
@@ -111,7 +113,8 @@ export async function UpdateTask(params : createTaskFormDto & {_id : string}){
             project : params.projectId,
             createdBy : params.userId,
             tags : params.tags,
-            status : params.status
+            status : params.status,
+            estimatedEffort : params.estimatedEffort
         }})
 
         await requiredTask.save()

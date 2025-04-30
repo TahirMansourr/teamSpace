@@ -192,6 +192,14 @@ const SprintProvider = ({ children }: { children: React.ReactNode }) => {
   const [showSprintsOnBackLogPage, setShowSprintsOnBackLogPage] =
     useState<boolean>(false);
 
+  const SprintBackLogItemsDictionaryFunction = () => {
+    let SprintBackLogItemsDictionary: { [key: string]: string } = {};
+    selectedSprint?.backlogItems?.forEach(
+      (backlogItem: BackLogItemDto) =>
+        (SprintBackLogItemsDictionary[backlogItem._id] = backlogItem.title)
+    );
+    return SprintBackLogItemsDictionary;
+  };
   const handleSprintClick = async (sprint: SprintDto) => {
     setLoading(true);
     try {

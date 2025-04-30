@@ -137,6 +137,12 @@ const SingleTaskPreview = ({ task }: { task: TaskDto }) => {
           </span>
         </div>
       )}
+      <div className="flex items-center gap-2 mb-4">
+        <IconClock size={20} className="text-indigo-500" />
+        <span className="text-sm text-gray-500 ">
+          Estimated Effort: {task.estimatedEffort || "No Estimate"} hours
+        </span>
+      </div>
     </div>
   );
 };

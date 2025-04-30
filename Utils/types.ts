@@ -49,6 +49,7 @@ export type TaskDto = {
     backlogtitle?: string,
     isGlobal? : boolean,
     sprintId? : string,
+    estimatedEffort? : number,
 }
 export type IssueDto = {
     name : string,

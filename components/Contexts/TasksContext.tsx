@@ -25,6 +25,7 @@ type formValuesType = {
   featureId?: string;
   backlogItemId?: string;
   backlogtitle?: string;
+  estimatedEffort?: number;
 };
 type TaskContextDto = {
   useHandleCreateTask: () => [
@@ -71,12 +72,8 @@ const TaskProvider = ({
     featureTasks ? featureTasks : []
   );
   const [formLoading, setFormLoading] = useState<boolean>(false);
-  const [filteredTasks, setFilteredTasks] = useState<TaskDto[]>([]);
-  const {
-    setSelectedSprint,
-    setSelectedBacklogItemForSingleSprint,
-    selectedSprint,
-  } = useSprintContext();
+  const { setSelectedBacklogItemForSingleSprint, selectedSprint } =
+    useSprintContext();
 
   useEffect(() => {
     if (selectedSprint) {
@@ -124,6 +121,7 @@ const TaskProvider = ({
           featureId: values.featureId,
           backlogItemId: values.backlogItemId,
           backlogtitle: values.backlogtitle,
+          estimatedEffort: values.estimatedEffort,
         }).then((res) => {
           const newTask = {
             ...values,
@@ -166,6 +164,7 @@ const TaskProvider = ({
           projectId: projectInfo._id,
           tags: values.tags,
           status: values.status,
+          estimatedEffort: values.estimatedEffort,
         }).then((res: { status: string; task: TaskDto }) => {
           const newTask = {
             ...values,
