@@ -17,11 +17,10 @@ const Page = () => {
     );
   }, []);
 
-  const scaleStyle = isWindows ? { transform: "scale(0.98)" } : {};
+  const scaleStyle = isWindows ? { transform: "scale(0.8)" } : {};
   return (
     <div
-      style={scaleStyle}
-      className="min-h-screen relative overflow-hidden bg-gradient-to-br from-gray-50 to-blue-50"
+      className="h-screen relative overflow-hidden bg-gradient-to-br from-gray-50 to-blue-50"
     >
       <div className="dots-background" aria-hidden="true">
         {[...Array(150)].map((_, i) => (
@@ -37,7 +36,8 @@ const Page = () => {
           />
         ))}
       </div>
-      <div className="container mx-auto px-4 py-20">
+      <div       style={scaleStyle}
+ className="container mx-auto px-4 py-20">
         <div className="text-center animate-fadeIn">
           <span className="text-sm font-semibold tracking-widest text-blue-600 mb-4 block animate-slideUp">
             WELCOME TO THE FUTURE OF COLLABORATION
@@ -63,11 +63,11 @@ const Page = () => {
             </button>
           </Link>
         </div>
-        <div className="mt-32 grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="mt-32 grid grid-cols-1 md:grid-cols-3 gap-6">
           {features.map((feature, index) => (
             <div
               key={index}
-              className="bg-white/80 backdrop-blur-lg rounded-2xl p-8
+              className="bg-white/80 backdrop-blur-lg rounded-2xl p-6
                 transform transition-all duration-300 hover:-translate-y-2
                 animate-fadeIn shadow-lg hover:shadow-xl"
               style={{ animationDelay: `${index * 200}ms` }}
