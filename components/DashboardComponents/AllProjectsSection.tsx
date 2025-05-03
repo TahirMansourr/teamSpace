@@ -18,7 +18,7 @@ import {
 
 const AllProjectsSection = () => {
   const { userProjects, rearrangeProjects } = useProjectContext();
-
+  console.log(userProjects)
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {

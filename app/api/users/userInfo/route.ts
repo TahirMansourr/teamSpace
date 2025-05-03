@@ -1,7 +1,7 @@
 import Project from "@/lib/models/ProjectModel";
 import User from "@/lib/models/UserModel";
 import { connectToDB } from "@/lib/mongoose";
-import { GetDataFromToken } from "@/Utils/authenticationUtils";
+import { GetDataFromToken } from "@/Utils/AuthenticationUtil";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -10,6 +10,7 @@ export async function GET(request: NextRequest) {
     console.log('i have reached here');
     
     const userInfo = await GetDataFromToken(request);
+    console.log("🚀 ~ GET ~ userInfo:", userInfo);
     const toString = JSON.stringify(userInfo);
     const toObj = JSON.parse(toString);
     const id = toObj.id;

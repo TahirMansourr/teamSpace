@@ -4,7 +4,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { LoadingOverlay, Text } from "@mantine/core";
 import Link from "next/link";
-import { FiActivity, FiMoreVertical, FiTrash2, FiUsers } from "react-icons/fi";
+import { FiTrash2, FiUsers } from "react-icons/fi";
 import { MdDragIndicator } from "react-icons/md";
 import { useProjectContext } from "../Contexts/ProjectContext";
 
@@ -29,7 +29,7 @@ const ProjectCardComponent = ({
     <div
       ref={setNodeRef}
       style={style}
-      className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 relative" // Added relative positioning
+      className=" scale-95 bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 relative" // Added relative positioning
     >
       <LoadingOverlay visible={loading} />
       <div className="absolute top-2 right-2 flex gap-2">

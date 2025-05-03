@@ -1,7 +1,6 @@
 'use server'
-import axios from 'axios';
 import jwt from 'jsonwebtoken';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 
 export const GetDataFromToken = async (request: NextRequest) => {
   // console.log("🚀 ~ GetDataFromToken ~ request:", request.cookies)
@@ -19,11 +18,3 @@ export const GetDataFromToken = async (request: NextRequest) => {
   }
 };
 
-export const logout = async () => {
-  try {
-      await axios.get('/api/users/signOut');
-  } catch (error: any) {
-      console.log(error.message)
-  }
-
-}

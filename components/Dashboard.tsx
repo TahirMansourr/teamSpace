@@ -20,12 +20,12 @@ const Dashboard = () => {
     );
   }, []);
 
-  const scaleStyle = isWindows ? { transform: "scale(0.98)" } : {};
+  const scaleStyle = isWindows ? { transform: "scale(0.8)" } : {};
   return (
     <main className=" flex h-screen w-screen ">
       {user && !loading && (
         <WorkSpaceProvider userInfo={user}>
-          <div style={scaleStyle} className="flex w-full">
+          <div  className="flex w-full">
             <DashBoardSideBar
               setSelectedItemInSideBar={setSelectedItemInSideBar}
               SelectedItemInSideBar={selectedItemInSideBar}
